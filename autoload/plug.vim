@@ -1,1 +1,0 @@
-/home/aloha/.vim/plugins/vim-plug/plug.vim
