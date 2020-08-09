@@ -14,10 +14,11 @@ endif
 ""======================= Automatically Install ==========================
 if glob(g:main_runtimepath."autoload/plug.vim") == ''
     if glob(g:main_runtimepath."plugins/vim-plug/plug.vim") == ''
-        execute("!git clone https://github.com/junegunn/vim-plug.git ".g:main_runtimepath."plugins/vim-plug/")
+        call system("git clone https://github.com/junegunn/vim-plug.git ".g:main_runtimepath."plugins/vim-plug/")
     endif
-    execute("!ln -st ".g:main_runtimepath."autoload ".g:main_runtimepath."plugins/vim-plug/plug.vim")
-    autocmd VimEnter * PlugUpdate | source $MYVIMRC
+    call system("mkdir ".g:main_runtimepath."autoload")
+    call system("ln -st ".g:main_runtimepath."autoload ".g:main_runtimepath."plugins/vim-plug/plug.vim")
+    PlugUpdate | source $MYVIMRC
 endif
 
 
