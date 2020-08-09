@@ -1505,6 +1505,7 @@ au BufWrite *.js :Autoformat
 "=========================================================================
 ""Description: ColorfulBrackets
 Plug 'luochen1990/rainbow'
+""https://github.com/luochen1990/rainbow/blob/master/README_zh.md
 let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 let g:rainbow_conf = {
             \    'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
@@ -1542,7 +1543,7 @@ let g:rainbow_conf = {
 ""Description: Auto Make Pairs
 Plug 'jiangmiao/auto-pairs'
 " 开启/禁用 auto-pairs
-let g:AutoPairsShortcutToggle='<M-P>'
+" let g:AutoPairsShortcutToggle='<M-P>'
 " 将一对 pair 后面的内容移到 pair 中（在 pair 内按下快捷键）
 let g:AutoPairsShortcutFastWrap='<M-e>'
 let g:AutoPairsShortcutJump='<M-n>'
