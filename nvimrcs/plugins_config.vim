@@ -473,7 +473,7 @@ let g:vista#renderer#icons = {
 
 "=========================================================================
 ""Description: Other visual enhancement
-""Dependencies: Nerd fonts, such as nerd-fonts-fire nerd-fonts-jetbrains-mono and etc.
+""Dependencies: Nerd fonts, such as nerd-fonts-fira nerd-fonts-jetbrains-mono and etc.
 ""A lot of unicode icons.( nerd-fonts needed )
 Plug 'ryanoasis/vim-devicons'
 let g:webdevicons_enable = 1

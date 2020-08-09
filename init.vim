@@ -16,7 +16,7 @@ if glob(g:main_runtimepath."autoload/plug.vim") == ''
     if glob(g:main_runtimepath."plugins/vim-plug/plug.vim") == ''
         execute("!git clone https://github.com/junegunn/vim-plug.git ".g:main_runtimepath."plugins/vim-plug/")
     endif
-    silent execute("!ln -st ".g:main_runtimepath."autoload ".g:main_runtimepath."plugins/vim-plug/plug.vim")
+    execute("!ln -st $HOME/.config/nvim/autoload $HOME/.config/nvim/plugins/vim-plug/plug.vim")
     autocmd VimEnter * PlugUpdate | source $MYVIMRC
 endif
 
