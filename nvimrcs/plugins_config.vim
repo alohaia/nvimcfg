@@ -9,7 +9,7 @@
 "¦                 -> Color and Highlighting                             ¦
 "¦                 -> Search and Replace                                 ¦
 "¦                 -> Completion and Syntax Checking                     ¦
-"¦                 -> Debug & Tasks                                      ¦
+"¦                 -> For Project                                        ¦
 "¦                 -> General Editing Enhancement                        ¦
 "¦                 -> MarkDown                                           ¦
 "¦                 -> Terminal Improvement                               ¦
@@ -71,37 +71,37 @@ command! Hvista echo
             \"  s           - sort the symbol alphabetically or the location they are declared.\n".
             \"  q           - close the vista window."
 
-""Defx:
-command! Hdefx echo
-            \"=== \<leader\>df to start.===\n".
-            \"  Enter       - open\n".
-            \"  c           - copy\n".
-            \"  x           - move\n".
-            \"  p           - paste\n".
-            \"  E           - open vsplit\n".
-            \"  P           - preview\n".
-            \"  o           - open tree toggle\n".
-            \"  N           - new directory\n".
-            \"  n           - new file\n".
-            \"  M           - new multiple files\n".
-            \"  S           - toggle sort by time\n".
-            \"  d           - remove\n".
-            \"  r           - rename\n".
-            \"  !           - execute command\n".
-            \"  ex          - execute system\n".
-            \"  yy          - yank path\n".
-            \"  .           - toggle ignored files\n".
-            \"  ;           - repeat\n".
-            \"  h           - cd ..\n".
-            \"  ~           - cd ~\n".
-            \"  q           - quit\n".
-            \"  s           - toggle select and up\n".
-            \"  *           - toggle select all\n".
-            \"  j           - down\n".
-            \"  k           - up\n".
-            \"  C-l         - redraw\n".
-            \"  C-g         - print\n".
-            \"  cd          - change vim cwd"
+" ""Defx:
+" command! Hdefx echo
+"             \"=== \<leader\>df to start.===\n".
+"             \"  Enter       - open\n".
+"             \"  c           - copy\n".
+"             \"  x           - move\n".
+"             \"  p           - paste\n".
+"             \"  E           - open vsplit\n".
+"             \"  P           - preview\n".
+"             \"  o           - open tree toggle\n".
+"             \"  N           - new directory\n".
+"             \"  n           - new file\n".
+"             \"  M           - new multiple files\n".
+"             \"  S           - toggle sort by time\n".
+"             \"  d           - remove\n".
+"             \"  r           - rename\n".
+"             \"  !           - execute command\n".
+"             \"  ex          - execute system\n".
+"             \"  yy          - yank path\n".
+"             \"  .           - toggle ignored files\n".
+"             \"  ;           - repeat\n".
+"             \"  h           - cd ..\n".
+"             \"  ~           - cd ~\n".
+"             \"  q           - quit\n".
+"             \"  s           - toggle select and up\n".
+"             \"  *           - toggle select all\n".
+"             \"  j           - down\n".
+"             \"  k           - up\n".
+"             \"  C-l         - redraw\n".
+"             \"  C-g         - print\n".
+"             \"  cd          - change vim cwd"
 
 ""Soda:
 command! Hsuda vert h suda-usage
@@ -129,6 +129,10 @@ command! Hvimspector echo
             \"  \<F9\>      ToggleConditionalBreakpoint\n".
             \"  \<F10\>     AddFunctionBreakpoint\n".
             \"  Type :call vimspe\<tab\> to see more functions."
+
+"=========================================================================
+""Description: vim-which-key is vim port of emacs-which-key that displays available keybindings in popup.
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 
 
 "#########################################################################
@@ -192,8 +196,9 @@ let g:startify_bookmarks = [
             \]
 ""Add Your commands here.
 let g:startify_commands = [
-            \ {'t': ['Press t to open defx.', 'call g:Defx_toggle_with_my_options()']},
+            \ {'t': ['Press t to open NERDTree.', 'NERDTree']},
             \ ]
+            " \ {'t': ['Press t to open defx.', 'call g:Defx_toggle_with_my_options()']},
 " \ ':help reference',
 " \ ['Vim Reference', 'h ref'],
 " \ {'?': ['Vim Reference', 'h ref']},
@@ -274,128 +279,182 @@ function g:Undotree_CustomMap()
 endfunc
 
 "=========================================================================
+""Description: NERDTree file tree
+""Alternatives: Defx.nvim
+Plug 'preservim/nerdtree' , {'on': ['NERDTreeToggle', 'NERDTree', 'NERDTreeFromBookmark', 'NERDTreeFind']}
+let g:NERDTreeHijackNetrw = 1
+let g:NERDTreeWinPos = "left"
+let NERDTreeShowHidden = 0
+let NERDTreeShowBookmarks = 0
+let NERDTreeBookmarksFile = g:main_runtimepath.'.cache/NERDTreeBookmarks'
+let NERDTreeMinimalUI = 1
+let NERDTreeAutoDeleteBuffer=1
+let NERDTreeCreatePrefix='silent keepalt keepjumps'
+" let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+let NERDTreeIgnore = ['\.pyc$', '__pycache__', '\.git$', '\.vscode$', 'desktop.ini']
+let g:NERDTreeWinSize=30
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+nnoremap <leader>nt :NERDTreeToggle<cr>
+nnoremap <leader>nb :NERDTreeFromBookmark<Space>
+nnoremap <leader>nb :NERDTreeFromBookmark<Space>
+nnoremap <leader>nf :NERDTreeFind<cr>
+
+""只剩下NERDTree时关闭窗口
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") &&
+            \b:NERDTree.isTabTree()) | q | endif
+
+""用 - 打开 Netrw
+" Plug 'tpope/vim-vinegar'
+
+" Plug 'Xuyuanp/nerdtree-git-plugin'
+" let g:NERDTreeIndicatorMapCustom = {
+"             \ 'Modified'  : '✹ ',
+"             \ 'Staged'    : '⚑ ',
+"             \ 'Untracked' : '⚝ ',
+"             \ 'Renamed'   : '->',
+"             \ 'Unmerged'  : ' ',
+"             \ 'Ignored'   : '~~',
+"             \ 'Dirty'     : '✖ ',
+"             \ 'Unknown'   : '? ',
+"             \ }
+" " 不显示 Ignored 状态(a heavy feature may cost much more time)
+" let g:NERDTreeShowIgnoredStatus = 1
+" ""NERDTree with airline
+" let g:airline#extensions#nerdtree_status = 1
+
+"=========================================================================
 ""Description: File tree
 ""Dependencies: See below
-if has('nvim')
-    Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-    Plug 'Shougo/defx.nvim'
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
-endif
-""Set options
-""Options available: :h defx-options
-noremap <silent> <leader>df :call g:Defx_toggle_with_my_options()<cr>
-function g:Defx_toggle_with_my_options()
-    " if &filetype != 'startify'
-        Defx
-            \ -columns=mark:git:indent:icons:icon:filename:type:size:time
-            \ -ignored-files='.*'
-            \ -vertical-preview -preview-width=50
-            \ -sort='filename'
-            \ -buffer-name='filebrowser'
-            \ -show-ignored-files=0
-            \ -focus -toggle
-            "\ -columns=git:mark:indent:icons:filename:type
-            "\ -split='vertical' -direction='topleft' -winwidth=&columns/2
-            "\ -split='horizontal' -direction='botright' -winheight=30
-            "\ -split='floating' -wincol=4 -winrow=0
-            "\ -preview-height=15
-            "\ -floating-preview -preview-height=10 -preview-width=40
-            "\ -root-maker=
-            "\ -search={path}
-            "\ -session-file={path}
-            "\ -split='floating' -direction='topleft'
-            "\ listed
-    " endif
-endfunction
-autocmd FileType defx call s:defx_my_settings()
-function! s:defx_my_settings() abort
-    ""Custom columns: filename icon indent mark size space time type [git icons]
-	call defx#custom#option('_', {
-                \ 'columns': 'mark:git:indent:icons:icon:filename:type:size:time',
-                \ 'defx-option-session-file': g:main_runtimepath.'.cache/defx',
-                \ })
-    call defx#custom#column('icon', {
-                \ 'directory_icon': '▸',
-                \ 'opened_icon': '▾',
-                \ 'root_icon': ' ',
-                \ })
-    call defx#custom#column('filename', {
-                \ 'min_width': 40,
-                \ 'max_width': 40,
-                \ })
-    call defx#custom#column('mark', {
-                \ 'readonly_icon': '✗',
-                \ 'selected_icon': '✓',
-                \ })
-    call defx#custom#column('filename', {
-                \ 'min_width': 40,
-                \ 'max_width': -100,
-                \ })
-    ""Define mappings
-    ""Actions available: :h defx-actions
-    nnoremap <silent><buffer><expr> <CR>    defx#do_action('open')
-    "nnoremap <silent><buffer><expr> l       defx#do_action('open')
-    nnoremap <silent><buffer><expr> c       defx#do_action('copy')
-    nnoremap <silent><buffer><expr> x       defx#do_action('move')
-    nnoremap <silent><buffer><expr> p       defx#do_action('paste')
-    nnoremap <silent><buffer><expr> E       defx#do_action('open', 'vsplit')
-    nnoremap <silent><buffer><expr> P       defx#do_action('preview')
-    nnoremap <silent><buffer><expr> o       defx#do_action('open_tree', 'toggle')
-    nnoremap <silent><buffer><expr> N       defx#do_action('new_directory')
-    nnoremap <silent><buffer><expr> n       defx#do_action('new_file')
-    nnoremap <silent><buffer><expr> M       defx#do_action('new_multiple_files')
-    "nnoremap <silent><buffer><expr> C       defx#do_action('toggle_columns', 'mark:indent:icon:filename:type:size:time')
-    nnoremap <silent><buffer><expr> S       defx#do_action('toggle_sort', 'time')
-    nnoremap <silent><buffer><expr> d       defx#do_action('remove')
-    nnoremap <silent><buffer><expr> r       defx#do_action('rename')
-    nnoremap <silent><buffer><expr> !       defx#do_action('execute_command')
-    nnoremap <silent><buffer><expr> ex      defx#do_action('execute_system')
-    nnoremap <silent><buffer><expr> yy      defx#do_action('yank_path')
-    nnoremap <silent><buffer><expr> .       defx#do_action('toggle_ignored_files')
-    nnoremap <silent><buffer><expr> ;       defx#do_action('repeat')
-    nnoremap <silent><buffer><expr> h       defx#do_action('cd', ['..'])
-    nnoremap <silent><buffer><expr> ~       defx#do_action('cd')
-    nnoremap <silent><buffer><expr> q       defx#do_action('quit')
-    nnoremap <silent><buffer><expr> s       defx#do_action('toggle_select') . 'j'
-    nnoremap <silent><buffer><expr> *       defx#do_action('toggle_select_all')
-    nnoremap <silent><buffer><expr> j       line('.') == line('$') ? 'gg' : 'j'
-    nnoremap <silent><buffer><expr> k       line('.') == 1 ? 'G' : 'k'
-    nnoremap <silent><buffer><expr> <C-l>   defx#do_action('redraw')
-    nnoremap <silent><buffer><expr> <C-g>   defx#do_action('print')
-    nnoremap <silent><buffer><expr> cd      defx#do_action('change_vim_cwd')
-endfunction
+" if has('nvim')
+"     Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+" else
+"     Plug 'Shougo/defx.nvim'
+"     Plug 'roxma/nvim-yarp'
+"     Plug 'roxma/vim-hug-neovim-rpc'
+" endif
+" ""Set options
+" ""Options available: :h defx-options
+" noremap <silent> <leader>df :call g:Defx_toggle_with_my_options()<cr>
+" function g:Defx_toggle_with_my_options()
+"     " if &filetype != 'startify'
+"         Defx
+"             \ -columns=mark:git:indent:icons:icon:filename:type:size:time
+"             \ -ignored-files='.*'
+"             \ -vertical-preview -preview-width=50
+"             \ -sort='filename'
+"             \ -buffer-name='filebrowser'
+"             \ -show-ignored-files=0
+"             \ -focus -toggle
+"             "\ -columns=git:mark:indent:icons:filename:type
+"             "\ -split='vertical' -direction='topleft' -winwidth=&columns/2
+"             "\ -split='horizontal' -direction='botright' -winheight=30
+"             "\ -split='floating' -wincol=4 -winrow=0
+"             "\ -preview-height=15
+"             "\ -floating-preview -preview-height=10 -preview-width=40
+"             "\ -root-maker=
+"             "\ -search={path}
+"             "\ -session-file={path}
+"             "\ -split='floating' -direction='topleft'
+"             "\ listed
+"     " endif
+" endfunction
+" autocmd FileType defx call s:defx_my_settings()
+" function! s:defx_my_settings() abort
+"     ""Custom columns: filename icon indent mark size space time type [git icons]
+"     call defx#custom#option('_', {
+"                 \ 'columns': 'mark:git:icons:icon:filename:type:size:time',
+"                 \ 'defx-option-session-file': g:main_runtimepath.'.cache/defx',
+"                 \ })
+"     call defx#custom#column('icon', {
+"                 \ 'directory_icon': '▸',
+"                 \ 'opened_icon': '▾',
+"                 \ 'root_icon': ' ',
+"                 \ })
+"     call defx#custom#column('filename', {
+"                 \ 'min_width': 40,
+"                 \ 'max_width': 40,
+"                 \ })
+"     call defx#custom#column('mark', {
+"                 \ 'readonly_icon': '✗',
+"                 \ 'selected_icon': '✓',
+"                 \ })
+"     call defx#custom#column('filename', {
+"                 \ 'min_width': 40,
+"                 \ 'max_width': -100,
+"                 \ })
+"     " call defx#custom#option('_', {
+"     "             \ 'winwidth': 30,
+"     "             \ 'split': 'vertical',
+"     "             \ 'direction': 'topleft',
+"     "             \ 'show_ignored_files': 0,
+"     "             \ 'buffer_name': '',
+"     "             \ 'toggle': 1,
+"     "             \ 'resume': 1
+"     "             \ })
+"     ""Define mappings
+"     ""Actions available: :h defx-actions
+"     nnoremap <silent><buffer><expr> <CR>    defx#do_action('open')
+"     "nnoremap <silent><buffer><expr> l       defx#do_action('open')
+"     nnoremap <silent><buffer><expr> c       defx#do_action('copy')
+"     nnoremap <silent><buffer><expr> x       defx#do_action('move')
+"     nnoremap <silent><buffer><expr> p       defx#do_action('paste')
+"     nnoremap <silent><buffer><expr> E       defx#do_action('open', 'vsplit')
+"     nnoremap <silent><buffer><expr> P       defx#do_action('preview')
+"     nnoremap <silent><buffer><expr> o       defx#do_action('open_tree', 'toggle')
+"     nnoremap <silent><buffer><expr> N       defx#do_action('new_directory')
+"     nnoremap <silent><buffer><expr> n       defx#do_action('new_file')
+"     nnoremap <silent><buffer><expr> M       defx#do_action('new_multiple_files')
+"     "nnoremap <silent><buffer><expr> C       defx#do_action('toggle_columns', 'mark:indent:icon:filename:type:size:time')
+"     nnoremap <silent><buffer><expr> S       defx#do_action('toggle_sort', 'time')
+"     nnoremap <silent><buffer><expr> d       defx#do_action('remove')
+"     nnoremap <silent><buffer><expr> r       defx#do_action('rename')
+"     nnoremap <silent><buffer><expr> !       defx#do_action('execute_command')
+"     nnoremap <silent><buffer><expr> ex      defx#do_action('execute_system')
+"     nnoremap <silent><buffer><expr> yy      defx#do_action('yank_path')
+"     nnoremap <silent><buffer><expr> .       defx#do_action('toggle_ignored_files')
+"     nnoremap <silent><buffer><expr> ;       defx#do_action('repeat')
+"     nnoremap <silent><buffer><expr> h       defx#do_action('cd', ['..'])
+"     nnoremap <silent><buffer><expr> ~       defx#do_action('cd')
+"     nnoremap <silent><buffer><expr> q       defx#do_action('quit')
+"     nnoremap <silent><buffer><expr> s       defx#do_action('toggle_select') . 'j'
+"     nnoremap <silent><buffer><expr> *       defx#do_action('toggle_select_all')
+"     nnoremap <silent><buffer><expr> j       line('.') == line('$') ? 'gg' : 'j'
+"     nnoremap <silent><buffer><expr> k       line('.') == 1 ? 'G' : 'k'
+"     nnoremap <silent><buffer><expr> <C-l>   defx#do_action('redraw')
+"     nnoremap <silent><buffer><expr> <C-g>   defx#do_action('print')
+"     nnoremap <silent><buffer><expr> cd      defx#do_action('change_vim_cwd')
+" endfunction
 
 
 "=========================================================================
 ""Description: Icons and git status for defx.
 ""Dependencies: Shougo/defx.nvim
-Plug 'kristijanhusak/defx-icons'
-"":Defx -columns=icons:indent:filename:type
-Plug 'kristijanhusak/defx-git'
-"":Defx -columns=git:mark:filename:type
-au VimEnter * call defx#custom#column('git', 'indicators', {
-            \ 'Modified'  : '✹ ',
-            \ 'Staged'    : '⚑ ',
-            \ 'Untracked' : '⚝ ',
-            \ 'Renamed'   : '->',
-            \ 'Unmerged'  : '==',
-            \ 'Ignored'   : '~~',
-            \ 'Deleted'   : '✖ ',
-            \ 'Unknown'   : '? '
-            \ })
-" ⚐ ★ "
-" call defx#custom#column('git', 'indicators', {
-" \ 'Modified'  : '✹',
-" \ 'Staged'    : '✚',
-" \ 'Untracked' : '✭',
-" \ 'Renamed'   : '➜',
-" \ 'Unmerged'  : '═',
-" \ 'Ignored'   : '☒',
-" \ 'Deleted'   : '✖',
-" \ 'Unknown'   : '?'
-" \ })
+" Plug 'kristijanhusak/defx-icons'
+" "":Defx -columns=icons:indent:filename:type
+" Plug 'kristijanhusak/defx-git'
+" "":Defx -columns=git:mark:filename:type
+" au VimEnter * call defx#custom#column('git', 'indicators', {
+"             \ 'Modified'  : '✹ ',
+"             \ 'Staged'    : '⚑ ',
+"             \ 'Untracked' : '⚝ ',
+"             \ 'Renamed'   : '->',
+"             \ 'Unmerged'  : '==',
+"             \ 'Ignored'   : '~~',
+"             \ 'Deleted'   : '✖ ',
+"             \ 'Unknown'   : '? '
+"             \ })
+" " ⚐ ★ "
+" " call defx#custom#column('git', 'indicators', {
+" " \ 'Modified'  : '✹',
+" " \ 'Staged'    : '✚',
+" " \ 'Untracked' : '✭',
+" " \ 'Renamed'   : '➜',
+" " \ 'Unmerged'  : '═',
+" " \ 'Ignored'   : '☒',
+" " \ 'Deleted'   : '✖',
+" " \ 'Unknown'   : '?'
+" " \ })
 
 
 "=========================================================================
@@ -405,7 +464,7 @@ Plug 'liuchengxu/vista.vim'
 ""See the full list of executivs via :echo g:vista#executives
 let g:vista_default_executive = 'ctags'
 ""Don't sort tags
-let g:vista_ctags_project_opts = '--sort=no'
+let g:vista_ctags_project_opts = '--sort=no -R -o .tags'
 let g:vista_executive_for = {
             \ 'vimwiki': 'markdown',
             \ 'pandoc': 'markdown',
@@ -436,7 +495,7 @@ let g:vista_cursor_delay = 200
 "let g:vista_floating_delay=100
 let g:vista_update_on_text_changed = 1
 let g:vista_update_on_text_changed_delay = 2000
-let g:vista_close_on_jump = 1
+" let g:vista_close_on_jump = 1
 let g:vista_stay_on_open = 1
 ""Disable blink
 let g:vista_blink = [0, 0]
@@ -810,11 +869,6 @@ let g:rnvimr_layout = { 'relative': 'editor',
             \ 'row': 0,
             \ 'style': 'minimal' }
 let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
-Plug 'airblade/vim-rooter'
-let g:rooter_patterns = ['__vim_project_root', '.git/']
-Plug 'pechorin/any-jump.vim'
-let g:any_jump_window_width_ratio  = 0.8
-let g:any_jump_window_height_ratio = 0.9
 
 "=========================================================================
 ""Description: Find & Replace text through multiple files.
@@ -862,33 +916,33 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 ""Edit snippet file for current filetype: :CocCommand snippets.editSnippets
 ""建议只在首次安装时使用以下列表，之后可以使用 CocInstall/CocUnstall
 let g:coc_global_extensions = [
-            \ 'coc-actions',
+            \ 'coc-sh',
             \ 'coc-css',
             \ 'coc-diagnostic',
             \ 'coc-flutter',
-            \ 'coc-gitignore',
             \ 'coc-html',
             \ 'coc-json',
-            \ 'coc-lists',
-            \ 'coc-floaterm',
             \ 'coc-prettier',
             \ 'coc-snippets',
             \ 'coc-sourcekit',
             \ 'coc-stylelint',
             \ 'coc-syntax',
-            \ 'coc-tasks',
-            \ 'coc-todolist',
-            \ 'coc-translator',
             \ 'coc-tslint-plugin',
             \ 'coc-tsserver',
             \ 'coc-vimlsp',
-            \ 'coc-vimlsp',
             \ 'coc-yaml',
-            \ 'coc-yank']
+            \ 'coc-floaterm',
+            \ 'coc-lists',
+            \ ]
+            " \ 'coc-actions',
+            " \ 'coc-gitignore',
+            " \ 'coc-tasks',
+            " \ 'coc-todolist',
+            " \ 'coc-translator',
+            " \ 'coc-yank',
 ""Use python-language-server instead: pip install 'python-language-server[all]'
             "\ 'coc-python',
             "\ 'coc-pyright',
-""Use defx instead
             "\ 'coc-explorer',
 ""Use coc-ccls instead
             "\ 'coc-clangd',
@@ -1162,6 +1216,63 @@ let g:asyncrun_runner = get(g:, 'asyncrun_runner', {})
 let g:asyncrun_runner.floaterm = function('s:my_floaterm')
 let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg', '.tasks']
 ""插件还提供了一个用于在命令行下执行 task 的脚本 asynctask, 并支持使用 fzf 查找 task.
+
+"=========================================================================
+""Description: Auto change 
+Plug 'airblade/vim-rooter'
+let g:rooter_patterns = ['__vim_project_root', '.git/']
+""Don't echo the project directory.
+let g:rooter_silent_chdir = 1
+
+"=========================================================================
+""Description: Vim plugin for "jump to defitinition" and "find usages" feature through nice popup ui.
+Plug 'pechorin/any-jump.vim'
+""Show line numbers in search rusults
+" let g:any_jump_list_numbers = 0
+""Auto search references
+let g:any_jump_references_enabled = 1
+""Auto group results by filename
+let g:any_jump_grouping_enabled = 1
+""Amount of preview lines for each search result
+let g:any_jump_preview_lines_count = 5
+""Max search results, other results can be opened via [a]
+let g:any_jump_max_search_results = 7
+""Default search results list styles:
+""- 'filename_first'
+""- 'filename_last'
+let g:any_jump_results_ui_style = 'filename_first'
+""Any-jump window size & position options
+let g:any_jump_window_width_ratio  = 0.8
+let g:any_jump_window_height_ratio = 0.9
+" let g:any_jump_window_top_offset   = 4
+""Or override all default colors
+" let g:any_jump_colors = {
+"       \"plain_text":         "Comment",
+"       \"preview":            "Comment",
+"       \"preview_keyword":    "Operator",
+"       \"heading_text":       "Function",
+"       \"heading_keyword":    "Identifier",
+"       \"group_text":         "Comment",
+"       \"group_name":         "Function",
+"       \"more_button":        "Operator",
+"       \"more_explain":       "Comment",
+"       \"result_line_number": "Comment",
+"       \"result_text":        "Statement",
+"       \"result_path":        "String",
+"       \"help":               "Comment"
+"       \}
+""Disable default any-jump keybindings (default: 0)
+" let g:any_jump_disable_default_keybindings = 0
+""Remove comments line from search results (default: 1)
+" let g:any_jump_remove_comments_from_results = 1
+""Custom ignore files
+""default is: ['*.tmp', '*.temp']
+" let g:any_jump_ignored_files = ['*.tmp', '*.temp']
+""Search references only for current file type
+""(default: false, so will find keyword in all filetypes)
+" let g:any_jump_references_only_for_current_filetype = 0
+""Disable search engine ignore vcs untracked files (default: false, search engine will ignore vcs untracked files)
+" let g:any_jump_disable_vcs_ignore = 0
 
 "#########################################################################
 "#####################\ General Editing Enhancement /#####################
@@ -1535,7 +1646,7 @@ let g:rainbow_conf = {
             \        'html': {
             \            'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
             \        },
-            \        'css': 0,
+            \        'nerdtree': 0,
             \    }
             \}
 
@@ -2024,51 +2135,6 @@ let g:suda#prefix = 'sudo:'
 " let g:vimtex_text_obj_enabled = 0
 " let g:vimtex_motion_enabled = 0
 " let maplocalleader=' '
-
-"=========================================================================
-""Description: NERDTree
-" Plug 'preservim/nerdtree' , {'on': ['NERDTreeToggle', 'NERDTree', 'NERDTreeFromBookmark', 'NERDTreeFind']}
-" let g:NERDTreeHijackNetrw = 1
-" let g:NERDTreeWinPos = "left"
-" let NERDTreeShowHidden=0
-" let NERDTreeShowBookmarks=1
-" " let NERDTreeIgnore = ['\.pyc$', '__pycache__']
-" let NERDTreeIgnore = ['\.pyc$', '__pycache__', '\.vscode$', 'tags',
-"             \'\.exe$', '\.EXE$', '\.obj$', '\.OBJ$', '\.jpg$',
-"             \'\.JPG', '\.png$', '\.PNG$', 'desktop.ini']
-" let g:NERDTreeWinSize=30
-" let g:NERDTreeDirArrowExpandable = '▸'
-" let g:NERDTreeDirArrowCollapsible = '▾'
-" nnoremap <F6>       :NERDTreeToggle<cr>
-" nnoremap <leader>nt :NERDTreeToggle<cr>
-" nnoremap <leader>nb :NERDTreeFromBookmark<Space>
-" nnoremap <leader>nb :NERDTreeFromBookmark<Space>
-" nnoremap <leader>nf :NERDTreeFind<cr>
-"
-" ""只剩下NERDTree时关闭窗口
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") &&
-"             \b:NERDTree.isTabTree()) | q | endif
-"
-" ""用 - 打开 Netrw
-" Plug 'tpope/vim-vinegar'
-"
-" Plug 'Xuyuanp/nerdtree-git-plugin'
-" let g:NERDTreeIndicatorMapCustom = {
-"             \ "Modified"  : "M",
-"             \ "Staged"    : "S",
-"             \ "Deleted"   : "D",
-"             \ "Untracked" : "!",
-"             \ "Renamed"   : "»",
-"             \ "Unmerged"  : "⎇ ",
-"             \ "Dirty"     : "✖",
-"             \ "Clean"     : "✔",
-"             \ 'Ignored'   : '~',
-"             \ "Unknown"   : "?"
-"             \ }
-" " 不显示 Ignored 状态(a heavy feature may cost much more time)
-" let g:NERDTreeShowIgnoredStatus = 1
-" ""NERDTree with airline
-" let g:airline#extensions#nerdtree_status = 1
 
 "=========================================================================
 ""Description: Visualize Vim undotree.

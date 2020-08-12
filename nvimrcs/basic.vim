@@ -29,8 +29,7 @@ set timeout                         " 设置快捷键输入时间限制
 set nottimeout
 set lazyredraw                      " Don't redraw while executing macros (good performance config)
 set regexpengine=1                  " use old regexp engine
-au VimEnter * set autochdir         " 自动切换到当前文件所在目录
-" set noautochdir                     " 使用 <leader>. 手动切换到当前目录
+set noautochdir                     " 使用 <leader>. 手动切换到当前目录
 set virtualedit=block               " 在指定模式下，使光标可以在没有文本的地方移动
 set number                          " 行首显示数字
 set relativenumber                  " 行首显示相对数字
@@ -41,7 +40,7 @@ set matchtime=2                     " 高亮显示配对括号时，当前括号
 set mousehide                       " Hide the mouse when typing text
 set foldlevel=999                   " 打开文件时不折叠，为了避免随机折叠问题
 set history=500                     " 命令/搜索/... 历史
-set tags=./.tags                    " ctags 的正确设置
+set tags=./.tags                    " 设置tag文件为当前目录下的 .tags 文件，一些插件会用到该选项
 set hidden                          " A buffer becomes hidden when it is abandoned
 syntax enable                       " 启用语法高亮
 set splitbelow                      " sp 会在下方打开分割窗口
@@ -58,8 +57,9 @@ set breakat=" ^i!@*-+;:,./?"        " 见 linebreak
 ""设置不自动换行并调整光标在边界处的行为: 始终离边界五个字符距离，横向显示每次移动一个字符
 " set nowrap sidescroll=1 sidescrolloff=5
 " set scrolloff=3                     " 滚动时光标离顶/底段的行数
-" set list                            " 显示特殊字符
+set list                            " 显示特殊字符
 " set listchars=tab:<->,trail:•,extends:>,precedes:<    " 特殊字符显示设置 trail 与　space 冲突   eol:↵,
+set listchars=trail:•
 
 "=================== 自动缩进设置(cindent会覆盖前两项) ===================
 set autoindent                      " 功能最简单的自动缩进

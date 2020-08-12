@@ -2,11 +2,6 @@
 "¦ Maintainer:     aloha                                                 ¦
 "¦                                                                       ¦
 "¦ License:        MIT                                                   ¦
-"¦                                                                       ¦
-"¦ Sections:                                                             ¦
-"¦                                                                       ¦
-"¦                                                                       ¦
-"¦                                                                       ¦
 "+-----------------------------------------------------------------------+
 
 ""======================== Preset helper functions =======================
@@ -80,9 +75,9 @@ function! g:TransparentBg(option)
                 \ 'echoerr "Argument error in function TransparentBg" | return -1'
                 \ : ''
     ""备份文件路径
-    let l:hi_normal_backup_file = expand('$HOME/.config/nvim/.backColor')
+    let l:hi_normal_backup_file = g:main_runtimepath.'.cache/backColor'
     ""检查备份文件是否存在
-    if !glob(g:main_runtimepath.'/.backColor')
+    if !glob(g:main_runtimepath.'.cache/backColor')
         call system('touch '.l:hi_normal_backup_file)
     endif
     ""防止重复执行
