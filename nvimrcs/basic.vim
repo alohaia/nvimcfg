@@ -26,6 +26,7 @@ if !has('nvim')
     set ttyfast                     " should make scrolling faster(romoved in neovim)
 endif
 set timeout                         " 设置快捷键输入时间限制
+set timeoutlen=200                  " 等待时间(ms)
 set nottimeout
 set lazyredraw                      " Don't redraw while executing macros (good performance config)
 set regexpengine=1                  " use old regexp engine

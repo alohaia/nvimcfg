@@ -116,7 +116,7 @@ command! Hfar vert h far-usage
 command! Hvisualmulti echo "Use '[n]vim -Nu path/to/visual-multi/tutorialrc' for quick start."
 
 ""Vimspector:
-command! Hvimspector echo 
+command! Hvimspector echo
             \"  :Launch   Launch\n".
             \"  :Continue Continue\n".
             \"  :Pause    Pause\n".
@@ -133,6 +133,16 @@ command! Hvimspector echo
 "=========================================================================
 ""Description: vim-which-key is vim port of emacs-which-key that displays available keybindings in popup.
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+nnoremap <leader><leader> :<c-u>WhichKey ''<left>
+" set timeoutlen=200                " in basic.vim
+let g:which_key_map =  {}
+let g:which_key_map.j = { 'name' : '+file' }
+hi WhichKeyBg ctermfg=252 ctermbg=233 guifg=#F8F8F2 guibg=#1B1D1E
+" highlight default link WhichKey          Function
+" highlight default link WhichKeySeperator DiffAdded
+" highlight default link WhichKeyGroup     Keyword
+" highlight default link WhichKeyDesc      Identifier
+highlight default link WhichKeyFloating  WhichKeyBg
 
 
 "#########################################################################
@@ -1218,7 +1228,7 @@ let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg', '.tasks'
 ""插件还提供了一个用于在命令行下执行 task 的脚本 asynctask, 并支持使用 fzf 查找 task.
 
 "=========================================================================
-""Description: Auto change 
+""Description: Auto change
 Plug 'airblade/vim-rooter'
 let g:rooter_patterns = ['__vim_project_root', '.git/']
 ""Don't echo the project directory.
@@ -1246,21 +1256,21 @@ let g:any_jump_window_width_ratio  = 0.8
 let g:any_jump_window_height_ratio = 0.9
 " let g:any_jump_window_top_offset   = 4
 ""Or override all default colors
-" let g:any_jump_colors = {
-"       \"plain_text":         "Comment",
-"       \"preview":            "Comment",
-"       \"preview_keyword":    "Operator",
-"       \"heading_text":       "Function",
-"       \"heading_keyword":    "Identifier",
-"       \"group_text":         "Comment",
-"       \"group_name":         "Function",
-"       \"more_button":        "Operator",
-"       \"more_explain":       "Comment",
-"       \"result_line_number": "Comment",
-"       \"result_text":        "Statement",
-"       \"result_path":        "String",
-"       \"help":               "Comment"
-"       \}
+let g:any_jump_colors = {
+      \}
+      " \"plain_text":         "Comment",
+      " \"preview":            "Comment",
+      " \"preview_keyword":    "Operator",
+      " \"heading_text":       "Function",
+      " \"heading_keyword":    "Identifier",
+      " \"group_text":         "Comment",
+      " \"group_name":         "Function",
+      " \"more_button":        "Operator",
+      " \"more_explain":       "Comment",
+      " \"result_line_number": "Comment",
+      " \"result_text":        "Statement",
+      " \"result_path":        "String",
+      " \"help":               "Comment"
 ""Disable default any-jump keybindings (default: 0)
 " let g:any_jump_disable_default_keybindings = 0
 ""Remove comments line from search results (default: 1)
@@ -1837,7 +1847,7 @@ let g:bullets_enable_in_empty_buffers = 0 " default = 1
 " let g:bullets_renumber_on_change = 1 " default = 1
 ""Enable/disable toggling parent and child checkboxes to indicate "completion" of child checkboxes:
 " let g:bullets_nested_checkboxes = 1 " default = 1
-""Define the checkbox markers to use to indicate unchecked, checked, and "partially" checked. 
+""Define the checkbox markers to use to indicate unchecked, checked, and "partially" checked.
 " let b:bullets_checkbox_markers = ' .oOX'    " '✗○ ◐ ● ✓'
 ""Define whether toggling partially complete checkboxes sets the checkbox to checked or unchecked:
 " let g:bullets_checkbox_partials_toggle = 1    " default 1
