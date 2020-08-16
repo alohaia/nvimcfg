@@ -334,6 +334,62 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") &&
 " let g:airline#extensions#nerdtree_status = 1
 
 "=========================================================================
+""Description: Use Ranger in a floating window
+""Dependencies: ranger, pynvim, [ ueberzug(preview pictures), bat(for highlight and faster preview, highly recommended) ]
+Plug 'kevinhwang91/rnvimr', {'do': 'make sync'}
+""Disable Rnvimr to import user configuration.
+"let g:rnvimr_vanilla = 1
+""Make Ranger replace netrw to be a file explorer
+let g:rnvimr_ex_enable = 1
+""Make Ranger to be hidden after picking a file
+let g:rnvimr_pick_enable = 1
+""Disable a border for floating window
+let g:rnvimr_draw_border = 0
+""Change the border's color
+let g:rnvimr_border_attr = {'fg': 14, 'bg': -1}
+""Set up only two columns in miller mode and draw border with both
+" let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"
+"             \ --cmd="set draw_borders both"'
+""Make Neovim wipe the buffers corresponding to the files deleted by Ranger
+"let g:rnvimr_bw_enable = 1
+""Hide the files included in gitignore
+"let g:rnvimr_hide_gitignore = 1
+""Link CursorLine into RnvimrNormal highlight in the Floating window
+highlight link RnvimrNormal CursorLine
+"nnoremap <silent> <cr> :RnvimrSync<CR>:RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
+nnoremap <silent> <cr> :RnvimrToggle<CR>
+" <C-\><C-n>:RnvimrResize 0<CR>
+"""Resize floating window by all preset layouts
+"tnoremap <silent> <M-i> <C-\><C-n>:RnvimrResize<CR>
+"""Resize floating window by special preset layouts
+"tnoremap <silent> <M-l> <C-\><C-n>:RnvimrResize 1,8,9,11,5<CR>
+"""Resize floating window by single preset layout
+"tnoremap <silent> <M-y> <C-\><C-n>:RnvimrResize 6<CR>
+""Default shortcuts
+" let g:rnvimr_action = {
+"             \ '<C-t>': 'NvimEdit tabedit',
+"             \ '<C-x>': 'NvimEdit split',
+"             \ '<C-v>': 'NvimEdit vsplit',
+"             \ 'gw': 'JumpNvimCwd',
+"             \ 'yw': 'EmitRangerCwd'
+"             \ }
+""Default layout
+" let g:rnvimr_layout = { 'relative': 'editor',
+"             \ 'width': float2nr(round(0.6 * &columns)),
+"             \ 'height': float2nr(round(0.6 * &lines)),
+"             \ 'col': float2nr(round(0.2 * &columns)),
+"             \ 'row': float2nr(round(0.2 * &lines)),
+"             \ 'style': 'minimal' }
+""Let ranger occupies the whole screen
+let g:rnvimr_layout = { 'relative': 'editor',
+            \ 'width': &columns,
+            \ 'height': &lines,
+            \ 'col': 0,
+            \ 'row': 0,
+            \ 'style': 'minimal' }
+let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
+
+"=========================================================================
 ""Description: File tree
 ""Dependencies: See below
 " if has('nvim')
@@ -825,60 +881,54 @@ Plug 'fszymanski/fzf-gitignore', { 'do': ':UpdateRemotePlugins' }
 noremap <LEADER>gi :FzfGitignore<CR>
 
 "=========================================================================
-""Description: Use Ranger in a floating window
-""Dependencies: ranger, pynvim, [ ueberzug(preview pictures), bat(for highlight and faster preview, highly recommended) ]
-Plug 'kevinhwang91/rnvimr', {'do': 'make sync'}
-""Disable Rnvimr to import user configuration.
-"let g:rnvimr_vanilla = 1
-""Make Ranger replace netrw to be a file explorer
-let g:rnvimr_ex_enable = 1
-""Make Ranger to be hidden after picking a file
-let g:rnvimr_pick_enable = 1
-""Disable a border for floating window
-let g:rnvimr_draw_border = 0
-""Change the border's color
-let g:rnvimr_border_attr = {'fg': 14, 'bg': -1}
-""Set up only two columns in miller mode and draw border with both
-" let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"
-"             \ --cmd="set draw_borders both"'
-""Make Neovim wipe the buffers corresponding to the files deleted by Ranger
-"let g:rnvimr_bw_enable = 1
-""Hide the files included in gitignore
-"let g:rnvimr_hide_gitignore = 1
-""Link CursorLine into RnvimrNormal highlight in the Floating window
-highlight link RnvimrNormal CursorLine
-"nnoremap <silent> <cr> :RnvimrSync<CR>:RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
-nnoremap <silent> <cr> :RnvimrToggle<CR>
-" <C-\><C-n>:RnvimrResize 0<CR>
-"""Resize floating window by all preset layouts
-"tnoremap <silent> <M-i> <C-\><C-n>:RnvimrResize<CR>
-"""Resize floating window by special preset layouts
-"tnoremap <silent> <M-l> <C-\><C-n>:RnvimrResize 1,8,9,11,5<CR>
-"""Resize floating window by single preset layout
-"tnoremap <silent> <M-y> <C-\><C-n>:RnvimrResize 6<CR>
-""Default shortcuts
-" let g:rnvimr_action = {
-"             \ '<C-t>': 'NvimEdit tabedit',
-"             \ '<C-x>': 'NvimEdit split',
-"             \ '<C-v>': 'NvimEdit vsplit',
-"             \ 'gw': 'JumpNvimCwd',
-"             \ 'yw': 'EmitRangerCwd'
-"             \ }
-""Default layout
-" let g:rnvimr_layout = { 'relative': 'editor',
-"             \ 'width': float2nr(round(0.6 * &columns)),
-"             \ 'height': float2nr(round(0.6 * &lines)),
-"             \ 'col': float2nr(round(0.2 * &columns)),
-"             \ 'row': float2nr(round(0.2 * &lines)),
-"             \ 'style': 'minimal' }
-""Let ranger occupies the whole screen
-let g:rnvimr_layout = { 'relative': 'editor',
-            \ 'width': &columns,
-            \ 'height': &lines,
-            \ 'col': 0,
-            \ 'row': 0,
-            \ 'style': 'minimal' }
-let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
+""Description: Vim plugin for "jump to defitinition" and "find usages" feature through nice popup ui.
+Plug 'pechorin/any-jump.vim'
+""Show line numbers in search rusults
+" let g:any_jump_list_numbers = 0
+""Auto search references
+let g:any_jump_references_enabled = 1
+""Auto group results by filename
+let g:any_jump_grouping_enabled = 1
+""Amount of preview lines for each search result
+let g:any_jump_preview_lines_count = 5
+""Max search results, other results can be opened via [a]
+let g:any_jump_max_search_results = 7
+""Default search results list styles:
+""- 'filename_first'
+""- 'filename_last'
+let g:any_jump_results_ui_style = 'filename_first'
+""Any-jump window size & position options
+let g:any_jump_window_width_ratio  = 0.8
+let g:any_jump_window_height_ratio = 0.9
+" let g:any_jump_window_top_offset   = 4
+""Or override all default colors
+let g:any_jump_colors = {
+      \}
+      " \"plain_text":         "Comment",
+      " \"preview":            "Comment",
+      " \"preview_keyword":    "Operator",
+      " \"heading_text":       "Function",
+      " \"heading_keyword":    "Identifier",
+      " \"group_text":         "Comment",
+      " \"group_name":         "Function",
+      " \"more_button":        "Operator",
+      " \"more_explain":       "Comment",
+      " \"result_line_number": "Comment",
+      " \"result_text":        "Statement",
+      " \"result_path":        "String",
+      " \"help":               "Comment"
+""Disable default any-jump keybindings (default: 0)
+" let g:any_jump_disable_default_keybindings = 0
+""Remove comments line from search results (default: 1)
+" let g:any_jump_remove_comments_from_results = 1
+""Custom ignore files
+""default is: ['*.tmp', '*.temp']
+" let g:any_jump_ignored_files = ['*.tmp', '*.temp']
+""Search references only for current file type
+""(default: false, so will find keyword in all filetypes)
+" let g:any_jump_references_only_for_current_filetype = 0
+""Disable search engine ignore vcs untracked files (default: false, search engine will ignore vcs untracked files)
+" let g:any_jump_disable_vcs_ignore = 0
 
 "=========================================================================
 ""Description: Find & Replace text through multiple files.
@@ -924,17 +974,15 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
 ""Language servers: https://github.com/neoclide/coc.nvim/wiki/Language-servers
 ""Edit snippet file for current filetype: :CocCommand snippets.editSnippets
-""建议只在首次安装时使用以下列表，之后可以使用 CocInstall/CocUnstall
+""建议只在首次安装时使用以下列表，之后可以使用 CocInstall/CocUninstall
 let g:coc_global_extensions = [
+            \ 'coc-diagnostic',
+            \ 'coc-tabnine',
             \ 'coc-sh',
             \ 'coc-css',
-            \ 'coc-diagnostic',
-            \ 'coc-flutter',
             \ 'coc-html',
             \ 'coc-json',
             \ 'coc-prettier',
-            \ 'coc-snippets',
-            \ 'coc-sourcekit',
             \ 'coc-stylelint',
             \ 'coc-syntax',
             \ 'coc-tslint-plugin',
@@ -944,12 +992,15 @@ let g:coc_global_extensions = [
             \ 'coc-floaterm',
             \ 'coc-lists',
             \ ]
+            " \ 'coc-translator',
+            " \ 'coc-sourcekit',
+            " \ 'coc-flutter',
             " \ 'coc-actions',
             " \ 'coc-gitignore',
             " \ 'coc-tasks',
             " \ 'coc-todolist',
-            " \ 'coc-translator',
             " \ 'coc-yank',
+            " \ 'coc-snippets',
 ""Use python-language-server instead: pip install 'python-language-server[all]'
             "\ 'coc-python',
             "\ 'coc-pyright',
@@ -957,7 +1008,6 @@ let g:coc_global_extensions = [
 ""Use coc-ccls instead
             "\ 'coc-clangd',
 ""??????????
-            "\ 'coc-tabnine',
 ""Use <tab> for trigger completion and navigate to the next complete item
 function! s:check_back_space() abort
     let col = col('.') - 1
@@ -972,20 +1022,21 @@ inoremap <silent><expr> <S-Tab>
             \ pumvisible() ? "\<C-p>" :
             \ <SID>check_back_space() ? "\<S-Tab>" :
             \ coc#refresh()
-""Use <C-c> to confirm completion (for snippets and additional edit)
+""Define the key to confirm completion (for snippets and additional edit)
+""<Tab>:使普通使用时 tab 插入空行; <cr>:无效。
 inoremap <silent><expr> <C-c> pumvisible() ?
             \ coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 ""Close the preview window when completion is done.
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 ""Coc Snippets :CocCommand snippets.editSnippets to edit snippet file for current file
-inoremap <silent><expr> <C-c>
-            \ pumvisible() ? coc#_select_confirm() :
-            \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-            \ <SID>check_back_space() ? "\<TAB>" :
-            \ coc#refresh()
-let g:coc_snippet_next = '<M-j>'
-let g:coc_snippet_prev = '<M-k>'
+" inoremap <silent><expr> <C-c>
+"             \ pumvisible() ? coc#_select_confirm() :
+"             \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+"             \ <SID>check_back_space() ? "\<TAB>" :
+"             \ coc#refresh()
+" let g:coc_snippet_next = '<M-j>'
+" let g:coc_snippet_prev = '<M-k>'
 
 " Use g[ and g] to navigate diagnostics
 " Use :CocDiagnostics to get all diagnostics of current buffer in location list.
@@ -1007,6 +1058,32 @@ let airline#extensions#coc#error_symbol = 'E:'
 let airline#extensions#coc#warning_symbol = 'W:'
 let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
 let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
+" Some servers have issues with backup files, see #649.
+" set nobackup
+" set nowritebackup
+
+" noremap <C-z> :CocCommand translator.popup<cr>
+
+
+"=========================================================================
+""Description:  ultisnips 代码段补全
+Plug 'SirVer/ultisnips'            " improved vim-snipmate
+" Plug 'alohaia/vim-snippets'               " snips for snipmate and ultisnips
+""An array of relative directory names OR an array with a single absolute path.
+" let g:UltiSnipsSnippetDirectories=["Ultisnips"]
+" Defines how the edit window is opened.
+let g:UltiSnipsEditSplit= 'context'
+""Enable snippmate snippets (dirs named 'snippets' under dirs in &runtimepath)
+" let g:UltiSnipsEnableSnipMate = 1
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-space>"
+" 在代码段内跳转
+let g:UltiSnipsJumpForwardTrigger="<M-j>"
+let g:UltiSnipsJumpBackwardTrigger="<M-k>"
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+""Add c snippets fir cpp files.
+au FileType cpp UltiSnipsAddFiletypes cpp.c
 
 "=========================================================================
 ""Description: CSharp
@@ -1233,56 +1310,6 @@ Plug 'airblade/vim-rooter'
 let g:rooter_patterns = ['__vim_project_root', '.git/']
 ""Don't echo the project directory.
 let g:rooter_silent_chdir = 1
-
-"=========================================================================
-""Description: Vim plugin for "jump to defitinition" and "find usages" feature through nice popup ui.
-Plug 'pechorin/any-jump.vim'
-""Show line numbers in search rusults
-" let g:any_jump_list_numbers = 0
-""Auto search references
-let g:any_jump_references_enabled = 1
-""Auto group results by filename
-let g:any_jump_grouping_enabled = 1
-""Amount of preview lines for each search result
-let g:any_jump_preview_lines_count = 5
-""Max search results, other results can be opened via [a]
-let g:any_jump_max_search_results = 7
-""Default search results list styles:
-""- 'filename_first'
-""- 'filename_last'
-let g:any_jump_results_ui_style = 'filename_first'
-""Any-jump window size & position options
-let g:any_jump_window_width_ratio  = 0.8
-let g:any_jump_window_height_ratio = 0.9
-" let g:any_jump_window_top_offset   = 4
-""Or override all default colors
-let g:any_jump_colors = {
-      \}
-      " \"plain_text":         "Comment",
-      " \"preview":            "Comment",
-      " \"preview_keyword":    "Operator",
-      " \"heading_text":       "Function",
-      " \"heading_keyword":    "Identifier",
-      " \"group_text":         "Comment",
-      " \"group_name":         "Function",
-      " \"more_button":        "Operator",
-      " \"more_explain":       "Comment",
-      " \"result_line_number": "Comment",
-      " \"result_text":        "Statement",
-      " \"result_path":        "String",
-      " \"help":               "Comment"
-""Disable default any-jump keybindings (default: 0)
-" let g:any_jump_disable_default_keybindings = 0
-""Remove comments line from search results (default: 1)
-" let g:any_jump_remove_comments_from_results = 1
-""Custom ignore files
-""default is: ['*.tmp', '*.temp']
-" let g:any_jump_ignored_files = ['*.tmp', '*.temp']
-""Search references only for current file type
-""(default: false, so will find keyword in all filetypes)
-" let g:any_jump_references_only_for_current_filetype = 0
-""Disable search engine ignore vcs untracked files (default: false, search engine will ignore vcs untracked files)
-" let g:any_jump_disable_vcs_ignore = 0
 
 "#########################################################################
 "#####################\ General Editing Enhancement /#####################
@@ -1517,56 +1544,6 @@ Plug 'AndrewRadev/splitjoin.vim'
 " gJ (with the cursor on the first line of a block) to join a block into a single-line statement.
 
 "=========================================================================
-""Description: Display a calendar/clock in vim
-Plug 'itchyny/calendar.vim'
-"noremap \\c :Calendar -position=here<CR>
-noremap \\c :Calendar -view=clock -position=here<CR>
-let g:calendar_google_calendar = 1
-let g:calendar_google_task = 1
-augroup calendar-mappings
-    autocmd!
-    " diamond cursor
-    autocmd FileType calendar nmap <buffer> u <Plug>(calendar_up)
-    autocmd FileType calendar nmap <buffer> n <Plug>(calendar_left)
-    autocmd FileType calendar nmap <buffer> e <Plug>(calendar_down)
-    autocmd FileType calendar nmap <buffer> i <Plug>(calendar_right)
-    autocmd FileType calendar nmap <buffer> <c-u> <Plug>(calendar_move_up)
-    autocmd FileType calendar nmap <buffer> <c-n> <Plug>(calendar_move_left)
-    autocmd FileType calendar nmap <buffer> <c-e> <Plug>(calendar_move_down)
-    autocmd FileType calendar nmap <buffer> <c-i> <Plug>(calendar_move_right)
-    autocmd FileType calendar nmap <buffer> k <Plug>(calendar_start_insert)
-    autocmd FileType calendar nmap <buffer> K <Plug>(calendar_start_insert_head)
-    " unmap <C-n>, <C-p> for other plugins
-    nnoremap ． .
-    autocmd FileType calendar nunmap <buffer> <C-n>
-    autocmd FileType calendar nunmap <buffer> <C-p>
-augroup END
-
-"=========================================================================
-""Description: 用竖线(或其他字符显示缩进)
-Plug 'Yggdroot/indentLine', {'for' : ['python']}
-" 指定对齐线的尺寸
-let g:indent_guides_guide_size = 1
-" 从第二层开始可视化显示缩进
-let g:indent_guides_start_level = 2
-""highlight conceal color with your colorscheme, 禁用插件的高亮
-let g:indentLine_setColors = 1
-" Vim
-let g:indentLine_color_term = 239
-" GVim
-"let g:indentLine_color_gui = '#A4E57E'
-" none X terminal
-"let g:indentLine_color_tty_light = 7 " (default: 4)
-"let g:indentLine_color_dark = 1 " (default: 2)
-" Background (Vim, GVim)
-let g:indentLine_bgcolor_term = 202
-let g:indentLine_bgcolor_gui = '#FF5F00'
-let g:indentLine_char = '┇'
-"let g:indentLine_char_list = ['|', '¦', '┆', '┊']
-au BufEnter python IndentLinesEnable
-au BufLeave python IndentLinesDisable
-
-"=========================================================================
 ""Description: Fast Commenting
 Plug 'preservim/nerdcommenter'
 " Add spaces after comment delimiters by default
@@ -1615,61 +1592,15 @@ au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
 Plug 'tpope/vim-repeat'
 
 "=========================================================================
-""Description: AutoFormat
-Plug 'Chiel92/vim-autoformat'
-nnoremap \\f :Autoformat<CR>
-nnoremap ． .
-let g:formatdef_custom_js = '"js-beautify -t"'
-let g:formatters_javascript = ['custom_js']
-au BufWrite *.js :Autoformat
-
-"=========================================================================
-""Description: ColorfulBrackets
-Plug 'luochen1990/rainbow'
-""https://github.com/luochen1990/rainbow/blob/master/README_zh.md
-let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
-let g:rainbow_conf = {
-            \    'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-            \    'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
-            \    'operators': '_,_',
-            \    'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
-            \    'separately': {
-            \        '*': {},
-            \        'markdown': {
-            \            'parentheses_options': 'containedin=markdownCode contained',
-            \        },
-            \        'tex': {
-            \            'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
-            \        },
-            \        'lisp': {
-            \            'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
-            \        },
-            \        'vim': {
-            \            'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
-            \        },
-            \        'perl': {
-            \            'syn_name_prefix': 'perlBlockFoldRainbow',
-            \        },
-            \        'stylus': {
-            \            'parentheses': ['start=/{/ end=/}/ fold contains=@colorableGroup'],
-            \        },
-            \        'html': {
-            \            'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
-            \        },
-            \        'nerdtree': 0,
-            \    }
-            \}
-
-"=========================================================================
 ""Description: Auto Make Pairs
 Plug 'jiangmiao/auto-pairs'
 " 开启/禁用 auto-pairs
-" let g:AutoPairsShortcutToggle='<M-P>'
+let g:AutoPairsShortcutToggle=''
 " 将一对 pair 后面的内容移到 pair 中（在 pair 内按下快捷键）
 let g:AutoPairsShortcutFastWrap='<M-e>'
-let g:AutoPairsShortcutJump='<M-n>'
-let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
-au FileType html let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>'}
+let g:AutoPairsShortcutJump=''
+let g:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '"':'"', '`':'`'}
+au FileType html let b:AutoPairs['<'] = '>'
 au FileType vim let b:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '`':'`', '<':'>'}
 " 使用 Backspace 删除时会删除 pair 中的另一个
 let g:AutoPairsMapBs=1
@@ -1680,47 +1611,14 @@ let g:AutoPairsMapSpace=1
 " 将回车键映射为插入空行的操作
 let g:AutoPairsMapCR=1
 
-" FlyMode
+""FlyMode, 输入 ")", "}", "]" 总是会跳转到后方的 ")", "}", "]" 后面
 let g:AutoPairsFlyMode=0
+""纠正错误跳转
 let g:AutoPairsShortcutBackInsert='<M-b>'
 
 "=========================================================================
-""Description: Zen Mode, help you concentrate.
-Plug 'junegunn/goyo.vim'
-command! Zen Goyo 85%x85%
-
-"=========================================================================
-""Description: Focus on a selected region while making the rest inaccessible.
-Plug 'chrisbra/NrrwRgn'
-"":NR  - Open the selected region in a new narrowed window
-"":NW  - Open the current visual window in a new narrowed window
-"":WR  - (In the narrowed window) write the changes back to the original buffer.
-"":NRV - Open the narrowed window for the region that was last visually selected.
-"":NUD - (In a unified diff) open the selected diff in 2 Narrowed windows
-"":NRP - Mark a region for a Multi narrowed window
-"":NRM - Create a new Multi narrowed window (after :NRP) - experimental!
-"":NRS - Enable Syncing the buffer content back (default on)
-"":NRN - Disable Syncing the buffer content back
-"":NRL - Reselect the last selected region and open it again in a narrowed window
-""Add ! to open in current window.
-""Visual mode: <leader>nr
-
-" For general writing
-"Plug 'reedes/vim-wordy'
-
-"=========================================================================
-""Description: Multi-language thesaurus query/replacement
-Plug 'ron89/thesaurus_query.vim'
-""If default keymapping is used.
-let g:tq_map_keys = 0
-noremap  <Leader>cw :ThesaurusQueryReplaceCurrentWord <CR>
-"vnoremap  <Leader> cs y:ThesaurusQueryReplace <Cr>
-""https://www.openoffice.org/lingucomponent/MyThes-1.zip
-let g:tq_openoffice_en_file="~/.config/nvim/thesaurus/th_en_US_new"
-""http://www.gutenberg.org/files/3202/files/
-let g:tq_mthesaur_file="~/.config/nvim/thesaurus/mthesaur.txt"
-""http://www.datamuse.com/
-let g:tq_cilin_txt_file="~/.config/nvim/thesaurus/cilin.txt"
+""Description: Add Enddings Automatically
+Plug 'tpope/vim-endwise'
 
 
 "#########################################################################
@@ -1728,10 +1626,28 @@ let g:tq_cilin_txt_file="~/.config/nvim/thesaurus/cilin.txt"
 "#########################################################################
 
 "=========================================================================
+""Description: Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+" "查看所有配置建议
+" :help vim-markdwon
+" [[ "跳转上一个标题
+" ]] "跳转下一个标题
+" ]c "跳转到当前标题
+" ]u "跳转到副标题
+" zr "打开下一级折叠
+" zR "打开所有折叠
+" zm "折叠当前段落
+" zM "折叠所有段落
+" :Toc "显示目录
+""高亮数学公式
+let g:vim_markdown_math = 1
+
+"=========================================================================
 ""Description: MarkDown Prevew
 ""Alternatives: suan/vim-instant-markdown
 ""Also support MathJex without this plugin. ???
-Plug 'iamcco/mathjax-support-for-mkdp'
+" Plug 'iamcco/mathjax-support-for-mkdp'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown', 'vim-plug'] }
 " set to 1, nvim will open the preview window after entering the markdown buffer
 " default: 0
@@ -1860,6 +1776,32 @@ let g:bullets_enabled_file_types = [
             \ 'text'
             \]
 
+Plug 'lervag/vimtex'
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+""Set conceal text to hide.
+let g:tex_conceal='abdmg'
+au FileType tex nnoremap ,t :call vimtex#fzf#run('ctli', g:fzf_layout)
+" let g:vimtex_compiler_latexmk = {
+"     \ 'build_dir' : '',
+"     \ 'callback' : 1,
+"     \ 'continuous' : 1,
+"     \ 'executable' : 'latexmk',
+"     \ 'hooks' : [],
+"     \ 'options' : [
+"     \   '-verbose',
+"     \   '-file-line-error',
+"     \   '-synctex=1',
+"     \   '-interaction=nonstopmode',
+"     \ ],
+"     \}
+" let g:vimtex_mappings_enabled = 0
+" let g:vimtex_text_obj_enabled = 0
+" let g:vimtex_motion_enabled = 0
+" let maplocalleader=' '
+
+
 "#########################################################################
 "#########################\ Terminal Impvovement /########################
 "#########################################################################
@@ -1927,19 +1869,157 @@ highlight SignifySignChange ctermfg=yellow guifg=#ffff00 cterm=NONE gui=NONE
 "#########################################################################
 
 "=========================================================================
+""Description: Looking for documents.
+""Dependencies: zeal(zeavim.vim)
+Plug 'KabbAmine/zeavim.vim'        " <LEADER>z to find doc offline with zeal.
+" http://{city_name}.kapeli.com/feeds/{name}.tgz
+"   city_name: frankfurt, london, newyork, sanfrancisco, singapore, sydney, tokyo
+"   name: get from http://api.zealdocs.org/v1/docsets
+" Plug 'keith/investigate.vim'       " Looking documentation online/offline
+
+"=========================================================================
+""Description: 用竖线(或其他字符显示缩进)
+Plug 'Yggdroot/indentLine', {'for' : ['python']}
+" 指定对齐线的尺寸
+let g:indent_guides_guide_size = 1
+" 从第二层开始可视化显示缩进
+let g:indent_guides_start_level = 2
+""highlight conceal color with your colorscheme, 禁用插件的高亮
+let g:indentLine_setColors = 1
+" Vim
+let g:indentLine_color_term = 239
+" GVim
+"let g:indentLine_color_gui = '#A4E57E'
+" none X terminal
+"let g:indentLine_color_tty_light = 7 " (default: 4)
+"let g:indentLine_color_dark = 1 " (default: 2)
+" Background (Vim, GVim)
+let g:indentLine_bgcolor_term = 202
+let g:indentLine_bgcolor_gui = '#FF5F00'
+let g:indentLine_char = '┇'
+"let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+au BufEnter python IndentLinesEnable
+au BufLeave python IndentLinesDisable
+
+"=========================================================================
+""Description: ColorfulBrackets
+Plug 'luochen1990/rainbow'
+""https://github.com/luochen1990/rainbow/blob/master/README_zh.md
+let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
+let g:rainbow_conf = {
+            \    'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+            \    'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+            \    'operators': '_,_',
+            \    'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+            \    'separately': {
+            \        '*': {},
+            \        'markdown': {
+            \            'parentheses_options': 'containedin=markdownCode contained',
+            \        },
+            \        'tex': {
+            \            'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+            \        },
+            \        'lisp': {
+            \            'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+            \        },
+            \        'vim': {
+            \            'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+            \        },
+            \        'perl': {
+            \            'syn_name_prefix': 'perlBlockFoldRainbow',
+            \        },
+            \        'stylus': {
+            \            'parentheses': ['start=/{/ end=/}/ fold contains=@colorableGroup'],
+            \        },
+            \        'html': {
+            \            'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+            \        },
+            \        'nerdtree': 0,
+            \    }
+            \}
+
+"=========================================================================
+""Description: AutoFormat
+Plug 'Chiel92/vim-autoformat'
+nnoremap \\f :Autoformat<CR>
+nnoremap ． .
+let g:formatdef_custom_js = '"js-beautify -t"'
+let g:formatters_javascript = ['custom_js']
+au BufWrite *.js :Autoformat
+
+"=========================================================================
+""Description: Zen Mode, help you concentrate.
+Plug 'junegunn/goyo.vim'
+command! Zen Goyo 85%x85%
+
+"=========================================================================
+""Description: Focus on a selected region while making the rest inaccessible.
+Plug 'chrisbra/NrrwRgn'
+"":NR  - Open the selected region in a new narrowed window
+"":NW  - Open the current visual window in a new narrowed window
+"":WR  - (In the narrowed window) write the changes back to the original buffer.
+"":NRV - Open the narrowed window for the region that was last visually selected.
+"":NUD - (In a unified diff) open the selected diff in 2 Narrowed windows
+"":NRP - Mark a region for a Multi narrowed window
+"":NRM - Create a new Multi narrowed window (after :NRP) - experimental!
+"":NRS - Enable Syncing the buffer content back (default on)
+"":NRN - Disable Syncing the buffer content back
+"":NRL - Reselect the last selected region and open it again in a narrowed window
+""Add ! to open in current window.
+""Visual mode: <leader>nr
+
+" For general writing
+"Plug 'reedes/vim-wordy'
+
+"=========================================================================
+""Description: Multi-language thesaurus query/replacement
+Plug 'ron89/thesaurus_query.vim'
+""If default keymapping is used.
+let g:tq_map_keys = 0
+noremap  <Leader>cw :ThesaurusQueryReplaceCurrentWord <CR>
+"vnoremap  <Leader> cs y:ThesaurusQueryReplace <Cr>
+""https://www.openoffice.org/lingucomponent/MyThes-1.zip
+let g:tq_openoffice_en_file="~/.config/nvim/thesaurus/th_en_US_new"
+""http://www.gutenberg.org/files/3202/files/
+let g:tq_mthesaur_file="~/.config/nvim/thesaurus/mthesaur.txt"
+""http://www.datamuse.com/
+let g:tq_cilin_txt_file="~/.config/nvim/thesaurus/cilin.txt"
+
+"=========================================================================
 ""Description: Async Colour
 ""asynchronously displaying the colours in the file
 Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
-
-"=========================================================================
-""Description: Add Enddings Automatically
-Plug 'tpope/vim-endwise'
 
 "=========================================================================
 ""Description: Use suda://<file> instead of file to get high permission
 Plug 'lambdalisue/suda.vim' " do stuff like :sudowrite
 let g:suda#prefix = 'sudo:'
 
+"=========================================================================
+""Description: Display a calendar/clock in vim
+Plug 'itchyny/calendar.vim'
+"noremap \\c :Calendar -position=here<CR>
+noremap \\c :Calendar -view=clock -position=here<CR>
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
+augroup calendar-mappings
+    autocmd!
+    " diamond cursor
+    autocmd FileType calendar nmap <buffer> u <Plug>(calendar_up)
+    autocmd FileType calendar nmap <buffer> n <Plug>(calendar_left)
+    autocmd FileType calendar nmap <buffer> e <Plug>(calendar_down)
+    autocmd FileType calendar nmap <buffer> i <Plug>(calendar_right)
+    autocmd FileType calendar nmap <buffer> <c-u> <Plug>(calendar_move_up)
+    autocmd FileType calendar nmap <buffer> <c-n> <Plug>(calendar_move_left)
+    autocmd FileType calendar nmap <buffer> <c-e> <Plug>(calendar_move_down)
+    autocmd FileType calendar nmap <buffer> <c-i> <Plug>(calendar_move_right)
+    autocmd FileType calendar nmap <buffer> k <Plug>(calendar_start_insert)
+    autocmd FileType calendar nmap <buffer> K <Plug>(calendar_start_insert_head)
+    " unmap <C-n>, <C-p> for other plugins
+    nnoremap ． .
+    autocmd FileType calendar nunmap <buffer> <C-n>
+    autocmd FileType calendar nunmap <buffer> <C-p>
+augroup END
 
 "#########################################################################
 "##########################\ Abandoned Plugins /##########################
@@ -1970,21 +2050,6 @@ let g:suda#prefix = 'sudo:'
 "   \ 'find_word'          : '',
 "   \ 'book_marks'         : '',
 "   \ }
-
-"=========================================================================
-""Description:  ultisnips 代码段补全
-" Plug 'SirVer/ultisnips'            " improved vim-snipmate
-" let g:UltiSnipsSnippetDirectorie
-" " 允许使用SnipMate代码段
-" let g:UltiSnipsEnableSnipMat
-" " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-" let g:UltiSnipsExpandTrigger="<c-c>"
-" " 在代码段内跳转
-" let g:UltiSnipsJumpForwardTrigger="jj"
-" let g:UltiSnipsJumpBackwardTrigger="kk"
-" " If you want :UltiSnipsEdit to split your window.
-" let g:UltiSnipsEditSplit="vertical"
-" Plug 'alohaia/vim-snippets'               " snips for snipmate and ultisnips
 
 "=========================================================================
 ""Description: YouCompleteMe Code Completing
@@ -2355,12 +2420,6 @@ let g:suda#prefix = 'sudo:'
 "=========================================================================
 ""Description: Bookmarks
 "Plug 'MattesGroeger/vim-bookmarks'
-
-"=========================================================================
-""Description: Looking for documents.
-""Dependencies: zeal(zeavim.vim)
-Plug 'KabbAmine/zeavim.vim'        " <LEADER>z to find doc offline with zeal.
-Plug 'keith/investigate.vim'       " Looking documentation online/offline
 
 "=========================================================================
 ""Description: Using build-in terminal

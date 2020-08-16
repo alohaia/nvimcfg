@@ -1,4 +1,7 @@
 {
+	"coc.source.buffer.ignoreGitignore": false,
+	"coc.source.file.ignoreHidden": false,
+	"coc.source.file.ignorePatterns": [],
 	"coc.preferences.hoverTarget": "preview",
 	"coc.preferences.enableFloatHighlight": true,
 	"coc.preferences.snippetStatusText": "Ⓢ ",
@@ -56,15 +59,16 @@
 	"list.previewHighlightGroup": "Statement",
 	"list.nextKeymap": "<C-e>",
 	"list.previousKeymap": "<C-u>",
-	"snippets.ultisnips.directories": [
-		"$HOME/.config/nvim/Ultisnips/",
-		"$HOME/.config/nvim/plugged/vim-snippets/UltiSnips/"
-	],
+
+	"snippets.enableStatusItem": true,
+	"snippets.userSnippetsDirectory": "~/.config/nvim/Ultisnips",
+	"snippets.ultisnips.directories": [],
 	"snippets.extends": {
 		"cpp": ["c"],
 		"javascriptreact": ["javascript"],
 		"typescript": ["javascript"]
 	},
+
 	"coc.preferences.formatOnSaveFiletypes": ["typescript", "html", "css", "json", "python"],
 	"yaml.format.enable": true,
 	"signature.target": "float",

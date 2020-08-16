@@ -317,3 +317,11 @@ endfunction
 "     endif
 " endfunc
 
+""找到较低的目录层级，然后删除之
+function RToc()
+    exe "/-toc .* -->"
+    let lstart=line('.')
+    exe "/-toc -->"
+    let lnum=line('.')
+    execute lstart.",".lnum."g/           /d"
+endfunction

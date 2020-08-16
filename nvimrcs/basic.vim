@@ -46,8 +46,10 @@ set hidden                          " A buffer becomes hidden when it is abandon
 syntax enable                       " 启用语法高亮
 set splitbelow                      " sp 会在下方打开分割窗口
 set splitright                      " vs 会在右边打开分割窗口
-set completeopt=longest,noinsert,menuone,noselect,preview
+set completeopt=noinsert,menuone,noselect,preview " longest, 与 noinsert 不兼容
 set noequalalways                   " 防止 vim 关闭窗口时自动调整窗口大小
+set conceallevel=3                  " 完全隐藏 conceal 字符, markdown/tex/...
+set updatetime=200
 
 "================================ 换行相关 ===============================
 ""设置自动折行时建议设置
@@ -60,7 +62,7 @@ set breakat=" ^i!@*-+;:,./?"        " 见 linebreak
 " set scrolloff=3                     " 滚动时光标离顶/底段的行数
 set list                            " 显示特殊字符
 " set listchars=tab:<->,trail:•,extends:>,precedes:<    " 特殊字符显示设置 trail 与　space 冲突   eol:↵,
-set listchars=trail:•
+set listchars=trail:•,tab:>-
 
 "=================== 自动缩进设置(cindent会覆盖前两项) ===================
 set autoindent                      " 功能最简单的自动缩进
@@ -100,7 +102,6 @@ if has("vms")
 endif
 set noswapfile
 " set swapfile
-" set updatetime=1000
 " set directory=~/.cache/nvim/.temp_dirs/swapdir
 
 "======================= No annoying sound on errors =====================
@@ -393,6 +394,14 @@ set ruler                           " 在状态栏显示当前所在的文件位
 
 set cmdheight=1                     " Make command line one line high
 set showcmd                         " normal模式下在vim命令行右边显示输入
+
+""设置数字栏左侧的 signcolumn 总是显示
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 
 "============================= wildmenu 设置 =============================
 set wildmenu                        " 命令模式下，在状态栏中显示vim补全选项
