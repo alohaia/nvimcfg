@@ -804,24 +804,25 @@ Plug 'junegunn/fzf.vim'
 " set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
 " set rtp+=/home/david/.linuxbrew/opt/fzf
 ""Full list of commands, see :h fzf-vim-commands
-noremap ,p :Files<CR>
-noremap ,b :Buffers<CR>
-noremap ,l :Lines<CR>
-noremap ,g :Rg<CR>
+let g:fzf_command_prefix = 'Fzf'
+noremap ,p :FzfFiles<CR>
+noremap ,b :FzfBuffers<CR>
+noremap ,l :FzfLines<CR>
+noremap ,g :FzfRg<CR>
 ""Specify tags-generatiing commands for :Tags
 let g:fzf_tags_command = 'ctags -R -o .tags'
-noremap ,t :Tags<CR>
+noremap ,t :FzfTags<CR>
 ""Use ':Vista finder <tab>' to search tab from other sources.
-noremap ,h :History<CR>
-noremap ,; :History:<CR>
-noremap ,/ :History/<CR>
+noremap ,h :FzfHistory<CR>
+noremap ,; :FzfHistory:<CR>
+noremap ,/ :FzfHistory/<CR>
 ""This is the default extra key bindings
 " let g:fzf_action = {
 "   \ 'ctrl-t': 'tab split',
 "   \ 'ctrl-x': 'split',
 "   \ 'ctrl-v': 'vsplit' }
 
-let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
+let g:fzf_layout = {'down':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
 let $FZF_DEFAULT_OPTS = '--layout=reverse --inline-info'
 let $FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git/**'"
 
@@ -870,8 +871,6 @@ noremap <c-d> call fzf#run(fzf#wrap({
             \ 'sink*': { lines -> s:delete_buffers(lines) },
             \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
             \ }))
-
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
 
 "=========================================================================
 ""Description: Fzf interface for creating .gitignore files using the gitignore.io API.
@@ -2020,6 +2019,26 @@ augroup calendar-mappings
     autocmd FileType calendar nunmap <buffer> <C-n>
     autocmd FileType calendar nunmap <buffer> <C-p>
 augroup END
+
+"=========================================================================
+""Description: Translator
+Plug 'voldikss/vim-translator'
+map <silent> <leader>T :TranslateW<cr>
+map <silent> <leader>R :TranslateR<cr>
+" let g:translator_target_lang = 'zh'
+" let g:translator_source_lang = 'auto'
+" let g:translator_default_engine = [...]
+" let g:translator_proxy_url = ''
+let g:translator_history_enable = v:true
+if has('nvim')
+    let g:translator_window_type = 'floatwin'
+else
+    let g:translator_window_type = 'popup'
+endif
+" let g:translator_window_max_width = 0.6
+" let g:translator_window_max_height = 0.6
+" let g:translator_window_borderchars = ['─','│','─','│','┌','┐','┘','└']
+
 
 "#########################################################################
 "##########################\ Abandoned Plugins /##########################

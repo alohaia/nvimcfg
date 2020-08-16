@@ -85,8 +85,8 @@ function! g:TransparentBg(option)
         let s:back_color = -1
     endif
     ""根据选项设置背景
-    if a:option == 0
-        if s:back_color != 0
+    if a:option == 1
+        if s:back_color != 1
             ""将Vim原来的背景色等信息存储到备份文件, 以便用户调用
             let l:hi_normal_backup = split(execute('silent hi Normal', ''))
             call remove(l:hi_normal_backup, 1)
@@ -94,10 +94,10 @@ function! g:TransparentBg(option)
         endif
         ""设置透明背景
         hi Normal ctermbg=NONE guibg=NONE
-        let s:back_color = 0
-    elseif a:option ==1 && s:back_color != 1
+        let s:back_color = 1
+    elseif a:option ==0 && s:back_color != 0
         execute(readfile(l:hi_normal_backup_file)[0])
-        let s:back_color =1
+        let s:back_color =0
     endif
 endfunction
 " function! g:BackgroudColor(option)

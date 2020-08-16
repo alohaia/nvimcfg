@@ -220,11 +220,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 "============================== 透明背景 =================================
 "      需要终端的支持，terminator/Tilix/konsole/yakuake 支持透明背景
-try
-   call g:TransparentBg(0)
-catch
-   echoerr "设置透明背景失败"
-endtry
+" call g:TransparentBg(1)
 
 "==================== Set font according to system =======================
 ""Need to improve.
