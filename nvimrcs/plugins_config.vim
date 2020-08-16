@@ -931,7 +931,7 @@ let g:any_jump_colors = {
 
 "=========================================================================
 ""Description: Find & Replace text through multiple files.
-""Dependencies: ag(the_silver_searcher, optional)
+""Dependencies: ag(the_silver_searcher, optional)/rg(faster)
 ""Note: pay attention to \ " and space for pattren
 "Plug 'brooth/far.vim', { 'on': ['F', 'Far', 'Fardo'] }
 Plug 'brooth/far.vim'
@@ -944,9 +944,9 @@ noremap <LEADER>f :F<space><space>**/*
             "\--preview-win-layout --preview-win-width --preview-win-height
             "\--auto-preview --auto-preview-on-start
 if has('nvim')
-    let g:far#source = 'agnvim'
+    let g:far#source = 'rgnvim'
 else
-    let g:far#source = 'ag'
+    let g:far#source = 'rg'
 endif
 let g:far#enable_undo = 1
 ""For default mappings, see :h default-far-mappings
