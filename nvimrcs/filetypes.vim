@@ -122,13 +122,20 @@ autocmd BufRead *.twig set syntax=html filetype=html
 """"""""""""""""""""""""""""""
 " => Markdown
 """"""""""""""""""""""""""""""
-let vim_markdown_folding_disabled = 1
-au FileType markdown inoremap <M-1> #
-au FileType markdown inoremap <M-2> ##
-au FileType markdown inoremap <M-3> ###
-au FileType markdown inoremap <M-4> ####
-au FileType markdown inoremap <M-5> #####
-au FileType markdown inoremap <M-6> ######
-augroup auto_spellcheck
-  autocmd BufNewFile,BufRead *.md setlocal spell
-augroup END
+function s:markdown_settings()
+    setlocal spell
+    setlocal spelllang = en_US
+    inoremap<buffer> <C-s> <c-g>u<Esc>[s1z=`]a<c-g>u
+endfunction
+autocmd BufReadPre markdown call s:tex_settings()
+
+
+""""""""""""""""""""""""""""""
+" => LaTex
+""""""""""""""""""""""""""""""
+function s:tex_settings()
+    setlocal spell
+    setlocal spelllang = en_US
+    inoremap<buffer> <C-s> <c-g>u<Esc>[s1z=`]a<c-g>u
+endfunction
+autocmd BufReadPre tex call s:tex_settings()

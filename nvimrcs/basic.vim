@@ -137,12 +137,6 @@ set whichwrap+=<,>,h,l
 "============================ 先导键 <leader> ============================
 let g:mapleader = "\<space>"
 
-"============== normal模式的中文字符（windows gvim中无效） ===============
-nnoremap ： :
-nnoremap ； ;
-nnoremap 、 /
-nnoremap 。 .
-
 "============================== 保存和退出 ===============================
 " Fast saving & quitting
 nnoremap <silent> <leader>w :w<cr>
@@ -150,8 +144,8 @@ nnoremap <silent> <leader>W :wa<cr>
 nnoremap <leader>q :q<cr>
 nnoremap <leader>Q :qa<cr>
 
-" :W sudo saves the file
-command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+" :W sudo saves the file(use suda.vim instead)
+" command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
 "================== 折叠命令syntax/indent模式 (vim 自带) =================
 " zc 折叠
@@ -205,6 +199,9 @@ inoremap ii <esc>
 nnoremap Y y$
 
 noremap ; :
+
+nnoremap <leader>o mzo<esc>`z
+nnoremap <leader>O mzO<esc>`z
 
 
 "#########################################################################
@@ -292,7 +289,8 @@ noremap K 4k
 " Remap VIM 0 to first non-blank character
 nnoremap 0 ^
 
-" Move a line of text using ALT+[jk] or Command+[jk] on mac
+""Move a line of text using ALT+[jk] or Command+[jk]
+""Thus you should not use mark 'z'
 nmap <M-k> mz:m-2<cr>`z
 nmap <M-j> mz:m+<cr>`z
 vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
@@ -383,12 +381,12 @@ nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 "#########################################################################
 "######################\ Status Line and CmdLine /########################
 "#########################################################################
-set shortmess="filnxtToOSIc"        " 简化显示信息，详见 :h shm
+set shortmess="a"                   " 简化显示信息, 避免烦人的确认信息，详见 :h shm
 ""Always show the status line
 set laststatus=2
 set ruler                           " 在状态栏显示当前所在的文件位置
 
-set cmdheight=1                     " Make command line one line high
+set cmdheight=2                     " Make command line Two line high
 set showcmd                         " normal模式下在vim命令行右边显示输入
 
 ""设置数字栏左侧的 signcolumn 总是显示
@@ -435,10 +433,10 @@ autocmd BufWritePre *.c,*.cpp,*.h,*.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call Cle
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 "================= Quickly open a buffer for scribble ====================
-map <leader>q :e ~/buffer<cr>
+" map <leader>q :e ~/buffer<cr>
 
 "============= Quickly open a markdown buffer for scribble ===============
-map <leader>x :e ~/buffer.md<cr>
+" map <leader>x :e ~/buffer.md<cr>
 
 "==================== Toggle paste mode on and off =======================
 map <leader>pp :setlocal paste!<cr>

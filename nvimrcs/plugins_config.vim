@@ -561,7 +561,7 @@ let g:vista_cursor_delay = 200
 "let g:vista_floating_delay=100
 let g:vista_update_on_text_changed = 1
 let g:vista_update_on_text_changed_delay = 2000
-" let g:vista_close_on_jump = 1
+let g:vista_close_on_jump = 1
 let g:vista_stay_on_open = 1
 ""Disable blink
 let g:vista_blink = [0, 0]
@@ -866,11 +866,11 @@ endfunction
 " noremap <c-d> :BD<CR>
 
 ""退出？直接用 <Esc> 就行了
-noremap <c-d> call fzf#run(fzf#wrap({
-            \ 'source': s:list_buffers(),
-            \ 'sink*': { lines -> s:delete_buffers(lines) },
-            \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
-            \ }))
+" noremap <c-d> call fzf#run(fzf#wrap({
+"             \ 'source': s:list_buffers(),
+"             \ 'sink*': { lines -> s:delete_buffers(lines) },
+"             \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
+"             \ }))
 
 "=========================================================================
 ""Description: Fzf interface for creating .gitignore files using the gitignore.io API.
@@ -1074,6 +1074,7 @@ Plug 'SirVer/ultisnips'            " improved vim-snipmate
 let g:UltiSnipsEditSplit= 'context'
 ""Enable snippmate snippets (dirs named 'snippets' under dirs in &runtimepath)
 " let g:UltiSnipsEnableSnipMate = 1
+let g:UltiSnipsRemoveSelectModeMappings = 0
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<c-space>"
 " 在代码段内跳转
@@ -1081,8 +1082,13 @@ let g:UltiSnipsJumpForwardTrigger="<M-j>"
 let g:UltiSnipsJumpBackwardTrigger="<M-k>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-""Add c snippets fir cpp files.
-au FileType cpp UltiSnipsAddFiletypes cpp.c
+""Add c snippets for cpp files. (改为在 snippets 文件中使用 extends 关键字)
+" au FileType cpp UltiSnipsAddFiletypes cpp.c
+" autocmd! User UltiSnipsEnterFirstSnippet
+" autocmd User UltiSnipsEnterFirstSnippet echomsg 'snippet expanded'
+" autocmd! User UltiSnipsExitLastSnippet
+" autocmd User UltiSnipsExitLastSnippet echomsg 'expanding finished'
+
 
 "=========================================================================
 ""Description: CSharp
@@ -1202,6 +1208,29 @@ sign define vimspectorBPCond text=♦  texthl=Normal
 "The program counter, i.e. current line.🔶
 sign define vimspectorPC text=➤➤ texthl=SpellBad
 
+Plug 'skywind3000/asyncrun.vim'
+""运行时自动打开高度为 6 的 quickfix 窗口
+"let g:asyncrun_open = 6
+""编译整个项目时，通过rootmarks确定项目根目录，可以通过创建特殊空目录的方式截断向上查找的过程。
+""Customize Runner: https://github.com/skywind3000/asynctasks.vim/wiki/Customize-Runner
+function s:asyncrun_floaterm(opts)abort
+    let l:name = 'AsyncRun'
+    let l:bufnr = floaterm#terminal#get_bufnr(l:name)
+    if l:bufnr == -1
+        execute('FloatermNew --name='.l:name)
+        execute('FloatermToggle '.l:name)
+        execute('FloatermSend ' . a:opts.cmd)
+        execute('FloatermToggle '.l:name)
+    else
+        execute('FloatermSend --name=' . l:name . ' ' . a:opts.cmd)
+        execute('FloatermToggle '.l:name)
+    endif
+endfunction
+let g:asyncrun_runner = get(g:, 'asyncrun_runner', {})
+let g:asyncrun_runner.floaterm = function('s:asyncrun_floaterm')
+
+let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg', '.tasks']
+
 "=========================================================================
 ""Description: 为 Vim 引入类似 vscode 的 tasks 任务系统，
 ""             用统一的方式系统化解决各类：编译/运行/测试/部署任务。
@@ -1235,6 +1264,7 @@ let g:asynctasks_environ = {
     \ 'cppc': '/usr/bin/g++',
     \ 'cc': '/usr/bin/gcc',
     \}
+""插件还提供了一个用于在命令行下执行 task 的脚本 asynctask, 并支持使用 fzf 查找 task.
 ""Integrate with fzf: https://github.com/skywind3000/asynctasks.vim/wiki/UI-Integration
 ""Usage: :AsyncTaskFzf
 function! s:fzf_sink(what)
@@ -1285,28 +1315,10 @@ let g:asynctasks_template = {}
 "         \ "output=terminal",
 "         \ ]
 
-Plug 'skywind3000/asyncrun.vim'
-""运行时自动打开高度为 6 的 quickfix 窗口
-"let g:asyncrun_open = 6
-""编译整个项目时，通过rootmarks确定项目根目录，可以通过创建特殊空目录的方式截断向上查找的过程。
-""Customize Runner: https://github.com/skywind3000/asynctasks.vim/wiki/Customize-Runner
-function! s:my_floaterm(opts)
-    " if floaterm#terminal#get_bufnr('asynctasks') == -1
-    "     FloatermNew --name='asynctasks'
-    "     FloatermToggle
-    " endif
-    ""将命令发送给浮动终端并运行
-    execute("FloatermSend " . a:opts.cmd)
-endfunction
-let g:asyncrun_runner = get(g:, 'asyncrun_runner', {})
-let g:asyncrun_runner.floaterm = function('s:my_floaterm')
-let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg', '.tasks']
-""插件还提供了一个用于在命令行下执行 task 的脚本 asynctask, 并支持使用 fzf 查找 task.
-
 "=========================================================================
 ""Description: Auto change
 Plug 'airblade/vim-rooter'
-let g:rooter_patterns = ['__vim_project_root', '.git/']
+let g:rooter_patterns = ['__vim_project_root', '.git']
 ""Don't echo the project directory.
 let g:rooter_silent_chdir = 1
 
@@ -1525,7 +1537,7 @@ let g:clever_f_use_migemo = 1
 ""Adjust search to match vim's original direction.
 let g:clever_f_fix_key_direction = 1
 ""Characters to match any signs.
-let g:clever_f_chars_match_any_signs = ';.'
+let g:clever_f_chars_match_any_signs = ''
 ""Highlight current position while waitting for a character.
 " let g:clever_f_mark_cursor = 1
 ""Change the highlight group.
@@ -1641,6 +1653,7 @@ Plug 'plasticboy/vim-markdown'
 " :Toc "显示目录
 ""高亮数学公式
 let g:vim_markdown_math = 1
+let vim_markdown_folding_disabled = 1
 
 "=========================================================================
 ""Description: MarkDown Prevew
@@ -1775,13 +1788,51 @@ let g:bullets_enabled_file_types = [
             \ 'text'
             \]
 
+"=========================================================================
+""Description: Tex support for vim.
+""Dependencies: Texlive-core
 Plug 'lervag/vimtex'
-let g:tex_flavor='latex'
-let g:vimtex_view_method='zathura'
-let g:vimtex_quickfix_mode=0
+let g:tex_flavor = 'latex'
+let g:vimtex_view_method = 'zathura'
+let g:vimtex_quickfix_mode = 0
+let g:vimtex_complete_close_braces = 1
+let g:vimtex_cache_root = expand('~/.config/nvim/.cache/vimtex')
+""Default mappings, see :h vimtex-default-mappings
+let g:vimtex_mappings_enabled = 1
 ""Set conceal text to hide.
 let g:tex_conceal='abdmg'
-au FileType tex nnoremap ,t :call vimtex#fzf#run('ctli', g:fzf_layout)
+au FileType tex command! FzfTex call vimtex#fzf#run('ctli', g:fzf_layout)
+let g:vimtex_compiler_method = 'latexmk'
+let g:vimtex_compiler_latexmk = {
+    \ 'build_dir' : '',
+    \ 'callback' : 1,
+    \ 'continuous' : 1,
+    \ 'executable' : 'latexmk',
+    \ 'hooks' : [],
+    \ 'options' : [
+    \   '-verbose',
+    \   '-file-line-error',
+    \   '-synctex=1',
+    \   '-interaction=nonstopmode',
+    \ ],
+    \}
+""使用 Ctex 宏包的中文文档建议使用 xelatex 编译
+let g:vimtex_compiler_latexmk_engines = {
+    \ '_'                : '-xelatex',
+    \ 'pdflatex'         : '-pdf',
+    \ 'dvipdfex'         : '-pdfdvi',
+    \ 'lualatex'         : '-lualatex',
+    \ 'xelatex'          : '-xelatex',
+    \ 'context (pdftex)' : '-pdf -pdflatex=texexec',
+    \ 'context (luatex)' : '-pdf -pdflatex=context',
+    \ 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
+    \}
+let g:vimtex_compiler_latexrun_engines = {
+    \ '_'                : 'xelatex',
+    \ 'pdflatex'         : 'pdflatex',
+    \ 'lualatex'         : 'lualatex',
+    \ 'xelatex'          : 'xelatex',
+    \}
 " let g:vimtex_compiler_latexmk = {
 "     \ 'build_dir' : '',
 "     \ 'callback' : 1,
@@ -2023,21 +2074,22 @@ augroup END
 "=========================================================================
 ""Description: Translator
 Plug 'voldikss/vim-translator'
-map <silent> <leader>T :TranslateW<cr>
-map <silent> <leader>R :TranslateR<cr>
+nmap <silent> <leader>t :TranslateW<cr>
+vmap <silent> <leader>t :Translate<cr>
+map <silent> <leader>r :TranslateR<cr>
 " let g:translator_target_lang = 'zh'
 " let g:translator_source_lang = 'auto'
 " let g:translator_default_engine = [...]
 " let g:translator_proxy_url = ''
 let g:translator_history_enable = v:true
-if has('nvim')
-    let g:translator_window_type = 'floatwin'
-else
-    let g:translator_window_type = 'popup'
-endif
+let g:translator_window_type = 'popup'
 " let g:translator_window_max_width = 0.6
 " let g:translator_window_max_height = 0.6
 " let g:translator_window_borderchars = ['─','│','─','│','┌','┐','┘','└']
+
+"=========================================================================
+""Description: Bookmarks
+Plug 'MattesGroeger/vim-bookmarks'
 
 
 "#########################################################################
@@ -2219,16 +2271,6 @@ endif
 " "hi! clear SpellCap
 " "hi! clear SpellRare
 
-
-"=========================================================================
-""Description: Tex
-" Plug 'lervag/vimtex', {'on': 'This Plugin is disabled.'}
-" "let g:vimtex_view_method = ''
-" let g:vimtex_view_general_viewer = 'llpp'
-" let g:vimtex_mappings_enabled = 0
-" let g:vimtex_text_obj_enabled = 0
-" let g:vimtex_motion_enabled = 0
-" let maplocalleader=' '
 
 "=========================================================================
 ""Description: Visualize Vim undotree.
@@ -2435,10 +2477,6 @@ endif
 " Plug 'MarcWeber/vim-addon-mw-utils'
 " Plug 'kana/vim-textobj-user'
 " Plug 'roxma/nvim-yarp'
-
-"=========================================================================
-""Description: Bookmarks
-"Plug 'MattesGroeger/vim-bookmarks'
 
 "=========================================================================
 ""Description: Using build-in terminal
