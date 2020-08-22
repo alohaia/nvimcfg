@@ -35,6 +35,7 @@ set virtualedit=block               " 在指定模式下，使光标可以在没
 set number                          " 行首显示数字
 set relativenumber                  " 行首显示相对数字
 set cursorline                      " 突出显示光标所在行
+set cursorcolumn                    " 突出显示光标所在列
 set textwidth=500                   " 设置行宽
 set showmatch                       " 高亮显示配对括号
 set matchtime=2                     " 高亮显示配对括号时，当前括号会每 2/10 秒闪烁一次
@@ -48,7 +49,8 @@ set splitbelow                      " sp 会在下方打开分割窗口
 set splitright                      " vs 会在右边打开分割窗口
 set completeopt=noinsert,menuone,noselect,preview " longest, 与 noinsert 不兼容
 set noequalalways                   " 防止 vim 关闭窗口时自动调整窗口大小
-set conceallevel=3                  " 完全隐藏 conceal 字符, markdown/tex/...
+set conceallevel=2                  " 完全隐藏 conceal 字符, markdown/tex/...
+au VimEnter * highlight Conceal ctermfg=252 ctermbg=233 guifg=#F8F8F2 guibg=#1B1D1E
 set updatetime=200
 
 "================================ 换行相关 ===============================
@@ -162,21 +164,21 @@ nnoremap <leader>Q :qa<cr>
 " zE 删除所有折叠
 
 "================================ 窗口操作 ===============================
-" 1. <leader>+空格 切换全屏和小屏
-"    For GVim on windows.
-if has("win32") && has("gui_running")
-    nnoremap <leader><space> :call ToggleFullScreen()<cr>
-endif
-
-let g:make_full_screen = 1
-    if has("win32") && has("gui_running") && g:make_full_screen == 1
-    au VimEnter * call FullScreen()
-endif
-
-" 2. Bwin/Swin转换屏幕显示内容（也会改变Gvim窗口大小）
-" 注意 Bwin 会打开 NERDTree 和 Tagbar
-command! Bwin call BigWindow()
-command! Swin call SmallWindow()
+" " 1. <leader>+空格 切换全屏和小屏
+" "    For GVim on windows.
+" if has("win32") && has("gui_running")
+"     nnoremap <leader><space> :call ToggleFullScreen()<cr>
+" endif
+"
+" let g:make_full_screen = 1
+"     if has("win32") && has("gui_running") && g:make_full_screen == 1
+"     au VimEnter * call FullScreen()
+" endif
+"
+" " 2. Bwin/Swin转换屏幕显示内容（也会改变Gvim窗口大小）
+" " 注意 Bwin 会打开 NERDTree 和 Tagbar
+" command! Bwin call BigWindow()
+" command! Swin call SmallWindow()
 
 " 3. 打开终端
 ""根据窗口宽高比自动在垂直/水平窗口打开终端
@@ -195,13 +197,16 @@ nnoremap <silent><cr> :e .<cr>
 "================================ 其他操作 ===============================
 nnoremap <leader>H :vert h<space>
 
-inoremap ii <esc>
+""我把 CapsLock 改成了Esc 这个设置会使输入 i 的时候有一定延迟
+" inoremap ii <esc>
 nnoremap Y y$
 
 noremap ; :
 
 nnoremap <leader>o mzo<esc>`z
 nnoremap <leader>O mzO<esc>`z
+
+" inoremap <M-BS> <Right><BS>
 
 
 "#########################################################################
@@ -271,7 +276,7 @@ vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 ""Clear highlight when <leader><cr> is pressed
-map <silent> <leader><cr> :noh<cr>
+nnoremap <silent> <esc> :nohl<cr>
 
 ""When you press <leader>r you can search and replace the selected text
 "vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
@@ -283,8 +288,11 @@ map <silent> <leader><cr> :noh<cr>
 
 "============================ Moving around ==============================
 " fast moving
-noremap J 4j
-noremap K 4k
+noremap J 5j
+noremap K 5k
+
+au VimEnter * call SwitchMotionMod()
+nmap <silent> \\ :call SwitchMotionMod()<CR>
 
 " Remap VIM 0 to first non-blank character
 nnoremap 0 ^

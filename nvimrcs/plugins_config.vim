@@ -625,19 +625,19 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 " let g:airline#extensions#tabline#left_alt_sep = ''
 " let g:airline#extensions#tabline#right_sep = ''
 " let g:airline#extensions#tabline#right_alt_sep = ''
-let g:airline#extensions#tabline#left_sep = '┊'
-let g:airline#extensions#tabline#left_alt_sep = '┊'
-let g:airline#extensions#tabline#right_sep = '┊'
-let g:airline#extensions#tabline#right_alt_sep = '┊'
+let g:airline#extensions#tabline#left_sep = '┇'
+let g:airline#extensions#tabline#left_alt_sep = '┇'
+let g:airline#extensions#tabline#right_sep = '┇'
+let g:airline#extensions#tabline#right_alt_sep = '┇'
 let g:airline#extensions#tabline#formatter = 'default'  "formater
 " let g:airline_left_sep = ''
 " let g:airline_left_alt_sep = ''
 " let g:airline_right_sep = ''
 " let g:airline_right_alt_sep = ''
-let g:airline_left_sep = '┊'
-let g:airline_left_alt_sep = '┊'
-let g:airline_right_sep = '┊'
-let g:airline_right_alt_sep = '┊'
+let g:airline_left_sep = '┇'
+let g:airline_left_alt_sep = '┇'
+let g:airline_right_sep = '┇'
+let g:airline_right_alt_sep = '┇'
 ""配置其他字符
 let g:airline_symbols.crypt = '🔒'
 let g:airline_symbols.linenr = '☰'
@@ -687,7 +687,8 @@ Plug 'guns/xterm-color-table.vim'
 Plug 'sheerun/vim-polyglot'
 ""根据语言选择是否开启，如对css禁用此插件
 " let g:polyglot_disabled = ['css']
-let g:polyglot_disabled = ['cpp']
+""cpp 的额外的语法插件与此插件不冲突，markdown 高亮和 vim-markdown 提供的高亮几乎一样
+let g:polyglot_disabled = ['markdown']
 
 "=========================================================================
 ""Description: c++ 语法高亮增强包
@@ -1603,29 +1604,61 @@ au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
 Plug 'tpope/vim-repeat'
 
 "=========================================================================
-""Description: Auto Make Pairs
-Plug 'jiangmiao/auto-pairs'
-" 开启/禁用 auto-pairs
-let g:AutoPairsShortcutToggle=''
-" 将一对 pair 后面的内容移到 pair 中（在 pair 内按下快捷键）
-let g:AutoPairsShortcutFastWrap='<M-e>'
-let g:AutoPairsShortcutJump=''
-let g:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '"':'"', '`':'`'}
-au FileType html let b:AutoPairs['<'] = '>'
-au FileType vim let b:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '`':'`', '<':'>'}
-" 使用 Backspace 删除时会删除 pair 中的另一个
-let g:AutoPairsMapBs=1
-" 让使用 <C-h> 删除时不会删除 pair 中的另一个
-let g:AutoPairsMapCh=0
-""在pairs间输入空格
-let g:AutoPairsMapSpace=1
-" 将回车键映射为插入空行的操作
-let g:AutoPairsMapCR=1
-
-""FlyMode, 输入 ")", "}", "]" 总是会跳转到后方的 ")", "}", "]" 后面
-let g:AutoPairsFlyMode=0
-""纠正错误跳转
-let g:AutoPairsShortcutBackInsert='<M-b>'
+""Description: Auto make pairs.
+Plug 'Raimondi/delimitMate'
+""Set to any value to disable this pluging globally or in specific buffers.
+" let g:loaded_delimitMate = 1
+" au FileType ... let b:g:loaded_delimitMate = 1
+""This options turns delimitMate off for the listed file types.
+" let delimitMate_excluded_ft = "mail,txt"
+""Add a closing delimiter automagically.
+let g:delimitMate_autoclose = 1
+""Which characters should be considered as matching pairs.
+let g:delimitMate_matchpairs = "(:),[:],{:},<:>"
+au FileType c,cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
+""DelimitMate 提供了宽字符支持。
+let g:delimitMate_matchpairs = g:delimitMate_matchpairs.",（:）,《:》,【:】"
+""Which characters should be considered as quotes.
+let g:delimitMate_quotes = "\" ' ` "
+au FileType markdown let g:delimitMate_quotes = g:delimitMate_quotes."* "
+""三个 quotes，如 python 中的多行注释/多行字符串、MarkDown 中的代码块。
+au Filetype python let delimitMate_nesting_quotes = ['"']
+au Filetype markdown let delimitMate_nesting_quotes = ['`']
+""Turns on/off expansion of <CR> and <Space>
+let g:delimitMate_expand_cr = 1           " 0/1/2 set to 2 to force cr-expansion.
+let g:delimitMate_expand_space = 1
+""The expansion of space and cr will also be applied to quotes.
+let g:delimitMate_expand_inside_quotes = 1
+""This option turns on/off the jumping over <CR> and <Space> expansions when inserting closing matchpairs.
+let g:delimitMate_jump_expansion = 1
+""Automatically insert a quote when the pattern matches or doesn't match if a ! presented at the beginning.
+""Use '\%#' to match (matches with zero width) the position of the cursor.
+""          For expample, set to '\%#.hello'
+""       |hello   ->    "    ->    ""hello
+""       |world   ->    "    ->    "world
+let g:delimitMate_smart_quotes = '\%(\w\|[^[:punct:][:space:]]\|\%(\\\\\)*\\\)\%#\|\%#\%(\w\|[^[:space:][:punct:]]\)'
+""This regex is matched against the text to the right of cursor, if it's not empty and there is a match delimitMate will not autoclose the pair.
+""\! will be replaced by the character being inserted;
+""\# will be replaced by the closing pair.
+""          For expample, set to 'hello'
+""       |hello   ->    (    ->    (hell0
+""       |world   ->    (    ->    ()world
+let g:delimitMate_smart_matchpairs = '^\%(\w\|\!\|[£$]\|[^[:space:][:punct:]]\)'
+""See :h delimitMateBalance.
+let g:delimitMate_balance_matchpairs = 1
+""This options turns delimitMate off for the listed regions, see :h group-name for more info about what is a region.
+""You can use :Showhi to see group name of text under the cursor.
+" let delimitMate_excluded_regions = "Comment,String"
+""Auto insert eol marker.
+""0 -> never
+""1 -> when inserting any matchpair
+""2 -> when expanding car return in matchpair
+" let g:delimitMate_insert_eol_marker = 1
+" au FileType cpp let b:delimitMate_eol_marker = ";"
+imap <M-e>   <Plug>delimitMateJumpAny
+imap <M-S-e> <Plug>delimitMateJumpMany
+" inoremap <M-BS> <Right><BS>
+imap <M-BS>  <Plug>delimitMateS-BS
 
 "=========================================================================
 ""Description: Add Enddings Automatically
@@ -1850,6 +1883,19 @@ let g:vimtex_compiler_latexrun_engines = {
 " let g:vimtex_text_obj_enabled = 0
 " let g:vimtex_motion_enabled = 0
 " let maplocalleader=' '
+
+"=========================================================================
+""Description: 『盘古之白』中文排版自动规范化的 Vim 插件
+""在保存时自动进行如下规范
+" 中英文字符间增加一个半角空白。
+" 中文前后的半角标点转成全角标点。
+" 全角英文、数字转成半角字符。
+" 连续的句号自动转省略号。
+" 感叹号、问号最多允许连续重复 3 次。
+" 其他中文标点符号不允许重复出现。
+""设置保存时自动格式化
+Plug 'hotoo/pangu.vim'
+autocmd BufWritePre *.markdown,*.md,*.text,*.txt,*.wiki,*.cnx call PanGuSpacing()
 
 
 "#########################################################################
@@ -2485,6 +2531,32 @@ Plug 'MattesGroeger/vim-bookmarks'
 "=========================================================================
 ""Description: Vim plugin for insert mode completion of words in adjacent tmux panes
 " Plug 'wellle/tmux-complete.vim'
+
+"=========================================================================
+""Description: Auto Make Pairs
+""Note: Seems not being maintained any longer and does not works well with Ultisnips.
+" Plug 'jiangmiao/auto-pairs'
+" " 开启/禁用 auto-pairs
+" let g:AutoPairsShortcutToggle=''
+" " 将一对 pair 后面的内容移到 pair 中（在 pair 内按下快捷键）
+" let g:AutoPairsShortcutFastWrap='<M-e>'
+" let g:AutoPairsShortcutJump=''
+" let g:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '"':'"', '`':'`'}
+" au FileType html let b:AutoPairs['<'] = '>'
+" au FileType vim let b:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '`':'`', '<':'>'}
+" " 使用 Backspace 删除时会删除 pair 中的另一个
+" let g:AutoPairsMapBs=1
+" " 让使用 <C-h> 删除时不会删除 pair 中的另一个
+" let g:AutoPairsMapCh=0
+" ""在pairs间输入空格
+" let g:AutoPairsMapSpace=1
+" " 将回车键映射为插入空行的操作
+" let g:AutoPairsMapCR=1
+"
+" ""FlyMode, 输入 ")", "}", "]" 总是会跳转到后方的 ")", "}", "]" 后面
+" let g:AutoPairsFlyMode=0
+" ""纠正错误跳转
+" let g:AutoPairsShortcutBackInsert='<M-b>'
 
 
 call plug#end()

@@ -380,3 +380,22 @@ autocmd InsertLeave * call s:fcitx_2_english()
 
 "进入插入模式调用的函数
 autocmd InsertEnter * call s:fcitx_enter_insert_mode()
+
+
+"================================ 移动模式 ===============================
+function! g:SwitchMotionMod()
+    if !exists("g:motionMod") || g:motionMod == 1
+        noremap <S-M-j> 5<C-e>
+        noremap <S-M-k> 5<C-y>
+        if exists('g:motionMod')
+            echo 'Changed to Free mod.'
+        endif
+        let g:motionMod = 0
+    elseif g:motionMod == 0
+        echo 'Changed to Fixed mod.'
+        noremap <S-M-j> 5jzz
+        noremap <S-M-k> 5kzz
+        let g:motionMod = 1
+    endif
+endfunction
+

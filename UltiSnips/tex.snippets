@@ -24,7 +24,7 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
-# 定义一个函数，将 context "math()" 添加到 snippet 上面，使其只能在公式块中生效
+# 定义一个函数，将 # context "math()" 添加到 snippet 上面，使其只能在公式块中生效
 global !p
 texMathZones = ['texMathZone'+x for x in ['A', 'AS', 'B', 'BS', 'C',
 'CS', 'D', 'DS', 'E', 'ES', 'F', 'FS', 'G', 'GS', 'H', 'HS', 'I', 'IS',
@@ -73,7 +73,6 @@ $0
 endsnippet
 
 # Snippets for math
-context "math()"
 snippet mk "Math" wA
 $${1}$`!p if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
 	snip.rv = ' '
@@ -81,7 +80,7 @@ else:
 	snip.rv = ''`$2
 endsnippet
 
-context "math()"
+# context "math()"
 snippet ek "Math" wA
 $${1}$`!p if t[0] and t[0][-1] not in [',', '.', '?', '-', ' ']:
 	snip.rv = ' '
@@ -89,55 +88,54 @@ else:
 	snip.rv = ''`$2
 endsnippet
 
-context "math()"
 snippet dm "Math" wA
 \[
 $1
 .\] $0
 endsnippet
 
-context "math()"
+# context "math()"
 snippet '([A-Za-z])(\d)' "auto subscript" wrA
 `!p snip.rv = match.group(1)`_`!p snip.rv = match.group(2)`
 endsnippet
 
-context "math()"
+# context "math()"
 snippet '([A-Za-z])_(\d\d)' "auto subscript2" wrA
 `!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
 endsnippet
 
-context "math()"
+# context "math()"
 snippet sr "^2" iA
 ^2
 endsnippet
 
-context "math()"
+# context "math()"
 snippet cb "^3" iA
 ^3
 endsnippet
 
-context "math()"
+# context "math()"
 snippet compl "complement" iA
 ^{c}
 endsnippet
 
-context "math()"
+# context "math()"
 snippet td "superscript" iA
 ^{$1}$0
 endsnippet
 
 # 分数
-context "math()"
+# context "math()"
 snippet // "Fraction" iA
 \\frac{$1}{$2}$0
 endsnippet
 
-context "math()"
+# context "math()"
 snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wrA
 \\frac{`!p snip.rv = match.group(1)`}{$1}$0
 endsnippet
 
-context "math()"
+# context "math()"
 priority 1000
 snippet '^.*\)/' "() Fraction" wrA
 `!p
@@ -154,7 +152,7 @@ snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
 endsnippet
 
 # 你可以先用它选择一些文本，然后按下 Tab，打出/，然后再按下 Tab。
-context "math()"
+# context "math()"
 snippet / "Fraction" iA
 \\frac{${VISUAL}}{$1}$0
 endsnippet
@@ -195,33 +193,33 @@ snip.rv = subprocess.check_output(['wolframscript', '-code', code])
 endsnippet
 
 # 后缀
-context "math()"
+# context "math()"
 priority 10
 snippet "bar" "bar" riA
 \overline{$1}$0
 endsnippet
 
-context "math()"
+# context "math()"
 priority 100
 snippet "([a-zA-Z])bar" "bar" riA
 \overline{`!p snip.rv=match.group(1)`}
 endsnippet
 
 
-context "math()"
+# context "math()"
 priority 10
 snippet "hat" "hat" riA
 \hat{$1}$0
 endsnippet
 
-context "math()"
+# context "math()"
 priority 100
 snippet "([a-zA-Z])hat" "hat" riA
 \hat{`!p snip.rv=match.group(1)`}
 endsnippet
 
 
-context "math()"
+# context "math()"
 snippet "(\\?\w+)(,\.|\.,)" "Vector postfix" riA
 \vec{`!p snip.rv=match.group(1)`}
 endsnippet
