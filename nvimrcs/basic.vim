@@ -5,10 +5,10 @@
 "¦                                                                       ¦
 "¦ Sections:                                                             ¦
 "¦                 -> Some Build-in Settings of Vim                      ¦
-"¦                 -> Keys and Mappings                                  ¦
 "¦                 -> Color, Highlighting and Font                       ¦
 "¦                 -> Search and Replace                                 ¦
 "¦                 -> Moving around, Tabs, Windows and Buffers           ¦
+"¦                 -> Other Keys and Mappings                            ¦
 "¦                 -> Status Line and CmdLine                            ¦
 "¦                 -> Helper functions                                   ¦
 "¦                 -> Vim Configuration Files                            ¦
@@ -53,7 +53,6 @@ set conceallevel=2                  " 完全隐藏 conceal 字符, markdown/tex/
 au VimEnter * highlight Conceal ctermfg=252 ctermbg=233 guifg=#F8F8F2 guibg=#1B1D1E
 set updatetime=200
 
-"================================ 换行相关 ===============================
 ""设置自动折行时建议设置
 set wrap                            " 自动折行
 set showbreak=➜\                    " 或者 let &showbreak = '➜ '
@@ -78,16 +77,13 @@ set smarttab
 set shiftwidth=4
 set tabstop=4
 
-"================== 使vim的默认"剪切板"与系统剪切板同步 ==================
-"                Vim 需要 +xterm_clipboard(vim --version以查看)
+""Vim 需要 +xterm_clipboard(vim --version以查看)
 " au VimEnter * set clipboard=unnamedplus
 set clipboard=unnamedplus
 
-"===================== 硬盘中的文件被修改时，自动读取 ====================
 set autoread
 au FocusGained,BufEnter * checktime
 
-"======================== Enable filetype plugins ========================
 filetype plugin on
 filetype indent on
 
@@ -130,83 +126,6 @@ set encoding=utf-8
 ""Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
-
-
-"#########################################################################
-"############################\ Keys and Mappings /########################
-"#########################################################################
-
-"============================ 先导键 <leader> ============================
-let g:mapleader = "\<space>"
-
-"============================== 保存和退出 ===============================
-" Fast saving & quitting
-nnoremap <silent> <leader>w :w<cr>
-nnoremap <silent> <leader>W :wa<cr>
-nnoremap <leader>q :q<cr>
-nnoremap <leader>Q :qa<cr>
-
-" :W sudo saves the file(use suda.vim instead)
-" command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
-
-"================== 折叠命令syntax/indent模式 (vim 自带) =================
-" zc 折叠
-" zC 对所在范围内所有嵌套的折叠点进行折叠
-" zo 展开折叠
-" zO 对所在范围内所有嵌套的折叠点展开
-" [z 到当前打开的折叠的开始处。
-" ]z 到当前打开的折叠的末尾处。
-" zj 向下移动到达下一个折叠的开始处。关闭的折叠也被计入。
-" zk 向上移动到前一折叠的结束处。关闭的折叠也被计入。
-" zR 打开全部折叠
-" zM 关闭所有折叠
-" zd 删除光标所在的折叠
-" zE 删除所有折叠
-
-"================================ 窗口操作 ===============================
-" " 1. <leader>+空格 切换全屏和小屏
-" "    For GVim on windows.
-" if has("win32") && has("gui_running")
-"     nnoremap <leader><space> :call ToggleFullScreen()<cr>
-" endif
-"
-" let g:make_full_screen = 1
-"     if has("win32") && has("gui_running") && g:make_full_screen == 1
-"     au VimEnter * call FullScreen()
-" endif
-"
-" " 2. Bwin/Swin转换屏幕显示内容（也会改变Gvim窗口大小）
-" " 注意 Bwin 会打开 NERDTree 和 Tagbar
-" command! Bwin call BigWindow()
-" command! Swin call SmallWindow()
-
-" 3. 打开终端
-""根据窗口宽高比自动在垂直/水平窗口打开终端
-""你可以在functions.vim找到该函数并调整参数
-nnoremap <leader>ter :call OpenTerminalSmartly()<cr>
-""在neovim中进入终端时自动进入终端模式(C-\+C+N退出)
-" if has('nvim')
-"     autocmd TermOpen * startinsert
-" endif
-"" Alt+q 返回终端normal模式
-tnoremap <M-q> <C-\><C-n>
-
-""4. Browse files
-nnoremap <silent><cr> :e .<cr>
-
-"================================ 其他操作 ===============================
-nnoremap <leader>H :vert h<space>
-
-""我把 CapsLock 改成了Esc 这个设置会使输入 i 的时候有一定延迟
-" inoremap ii <esc>
-nnoremap Y y$
-
-noremap ; :
-
-nnoremap <leader>o mzo<esc>`z
-nnoremap <leader>O mzO<esc>`z
-
-" inoremap <M-BS> <Right><BS>
 
 
 "#########################################################################
@@ -287,14 +206,19 @@ nnoremap <silent> <esc> :nohl<cr>
 "#########################################################################
 
 "============================ Moving around ==============================
-" fast moving
+""Fast moving
 noremap J 5j
 noremap K 5k
 
+""Moving more convenient when lines wrap
+noremap j gj
+noremap k gk
+
+""Moving using <M-S-j/k>
 au VimEnter * call SwitchMotionMod()
 nmap <silent> \\ :call SwitchMotionMod()<CR>
 
-" Remap VIM 0 to first non-blank character
+""Remap VIM 0 to first non-blank character
 nnoremap 0 ^
 
 ""Move a line of text using ALT+[jk] or Command+[jk]
@@ -310,6 +234,14 @@ if has("mac") || has("macunix")
     vmap <D-j> <M-j>
     vmap <D-k> <M-k>
 endif
+
+""For command mod
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-h> <Left>
+cnoremap <C-l> <Right>
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
 
 "============================ windows related ============================
 ""Moving around windows.
@@ -385,6 +317,99 @@ au TabLeave * let g:lasttab = tabpagenr()
 ""Opens a new tab with the current buffer's path
 ""Super useful when editing files in the same directory
 nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
+
+
+"#########################################################################
+"############################\ Keys and Mappings /########################
+"#########################################################################
+
+"---------------------------------------------------------------------------"
+" Commands \ Modes | Normal | Insert | Command | Visual | Select | Operator |
+"------------------|--------|--------|---------|--------|--------|----------|
+" map  / noremap   |    @   |   -    |    -    |   @    |   @    |    @     |
+" nmap / nnoremap  |    @   |   -    |    -    |   -    |   -    |    -     |
+" vmap / vnoremap  |    -   |   -    |    -    |   @    |   @    |    -     |
+" omap / onoremap  |    -   |   -    |    -    |   -    |   -    |    @     |
+" xmap / xnormap   |    -   |   -    |    -    |   @    |   -    |    -     |
+" smap / snoremap  |    -   |   -    |    -    |   -    |   @    |    -     |
+" map! / noremap!  |    -   |   @    |    @    |   -    |   -    |    -     |
+" imap / inoremap  |    -   |   @    |    -    |   -    |   -    |    -     |
+" cmap / cnoremap  |    -   |   -    |    @    |   -    |   -    |    -     |
+"---------------------------------------------------------------------------"
+
+"============================ 先导键 <leader> ============================
+let g:mapleader = "\<space>"
+
+"============================== 保存和退出 ===============================
+" Fast saving & quitting
+nnoremap <silent> <leader>w :w<cr>
+nnoremap <silent> <leader>W :wa<cr>
+nnoremap <leader>q :q<cr>
+nnoremap <leader>Q :qa<cr>
+
+" :W sudo saves the file(use suda.vim instead)
+" command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+
+"================== 折叠命令syntax/indent模式 (vim 自带) =================
+" zc 折叠
+" zC 对所在范围内所有嵌套的折叠点进行折叠
+" zo 展开折叠
+" zO 对所在范围内所有嵌套的折叠点展开
+" [z 到当前打开的折叠的开始处。
+" ]z 到当前打开的折叠的末尾处。
+" zj 向下移动到达下一个折叠的开始处。关闭的折叠也被计入。
+" zk 向上移动到前一折叠的结束处。关闭的折叠也被计入。
+" zR 打开全部折叠
+" zM 关闭所有折叠
+" zd 删除光标所在的折叠
+" zE 删除所有折叠
+
+"================================ 窗口操作 ===============================
+" " 1. <leader>+空格 切换全屏和小屏
+" "    For GVim on windows.
+" if has("win32") && has("gui_running")
+"     nnoremap <leader><space> :call ToggleFullScreen()<cr>
+" endif
+"
+" let g:make_full_screen = 1
+"     if has("win32") && has("gui_running") && g:make_full_screen == 1
+"     au VimEnter * call FullScreen()
+" endif
+"
+" " 2. Bwin/Swin转换屏幕显示内容（也会改变Gvim窗口大小）
+" " 注意 Bwin 会打开 NERDTree 和 Tagbar
+" command! Bwin call BigWindow()
+" command! Swin call SmallWindow()
+
+" 3. 打开终端
+""根据窗口宽高比自动在垂直/水平窗口打开终端
+""你可以在functions.vim找到该函数并调整参数
+nnoremap <leader>ter :call OpenTerminalSmartly()<cr>
+""在neovim中进入终端时自动进入终端模式(C-\+C+N退出)
+" if has('nvim')
+"     autocmd TermOpen * startinsert
+" endif
+"" Alt+q 返回终端normal模式
+tnoremap <M-q> <C-\><C-n>
+
+""4. Browse files
+nnoremap <silent><cr> :e .<cr>
+
+"================================ 其他操作 ===============================
+nnoremap <leader>H :vert h<space>
+
+""我把 CapsLock 改成了Esc 这个设置会使输入 i 的时候有一定延迟
+" inoremap ii <esc>
+nnoremap Y y$
+
+noremap ; :
+noremap : ;
+
+nnoremap <leader>o mzo<esc>`z
+nnoremap <leader>O mzO<esc>`z
+
+imap <M-BS> <Del>
+
 
 "#########################################################################
 "######################\ Status Line and CmdLine /########################

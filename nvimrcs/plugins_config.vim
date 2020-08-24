@@ -52,6 +52,9 @@ else
     Plug 'roxma/vim-hug-neovim-rpc'
 endif
 "=========================================================================
+""Description: Land on window you chose like tmux's 'display-pane'
+Plug 't9md/vim-choosewin'
+"=========================================================================
 ""Description: Icons and git status for defx.
 ""Dependencies: Shougo/defx.nvim
 Plug 'kristijanhusak/defx-icons'
@@ -621,7 +624,7 @@ let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
 "============================\ defx.nvim /=============================
 ""Options available: :h defx-options
-nmap <silent> <leader>df :Defx<CR>
+nnoremap <silent> <leader>df :Defx<CR>
 " noremap <silent> <leader>df :call g:Defx_toggle_with_my_options()<cr>
 " function g:Defx_toggle_with_my_options()
 "     " if &filetype != 'startify'
@@ -666,7 +669,7 @@ call defx#custom#column('mark', {
 
 ""Customize options
 call defx#custom#option('_', {
-            \ 'columns': 'mark:git:indent:icons:icon:filename:type:size:time',
+            \ 'columns': 'mark:git:icon:icons:filename:type:size:time',
             \ 'sort': 'filename',
             \ 'split': 'vertical', 'winwidth': 30, 'direction': 'topleft',
             \ 'buffer_name': 'Defx', 'root_marker': '<Root>: ',
@@ -676,13 +679,22 @@ call defx#custom#option('_', {
             \ })
 " endfunction
 
+function! DefxChoosewin(context) abort
+    " let l:winnrs = find_winnrs() " Modified for slide
+    let l:winnrs = range(1, winnr('$'))
+    let l:opts = {'auto_choose': 1, 'hook_enable': 0}
+    for filename in a:context.targets
+    call choosewin#start(l:winnrs, l:opts)
+    execute 'edit' filename
+    endfor
+endfunction
+
 ""Define mappings
 autocmd FileType defx call s:defx_my_mappings()
 function! s:defx_my_mappings() abort
     nnoremap ; :
     ""Actions available: :h defx-actions
     nnoremap <silent><buffer><expr> <CR>    defx#do_action('open')
-    "nnoremap <silent><buffer><expr> l       defx#do_action('open')
     nnoremap <silent><buffer><expr> c       defx#do_action('copy')
     nnoremap <silent><buffer><expr> x       defx#do_action('move')
     nnoremap <silent><buffer><expr> p       defx#do_action('paste')
@@ -711,6 +723,7 @@ function! s:defx_my_mappings() abort
     nnoremap <silent><buffer><expr> <C-l>   defx#do_action('redraw')
     nnoremap <silent><buffer><expr> <C-g>   defx#do_action('print')
     nnoremap <silent><buffer><expr> cd      defx#do_action('change_vim_cwd')
+    nnoremap <silent><buffer><expr> w       defx#do_action('call', 'DefxChoosewin')
 endfunction
 
 
@@ -1625,8 +1638,8 @@ let g:delimitMate_balance_matchpairs = 1
 " au FileType cpp let b:delimitMate_eol_marker = ";"
 imap <M-e>   <Plug>delimitMateJumpAny
 imap <M-S-e> <Plug>delimitMateJumpMany
-" inoremap <M-BS> <Right><BS>
-imap <M-BS>  <Plug>delimitMateS-BS
+" imap <M-BS>  <Plug>delimitMateS-BS
+""In basic.vim: imap <M-BS> <Del>
 
 
 "#########################################################################
