@@ -99,7 +99,7 @@ Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['c', 'cpp']}
 Plug 'fatih/vim-go' , { 'for': ['go', 'vim-plug'], 'tag': '*' }
 "=========================================================================
 ""Description: Schemes for vim
-""Recommend: molokai
+""Recommend: molokai iceberg solarized8_dark solarized8_light
 Plug 'flazz/vim-colorschemes'
 "=========================================================================
 ""Description: Color other uses of the current word under the cursor.
@@ -832,19 +832,19 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 " let g:airline#extensions#tabline#left_alt_sep = ''
 " let g:airline#extensions#tabline#right_sep = ''
 " let g:airline#extensions#tabline#right_alt_sep = ''
-let g:airline#extensions#tabline#left_sep = '┇'
-let g:airline#extensions#tabline#left_alt_sep = '┇'
-let g:airline#extensions#tabline#right_sep = '┇'
-let g:airline#extensions#tabline#right_alt_sep = '┇'
+let g:airline#extensions#tabline#left_sep = '┆'
+let g:airline#extensions#tabline#left_alt_sep = '┆'
+let g:airline#extensions#tabline#right_sep = '┆'
+let g:airline#extensions#tabline#right_alt_sep = '┆'
 let g:airline#extensions#tabline#formatter = 'default'  "formater
 " let g:airline_left_sep = ''
 " let g:airline_left_alt_sep = ''
 " let g:airline_right_sep = ''
 " let g:airline_right_alt_sep = ''
-let g:airline_left_sep = '┇'
-let g:airline_left_alt_sep = '┇'
-let g:airline_right_sep = '┇'
-let g:airline_right_alt_sep = '┇'
+let g:airline_left_sep = '┆'
+let g:airline_left_alt_sep = '┆'
+let g:airline_right_sep = '┆'
+let g:airline_right_alt_sep = '┆'
 ""配置其他字符
 let g:airline_symbols.crypt = '🔒'
 let g:airline_symbols.linenr = '☰'
@@ -861,14 +861,14 @@ let g:airline_symbols.spell = 'Ꞩ'
 let g:airline_symbols.notexists = 'Ɇ'
 let g:airline_symbols.whitespace = 'Ξ'
 
-""推荐：cool, airlineish
+""推荐：cool, airlineish, solarized
 ""是否使用随机airline主题(开发中...)
-if has('nvim')
-    let g:airline_theme = 'airlineish'
-    let g:airline_random_theme = 0
-else
-    let g:airline_random_theme = 1
-endif
+" if has('nvim')
+"     let g:airline_theme = 'solarized'
+"     let g:airline_random_theme = 0
+" else
+"     let g:airline_random_theme = 1
+" endif
 
 
 "#########################################################################
@@ -1459,34 +1459,34 @@ let g:EasyMotion_smartcase = 1
 ""whether to pre-populate the given register with the text to be replaced.
 ""In this way, you can use <C-r><reg> to populate the prompt manually.
 let g:subversiveCurrentTextRegister = 1
-nnoremap s <plug>(SubversiveSubstitute)
-xnoremap s <plug>(SubversiveSubstitute)
-xnoremap p <plug>(SubversiveSubstitute)
-xnoremap P <plug>(SubversiveSubstitute)
-nnoremap ss <plug>(SubversiveSubstituteLine)
-nnoremap S <plug>(SubversiveSubstituteToEndOfLine)
-nnoremap <leader>s <plug>(SubversiveSubstituteRange)
-xnoremap <leader>s <plug>(SubversiveSubstituteRange)
-nnoremap <leader>ss <plug>(SubversiveSubstituteWordRange)
-" nnoremap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
-" xnoremap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
-" nnoremap <leader>ss <plug>(SubversiveSubstituteWordRangeNoPrompt)
-nnoremap <leader>cr <plug>(SubversiveSubstituteRangeConfirm)
-xnoremap <leader>cr <plug>(SubversiveSubstituteRangeConfirm)
-nnoremap <leader>crr <plug>(SubversiveSubstituteWordRangeConfirm)
+nmap s <plug>(SubversiveSubstitute)
+xmap s <plug>(SubversiveSubstitute)
+xmap p <plug>(SubversiveSubstitute)
+xmap P <plug>(SubversiveSubstitute)
+nmap ss <plug>(SubversiveSubstituteLine)
+nmap S <plug>(SubversiveSubstituteToEndOfLine)
+nmap <leader>s <plug>(SubversiveSubstituteRange)
+xmap <leader>s <plug>(SubversiveSubstituteRange)
+nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
+" nmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
+" xmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
+" nmap <leader>ss <plug>(SubversiveSubstituteWordRangeNoPrompt)
+nmap <leader>cr <plug>(SubversiveSubstituteRangeConfirm)
+xmap <leader>cr <plug>(SubversiveSubstituteRangeConfirm)
+nmap <leader>crr <plug>(SubversiveSubstituteWordRangeConfirm)
 ""Behave the same as '<leader>s' except that it will perform
 "" an abolish(tpope/vim-abolish) 'subvert' instead of using vim's built in substitute command.
-nnoremap <leader><leader>s <plug>(SubversiveSubvertRange)
-xnoremap <leader><leader>s <plug>(SubversiveSubvertRange)
-nnoremap <leader><leader>ss <plug>(SubversiveSubvertWordRange)
-" nnoremap <leader><leader>s <plug>(SubversiveSubvertRangeNoPrompt)
-" xnoremap <leader><leader>s <plug>(SubversiveSubvertRangeNoPrompt)
-" nnoremap <leader><leader>ss <plug>(SubversiveSubvertWordRangeNoPrompt)
+nmap <leader><leader>s <plug>(SubversiveSubvertRange)
+xmap <leader><leader>s <plug>(SubversiveSubvertRange)
+nmap <leader><leader>ss <plug>(SubversiveSubvertWordRange)
+" nmap <leader><leader>s <plug>(SubversiveSubvertRangeNoPrompt)
+" xmap <leader><leader>s <plug>(SubversiveSubvertRangeNoPrompt)
+" nmap <leader><leader>ss <plug>(SubversiveSubvertWordRangeNoPrompt)
 ""Customize text objects.
 ""ie = inner entire buffer
-onoremap ie :exec "normal! ggVG"<cr>
+omap ie :exec "normal! ggVG"<cr>
 ""iv = current viewable text in the buffer
-onoremap iv :exec "normal! HVL"<cr>
+omap iv :exec "normal! HVL"<cr>
 
 ""Store abolishes in a specified file.
 " let g:abolish_save_file = "after/plugin/abolish.vim"
@@ -1932,7 +1932,7 @@ let g:indentLine_color_term = 239
 " Background (Vim, GVim)
 let g:indentLine_bgcolor_term = 202
 let g:indentLine_bgcolor_gui = '#FF5F00'
-let g:indentLine_char = '┇'
+let g:indentLine_char = '┆'
 "let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 au BufEnter python IndentLinesEnable
 au BufLeave python IndentLinesDisable

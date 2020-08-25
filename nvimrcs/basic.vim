@@ -53,7 +53,6 @@ set splitright                      " vs 会在右边打开分割窗口
 set completeopt=noinsert,menuone,noselect,preview " longest, 与 noinsert 不兼容
 set noequalalways                   " 防止 vim 关闭窗口时自动调整窗口大小
 set conceallevel=2                  " 完全隐藏 conceal 字符, markdown/tex/...
-au VimEnter * highlight Conceal ctermfg=252 ctermbg=233 guifg=#F8F8F2 guibg=#1B1D1E
 set updatetime=200
 " set nrformats=                      " 将所有数字视为十进制
 
@@ -136,12 +135,22 @@ set whichwrap+=<,>,h,l
 "######################\ Color, Highlighting and Font /###################
 "#########################################################################
 
-colorscheme molokai                 " 设置颜色主题
+""Recommend: molokai iceberg solarized8_dark solarized8_light
+""Day:   solarized8_light + solarized
+""Night: iceberg + tomorrow
+call g:ThemeByTime()
+
 if !has('nvim')
     set t_Co=256
 endif
 set termguicolors " enable true colors support
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+"================= Adjust conceal characters' highlighting ===============
+if !exists('g:hi_normal_backup')
+    call g:NormalColorBackup()
+endif
+execute('hi Conceal '.g:hi_normal_backup)
 
 "============================== 透明背景 =================================
 "      需要终端的支持，terminator/Tilix/konsole/yakuake 支持透明背景
@@ -344,9 +353,7 @@ nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 "============================== 保存和退出 ===============================
 " Fast saving & quitting
 nnoremap <silent> <leader>w :w<cr>
-nnoremap <silent> <leader>W :wa<cr>
 nnoremap <leader>q :q<cr>
-nnoremap <leader>Q :qa<cr>
 
 " :W sudo saves the file(use suda.vim instead)
 " command! W execute 'w !sudo tee % > /dev/null' <bar> edit!

@@ -45,7 +45,10 @@ let b:airline_themes_list=[
 "     source $HOME/.vim/plugins/vim-airline/autoload/airline.vim
 " endfunction
 
-function! AirlineRandomTheme()
+function! g:AirlineRandomTheme()
+    if !exists('g:airline_random_theme')
+        let g:airline_random_theme = 0
+    endif
     if g:airline_random_theme == 1
         let b:airline_theme_selected = GetRandomInt() % 114
         let g:airline_theme = b:airline_themes_list[b:airline_theme_selected]
@@ -53,10 +56,34 @@ function! AirlineRandomTheme()
         au VimEnter * echomsg 'airline theme '.b:airline_theme_selected.':'.b:airline_themes_list[b:airline_theme_selected].' selected.'
     endif
 endfunction
-au VimEnter * call AirlineRandomTheme()
+call g:AirlineRandomTheme()
 
+"============================= Switch themes =============================
+function! g:SwitchTheme(choice)
+    if a:choice == 0
+        colorscheme solarized8_light
+        let g:airline_theme = 'solarized'
+    elseif a:choice == 1
+        colorscheme iceberg
+        ""angr atomic
+        let g:airline_theme = 'tomorrow'
+    endif
+endfunction
 
-""======================= Open a terminal smartly ========================
+function! g:ThemeByTime(...)
+    if a:0 != 0
+        let l:time = a:000[0]
+    else
+        let l:time = system('date +%H')
+    endif
+    if 6 <= l:time && l:time < 18
+        call g:SwitchTheme(0)
+    else
+        call g:SwitchTheme(1)
+    endif
+endfunction
+
+"======================== Open a terminal smartly ========================
 function! g:OpenTerminalSmartly()
     if winwidth(0)*1.0/winheight(0) > 3
         vsplit | terminal
@@ -65,8 +92,17 @@ function! g:OpenTerminalSmartly()
     endif
 endfunction
 
+"========================= Backup Normal highlighting ====================
+""Do NOT call this function in this file.
+function! g:NormalColorBackup()
+    if !exists('g:hi_normal_backup')
+        let l:hi_normal = split(execute('silent hi Normal', ''))[2:-1]
+        let g:hi_normal_backup = join(l:hi_normal, ' ')
+    endif
+    return g:hi_normal_backup
+endfunction
 
-""============= Get the .backColor to set backgroud color ================
+"========================= Transparent background ========================
 ""pass 0 to use transparent background and store current bg color in a file.
 ""pass 1 to use color specified by the file.
 function! g:TransparentBg(option)
@@ -74,63 +110,32 @@ function! g:TransparentBg(option)
     execute a:option != 0 && a:option != 1 ?
                 \ 'echoerr "Argument error in function TransparentBg" | return -1'
                 \ : ''
-    ""备份文件路径
-    let l:hi_normal_backup_file = g:main_runtimepath.'.cache/backColor'
-    ""检查备份文件是否存在
-    if !glob(g:main_runtimepath.'.cache/backColor')
-        call system('touch '.l:hi_normal_backup_file)
+    ""检查备份变量是否存在
+    if !exists('g:hi_normal_backup')
+        call s:normalColorBackup()
     endif
     ""防止重复执行
-    if !exists('s:back_color')
-        let s:back_color = -1
+    if !exists('s:trans_back_color')
+        let s:trans_back_color = -1
     endif
     ""根据选项设置背景
     if a:option == 1
-        if s:back_color != 1
-            ""将Vim原来的背景色等信息存储到备份文件, 以便用户调用
-            let l:hi_normal_backup = split(execute('silent hi Normal', ''))
-            call remove(l:hi_normal_backup, 1)
-            call writefile(['hi '.join(l:hi_normal_backup, ' ')], l:hi_normal_backup_file)
-        endif
         ""设置透明背景
         hi Normal ctermbg=NONE guibg=NONE
-        let s:back_color = 1
-    elseif a:option ==0 && s:back_color != 0
-        execute(readfile(l:hi_normal_backup_file)[0])
-        let s:back_color =0
+        let s:trans_back_color = 1
+    elseif a:option ==0 && s:trans_back_color != 0
+        execute('hi Normal '.g:hi_normal_backup)
+        let s:trans_back_color =0
     endif
 endfunction
-" function! g:BackgroudColor(option)
-"     execute a:option != 1 && a:option != 2 ? "return" : ""
-"     if !file_readable(expand('$HOME/.config/nvim/.backColor'))
-"         call system('touch '.expand('$HOME/.config/nvim/.backColor'))
-"         call writefile([ '1' ], expand('$HOME/.config/nvim/.backColor'))
-"     endif
-"     if a:option == 2
-"         if readfile(expand('$HOME/.config/nvim/.backColor'))[0] == '1'
-"             hi Normal ctermfg=223 ctermbg=235 guifg=#ebdbb2 guibg=#2C323B
-"         else
-"             hi Normal ctermfg=223 ctermbg=None guifg=#ebdbb2 guibg=None
-"         endif
-"     else
-"         let l:currentColor = str2nr(readfile(expand('$HOME/.config/nvim/.backColor'))[0])
-"         execute l:currentColor == 1 ?
-"                     \ "hi Normal ctermfg=223 ctermbg=None guifg=#ebdbb2 guibg=None"
-"                     \ : l:currentColor == 0 ?
-"                     \ "hi Normal ctermfg=223 ctermbg=235 guifg=#ebdbb2 guibg=#2C323B" : ""
-"         call writefile(
-"                     \ l:currentColor == 0 ? [ '1' ] : [ '0' ],
-"                     \ expand('$HOME/.config/nvim/.backColor'))
-"         unlet l:currentColor
-"     endif
-" endfunction
 
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
+"================================== HasPaste =============================
+" function! HasPaste()
+"     if &paste
+"         return 'PASTE MODE  '
+"     endif
+"     return ''
+" endfunction
 
 "==== Delete trailing white space on save, useful for some filetypes =====
 fun! CleanExtraSpaces()
