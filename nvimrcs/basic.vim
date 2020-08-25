@@ -16,6 +16,9 @@
 "¦                                                                       ¦
 "+-----------------------------------------------------------------------+
 
+"============================ 先导键 <leader> ============================
+let g:mapleader = "\<space>"
+
 "#########################################################################
 "#####################\ Some Build-in Settings of Vim /###################
 "#########################################################################
@@ -223,10 +226,10 @@ nnoremap 0 ^
 
 ""Move a line of text using ALT+[jk] or Command+[jk]
 ""Thus you should not use mark 'z'
-nmap <M-k> mz:m-2<cr>`z
-nmap <M-j> mz:m+<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+nnoremap <M-k> mz:m-2<cr>`z
+nnoremap <M-j> mz:m+<cr>`z
+vnoremap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vnoremap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 if has("mac") || has("macunix")
     nmap <D-j> <M-j>
@@ -336,9 +339,6 @@ nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 " imap / inoremap  |    -   |   @    |    -    |   -    |   -    |    -     |
 " cmap / cnoremap  |    -   |   -    |    @    |   -    |   -    |    -     |
 "---------------------------------------------------------------------------"
-
-"============================ 先导键 <leader> ============================
-let g:mapleader = "\<space>"
 
 "============================== 保存和退出 ===============================
 " Fast saving & quitting

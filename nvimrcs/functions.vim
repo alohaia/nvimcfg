@@ -399,3 +399,50 @@ function! g:SwitchMotionMod()
     endif
 endfunction
 
+
+"============================ Download images from url ===================
+" ""g:UrlToLocal(url[, path[, name]])
+" ""g:mdip_random_imgname
+" ""g:mdip_imgformats(wrote in lowercase, also effective to uppercase)
+" function! g:IsImage(name)
+"     if !exists('g:mdip_imgformats')
+"         let g:mdip_imgformats = ['bmp','jpg','png','tif','gif','pcx','tga','exif','fpx','svg','psd','cdr','pcd','dxf','ufo','eps','ai','raw','wmf','webp']
+"     endif
+"
+"     " let l:mdip_imgformat_pattern = ''
+"     " for item in g:mdip_imgformats
+"     "     let l:mdip_imgformat_pattern = l:mdip_imgformat_pattern.'\|\(\.'.item.'\)'
+"     " endfor
+"     " let l:mdip_imgformat_pattern = l:mdip_imgformat_pattern[2:-1]
+"     let l:name_pieces = split(a:name)
+"     if len(l:name_pieces) == 1 ||
+" endfunction
+"
+" function! g:UrlToLocal(url, ...)
+"     if !exists('g:mdip_random_imgname')
+"         let g:mdip_random_imgname = 0
+"     endif
+"     let l:path = './'
+"     let l:name = ''
+"     if a:0 <= 1                 "name is not given
+"         let l:name = split(a:url, '/')[-1]
+"         if l:name[-4:-1] !~? l:mdip_imgformat_pattern || g:mdip_random_imgname == 1
+"             let l:name = system('date +%d_%m_%Y_%H%M%S')[0:-1].system('! echo $RANDOM')[0:-1].'.png'
+"         endif
+"     elseif a:0 == 2
+"         let l:path = a:000[0]
+"         if l:path[-1] != '/'
+"             let l:path = l:path.'/'
+"         endif
+"         let l:name = a:000[1]
+"         if l:name[-4:-1] !~? l:mdip_imgformat_pattern
+"
+"         endif
+"     else
+"         echoerr 'Wrong number of arguments.'
+"         return -1
+"     endif
+"     ""path ends with '/'
+"     call system('curl '.a:url.' -o '.l:path.' '.l:name)
+"     return 0
+" endfunction

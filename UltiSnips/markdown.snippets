@@ -24,6 +24,10 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
+snippet "# fn" "First heading" bA
+# `!v expand('%:t:r')`
+endsnippet
+
 snippet `` "Code block" bA
 \`\`\`$1
 ${2:${VISUAL:code}}

@@ -225,7 +225,11 @@ Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'm
 Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] }
 "=========================================================================
 ""Description: Bullet List
+""Dependencies: xclip(linux)
 Plug 'dkarter/bullets.vim'
+"=========================================================================
+""Description: Paste images in vim.
+Plug 'alohaia/md-img-paste.vim'
 "=========================================================================
 ""Description: Tex support for vim.
 ""Dependencies: Texlive-core
@@ -563,10 +567,10 @@ let g:undotree_RelativeTimestamp = 0
 let g:undotree_HelpLine = 0
 ""Custom mappings.
 function g:Undotree_CustomMap()
-    nmap <buffer> u <plug>UndotreeNextState
-    nmap <buffer> e <plug>UndotreePreviousState
-    nmap <buffer> U 5<plug>UndotreeNextState
-    nmap <buffer> E 5<plug>UndotreePreviousState
+    nnoremap <buffer> u <plug>UndotreeNextState
+    nnoremap <buffer> e <plug>UndotreePreviousState
+    nnoremap <buffer> U 5<plug>UndotreeNextState
+    nnoremap <buffer> E 5<plug>UndotreePreviousState
 endfunc
 
 "===============================\ rnvimr /================================
@@ -669,7 +673,7 @@ call defx#custom#column('mark', {
 
 ""Customize options
 call defx#custom#option('_', {
-            \ 'columns': 'mark:git:icon:icons:filename:type:size:time',
+            \ 'columns': 'mark:git:indent:icon:icons:filename:type:size:time',
             \ 'sort': 'filename',
             \ 'split': 'vertical', 'winwidth': 30, 'direction': 'topleft',
             \ 'buffer_name': 'Defx', 'root_marker': '<Root>: ',
@@ -692,7 +696,11 @@ endfunction
 ""Define mappings
 autocmd FileType defx call s:defx_my_mappings()
 function! s:defx_my_mappings() abort
-    nnoremap ; :
+    " nnoremap ; :
+    " nnoremap <C-l> <C-w>l
+    " nnoremap <C-h> <C-w>h
+    " nnoremap <C-j> <C-w>j
+    " nnoremap <C-k> <C-w>k
     ""Actions available: :h defx-actions
     nnoremap <silent><buffer><expr> <CR>    defx#do_action('open')
     nnoremap <silent><buffer><expr> c       defx#do_action('copy')
@@ -785,7 +793,7 @@ let g:vista_cursor_delay = 200
 "let g:vista_floating_delay=100
 let g:vista_update_on_text_changed = 1
 let g:vista_update_on_text_changed_delay = 2000
-let g:vista_close_on_jump = 1
+" let g:vista_close_on_jump = 1
 let g:vista_stay_on_open = 1
 ""Disable blink
 let g:vista_blink = [0, 0]
@@ -1384,54 +1392,54 @@ autocmd VimEnter * call after_object#enable([']', '['], '/', '=', ':', '-', '#',
 "===========================\ vim-easymotion /============================
 ""Cauce slow motion:
 ""~/.config/nvim/plugins/argtextobj.vim/plugin/argtextobj.vim L:296
-nmap \ <Plug>(easymotion-prefix)
-nmap \. <Plug>(easymotion-repeat)
+nnoremap \ <Plug>(easymotion-prefix)
+nnoremap \. <Plug>(easymotion-repeat)
 ""Default mappings
 let g:EasyMotion_do_mapping = 0
-nmap \f <Plug>(easymotion-f)
-nmap \F <Plug>(easymotion-F)
-nmap \t <Plug>(easymotion-t)
-nmap \T <Plug>(easymotion-T)
-nmap \w <Plug>(easymotion-w)
-nmap \W <Plug>(easymotion-W)
-nmap \b <Plug>(easymotion-b)
-nmap \B <Plug>(easymotion-B)
-nmap \e <Plug>(easymotion-e)
-nmap \E <Plug>(easymotion-E)
-nmap \g <Plug>(easymotion-ge)
-nmap \g <Plug>(easymotion-gE)
-nmap \j <Plug>(easymotion-j)
-nmap \k <Plug>(easymotion-k)
-nmap \n <Plug>(easymotion-n)
-nmap \N <Plug>(easymotion-N)
-nmap \s <Plug>(easymotion-s)
+nnoremap \f <Plug>(easymotion-f)
+nnoremap \F <Plug>(easymotion-F)
+nnoremap \t <Plug>(easymotion-t)
+nnoremap \T <Plug>(easymotion-T)
+nnoremap \w <Plug>(easymotion-w)
+nnoremap \W <Plug>(easymotion-W)
+nnoremap \b <Plug>(easymotion-b)
+nnoremap \B <Plug>(easymotion-B)
+nnoremap \e <Plug>(easymotion-e)
+nnoremap \E <Plug>(easymotion-E)
+nnoremap \g <Plug>(easymotion-ge)
+nnoremap \g <Plug>(easymotion-gE)
+nnoremap \j <Plug>(easymotion-j)
+nnoremap \k <Plug>(easymotion-k)
+nnoremap \n <Plug>(easymotion-n)
+nnoremap \N <Plug>(easymotion-N)
+nnoremap \s <Plug>(easymotion-s)
 ""Search for two characters.
-nmap \2s <Plug>(easymotion-s2)
-nmap \2f <Plug>(easymotion-f2)
-nmap \2F <Plug>(easymotion-F2)
-nmap \2t <Plug>(easymotion-t2)
-nmap \2T <Plug>(easymotion-T2)
-" nmap \\ <Plug>(easymotion-sl2)
-" nmap \\ <Plug>(easymotion-fl2)
-" nmap \\ <Plug>(easymotion-Fl2)
-" nmap \\ <Plug>(easymotion-tl2)
-" nmap \\ <Plug>(easymotion-Tl2)
+nnoremap \2s <Plug>(easymotion-s2)
+nnoremap \2f <Plug>(easymotion-f2)
+nnoremap \2F <Plug>(easymotion-F2)
+nnoremap \2t <Plug>(easymotion-t2)
+nnoremap \2T <Plug>(easymotion-T2)
+" nnoremap \\ <Plug>(easymotion-sl2)
+" nnoremap \\ <Plug>(easymotion-fl2)
+" nnoremap \\ <Plug>(easymotion-Fl2)
+" nnoremap \\ <Plug>(easymotion-tl2)
+" nnoremap \\ <Plug>(easymotion-Tl2)
 ""Search for any number of characters.
-nmap \ns <Plug>(easymotion-sn)
-nmap \nf <Plug>(easymotion-fn)
-nmap \nF <Plug>(easymotion-Fn)
-nmap \nt <Plug>(easymotion-tn)
-nmap \nT <Plug>(easymotion-Tn)
-" nmap \\ <Plug>(easymotion-sln)
-" nmap \\ <Plug>(easymotion-fln)
-" nmap \\ <Plug>(easymotion-Fln)
-" nmap \\ <Plug>(easymotion-tln)
-" nmap \\ <Plug>(easymotion-Tln)
+nnoremap \ns <Plug>(easymotion-sn)
+nnoremap \nf <Plug>(easymotion-fn)
+nnoremap \nF <Plug>(easymotion-Fn)
+nnoremap \nt <Plug>(easymotion-tn)
+nnoremap \nT <Plug>(easymotion-Tn)
+" nnoremap \\ <Plug>(easymotion-sln)
+" nnoremap \\ <Plug>(easymotion-fln)
+" nnoremap \\ <Plug>(easymotion-Fln)
+" nnoremap \\ <Plug>(easymotion-tln)
+" nnoremap \\ <Plug>(easymotion-Tln)
 ""Over Window Motion
-nmap \wf <Plug>(easymotion-overwin-f)
-nmap \wF <Plug>(easymotion-overwin-f2)
-nmap \wl <Plug>(easymotion-overwin-line)
-nmap \ww <Plug>(easymotion-overwin-w)
+nnoremap \wf <Plug>(easymotion-overwin-f)
+nnoremap \wF <Plug>(easymotion-overwin-f2)
+nnoremap \wl <Plug>(easymotion-overwin-line)
+nnoremap \ww <Plug>(easymotion-overwin-w)
 
 let g:EasyMotion_do_shade = 1
 let g:EasyMotion_smartcase = 1
@@ -1448,29 +1456,29 @@ let g:EasyMotion_smartcase = 1
 ""whether to pre-populate the given register with the text to be replaced.
 ""In this way, you can use <C-r><reg> to populate the prompt manually.
 let g:subversiveCurrentTextRegister = 1
-nmap s <plug>(SubversiveSubstitute)
-xmap s <plug>(SubversiveSubstitute)
-xmap p <plug>(SubversiveSubstitute)
-xmap P <plug>(SubversiveSubstitute)
-nmap ss <plug>(SubversiveSubstituteLine)
-nmap S <plug>(SubversiveSubstituteToEndOfLine)
-nmap <leader>s <plug>(SubversiveSubstituteRange)
-xmap <leader>s <plug>(SubversiveSubstituteRange)
-nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
-" nmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
-" xmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
-" nmap <leader>ss <plug>(SubversiveSubstituteWordRangeNoPrompt)
-nmap <leader>cr <plug>(SubversiveSubstituteRangeConfirm)
-xmap <leader>cr <plug>(SubversiveSubstituteRangeConfirm)
-nmap <leader>crr <plug>(SubversiveSubstituteWordRangeConfirm)
+nnoremap s <plug>(SubversiveSubstitute)
+xnoremap s <plug>(SubversiveSubstitute)
+xnoremap p <plug>(SubversiveSubstitute)
+xnoremap P <plug>(SubversiveSubstitute)
+nnoremap ss <plug>(SubversiveSubstituteLine)
+nnoremap S <plug>(SubversiveSubstituteToEndOfLine)
+nnoremap <leader>s <plug>(SubversiveSubstituteRange)
+xnoremap <leader>s <plug>(SubversiveSubstituteRange)
+nnoremap <leader>ss <plug>(SubversiveSubstituteWordRange)
+" nnoremap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
+" xnoremap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
+" nnoremap <leader>ss <plug>(SubversiveSubstituteWordRangeNoPrompt)
+nnoremap <leader>cr <plug>(SubversiveSubstituteRangeConfirm)
+xnoremap <leader>cr <plug>(SubversiveSubstituteRangeConfirm)
+nnoremap <leader>crr <plug>(SubversiveSubstituteWordRangeConfirm)
 ""Behave the same as '<leader>s' except that it will perform
 "" an abolish(tpope/vim-abolish) 'subvert' instead of using vim's built in substitute command.
-nmap <leader><leader>s <plug>(SubversiveSubvertRange)
-xmap <leader><leader>s <plug>(SubversiveSubvertRange)
-nmap <leader><leader>ss <plug>(SubversiveSubvertWordRange)
-" nmap <leader><leader>s <plug>(SubversiveSubvertRangeNoPrompt)
-" xmap <leader><leader>s <plug>(SubversiveSubvertRangeNoPrompt)
-" nmap <leader><leader>ss <plug>(SubversiveSubvertWordRangeNoPrompt)
+nnoremap <leader><leader>s <plug>(SubversiveSubvertRange)
+xnoremap <leader><leader>s <plug>(SubversiveSubvertRange)
+nnoremap <leader><leader>ss <plug>(SubversiveSubvertWordRange)
+" nnoremap <leader><leader>s <plug>(SubversiveSubvertRangeNoPrompt)
+" xnoremap <leader><leader>s <plug>(SubversiveSubvertRangeNoPrompt)
+" nnoremap <leader><leader>ss <plug>(SubversiveSubvertWordRangeNoPrompt)
 ""Customize text objects.
 ""ie = inner entire buffer
 onoremap ie :exec "normal! ggVG"<cr>
@@ -1582,7 +1590,7 @@ let g:VM_default_mappings = 1
 " nmap   <M-C-RightMouse>  <Plug>(VM-Mouse-Column)
 
 "============================\ vim-surround /=============================
-vmap Si S(i_<esc>f)
+vnoremap Si S(i_<esc>f)
 au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
 
 
@@ -1636,8 +1644,8 @@ let g:delimitMate_balance_matchpairs = 1
 ""2 -> when expanding car return in matchpair
 " let g:delimitMate_insert_eol_marker = 1
 " au FileType cpp let b:delimitMate_eol_marker = ";"
-imap <M-e>   <Plug>delimitMateJumpAny
-imap <M-S-e> <Plug>delimitMateJumpMany
+inoremap <M-e>   <Plug>delimitMateJumpAny
+inoremap <M-S-e> <Plug>delimitMateJumpMany
 " imap <M-BS>  <Plug>delimitMateS-BS
 ""In basic.vim: imap <M-BS> <Del>
 
@@ -1649,11 +1657,7 @@ imap <M-S-e> <Plug>delimitMateJumpMany
 "============================\ vim-markdown /=============================
 " "查看所有配置建议
 " :help vim-markdwon
-" [[ "跳转上一个标题
-" ]] "跳转下一个标题
-" ]c "跳转到当前标题
-" ]u "跳转到副标题
-" zr "打开下一级折叠
+" [[ "跳转上一个标题 ]] "跳转下一个标题 ]c "跳转到当前标题 ]u "跳转到副标题 zr "打开下一级折叠
 " zR "打开所有折叠
 " zm "折叠当前段落
 " zM "折叠所有段落
@@ -1783,6 +1787,16 @@ let g:bullets_enabled_file_types = [
             \ 'scratch',
             \ 'text'
             \]
+
+"============================\ md-img-paste /=============================
+autocmd FileType markdown nnoremap <buffer> <leader>i :call mdip#MarkdownClipboardImage()<cr>
+""Default name of markdown's alternative name of images.
+" let g:mdip_imgname = 'image'
+""Image dir path relative to expand('%:p:h'). And this will be expanded.
+let g:mdip_imgdir = '%:p:t:r'
+""Use prefix/postfix, for example: <filename>.asserts like typora.
+let g:mdip_imgdir_prefix = ''
+let g:mdip_imgdir_postfix = '.asserts'
 
 "===============================\ vimtex /================================
 let g:tex_flavor = 'latex'
@@ -1987,16 +2001,16 @@ let g:calendar_google_task = 1
 augroup calendar-mappings
     autocmd!
     " diamond cursor
-    autocmd FileType calendar nmap <buffer> u <Plug>(calendar_up)
-    autocmd FileType calendar nmap <buffer> n <Plug>(calendar_left)
-    autocmd FileType calendar nmap <buffer> e <Plug>(calendar_down)
-    autocmd FileType calendar nmap <buffer> i <Plug>(calendar_right)
-    autocmd FileType calendar nmap <buffer> <c-u> <Plug>(calendar_move_up)
-    autocmd FileType calendar nmap <buffer> <c-n> <Plug>(calendar_move_left)
-    autocmd FileType calendar nmap <buffer> <c-e> <Plug>(calendar_move_down)
-    autocmd FileType calendar nmap <buffer> <c-i> <Plug>(calendar_move_right)
-    autocmd FileType calendar nmap <buffer> k <Plug>(calendar_start_insert)
-    autocmd FileType calendar nmap <buffer> K <Plug>(calendar_start_insert_head)
+    autocmd FileType calendar nnoremap <buffer> u <Plug>(calendar_up)
+    autocmd FileType calendar nnoremap <buffer> n <Plug>(calendar_left)
+    autocmd FileType calendar nnoremap <buffer> e <Plug>(calendar_down)
+    autocmd FileType calendar nnoremap <buffer> i <Plug>(calendar_right)
+    autocmd FileType calendar nnoremap <buffer> <c-u> <Plug>(calendar_move_up)
+    autocmd FileType calendar nnoremap <buffer> <c-n> <Plug>(calendar_move_left)
+    autocmd FileType calendar nnoremap <buffer> <c-e> <Plug>(calendar_move_down)
+    autocmd FileType calendar nnoremap <buffer> <c-i> <Plug>(calendar_move_right)
+    autocmd FileType calendar nnoremap <buffer> k <Plug>(calendar_start_insert)
+    autocmd FileType calendar nnoremap <buffer> K <Plug>(calendar_start_insert_head)
     " unmap <C-n>, <C-p> for other plugins
     nnoremap ． .
     autocmd FileType calendar nunmap <buffer> <C-n>
@@ -2004,16 +2018,16 @@ augroup calendar-mappings
 augroup END
 
 "===========================\ vim-translator /============================
-nmap <silent> <leader>t :TranslateW<cr>
-vmap <silent> <leader>t :Translate<cr>
-map <silent> <leader>r :TranslateR<cr>
+nnoremap <silent> <leader>t :TranslateW<cr>
+vnoremap <silent> <leader>t :Translate<cr>
+noremap <silent> <leader>r :TranslateR<cr>
 " let g:translator_target_lang = 'zh'
 " let g:translator_source_lang = 'auto'
 " let g:translator_default_engine = [...]
-" let g:translator_proxy_url = ''
-let g:translator_history_enable = v:true
+" let g:translator_proxy_url = 'socks5://127.0.0.1:1080'
+let g:translator_history_enable = 1
 let g:translator_window_type = 'popup'
-" let g:translator_window_max_width = 0.6
+let g:translator_window_max_width = 0.6*&columns
 " let g:translator_window_max_height = 0.6
 " let g:translator_window_borderchars = ['─','│','─','│','┌','┐','┘','└']
 
