@@ -1,0 +1,67 @@
+# A valid snippet should starts with:
+#
+#		snippet trigger_word [ "description" [ options ] ]
+#
+# and end with:
+#
+#		endsnippet
+#
+# Snippet options:
+#
+#		b - Beginning of line.
+#		i - In-word expansion.
+#		w - Word boundary.
+#		r - Regular expression
+#		e - Custom context snippet
+#		A - Snippet will be triggered automatically, when condition matches.
+#
+# Basic example:
+#
+#		snippet emitter "emitter properties" b
+#		private readonly ${1} = new Emitter<$2>()
+#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#		endsnippet
+#
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+
+# main function.
+snippet main "main() function" wi
+main (int ${1:argc}, char** ${2:aegv}) {
+	${3://Do something here.}
+}$0
+endsnippet
+
+snippet cout "std::cout" w
+std::cout << "${1:/* Something here */}" << std::endl;$0
+endsnippet
+
+snippet enum "enum" bw
+enum ${1:class }${2:name} : ${3:int} {
+	${4://Enumerations here.}
+};$0
+endsnippet
+
+snippet switch "switch" bw
+switch (${1:varname}) {
+	case ${2:constexpr}: $3
+	${4:default: ${5:break;}}
+}$0
+endsnippet
+
+snippet class "class" bw
+class ${1:name} {
+public:
+	$1();
+	~$1()${2: {}}
+};$0
+endsnippet
+
+snippet tclass "template class" bw
+template <class> class ${1:name} {
+private:
+	${2://Private members here.}
+public:
+	$1();
+	~$1()${3: {}}
+};$0
+endsnippet
