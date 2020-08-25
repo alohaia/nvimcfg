@@ -193,6 +193,9 @@ Plug 'AndrewRadev/splitjoin.vim'
 ""Description: Fast Commenting
 Plug 'preservim/nerdcommenter'
 "=========================================================================
+""Description: Fast Commenting
+Plug 'tpope/vim-commentary'
+"=========================================================================
 ""Description: Vim Multi-Cursors and Aligning
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 "=========================================================================

@@ -38,7 +38,7 @@ set virtualedit=block               " 在指定模式下，使光标可以在没
 set number                          " 行首显示数字
 set relativenumber                  " 行首显示相对数字
 set cursorline                      " 突出显示光标所在行
-set cursorcolumn                    " 突出显示光标所在列
+" set cursorcolumn                    " 突出显示光标所在列
 set textwidth=500                   " 设置行宽
 set showmatch                       " 高亮显示配对括号
 set matchtime=2                     " 高亮显示配对括号时，当前括号会每 2/10 秒闪烁一次
@@ -55,6 +55,7 @@ set noequalalways                   " 防止 vim 关闭窗口时自动调整窗�
 set conceallevel=2                  " 完全隐藏 conceal 字符, markdown/tex/...
 au VimEnter * highlight Conceal ctermfg=252 ctermbg=233 guifg=#F8F8F2 guibg=#1B1D1E
 set updatetime=200
+" set nrformats=                      " 将所有数字视为十进制
 
 ""设置自动折行时建议设置
 set wrap                            " 自动折行
