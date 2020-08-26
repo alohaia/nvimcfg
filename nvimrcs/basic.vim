@@ -138,7 +138,8 @@ set whichwrap+=<,>,h,l
 ""Recommend: molokai iceberg solarized8_dark solarized8_light
 ""Day:   solarized8_light + solarized
 ""Night: iceberg + tomorrow
-call g:ThemeByTime()
+" call g:ThemeByTime()
+call g:SwitchTheme(1)
 
 if !has('nvim')
     set t_Co=256

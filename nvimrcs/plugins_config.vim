@@ -497,7 +497,7 @@ let g:startify_bookmarks = [
             \]
 ""Add Your commands here.
 let g:startify_commands = [
-            \ {'t': ['Press t to open NERDTree.', 'NERDTree']},
+            \ {'t': ['Press t to open Defx.', 'Defx']},
             \ ]
             " \ {'t': ['Press t to open defx.', 'call g:Defx_toggle_with_my_options()']},
 " \ ':help reference',
@@ -679,11 +679,12 @@ call defx#custom#option('_', {
             \ 'columns': 'mark:git:indent:icon:icons:filename:type:size:time',
             \ 'sort': 'filename',
             \ 'split': 'vertical', 'winwidth': 30, 'direction': 'topleft',
+            \ 'preview_height': &lines/2,
             \ 'buffer_name': 'Defx', 'root_marker': '<Root>: ',
-            \ 'floating_preview': 1, 'wincol': &columns/4, 'winrow': &lines/3,
             \ 'show_ignored_files': 0, 'ignored_files': '.*,*.png,*.jpg',
             \ 'toggle': 1, 'resume': 1, 'focus': 1
             \ })
+            " \ 'floating_preview': 1, 'wincol': &columns/4, 'winrow': &lines/3,
 " endfunction
 
 function! DefxChoosewin(context) abort
@@ -1298,6 +1299,7 @@ let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg', '.tasks'
 
 "============================\ asynctasks.vim /=============================
 command! RunDefault AsyncTask default-run
+command! BuildDefault AsyncTask default-build
 command! Run   AsyncTask run
 command! Build AsyncTask build
 ""设置终端的工作位置和工作模式
