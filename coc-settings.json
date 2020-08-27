@@ -1,86 +1,239 @@
 {
-	"languageserver": {
-		"python": {
-			"command": "python",
-			"args": ["-mpyls", "-vv", "--log-file", "/tmp/lsp_python.log"],
-			"trace.server": "verbose",
-			"filetypes": ["python"],
-			"settings": {
-				"pyls": {
-					"enable": true,
-					"trace": {
-						"server": "verbose"
-					},
-					"commandPath": "",
-					"configurationSources": ["pycodestyle"],
-					"plugins": {
-						"jedi_completion": {
-							"enabled": true
-						},
-						"jedi_hover": {
-							"enabled": true
-						},
-						"jedi_references": {
-							"enabled": true
-						},
-						"jedi_signature_help": {
-							"enabled": true
-						},
-						"jedi_symbols": {
-							"enabled": true,
-							"all_scopes": true
-						},
-						"mccabe": {
-							"enabled": true,
-							"threshold": 15
-						},
-						"preload": {
-							"enabled": true
-						},
-						"pycodestyle": {
-							"enabled": true
-						},
-						"pydocstyle": {
-							"enabled": false,
-							"match": "(?!test_).*\\.py",
-							"matchDir": "[^\\.].*"
-						},
-						"pyflakes": {
-							"enabled": true
-						},
-						"rope_completion": {
-							"enabled": true
-						},
-						"yapf": {
-							"enabled": true
-						}
-					}
-				}
-			}
-		},
-		"lua": {
-			"command": "lua-lsp",
-			"filetypes": ["lua"]
-		},
-		"golang": {
-			"command": "gopls",
-			"rootPatterns": ["go.mod"],
-			"filetypes": ["go"],
-			"initializationOptions": {
-				"gocodeCompletionEnabled": true,
-				"diagnosticsEnabled": true,
-				"lintTool": "golint"
-			}
-		},
-		"ccls": {
-			"command": "ccls",
-			"filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
-			"rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/", ".hg/"],
-			"initializationOptions": {
-				"cache": {
-					"directory": "/tmp/ccls"
-				}
-			}
-		}
-	}
+    "suggest.noselect": true,
+    "suggest.enablePreselect": false,
+    "suggest.enablePreview": true,
+    "suggest.completionItemKindLabels": {
+        "class": "",
+        "color": "",
+        "constant": "",
+        "enum": "",
+        "enumMember": "",
+        "event": "鬒",
+        "field": "綠",
+        "file": "",
+        "folder": "",
+        "function": "ƒ",
+        "interface": "",
+        "keyword": "",
+        "method": "",
+        "module": "",
+        "operator": "洛",
+        "property": "",
+        "reference": "渚",
+        "snippet": "",
+        "struct": "פּ",
+        "text": "",
+        "typeParameter": "",
+        "unit": "",
+        "value": "",
+        "variable": "",
+        "default": ""
+    },
+
+    "codeLens.enable": true,
+
+    "list.previewHighlightGroup": "Statement",
+
+    "diagnostic.signOffset": 1,
+    "diagnostic.errorSign": ">>",
+    "diagnostic.warningSign": "⚠",
+    "diagnostic.infoSign": ">>",
+    "diagnostic.hintSign": ">>",
+    "diagnostic.displayByAle": false,
+    "diagnostic.refreshOnInsertMode": false,
+    "diagnostic.refreshAfterSave": false,
+    "diagnostic.checkCurrentLine": true,
+    "diagnostic.virtualTextPrefix": " ❯❯❯ ",
+    "diagnostic.virtualText": true,
+
+    // "diagnostic-languageserver.enable": true,
+    "diagnostic-languageserver.filetypes": {
+        "vim": "vint",
+        "email": "languagetool",
+        "markdown": ["write-good", "markdownlint"],
+        "sh": "shellcheck",
+        "elixir": ["mix_credo", "mix_credo_compile"],
+        "eelixir": ["mix_credo", "mix_credo_compile"],
+        "php": ["phpstan", "psalm"]
+    },
+    "diagnostic-languageserver.formatFiletypes": {
+        "elixir": "mix_format",
+        "eelixir": "mix_format"
+    },
+
+    "flutter.outlineWidth": 40,
+    "flutter.UIPath": true,
+    "flutter.openDevLogSplitCommand": "botright 12split",
+    "flutter.lsp.initialization.onlyAnalyzeProjectsWithOpenFiles": false,
+
+    "tslint.autoFixOnSave": false,
+
+    // "python.autoComplete.addBrackets": true,
+    // "python.jediEnabled": false,
+    // "python.formatting.provider": "yapf",
+    // "python.formatting.yapfArgs": [
+    //     "--style",
+    //     "{SPACES_AROUND_POWER_OPERATOR: True, SPACES_BEFORE_COMMENT: 1}"
+    // ],
+
+    "html.format.enable": true,
+
+    "javascript.referencesCodeLens.enable": true,
+    "javascript.showUnused": true,
+    "javascript.suggest.names": true,
+    "javascript.suggestionActions.enabled": true,
+    "json.format.enable": true,
+
+    "eslint.autoFixOnSave": false,
+
+    "prettier.printWidth": 100,
+
+    "todolist.autoUpload": true,
+    "todolist.promptForReminder": false,
+
+    "coc-actions.hideCursor": false,
+    "coc-actions.showActionKind": true,
+
+    // "explorer.position": "left",
+    // "explorer.floating.border.enable": true,
+    // "explorer.floating.border.chars": ["─", "│", "─", "│", "┌", "┐", "┘", "└"],
+    // "explorer.floating.border.title": "coc-explorer",
+    // "explorer.floating.hideOnCocList": true,
+    // "explorer.width": 40,
+    // "explorer.toggle": true,
+    // "explorer.focus": true,
+    // "explorer.previewAction.onHover": true,
+    // "explorer.icon.customIcons": {
+    //     "icons": {},
+    //     "extensions": {},
+    //     "filenames": {},
+    //     "dirnames": {},
+    //     "patternMatches": {},
+    //     "dirPatternMatches": {}
+    // },
+    // "explorer.sources": [
+    //     {
+    //         "name": "bookmark",
+    //         "expand": false
+    //     },
+    //     {
+    //         "name": "buffer",
+    //         "expand": false
+    //     },
+    //     {
+    //         "name": "file",
+    //         "expand": true
+    //     }
+    // ],
+    // "explorer.file.column.indent.indentLine": true,
+    "explorer.file.hiddenRules": {
+        "extensions": [
+            "o",
+            "a",
+            "obj",
+            "pyc"
+        ],
+        "filenames": [
+            ".vscode"
+        ],
+        "patternMatches": [
+            "^\\."
+        ]
+    },
+    "explorer.file.column.git.showIgnored":true,
+    "explorer.file.showHiddenFiles":false,
+    "explorer.icon.expanded":"▾",
+    "explorer.icon.collapsed":"▸",
+    // "explorer.icon.hidden":"‥",
+    // ﳐﮟ
+    // "explorer.datetime.format":"yy/MM/dd HH:mm:ss",
+    // Enable nerd fonts to show icons.
+    "explorer.icon.enableNerdfont":true,
+    // "explorer.icon.enableVimDevicons":true,
+    "explorer.quitOnOpen": true,
+
+    "languageserver": {
+        "python": {
+            "command": "python",
+            "args": ["-mpyls", "-vv", "--log-file", "/tmp/lsp_python.log"],
+            "trace.server": "verbose",
+            "filetypes": ["python"],
+            "settings": {
+                "pyls": {
+                    "enable": true,
+                    "trace": {
+                        "server": "verbose"
+                    },
+                    "commandPath": "",
+                    "configurationSources": ["pycodestyle"],
+                    "plugins": {
+                        "jedi_completion": {
+                            "enabled": true
+                        },
+                        "jedi_hover": {
+                            "enabled": true
+                        },
+                        "jedi_references": {
+                            "enabled": true
+                        },
+                        "jedi_signature_help": {
+                            "enabled": true
+                        },
+                        "jedi_symbols": {
+                            "enabled": true,
+                            "all_scopes": true
+                        },
+                        "mccabe": {
+                            "enabled": true,
+                            "threshold": 15
+                        },
+                        "preload": {
+                            "enabled": true
+                        },
+                        "pycodestyle": {
+                            "enabled": true
+                        },
+                        "pydocstyle": {
+                            "enabled": false,
+                            "match": "(?!test_).*\\.py",
+                            "matchDir": "[^\\.].*"
+                        },
+                        "pyflakes": {
+                            "enabled": true
+                        },
+                        "rope_completion": {
+                            "enabled": true
+                        },
+                        "yapf": {
+                            "enabled": true
+                        }
+                    }
+                }
+            }
+        },
+        "lua": {
+            "command": "lua-lsp",
+            "filetypes": ["lua"]
+        },
+        "golang": {
+            "command": "gopls",
+            "rootPatterns": ["go.mod"],
+            "filetypes": ["go"],
+            "initializationOptions": {
+                "gocodeCompletionEnabled": true,
+                "diagnosticsEnabled": true,
+                "lintTool": "golint"
+            }
+        },
+        "ccls": {
+            "command": "ccls",
+            "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
+            "rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/", ".hg/"],
+            "initializationOptions": {
+                "cache": {
+                    "directory": "/tmp/ccls"
+                }
+            }
+        }
+    }
 }

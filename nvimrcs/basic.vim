@@ -68,6 +68,17 @@ set list                            " 显示特殊字符
 " set listchars=tab:<->,trail:•,extends:>,precedes:<    " 特殊字符显示设置 trail 与　space 冲突   eol:↵,
 set listchars=trail:•,tab:>-
 
+""Vim 需要 +xterm_clipboard(vim --version以查看)
+" au VimEnter * set clipboard=unnamedplus
+set clipboard=unnamedplus
+
+set autoread
+au FocusGained,BufEnter * checktime
+set autowrite
+
+filetype plugin on
+filetype indent on
+
 "=================== 自动缩进设置(cindent会覆盖前两项) ===================
 set autoindent                      " 功能最简单的自动缩进
 set smartindent                     " 为C-like语言(及其他语言)设置自动缩进, 设置 cindent 时该选项无效
@@ -80,16 +91,6 @@ set smarttab
 set shiftwidth=4
 set tabstop=4
 
-""Vim 需要 +xterm_clipboard(vim --version以查看)
-" au VimEnter * set clipboard=unnamedplus
-set clipboard=unnamedplus
-
-set autoread
-au FocusGained,BufEnter * checktime
-
-filetype plugin on
-filetype indent on
-
 "=============================== 临时文件 ================================
 if has("vms")
     set nobackup                    " do not keep a backup file, use versions instead
@@ -101,9 +102,8 @@ if has("vms")
         set undofile                " keep an undo file (undo changes after closing)
     endif
 endif
-set noswapfile
-" set swapfile
-" set directory=~/.cache/nvim/.temp_dirs/swapdir
+set swapfile
+set directory=~/.cache/nvim/.temp_dirs/swapdir
 
 "======================= No annoying sound on errors =====================
 set noerrorbells
@@ -138,8 +138,8 @@ set whichwrap+=<,>,h,l
 ""Recommend: molokai iceberg solarized8_dark solarized8_light
 ""Day:   solarized8_light + solarized
 ""Night: iceberg + tomorrow
-" call g:ThemeByTime()
-call g:SwitchTheme(1)
+call g:ThemeByTime()
+" call g:SwitchTheme(1)
 
 if !has('nvim')
     set t_Co=256
@@ -230,7 +230,7 @@ noremap k gk
 
 ""Moving using <M-S-j/k>
 au VimEnter * call SwitchMotionMod()
-nmap <silent> \\ :call SwitchMotionMod()<CR>
+nnoremap <silent> \\ :call SwitchMotionMod()<CR>
 
 ""Remap VIM 0 to first non-blank character
 nnoremap 0 ^
@@ -405,7 +405,7 @@ tnoremap <M-q> <C-\><C-n>
 nnoremap <silent><cr> :e .<cr>
 
 "================================ 其他操作 ===============================
-nnoremap <leader>H :vert h<space>
+" nnoremap <leader>H :vert h<space>
 
 ""我把 CapsLock 改成了Esc 这个设置会使输入 i 的时候有一定延迟
 " inoremap ii <esc>
@@ -423,21 +423,23 @@ imap <M-BS> <Del>
 "#########################################################################
 "######################\ Status Line and CmdLine /########################
 "#########################################################################
-set shortmess="a"                   " 简化显示信息, 避免烦人的确认信息，详见 :h shm
+
+set shortmess="atAF"                   " 简化显示信息, 避免烦人的确认信息，详见 :h shm
 ""Always show the status line
 set laststatus=2
 set ruler                           " 在状态栏显示当前所在的文件位置
 
-set cmdheight=2                     " Make command line Two line high
-set showcmd                         " normal模式下在vim命令行右边显示输入
+set cmdheight=1                     " Make command line Two line high
+set showcmd                         " normal模式下在vim命令行右边显示按键
 
 ""设置数字栏左侧的 signcolumn 总是显示
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+" if has("patch-8.1.1564")
+"   " Recently vim can merge signcolumn and number column into one
+"   set signcolumn=number
+" else
+"   set signcolumn=yes
+" endif
+set signcolumn=yes
 
 "============================= wildmenu 设置 =============================
 set wildmenu                        " 命令模式下，在状态栏中显示vim补全选项

@@ -64,7 +64,7 @@ function! coc#source#ultisnips#init() abort
     return {
         \ 'priority': 9,
         \ 'shortcut': 'Ulti',
-        \ 'triggerCharacters': ['@']
+        \ 'triggerCharacters': ['']
         \}
 endfunction
 

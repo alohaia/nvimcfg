@@ -370,7 +370,7 @@ command! Hvista echo
 " ""Defx:
 command! Hdefx echo
             \"=== \<leader\>df to start.===\n".
-            \"  Enter       - open\n".
+            \"  Enter       - open in chosen window\n".
             \"  c           - copy\n".
             \"  x           - move\n".
             \"  p           - paste\n".
@@ -393,12 +393,13 @@ command! Hdefx echo
             \"  ~           - cd ~\n".
             \"  q           - quit\n".
             \"  s           - toggle select and up\n".
-            \"  <C-a>       - toggle select all\n".
+            \"  C-a         - toggle select all\n".
             \"  j           - down\n".
             \"  k           - up\n".
             \"  C-l         - redraw\n".
             \"  C-g         - print\n".
             \"  cd          - change vim cwd"
+            " \"  Enter       - open\n".
 
 ""Soda:
 command! Hsuda vert h suda-usage
@@ -497,7 +498,7 @@ let g:startify_bookmarks = [
             \]
 ""Add Your commands here.
 let g:startify_commands = [
-            \ {'t': ['Press t to open Defx.', 'Defx']},
+            \ {'t': ['Press t to open coc-explorer.', 'CocCommand explorer']},
             \ ]
             " \ {'t': ['Press t to open defx.', 'call g:Defx_toggle_with_my_options()']},
 " \ ':help reference',
@@ -629,137 +630,137 @@ let g:rnvimr_layout = { 'relative': 'editor',
             \ 'style': 'minimal' }
 let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
-"============================\ defx.nvim /=============================
-""Options available: :h defx-options
-nnoremap <silent> <leader>df :Defx<CR>
-" noremap <silent> <leader>df :call g:Defx_toggle_with_my_options()<cr>
-" function g:Defx_toggle_with_my_options()
-"     " if &filetype != 'startify'
-"         Defx
-"             \ -columns=mark:git:indent:icons:icon:filename:type:size:time
-"             \ -ignored-files='.*'
-"             \ -vertical-preview -preview-width=50
-"             \ -sort='filename'
-"             \ -buffer-name='filebrowser'
-"             \ -show-ignored-files=0
-"             \ -focus -toggle
-"             "\ -columns=git:mark:indent:icons:filename:type
-"             "\ -split='vertical' -direction='topleft' -winwidth=&columns/2
-"             "\ -split='horizontal' -direction='botright' -winheight=30
-"             "\ -split='floating' -wincol=4 -winrow=0
-"             "\ -preview-height=15
-"             "\ -floating-preview -preview-height=10 -preview-width=40
-"             "\ -root-maker=
-"             "\ -search={path}
-"             "\ -session-file={path}
-"             "\ -split='floating' -direction='topleft'
-"             "\ listed
-"     " endif
+" "============================\ defx.nvim /=============================
+" ""Options available: :h defx-options
+" nnoremap <silent> <leader>df :Defx<CR>
+" " noremap <silent> <leader>df :call g:Defx_toggle_with_my_options()<cr>
+" " function g:Defx_toggle_with_my_options()
+" "     " if &filetype != 'startify'
+" "         Defx
+" "             \ -columns=mark:git:indent:icons:icon:filename:type:size:time
+" "             \ -ignored-files='.*'
+" "             \ -vertical-preview -preview-width=50
+" "             \ -sort='filename'
+" "             \ -buffer-name='filebrowser'
+" "             \ -show-ignored-files=0
+" "             \ -focus -toggle
+" "             "\ -columns=git:mark:indent:icons:filename:type
+" "             "\ -split='vertical' -direction='topleft' -winwidth=&columns/2
+" "             "\ -split='horizontal' -direction='botright' -winheight=30
+" "             "\ -split='floating' -wincol=4 -winrow=0
+" "             "\ -preview-height=15
+" "             "\ -floating-preview -preview-height=10 -preview-width=40
+" "             "\ -root-maker=
+" "             "\ -search={path}
+" "             "\ -session-file={path}
+" "             "\ -split='floating' -direction='topleft'
+" "             "\ listed
+" "     " endif
+" " endfunction
+"
+" " autocmd BufReadPre defx call s:defx_my_settings()
+" " function! s:defx_my_settings() abort
+" ""Customize columns: filename icon indent mark size space time type [git icons]
+" call defx#custom#column('icon', {
+"             \ 'directory_icon': '▸',
+"             \ 'opened_icon': '▾',
+"             \ 'root_icon': ' ',
+"             \ })
+" call defx#custom#column('filename', {
+"             \ 'min_width': 40,
+"             \ 'max_width': 40,
+"             \ })
+" call defx#custom#column('mark', {
+"             \ 'readonly_icon': '✗',
+"             \ 'selected_icon': '✓',
+"             \ })
+"
+" ""Customize options
+" call defx#custom#option('_', {
+"             \ 'columns': 'mark:git:indent:icon:icons:space:filename:type:size:time',
+"             \ 'sort': 'filename',
+"             \ 'split': 'vertical', 'winwidth': 30, 'direction': 'topleft',
+"             \ 'preview_height': &lines/2,
+"             \ 'buffer_name': 'Defx', 'root_marker': '<Root>: ',
+"             \ 'show_ignored_files': 0, 'ignored_files': '.*,*.png,*.jpg',
+"             \ 'toggle': 1, 'resume': 1, 'focus': 1
+"             \ })
+"             " \ 'floating_preview': 1, 'wincol': &columns/4, 'winrow': &lines/3,
+" " endfunction
+"
+" function! DefxChoosewin(context) abort
+"     " let l:winnrs = find_winnrs() " Modified for slide
+"     let l:winnrs = range(1, winnr('$'))
+"     let l:opts = {'auto_choose': 1, 'hook_enable': 0}
+"     for filename in a:context.targets
+"     call choosewin#start(l:winnrs, l:opts)
+"     execute 'edit' filename
+"     endfor
 " endfunction
-
-" autocmd BufReadPre defx call s:defx_my_settings()
-" function! s:defx_my_settings() abort
-""Customize columns: filename icon indent mark size space time type [git icons]
-call defx#custom#column('icon', {
-            \ 'directory_icon': '▸',
-            \ 'opened_icon': '▾',
-            \ 'root_icon': ' ',
-            \ })
-call defx#custom#column('filename', {
-            \ 'min_width': 40,
-            \ 'max_width': 40,
-            \ })
-call defx#custom#column('mark', {
-            \ 'readonly_icon': '✗',
-            \ 'selected_icon': '✓',
-            \ })
-
-""Customize options
-call defx#custom#option('_', {
-            \ 'columns': 'mark:git:indent:icon:icons:filename:type:size:time',
-            \ 'sort': 'filename',
-            \ 'split': 'vertical', 'winwidth': 30, 'direction': 'topleft',
-            \ 'preview_height': &lines/2,
-            \ 'buffer_name': 'Defx', 'root_marker': '<Root>: ',
-            \ 'show_ignored_files': 0, 'ignored_files': '.*,*.png,*.jpg',
-            \ 'toggle': 1, 'resume': 1, 'focus': 1
-            \ })
-            " \ 'floating_preview': 1, 'wincol': &columns/4, 'winrow': &lines/3,
+"
+" ""Define mappings
+" autocmd FileType defx call s:defx_my_mappings()
+" function! s:defx_my_mappings() abort
+"     " nnoremap ; :
+"     " nnoremap <C-l> <C-w>l
+"     " nnoremap <C-h> <C-w>h
+"     " nnoremap <C-j> <C-w>j
+"     " nnoremap <C-k> <C-w>k
+"     ""Actions available: :h defx-actions
+"     " nnoremap <silent><buffer><expr> <CR>    defx#do_action('open')
+"     nnoremap <silent><buffer><expr> <CR>    defx#do_action('call', 'DefxChoosewin')
+"     nnoremap <silent><buffer><expr> c       defx#do_action('copy')
+"     nnoremap <silent><buffer><expr> x       defx#do_action('move')
+"     nnoremap <silent><buffer><expr> p       defx#do_action('paste')
+"     nnoremap <silent><buffer><expr> E       defx#do_action('open', 'vsplit')
+"     nnoremap <silent><buffer><expr> P       defx#do_action('preview')
+"     nnoremap <silent><buffer><expr> o       defx#do_action('open_tree', 'toggle')
+"     nnoremap <silent><buffer><expr> N       defx#do_action('new_directory')
+"     nnoremap <silent><buffer><expr> n       defx#do_action('new_file')
+"     nnoremap <silent><buffer><expr> M       defx#do_action('new_multiple_files')
+"     nnoremap <silent><buffer><expr> C       defx#do_action('toggle_columns', 'mark:git:indent:icons:icon:filename:type:size:time')
+"     nnoremap <silent><buffer><expr> S       defx#do_action('toggle_sort', 'time')
+"     nnoremap <silent><buffer><expr> d       defx#do_action('remove')
+"     nnoremap <silent><buffer><expr> r       defx#do_action('rename')
+"     nnoremap <silent><buffer><expr> !       defx#do_action('execute_command')
+"     nnoremap <silent><buffer><expr> ex      defx#do_action('execute_system')
+"     nnoremap <silent><buffer><expr> yy      defx#do_action('yank_path')
+"     nnoremap <silent><buffer><expr> .       defx#do_action('toggle_ignored_files')
+"     nnoremap <silent><buffer><expr> ;       defx#do_action('repeat')
+"     nnoremap <silent><buffer><expr> h       defx#do_action('cd', ['..'])
+"     nnoremap <silent><buffer><expr> ~       defx#do_action('cd')
+"     nnoremap <silent><buffer><expr> q       defx#do_action('quit')
+"     nnoremap <silent><buffer><expr> s       defx#do_action('toggle_select') . 'j'
+"     nnoremap <silent><buffer><expr> <C-a>   defx#do_action('toggle_select_all')
+"     nnoremap <silent><buffer><expr> j       line('.') == line('$') ? 'gg' : 'j'
+"     nnoremap <silent><buffer><expr> k       line('.') == 1 ? 'G' : 'k'
+"     nnoremap <silent><buffer><expr> <C-l>   defx#do_action('redraw')
+"     nnoremap <silent><buffer><expr> <C-g>   defx#do_action('print')
+"     nnoremap <silent><buffer><expr> cd      defx#do_action('change_vim_cwd')
 " endfunction
-
-function! DefxChoosewin(context) abort
-    " let l:winnrs = find_winnrs() " Modified for slide
-    let l:winnrs = range(1, winnr('$'))
-    let l:opts = {'auto_choose': 1, 'hook_enable': 0}
-    for filename in a:context.targets
-    call choosewin#start(l:winnrs, l:opts)
-    execute 'edit' filename
-    endfor
-endfunction
-
-""Define mappings
-autocmd FileType defx call s:defx_my_mappings()
-function! s:defx_my_mappings() abort
-    " nnoremap ; :
-    " nnoremap <C-l> <C-w>l
-    " nnoremap <C-h> <C-w>h
-    " nnoremap <C-j> <C-w>j
-    " nnoremap <C-k> <C-w>k
-    ""Actions available: :h defx-actions
-    nnoremap <silent><buffer><expr> <CR>    defx#do_action('open')
-    nnoremap <silent><buffer><expr> c       defx#do_action('copy')
-    nnoremap <silent><buffer><expr> x       defx#do_action('move')
-    nnoremap <silent><buffer><expr> p       defx#do_action('paste')
-    nnoremap <silent><buffer><expr> E       defx#do_action('open', 'vsplit')
-    nnoremap <silent><buffer><expr> P       defx#do_action('preview')
-    nnoremap <silent><buffer><expr> o       defx#do_action('open_tree', 'toggle')
-    nnoremap <silent><buffer><expr> N       defx#do_action('new_directory')
-    nnoremap <silent><buffer><expr> n       defx#do_action('new_file')
-    nnoremap <silent><buffer><expr> M       defx#do_action('new_multiple_files')
-    nnoremap <silent><buffer><expr> C       defx#do_action('toggle_columns', 'mark:git:indent:icons:icon:filename:type:size:time')
-    nnoremap <silent><buffer><expr> S       defx#do_action('toggle_sort', 'time')
-    nnoremap <silent><buffer><expr> d       defx#do_action('remove')
-    nnoremap <silent><buffer><expr> r       defx#do_action('rename')
-    nnoremap <silent><buffer><expr> !       defx#do_action('execute_command')
-    nnoremap <silent><buffer><expr> ex      defx#do_action('execute_system')
-    nnoremap <silent><buffer><expr> yy      defx#do_action('yank_path')
-    nnoremap <silent><buffer><expr> .       defx#do_action('toggle_ignored_files')
-    nnoremap <silent><buffer><expr> ;       defx#do_action('repeat')
-    nnoremap <silent><buffer><expr> h       defx#do_action('cd', ['..'])
-    nnoremap <silent><buffer><expr> ~       defx#do_action('cd')
-    nnoremap <silent><buffer><expr> q       defx#do_action('quit')
-    nnoremap <silent><buffer><expr> s       defx#do_action('toggle_select') . 'j'
-    nnoremap <silent><buffer><expr> <C-a>   defx#do_action('toggle_select_all')
-    nnoremap <silent><buffer><expr> j       line('.') == line('$') ? 'gg' : 'j'
-    nnoremap <silent><buffer><expr> k       line('.') == 1 ? 'G' : 'k'
-    nnoremap <silent><buffer><expr> <C-l>   defx#do_action('redraw')
-    nnoremap <silent><buffer><expr> <C-g>   defx#do_action('print')
-    nnoremap <silent><buffer><expr> cd      defx#do_action('change_vim_cwd')
-    nnoremap <silent><buffer><expr> w       defx#do_action('call', 'DefxChoosewin')
-endfunction
-
-
-au VimEnter * call defx#custom#column('git', 'indicators', {
-            \ 'Modified'  : '✹ ',
-            \ 'Staged'    : '⚑ ',
-            \ 'Untracked' : '⚝ ',
-            \ 'Renamed'   : '->',
-            \ 'Unmerged'  : '==',
-            \ 'Ignored'   : '~~',
-            \ 'Deleted'   : '✖ ',
-            \ 'Unknown'   : '? '
-            \ })
-" " ⚐ ★ "
-" " call defx#custom#column('git', 'indicators', {
-" " \ 'Modified'  : '✹',
-" " \ 'Staged'    : '✚',
-" " \ 'Untracked' : '✭',
-" " \ 'Renamed'   : '➜',
-" " \ 'Unmerged'  : '═',
-" " \ 'Ignored'   : '☒',
-" " \ 'Deleted'   : '✖',
-" " \ 'Unknown'   : '?'
-" " \ })
+"
+"
+" au VimEnter * call defx#custom#column('git', 'indicators', {
+"             \ 'Modified'  : '✹ ',
+"             \ 'Staged'    : '⚑ ',
+"             \ 'Untracked' : '⚝ ',
+"             \ 'Renamed'   : '->',
+"             \ 'Unmerged'  : '==',
+"             \ 'Ignored'   : '~~',
+"             \ 'Deleted'   : '✖ ',
+"             \ 'Unknown'   : '? '
+"             \ })
+" " " ⚐ ★ "
+" " " call defx#custom#column('git', 'indicators', {
+" " " \ 'Modified'  : '✹',
+" " " \ 'Staged'    : '✚',
+" " " \ 'Untracked' : '✭',
+" " " \ 'Renamed'   : '➜',
+" " " \ 'Unmerged'  : '═',
+" " " \ 'Ignored'   : '☒',
+" " " \ 'Deleted'   : '✖',
+" " " \ 'Unknown'   : '?'
+" " " \ })
 
 
 "============================\ vista.vim /=============================
@@ -772,8 +773,7 @@ let g:vista_executive_for = {
             \ 'pandoc': 'markdown',
             \ 'markdown': 'toc',
             \ }
-            " \ 'python': 'coc',
-            "\ 'vim': 'vimlsp',
+" let g:vista_finder_alternative_executives = ['coc']
 let g:vista_enable_markdown_extension = 1
 ""Toggle Vista
 noremap <silent> <leader>vt :Vista!!<CR>
@@ -806,8 +806,9 @@ let g:vista_top_level_blink = [0, 0]
 ""Use beautiful icons
 "let g:vista#renderer#enable_icon = exists('g:vista#renderer#icons') || exists('g:airline_powerline_fonts')
 let g:vista#renderer#icons = {
-            \   "default": "\uf794",
-            \  }
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
 " function! NearestMethodOrFunction() abort
 "     return get(b:, 'vista_nearest_method_or_function', '')
 " endfunction
@@ -828,24 +829,24 @@ let g:airline#extensions#tabline#enabled=1    "Smarter tab line: 显示窗口tab
 ""tabline中buffer显示编号
 let g:airline#extensions#tabline#buffer_nr_show = 1
 "let g:airline#extensions#tabline#fnamemod = ':t'
-""设置分隔符 |¦┊┇
-" let g:airline#extensions#tabline#left_sep = ''
-" let g:airline#extensions#tabline#left_alt_sep = ''
-" let g:airline#extensions#tabline#right_sep = ''
-" let g:airline#extensions#tabline#right_alt_sep = ''
-let g:airline#extensions#tabline#left_sep = '┆'
-let g:airline#extensions#tabline#left_alt_sep = '┆'
-let g:airline#extensions#tabline#right_sep = '┆'
-let g:airline#extensions#tabline#right_alt_sep = '┆'
 let g:airline#extensions#tabline#formatter = 'default'  "formater
-" let g:airline_left_sep = ''
-" let g:airline_left_alt_sep = ''
-" let g:airline_right_sep = ''
-" let g:airline_right_alt_sep = ''
-let g:airline_left_sep = '┆'
-let g:airline_left_alt_sep = '┆'
-let g:airline_right_sep = '┆'
-let g:airline_right_alt_sep = '┆'
+""设置分隔符 https://github.com/ryanoasis/powerline-extra-symbols
+" let g:airline#extensions#tabline#left_sep = '┆'
+" let g:airline#extensions#tabline#left_alt_sep = '┆'
+" let g:airline#extensions#tabline#right_sep = '┆'
+" let g:airline#extensions#tabline#right_alt_sep = '┆'
+" let g:airline_left_sep = '┆'
+" let g:airline_left_alt_sep = '┆'
+" let g:airline_right_sep = '┆'
+" let g:airline_right_alt_sep = '┆'
+let g:airline#extensions#tabline#left_sep = "\ue0b4"
+let g:airline#extensions#tabline#left_alt_sep = "\ue0b5"
+let g:airline#extensions#tabline#right_sep = "\ue0b6"
+let g:airline#extensions#tabline#right_alt_sep = "\ue0b7"
+let g:airline_left_sep = "\ue0b4"
+let g:airline_left_alt_sep = "\ue0b5"
+let g:airline_right_sep = "\ue0b6"
+let g:airline_right_alt_sep = "\ue0b7"
 ""配置其他字符
 let g:airline_symbols.crypt = '🔒'
 let g:airline_symbols.linenr = '☰'
@@ -1138,20 +1139,23 @@ let g:far#mapping = {
 let g:coc_global_extensions = [
             \ 'coc-diagnostic',
             \ 'coc-tabnine',
+            \ 'coc-pyright',
             \ 'coc-sh',
             \ 'coc-css',
             \ 'coc-html',
             \ 'coc-json',
+            \ 'coc-tsserver',
+            \ 'coc-tslint-plugin',
             \ 'coc-prettier',
             \ 'coc-stylelint',
             \ 'coc-syntax',
-            \ 'coc-tslint-plugin',
-            \ 'coc-tsserver',
             \ 'coc-vimlsp',
             \ 'coc-yaml',
             \ 'coc-floaterm',
             \ 'coc-lists',
+            \ 'coc-explorer'
             \ ]
+            " \ 'coc-ccls',
             " \ 'coc-translator',
             " \ 'coc-sourcekit',
             " \ 'coc-flutter',
@@ -1164,7 +1168,6 @@ let g:coc_global_extensions = [
 ""Use python-language-server instead: pip install 'python-language-server[all]'
             "\ 'coc-python',
             "\ 'coc-pyright',
-            "\ 'coc-explorer',
 ""Use coc-ccls instead
             "\ 'coc-clangd',
 ""??????????
@@ -1189,7 +1192,7 @@ inoremap <silent><expr> <C-c> pumvisible() ?
 ""Close the preview window when completion is done.
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-""Coc Snippets :CocCommand snippets.editSnippets to edit snippet file for current file
+""coc-snippets :CocCommand snippets.editSnippets to edit snippet file for current file
 " inoremap <silent><expr> <C-c>
 "             \ pumvisible() ? coc#_select_confirm() :
 "             \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
@@ -1197,6 +1200,46 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 "             \ coc#refresh()
 " let g:coc_snippet_next = '<M-j>'
 " let g:coc_snippet_prev = '<M-k>'
+
+" noremap <C-z> :CocCommand translator.popup<cr>
+
+""coc-explorer
+let g:coc_explorer_global_presets = {
+\   'nvim': {
+\     'root-uri': '~/.config/nvim/',
+\   },
+\   'tab': {
+\     'position': 'tab',
+\     'quit-on-open': v:true,
+\   },
+\   'floating': {
+\     'position': 'floating',
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingTop': {
+\     'position': 'floating',
+\     'floating-position': 'center-top',
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingLeftside': {
+\     'position': 'floating',
+\     'floating-position': 'left-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingRightside': {
+\     'position': 'floating',
+\     'floating-position': 'right-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'simplify': {
+\     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+\   }
+\ }
+
+" nnoremap <leader>ce :CocCommand explorer --preset floating<CR>
+nnoremap <leader>ce :CocCommand explorer<CR>
 
 " Use g[ and g] to navigate diagnostics
 " Use :CocDiagnostics to get all diagnostics of current buffer in location list.
@@ -1210,19 +1253,92 @@ nnoremap <silent> gi <Plug>(coc-implementation)
 nnoremap <silent> gr <Plug>(coc-references)
 
 " Use <leader>K to show documentation in preview window.
-nnoremap <silent> <leader>K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+nnoremap <silent> <leader>H :call <SID>show_documentation()<CR>
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
 
-"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-let g:airline#extensions#coc#enabled = 1
-let airline#extensions#coc#error_symbol = 'E:'
-let airline#extensions#coc#warning_symbol = 'W:'
-let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
-let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
-" Some servers have issues with backup files, see #649.
-" set nobackup
-" set nowritebackup
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
 
-" noremap <C-z> :CocCommand translator.popup<cr>
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" let g:airline#extensions#coc#enabled = 1
+" let airline#extensions#coc#error_symbol = 'E:'
+" let airline#extensions#coc#warning_symbol = 'W:'
+" let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
+" let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
+
+" Mappings for CoCList
+" Show all diagnostics.
+" nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" " Manage extensions.
+" nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" " Show commands.
+" nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" " Find symbol of current document.
+" nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" " Search workspace symbols.
+" nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" " Do default action for next item.
+" nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" " Do default action for previous item.
+" nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" " Resume latest coc list.
+" nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 "============================\ ultisnips /=============================
 " Plug 'alohaia/vim-snippets'               " snips for snipmate and ultisnips
