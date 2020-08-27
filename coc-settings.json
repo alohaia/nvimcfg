@@ -152,6 +152,9 @@
     // "explorer.icon.enableVimDevicons":true,
     "explorer.quitOnOpen": true,
 
+    "bookmark.sign": "",
+    "bookmark.signHl": "Tag",
+
     "languageserver": {
         "python": {
             "command": "python",

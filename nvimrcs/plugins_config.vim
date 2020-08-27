@@ -319,10 +319,9 @@ Plug 'itchyny/calendar.vim'
 "=========================================================================
 ""Description: Translator
 Plug 'voldikss/vim-translator'
-
 "=========================================================================
 ""Description: Bookmarks
-Plug 'MattesGroeger/vim-bookmarks'
+" Plug 'MattesGroeger/vim-bookmarks'
 
 call plug#end()
 
@@ -1153,7 +1152,8 @@ let g:coc_global_extensions = [
             \ 'coc-yaml',
             \ 'coc-floaterm',
             \ 'coc-lists',
-            \ 'coc-explorer'
+            \ 'coc-explorer',
+            \ 'coc-bookmark'
             \ ]
             " \ 'coc-ccls',
             " \ 'coc-translator',
@@ -1240,6 +1240,30 @@ let g:coc_explorer_global_presets = {
 
 " nnoremap <leader>ce :CocCommand explorer --preset floating<CR>
 nnoremap <leader>ce :CocCommand explorer<CR>
+
+""coc-bookmark
+nmap <Leader>bj <Plug>(coc-bookmark-next)
+nmap <Leader>bk <Plug>(coc-bookmark-prev)
+nmap <leader>bt <Plug>(coc-bookmark-toggle)
+" <Plug>(coc-bookmark-annotate)
+""Q: The background of bookmark signs are not consistent with signcolumn...
+" function! s:my_bookmark_color() abort
+"   let s:scl_guibg = matchstr(execute('hi SignColumn'), 'guibg=\zs\S*')
+"   let s:scl_guifg = matchstr(execute('hi SignColumn'), 'guifg=\zs\S*')
+"   if empty(s:scl_guibg)
+"     let s:scl_guibg = 'NONE'
+"   endif
+"   if empty(s:scl_guifg)
+"     let s:scl_guifg = 'NONE'
+"   endif
+"   exe 'hi MyBookmarkSign guibg=' . s:scl_guibg . ' guifg=' . s:scl_guifg
+" endfunction
+" call s:my_bookmark_color() " don't remove this line!
+"
+" augroup UserGitSignColumnColor
+"   autocmd!
+"   autocmd ColorScheme * call s:my_bookmark_color()
+" augroup END
 
 " Use g[ and g] to navigate diagnostics
 " Use :CocDiagnostics to get all diagnostics of current buffer in location list.

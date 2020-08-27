@@ -94,13 +94,14 @@ endfunction
 
 "========================= Backup Normal highlighting ====================
 ""Do NOT call this function in this file.
-function! g:NormalColorBackup()
+function! s:normalColorBackup()
     if !exists('g:hi_normal_backup')
         let l:hi_normal = split(execute('silent hi Normal', ''))[2:-1]
         let g:hi_normal_backup = join(l:hi_normal, ' ')
     endif
     return g:hi_normal_backup
 endfunction
+au ColorScheme * call s:normalColorBackup()
 
 "========================= Transparent background ========================
 ""pass 0 to use transparent background and store current bg color in a file.

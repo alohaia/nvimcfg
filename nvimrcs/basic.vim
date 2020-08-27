@@ -148,10 +148,7 @@ set termguicolors " enable true colors support
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 "================= Adjust conceal characters' highlighting ===============
-if !exists('g:hi_normal_backup')
-    call g:NormalColorBackup()
-endif
-execute('hi Conceal '.g:hi_normal_backup)
+call execute('hi Conceal '.g:hi_normal_backup)
 
 "============================== 透明背景 =================================
 "      需要终端的支持，terminator/Tilix/konsole/yakuake 支持透明背景
