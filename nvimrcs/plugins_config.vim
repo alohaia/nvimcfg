@@ -862,16 +862,6 @@ let g:airline_symbols.spell = 'Ꞩ'
 let g:airline_symbols.notexists = 'Ɇ'
 let g:airline_symbols.whitespace = 'Ξ'
 
-""推荐：cool, airlineish, solarized
-""是否使用随机airline主题(开发中...)
-" if has('nvim')
-"     let g:airline_theme = 'solarized'
-"     let g:airline_random_theme = 0
-" else
-"     let g:airline_random_theme = 1
-" endif
-
-
 "#########################################################################
 "########################\ Color and Highlighting /#######################
 "#########################################################################

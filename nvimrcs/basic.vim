@@ -139,7 +139,7 @@ set whichwrap+=<,>,h,l
 ""Day:   solarized8_light + solarized
 ""Night: iceberg + tomorrow
 call g:ThemeByTime()
-" call g:SwitchTheme(1)
+" call g:SwitchTheme(0)
 
 if !has('nvim')
     set t_Co=256
@@ -245,6 +245,12 @@ if has("mac") || has("macunix")
     vmap <D-j> <M-j>
     vmap <D-k> <M-k>
 endif
+
+""For insert mode
+inoremap <M-h> <Left>
+inoremap <M-l> <Right>
+inoremap <M-k> <Up>
+inoremap <M-j> <Down>
 
 ""For command mod
 cnoremap <C-a> <Home>
@@ -426,7 +432,7 @@ set shortmess="atAF"                   " 简化显示信息, 避免烦人的确�
 set laststatus=2
 set ruler                           " 在状态栏显示当前所在的文件位置
 
-set cmdheight=1                     " Make command line Two line high
+set cmdheight=2                     " Make command line Two line high
 set showcmd                         " normal模式下在vim命令行右边显示按键
 
 ""设置数字栏左侧的 signcolumn 总是显示
