@@ -380,7 +380,6 @@ function! s:fcitx_enter_insert_mode()
 endfunction
 
 
-
 "退出插入模式调用的函数
 autocmd InsertLeave * call s:fcitx_2_english()
 

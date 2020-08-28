@@ -218,8 +218,8 @@ nnoremap <silent> <esc> :nohl<cr>
 
 "============================ Moving around ==============================
 ""Fast moving
-noremap J 5j
-noremap K 5k
+noremap J 5gj
+noremap K 5gk
 
 ""Moving more convenient when lines wrap
 noremap j gj

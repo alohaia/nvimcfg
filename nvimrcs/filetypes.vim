@@ -1,5 +1,5 @@
 "+-----------------------------------------------------------------------+
-"¦ Maintainer:     aloha                                                 ¦
+"¦ Maintainer:   Amir Salihefendic — @amix3k, aloha                      ¦
 "¦                                                                       ¦
 "¦ License:        MIT                                                   ¦
 "+-----------------------------------------------------------------------+
@@ -53,16 +53,6 @@ au BufNewFile,BufRead *.mako set ft=mako
 
 " au FileType python map <buffer> F :set foldmethod=indent<cr>
 au Filetype python set foldmethod=indent
-
-au FileType python inoremap <buffer> $r return 
-au FileType python inoremap <buffer> $i import 
-au FileType python inoremap <buffer> $p print 
-au FileType python inoremap <buffer> $f # --- <esc>a
-au FileType python map <buffer> <leader>1 /class 
-au FileType python map <buffer> <leader>2 /def 
-au FileType python map <buffer> <leader>C ?class 
-au FileType python map <buffer> <leader>D ?def 
-
 
 """"""""""""""""""""""""""""""
 " => JavaScript section
