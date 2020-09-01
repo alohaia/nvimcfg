@@ -67,6 +67,9 @@ function! g:SwitchTheme(choice)
         colorscheme iceberg
         ""angr atomic
         let g:airline_theme = 'tomorrow'
+    elseif a:choice == 2
+        colorscheme molokai
+        let g:airline_theme = 'airlineish'
     endif
 endfunction
 

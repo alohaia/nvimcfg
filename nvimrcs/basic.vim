@@ -70,7 +70,7 @@ set listchars=trail:•,tab:>-
 
 ""Vim 需要 +xterm_clipboard(vim --version以查看)
 " au VimEnter * set clipboard=unnamedplus
-set clipboard=unnamedplus
+" set clipboard=unnamedplus
 
 set autoread
 au FocusGained,BufEnter * checktime
@@ -82,7 +82,7 @@ filetype indent on
 "=================== 自动缩进设置(cindent会覆盖前两项) ===================
 set autoindent                      " 功能最简单的自动缩进
 set smartindent                     " 为C-like语言(及其他语言)设置自动缩进, 设置 cindent 时该选项无效
-set cindent                         " more cleverly than the other two and is configurable to different indenting styles.
+set nocindent                       " more cleverly than the other two and is configurable to different indenting styles.
 set indentexpr=                     " 设置为非空时会覆盖 autoindent 和 smartindent
 
 "============================ 用空格取代<tab> ============================
@@ -138,8 +138,8 @@ set whichwrap+=<,>,h,l
 ""Recommend: molokai iceberg solarized8_dark solarized8_light
 ""Day:   solarized8_light + solarized
 ""Night: iceberg + tomorrow
-call g:ThemeByTime()
-" call g:SwitchTheme(0)
+" call g:ThemeByTime()
+call g:SwitchTheme(2)
 
 if !has('nvim')
     set t_Co=256

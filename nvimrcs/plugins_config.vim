@@ -1727,7 +1727,24 @@ let g:VM_default_mappings = 1
 "============================\ vim-surround /=============================
 vnoremap Si S(i_<esc>f)
 au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
+au FileType php let b:surround_45 = "<?php \r ?>"
+" echo char2nr("-") -> 45
+  " print "Hello *world!"     yss-        <?php print "Hello world!" ?>
+au FileType tex let b:surround_108 = "\\begin{\1environment: \1}\r\\end{\1\r}.*\r\1}"
+let g:surround_{char2nr("d")} = "<div\1id: \r1.*\r id=\"&\"\1>\r</div>"
+let g:surround_insert_tail = "<++>"
 
+" vS yS<motion><replacement> ySS<replacement>\
+" Replacement <C-]> b B r a | t/T/< <C-t> | f F <C-f>
+
+  " "hello"                   ysWta>            <a>"hello"</a>
+  " "hello"                   ysW<C-t>echo<cr>  <a>
+  "                                                 "hello"
+  "                                             </a>
+  "
+  " "hello"                   ysWfprint<cr>     print("hello")
+  " "hello"                   ysWFprint<cr>     print( "hello" )
+  " "hello"                   ysW<C-f>print<cr> (print "hello")
 
 "============================\ delimitMate /==============================
 ""Set to any value to disable this pluging globally or in specific buffers.
