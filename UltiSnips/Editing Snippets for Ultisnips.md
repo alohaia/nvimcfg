@@ -12,19 +12,19 @@
 * [Visual Placeholder](#visual-placeholder)
 * [Mirrors](#mirrors)
 * [Interpolation](#interpolation)
-    - [Shellcode](#shellcode)
-    - [Vimscript](#vimscript)
-    - [Python](#python)
+  - [Shellcode](#shellcode)
+  - [Vimscript](#vimscript)
+  - [Python](#python)
 * [Global Snippets](#global-snippets)
 * [Transformations](#transformations)
-    - [Regular Expression](#regular-expression)
-    - [Replacement](#replacement)
-    - [Options](#options)
+  - [Regular Expression](#regular-expression)
+  - [Replacement](#replacement)
+  - [Options](#options)
 * [Clear(Disable) Snippets](#cleardisable-snippets)
 * [Context](#context)
 * [Snippet Actions](#snippet-actions)
-    - [Pre-expand and Post-expand Actions](#pre-expand-and-post-expand-actions)
-    - [Post-jump Actions](#post-jump-actions)
+  - [Pre-expand and Post-expand Actions](#pre-expand-and-post-expand-actions)
+  - [Post-jump Actions](#post-jump-actions)
 
 <!-- /TOC -->
 
@@ -54,9 +54,9 @@ Add c snippets for cpp files for example.
 
 ## Snippets' Format
 
-```
-snippet trigger_word [ "description" [ options ] ]
-```
+
+    snippet trigger_word [ "description" [ options ] ]
+
 - `trigger_word`: The word to trigger the snippet. It can include spaces via wrap it in quotes or any other characters.
   ```
   snippet "tab trigger" [ "description" [ options ] ]
@@ -158,7 +158,7 @@ Details:
 
 ## Mirrors
 
-Mirrors repeat the content of a tabstop.To mirror a tabstop simply insert the tabstop again using the "dollar sign followed by a number" syntax, e.g., `$1`.
+Mirrors repeat the content of a tabstop.To mirror a tabstop simply insert the tabstop again using the "dollar sign followed by a number" syntax, e.g., `\$1`.
 
     snippet ifndef
     #ifndef ${1:SOME_DEFINE}

@@ -152,7 +152,7 @@ call execute('hi Conceal '.g:hi_normal_backup)
 
 "============================== 透明背景 =================================
 "      需要终端的支持，terminator/Tilix/konsole/yakuake 支持透明背景
-" call g:TransparentBg(1)
+call g:TransparentBg(1)
 
 "==================== Set font according to system =======================
 ""Need to improve.
@@ -410,7 +410,7 @@ nnoremap <silent><cr> :e .<cr>
 "================================ 其他操作 ===============================
 " nnoremap <leader>H :vert h<space>
 
-""我把 CapsLock 改成了Esc 这个设置会使输入 i 的时候有一定延迟
+""这个设置会使输入 i 的时候有一定延迟
 " inoremap ii <esc>
 nnoremap Y y$
 
@@ -422,6 +422,11 @@ nnoremap <leader>O mzO<esc>`z
 
 imap <M-BS> <Del>
 
+""使用虚拟编辑模式
+nnoremap R gR
+nnoremap gR R
+nnoremap r gr
+nnoremap gr r
 
 "#########################################################################
 "######################\ Status Line and CmdLine /########################
@@ -473,22 +478,22 @@ nnoremap <leader>e :cd ~/.config/nvim/nvimrcs/<cr>:e<space>
 "###############################\ Misc /##################################
 "#########################################################################
 
-"=================== Automatically clean extra spaces ====================
+" Automatically clean extra spaces
 autocmd BufWritePre *.c,*.cpp,*.h,*.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 
-"===== Remove the Windows ^M - when the encodings gets messed up =========
+" Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
-"================= Quickly open a buffer for scribble ====================
+" Quickly open a buffer for scribble
 " map <leader>q :e ~/buffer<cr>
 
-"============= Quickly open a markdown buffer for scribble ===============
+" Quickly open a markdown buffer for scribble
 " map <leader>x :e ~/buffer.md<cr>
 
-"==================== Toggle paste mode on and off =======================
+" Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
-"===================== Use Showhi to show hlgroup ========================
+" Use Showhi to show hlgroup
 command! Showhi echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"

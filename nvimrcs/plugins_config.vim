@@ -206,7 +206,11 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 "=========================================================================
 ""Description: Auto make pairs.
-Plug 'Raimondi/delimitMate'
+" Plug 'Raimondi/delimitMate'
+"=========================================================================
+""Description: Auto Make Pairs
+"Note: Seems not being maintained any longer and does not works well with Ultisnips.
+Plug 'jiangmiao/auto-pairs'
 "=========================================================================
 ""Description: Add Enddings Automatically
 Plug 'tpope/vim-endwise'
@@ -398,7 +402,7 @@ command! Hdefx echo
             \"  C-l         - redraw\n".
             \"  C-g         - print\n".
             \"  cd          - change vim cwd"
-            " \"  Enter       - open\n".
+" \"  Enter       - open\n".
 
 ""Soda:
 command! Hsuda vert h suda-usage
@@ -499,7 +503,7 @@ let g:startify_bookmarks = [
 let g:startify_commands = [
             \ {'t': ['Press t to open coc-explorer.', 'CocCommand explorer']},
             \ ]
-            " \ {'t': ['Press t to open defx.', 'call g:Defx_toggle_with_my_options()']},
+" \ {'t': ['Press t to open defx.', 'call g:Defx_toggle_with_my_options()']},
 " \ ':help reference',
 " \ ['Vim Reference', 'h ref'],
 " \ {'?': ['Vim Reference', 'h ref']},
@@ -796,7 +800,7 @@ let g:vista_cursor_delay = 200
 "let g:vista_floating_delay=100
 let g:vista_update_on_text_changed = 1
 let g:vista_update_on_text_changed_delay = 2000
-" let g:vista_close_on_jump = 1
+let g:vista_close_on_jump = 1
 let g:vista_stay_on_open = 1
 ""Disable blink
 let g:vista_blink = [0, 0]
@@ -805,14 +809,15 @@ let g:vista_top_level_blink = [0, 0]
 ""Use beautiful icons
 "let g:vista#renderer#enable_icon = exists('g:vista#renderer#icons') || exists('g:airline_powerline_fonts')
 let g:vista#renderer#icons = {
-\   "function": "\uf794",
-\   "variable": "\uf71b",
-\  }
+            \   "function": "\uf794",
+            \   "variable": "\uf71b",
+            \  }
 " function! NearestMethodOrFunction() abort
 "     return get(b:, 'vista_nearest_method_or_function', '')
 " endfunction
 " set statusline+=%{NearestMethodOrFunction()}
 " autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+autocmd FileType vista,vista_kind nnoremap <buffer> <silent> f :<c-u>call vista#finder#fzf#Run()<CR>
 
 "============================\ vim-devicons /=============================
 let g:webdevicons_enable = 1
@@ -980,6 +985,11 @@ noremap ,t :FzfTags<CR>
 noremap ,h :FzfHistory<CR>
 noremap ,; :FzfHistory:<CR>
 noremap ,/ :FzfHistory/<CR>
+""Mappings
+command FzfMapsn <plug>(fzf-maps-n)
+command FzfMapsi <plug>(fzf-maps-i)
+command FzfMapsx <plug>(fzf-maps-x)
+command FzfMapso <plug>(fzf-maps-o)
 ""This is the default extra key bindings
 " let g:fzf_action = {
 "   \ 'ctrl-t': 'tab split',
@@ -1062,20 +1072,20 @@ let g:any_jump_window_height_ratio = 0.9
 " let g:any_jump_window_top_offset   = 4
 ""Or override all default colors
 let g:any_jump_colors = {
-      \}
-      " \"plain_text":         "Comment",
-      " \"preview":            "Comment",
-      " \"preview_keyword":    "Operator",
-      " \"heading_text":       "Function",
-      " \"heading_keyword":    "Identifier",
-      " \"group_text":         "Comment",
-      " \"group_name":         "Function",
-      " \"more_button":        "Operator",
-      " \"more_explain":       "Comment",
-      " \"result_line_number": "Comment",
-      " \"result_text":        "Statement",
-      " \"result_path":        "String",
-      " \"help":               "Comment"
+            \}
+" \"plain_text":         "Comment",
+" \"preview":            "Comment",
+" \"preview_keyword":    "Operator",
+" \"heading_text":       "Function",
+" \"heading_keyword":    "Identifier",
+" \"group_text":         "Comment",
+" \"group_name":         "Function",
+" \"more_button":        "Operator",
+" \"more_explain":       "Comment",
+" \"result_line_number": "Comment",
+" \"result_text":        "Statement",
+" \"result_path":        "String",
+" \"help":               "Comment"
 ""Disable default any-jump keybindings (default: 0)
 " let g:any_jump_disable_default_keybindings = 0
 ""Remove comments line from search results (default: 1)
@@ -1094,10 +1104,10 @@ let g:any_jump_colors = {
 ""For params, see :h far-params
 noremap <LEADER>f :F<space><space>**/*
             \<left><left><left><left><left>
-            "\--source='agnvim' --cwd=''
-            "\--win-layout --win-width --win-height
-            "\--preview-win-layout --preview-win-width --preview-win-height
-            "\--auto-preview --auto-preview-on-start
+"\--source='agnvim' --cwd=''
+"\--win-layout --win-width --win-height
+"\--preview-win-layout --preview-win-width --preview-win-height
+"\--auto-preview --auto-preview-on-start
 if has('nvim')
     let g:far#source = 'rgnvim'
 else
@@ -1145,16 +1155,16 @@ let g:coc_global_extensions = [
             \ 'coc-explorer',
             \ 'coc-bookmark'
             \ ]
-            " \ 'coc-ccls',
-            " \ 'coc-translator',
-            " \ 'coc-sourcekit',
-            " \ 'coc-flutter',
-            " \ 'coc-actions',
-            " \ 'coc-gitignore',
-            " \ 'coc-tasks',
-            " \ 'coc-todolist',
-            " \ 'coc-yank',
-            " \ 'coc-snippets',
+" \ 'coc-ccls',
+" \ 'coc-translator',
+" \ 'coc-sourcekit',
+" \ 'coc-flutter',
+" \ 'coc-actions',
+" \ 'coc-gitignore',
+" \ 'coc-tasks',
+" \ 'coc-todolist',
+" \ 'coc-yank',
+" \ 'coc-snippets',
 ""Use python-language-server instead: pip install 'python-language-server[all]'
             "\ 'coc-python',
             "\ 'coc-pyright',
@@ -1195,38 +1205,38 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 ""coc-explorer
 let g:coc_explorer_global_presets = {
-\   'nvim': {
-\     'root-uri': '~/.config/nvim/',
-\   },
-\   'tab': {
-\     'position': 'tab',
-\     'quit-on-open': v:true,
-\   },
-\   'floating': {
-\     'position': 'floating',
-\     'open-action-strategy': 'sourceWindow',
-\   },
-\   'floatingTop': {
-\     'position': 'floating',
-\     'floating-position': 'center-top',
-\     'open-action-strategy': 'sourceWindow',
-\   },
-\   'floatingLeftside': {
-\     'position': 'floating',
-\     'floating-position': 'left-center',
-\     'floating-width': 50,
-\     'open-action-strategy': 'sourceWindow',
-\   },
-\   'floatingRightside': {
-\     'position': 'floating',
-\     'floating-position': 'right-center',
-\     'floating-width': 50,
-\     'open-action-strategy': 'sourceWindow',
-\   },
-\   'simplify': {
-\     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
-\   }
-\ }
+            \   'nvim': {
+            \     'root-uri': '~/.config/nvim/',
+            \   },
+            \   'tab': {
+            \     'position': 'tab',
+            \     'quit-on-open': 1,
+            \   },
+            \   'floating': {
+            \     'position': 'floating',
+            \     'open-action-strategy': 'sourceWindow',
+            \   },
+            \   'floatingTop': {
+            \     'position': 'floating',
+            \     'floating-position': 'center-top',
+            \     'open-action-strategy': 'sourceWindow',
+            \   },
+            \   'floatingLeftside': {
+            \     'position': 'floating',
+            \     'floating-position': 'left-center',
+            \     'floating-width': 50,
+            \     'open-action-strategy': 'sourceWindow',
+            \   },
+            \   'floatingRightside': {
+            \     'position': 'floating',
+            \     'floating-position': 'right-center',
+            \     'floating-width': 50,
+            \     'open-action-strategy': 'sourceWindow',
+            \   },
+            \   'simplify': {
+            \     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+            \   }
+            \ }
 
 " nnoremap <leader>ce :CocCommand explorer --preset floating<CR>
 nnoremap <leader>ce :CocCommand explorer<CR>
@@ -1257,37 +1267,37 @@ nmap <leader>bt <Plug>(coc-bookmark-toggle)
 
 " Use g[ and g] to navigate diagnostics
 " Use :CocDiagnostics to get all diagnostics of current buffer in location list.
-nnoremap <silent> g[ <Plug>(coc-diagnostic-prev)
-nnoremap <silent> g] <Plug>(coc-diagnostic-next)
+nnoremap <silent> <leader>g[ <Plug>(coc-diagnostic-prev)
+nnoremap <silent> <leader>g] <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
-nnoremap <silent> gd <Plug>(coc-definition)
-nnoremap <silent> gy <Plug>(coc-type-definition)
-nnoremap <silent> gi <Plug>(coc-implementation)
-nnoremap <silent> gr <Plug>(coc-references)
+nnoremap <silent> <leader>gd <Plug>(coc-definition)
+nnoremap <silent> <leader>gy <Plug>(coc-type-definition)
+nnoremap <silent> <leader>gi <Plug>(coc-implementation)
+nnoremap <silent> <leader>gr <Plug>(coc-references)
 
 " Use <leader>K to show documentation in preview window.
 function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocAction('doHover')
+    endif
 endfunction
 nnoremap <silent> <leader>H :call <SID>show_documentation()<CR>
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+xmap \\f  <Plug>(coc-format-selected)
+nmap \\f  <Plug>(coc-format-selected)
 
 augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+    autocmd!
+    " Setup formatexpr specified filetype(s).
+    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+    " Update signature help on jump placeholder.
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
 " Applying codeAction to the selected region.
@@ -1448,14 +1458,14 @@ let g:asynctasks_term_pos = 'floaterm'
 " let g:asynctasks_config_name = '.git/tasks'
 ""Extra configurations loaded after the original global configuration.
 let g:asynctasks_extra_config = [
-    \ '~/.config/nvim/settings/asynctask/tasks.ini',
-    \ ]
+            \ '~/.config/nvim/settings/asynctask/tasks.ini',
+            \ ]
 ""Define environment variables such as ${VIM:my_name}
 let g:asynctasks_environ = {
-    \ 'my_name': 'aloha',
-    \ 'cppc': '/usr/bin/g++',
-    \ 'cc': '/usr/bin/gcc',
-    \}
+            \ 'my_name': 'aloha',
+            \ 'cppc': '/usr/bin/g++',
+            \ 'cc': '/usr/bin/gcc',
+            \}
 ""插件还提供了一个用于在命令行下执行 task 的脚本 asynctask, 并支持使用 fzf 查找 task.
 ""Integrate with fzf: https://github.com/skywind3000/asynctasks.vim/wiki/UI-Integration
 ""Usage: :AsyncTaskFzf
@@ -1729,7 +1739,7 @@ vnoremap Si S(i_<esc>f)
 au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
 au FileType php let b:surround_45 = "<?php \r ?>"
 " echo char2nr("-") -> 45
-  " print "Hello *world!"     yss-        <?php print "Hello world!" ?>
+" print "Hello *world!"     yss-        <?php print "Hello world!" ?>
 au FileType tex let b:surround_108 = "\\begin{\1environment: \1}\r\\end{\1\r}.*\r\1}"
 let g:surround_{char2nr("d")} = "<div\1id: \r1.*\r id=\"&\"\1>\r</div>"
 let g:surround_insert_tail = "<++>"
@@ -1737,69 +1747,92 @@ let g:surround_insert_tail = "<++>"
 " vS yS<motion><replacement> ySS<replacement>\
 " Replacement <C-]> b B r a | t/T/< <C-t> | f F <C-f>
 
-  " "hello"                   ysWta>            <a>"hello"</a>
-  " "hello"                   ysW<C-t>echo<cr>  <a>
-  "                                                 "hello"
-  "                                             </a>
-  "
-  " "hello"                   ysWfprint<cr>     print("hello")
-  " "hello"                   ysWFprint<cr>     print( "hello" )
-  " "hello"                   ysW<C-f>print<cr> (print "hello")
+" "hello"                   ysWta>            <a>"hello"</a>
+" "hello"                   ysW<C-t>echo<cr>  <a>
+"                                                 "hello"
+"                                             </a>
+"
+" "hello"                   ysWfprint<cr>     print("hello")
+" "hello"                   ysWFprint<cr>     print( "hello" )
+" "hello"                   ysW<C-f>print<cr> (print "hello")
 
 "============================\ delimitMate /==============================
-""Set to any value to disable this pluging globally or in specific buffers.
-" let g:loaded_delimitMate = 1
-" au FileType ... let b:g:loaded_delimitMate = 1
-""This options turns delimitMate off for the listed file types.
-" let delimitMate_excluded_ft = "mail,txt"
-""Add a closing delimiter automagically.
-let g:delimitMate_autoclose = 1
-""Which characters should be considered as matching pairs.
-let g:delimitMate_matchpairs = "(:),[:],{:},<:>"
-au FileType c,cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
-""DelimitMate 提供了宽字符支持。
-let g:delimitMate_matchpairs = g:delimitMate_matchpairs.",（:）,《:》,【:】"
-""Which characters should be considered as quotes.
-let g:delimitMate_quotes = "\" ' ` "
-au FileType markdown let g:delimitMate_quotes = g:delimitMate_quotes."* "
-""三个 quotes，如 python 中的多行注释/多行字符串、MarkDown 中的代码块。
-au Filetype python let delimitMate_nesting_quotes = ['"']
-au Filetype markdown let delimitMate_nesting_quotes = ['`']
-""Turns on/off expansion of <CR> and <Space>
-let g:delimitMate_expand_cr = 1           " 0/1/2 set to 2 to force cr-expansion.
-let g:delimitMate_expand_space = 1
-""The expansion of space and cr will also be applied to quotes.
-let g:delimitMate_expand_inside_quotes = 1
-""This option turns on/off the jumping over <CR> and <Space> expansions when inserting closing matchpairs.
-let g:delimitMate_jump_expansion = 1
-""Automatically insert a quote when the pattern matches or doesn't match if a ! presented at the beginning.
-""Use '\%#' to match (matches with zero width) the position of the cursor.
-""          For expample, set to '\%#.hello'
-""       |hello   ->    "    ->    ""hello
-""       |world   ->    "    ->    "world
-let g:delimitMate_smart_quotes = '\%(\w\|[^[:punct:][:space:]]\|\%(\\\\\)*\\\)\%#\|\%#\%(\w\|[^[:space:][:punct:]]\)'
-""This regex is matched against the text to the right of cursor, if it's not empty and there is a match delimitMate will not autoclose the pair.
-""\! will be replaced by the character being inserted;
-""\# will be replaced by the closing pair.
-""          For expample, set to 'hello'
-""       |hello   ->    (    ->    (hell0
-""       |world   ->    (    ->    ()world
-let g:delimitMate_smart_matchpairs = '^\%(\w\|\!\|[£$]\|[^[:space:][:punct:]]\)'
-""See :h delimitMateBalance.
-let g:delimitMate_balance_matchpairs = 1
-""This options turns delimitMate off for the listed regions, see :h group-name for more info about what is a region.
-""You can use :Showhi to see group name of text under the cursor.
-" let delimitMate_excluded_regions = "Comment,String"
-""Auto insert eol marker.
-""0 -> never
-""1 -> when inserting any matchpair
-""2 -> when expanding car return in matchpair
-" let g:delimitMate_insert_eol_marker = 1
-" au FileType cpp let b:delimitMate_eol_marker = ";"
-inoremap <M-e>   <Plug>delimitMateJumpAny
-inoremap <M-S-e> <Plug>delimitMateJumpMany
-" imap <M-BS>  <Plug>delimitMateS-BS
-""In basic.vim: imap <M-BS> <Del>
+" ""Set to any value to disable this pluging globally or in specific buffers.
+" " let g:loaded_delimitMate = 1
+" " au FileType ... let b:g:loaded_delimitMate = 1
+" ""This options turns delimitMate off for the listed file types.
+" " let delimitMate_excluded_ft = "mail,txt"
+" ""Add a closing delimiter automagically.
+" let g:delimitMate_autoclose = 1
+" ""The expansion of space and cr will also be applied to quotes.
+" let g:delimitMate_expand_inside_quotes = 1
+" ""This option turns on/off the jumping over <CR> and <Space> expansions when inserting closing matchpairs.
+" let g:delimitMate_jump_expansion = 1
+" ""Automatically insert a quote when the pattern matches or doesn't match if a ! presented at the beginning.
+" ""Use '\%#' to match (matches with zero width) the position of the cursor.
+" ""          For expample, set to '\%#.hello'
+" ""       |hello   ->    "    ->    ""hello
+" ""       |world   ->    "    ->    "world
+" let g:delimitMate_smart_quotes = '\%(\w\|[^[:punct:][:space:]]\|\%(\\\\\)*\\\)\%#\|\%#\%(\w\|[^[:space:][:punct:]]\)'
+" ""This regex is matched against the text to the right of cursor, if it's not empty and there is a match delimitMate will not autoclose the pair.
+" ""\! will be replaced by the character being inserted;
+" ""\# will be replaced by the closing pair.
+" ""          For expample, set to 'hello'
+" ""       |hello   ->    (    ->    (hell0
+" ""       |world   ->    (    ->    ()world
+" let g:delimitMate_smart_matchpairs = '^\%(\w\|\!\|[£$]\|[^[:space:][:punct:]]\)'
+" ""See :h delimitMateBalance.
+" let g:delimitMate_balance_matchpairs = 1
+" ""This options turns delimitMate off for the listed regions, see :h group-name for more info about what is a region.
+" ""You can use :Showhi to see group name of text under the cursor.
+" " let delimitMate_excluded_regions = "Comment,String"
+" ""Auto insert eol marker.
+" ""0 -> never
+" ""1 -> when inserting any matchpair
+" ""2 -> when expanding car return in matchpair
+" " let g:delimitMate_insert_eol_marker = 1
+" " au FileType cpp let b:delimitMate_eol_marker = ";"
+" inoremap <M-e>   <Plug>delimitMateJumpAny
+" inoremap <M-S-e> <Plug>delimitMateJumpMany
+" " imap <M-BS>  <Plug>delimitMateS-BS
+" ""In basic.vim: imap <M-BS> <Del>
+" ""Which characters should be considered as matching pairs.
+" let g:delimitMate_matchpairs = "(:),[:],{:},<:>"
+" au FileType c,cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
+" ""DelimitMate 提供了宽字符支持。
+" let g:delimitMate_matchpairs = g:delimitMate_matchpairs.",（:）,《:》,【:】"
+" " ""Which characters should be considered as quotes.
+" " let g:delimitMate_quotes = "\" ' ` "
+" " au FileType markdown let g:delimitMate_quotes = g:delimitMate_quotes."* "
+" ""三个 quotes，如 python 中的多行注释/多行字符串、MarkDown 中的代码块。
+" au Filetype python let delimitMate_nesting_quotes = ['"']
+" au Filetype markdown let delimitMate_nesting_quotes = ['`']
+" ""Turns on/off expansion of <CR> and <Space>
+" let g:delimitMate_expand_cr = 1           " 0/1/2 set to 2 to force cr-expansion.
+" let g:delimitMate_expand_space = 1
+
+"===============================\ auto-pairs /============================
+" 开启/禁用 auto-pairs
+let g:AutoPairsShortcutToggle=''
+" 将一对 pair 后面的内容移到 pair 中（在 pair 内按下快捷键）
+let g:AutoPairsShortcutFastWrap='<M-e>'
+let g:AutoPairsShortcutJump=''
+let g:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '"':'"', '`':'`'}
+au FileType html let b:AutoPairs['<'] = '>'
+au FileType vim let b:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '`':'`', '<':'>'}
+" 使用 Backspace 删除时会删除 pair 中的另一个
+let g:AutoPairsMapBs=1
+" 让使用 <C-h> 删除时不会删除 pair 中的另一个
+let g:AutoPairsMapCh=0
+""在pairs间输入空格
+let g:AutoPairsMapSpace=1
+" 将回车键映射为插入空行的操作
+let g:AutoPairsMapCR=1
+
+""FlyMode, 输入 ")", "}", "]" 总是会跳转到后方的 ")", "}", "]" 后面
+let g:AutoPairsFlyMode=0
+""纠正错误跳转
+let g:AutoPairsShortcutBackInsert='<M-b>'
 
 
 "#########################################################################
@@ -1869,17 +1902,17 @@ let g:mkdp_browserfunc = ''
 " sequence_diagrams: js-sequence-diagrams options
 " content_editable: if enable content editable for preview page, default: v:false
 let g:mkdp_preview_options = {
-    \ 'mkit': {},
-    \ 'katex': {},
-    \ 'uml': {},
-    \ 'maid': {},
-    \ 'disable_sync_scroll': 0,
-    \ 'sync_scroll_type': 'middle',
-    \ 'hide_yaml_meta': 1,
-    \ 'sequence_diagrams': {},
-    \ 'flowchart_diagrams': {},
-    \ 'content_editable': v:false
-    \ }
+            \ 'mkit': {},
+            \ 'katex': {},
+            \ 'uml': {},
+            \ 'maid': {},
+            \ 'disable_sync_scroll': 0,
+            \ 'sync_scroll_type': 'middle',
+            \ 'hide_yaml_meta': 1,
+            \ 'sequence_diagrams': {},
+            \ 'flowchart_diagrams': {},
+            \ 'content_editable': v:false
+            \ }
 " use a custom markdown style must be absolute path
 " like '/Users/username/markdown.css' or expand('~/markdown.css')
 let g:mkdp_markdown_css = ''
@@ -1963,35 +1996,35 @@ let g:tex_conceal='abdmg'
 au FileType tex command! FzfTex call vimtex#fzf#run('ctli', g:fzf_layout)
 let g:vimtex_compiler_method = 'latexmk'
 let g:vimtex_compiler_latexmk = {
-    \ 'build_dir' : '',
-    \ 'callback' : 1,
-    \ 'continuous' : 1,
-    \ 'executable' : 'latexmk',
-    \ 'hooks' : [],
-    \ 'options' : [
-    \   '-verbose',
-    \   '-file-line-error',
-    \   '-synctex=1',
-    \   '-interaction=nonstopmode',
-    \ ],
-    \}
+            \ 'build_dir' : '',
+            \ 'callback' : 1,
+            \ 'continuous' : 1,
+            \ 'executable' : 'latexmk',
+            \ 'hooks' : [],
+            \ 'options' : [
+            \   '-verbose',
+            \   '-file-line-error',
+            \   '-synctex=1',
+            \   '-interaction=nonstopmode',
+            \ ],
+            \}
 ""使用 Ctex 宏包的中文文档建议使用 xelatex 编译
 let g:vimtex_compiler_latexmk_engines = {
-    \ '_'                : '-xelatex',
-    \ 'pdflatex'         : '-pdf',
-    \ 'dvipdfex'         : '-pdfdvi',
-    \ 'lualatex'         : '-lualatex',
-    \ 'xelatex'          : '-xelatex',
-    \ 'context (pdftex)' : '-pdf -pdflatex=texexec',
-    \ 'context (luatex)' : '-pdf -pdflatex=context',
-    \ 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
-    \}
+            \ '_'                : '-xelatex',
+            \ 'pdflatex'         : '-pdf',
+            \ 'dvipdfex'         : '-pdfdvi',
+            \ 'lualatex'         : '-lualatex',
+            \ 'xelatex'          : '-xelatex',
+            \ 'context (pdftex)' : '-pdf -pdflatex=texexec',
+            \ 'context (luatex)' : '-pdf -pdflatex=context',
+            \ 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
+            \}
 let g:vimtex_compiler_latexrun_engines = {
-    \ '_'                : 'xelatex',
-    \ 'pdflatex'         : 'pdflatex',
-    \ 'lualatex'         : 'lualatex',
-    \ 'xelatex'          : 'xelatex',
-    \}
+            \ '_'                : 'xelatex',
+            \ 'pdflatex'         : 'pdflatex',
+            \ 'lualatex'         : 'lualatex',
+            \ 'xelatex'          : 'xelatex',
+            \}
 " let g:vimtex_compiler_latexmk = {
 "     \ 'build_dir' : '',
 "     \ 'callback' : 1,

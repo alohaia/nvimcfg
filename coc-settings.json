@@ -43,10 +43,12 @@
     "diagnostic.refreshOnInsertMode": false,
     "diagnostic.refreshAfterSave": false,
     "diagnostic.checkCurrentLine": true,
-    "diagnostic.virtualTextPrefix": " ❯❯❯ ",
-    "diagnostic.virtualText": true,
 
-    // "diagnostic-languageserver.enable": true,
+    "diagnostic.virtualText": true,
+    "diagnostic.virtualTextPrefix": " ❯❯❯ ",
+    "diagnostic.virtualTextCurrentLineOnly": false,
+
+    "diagnostic-languageserver.enable": false,
     "diagnostic-languageserver.filetypes": {
         "vim": "vint",
         "email": "languagetool",
@@ -228,13 +230,36 @@
                 "lintTool": "golint"
             }
         },
+        // https://github.com/MaskRay/ccls/wiki/Customization
         "ccls": {
             "command": "ccls",
+            "args": [],
             "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
             "rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/", ".hg/"],
             "initializationOptions": {
                 "cache": {
-                    "directory": "/tmp/ccls"
+                    "directory": ".ccls-cache",
+                    "format": "binary",
+                    "retain": 1
+                },
+                "client": {
+                    "snippetSupport": true
+                },
+                "clang": {
+                    "extraArgs": [],
+                    "excludeArgs": []
+                },
+                "completion": {
+                    "placeholder": true
+                },
+                "compilationDatabaseDirectory": "",
+                "diagnostics": {
+                    "onOpen": 0,
+                    "onChange": 1000,
+                    "onSave": 0
+                },
+                "index": {
+                    "comments": 2
                 }
             }
         }
