@@ -702,11 +702,14 @@ endfunction
 
 function! DefxChoosewin(context) abort
     " let l:winnrs = find_winnrs() " Modified for slide
+    if defx#is_directory()
+        return defx#call_action('cd', defx#get_candidate()['action__path'])
+    endif
     let l:winnrs = range(1, winnr('$'))
     let l:opts = {'auto_choose': 1, 'hook_enable': 0}
     for filename in a:context.targets
         call choosewin#start(l:winnrs, l:opts)
-        execute 'edit' filename
+        execute 'edit '.filename
     endfor
 endfunction
 
