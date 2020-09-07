@@ -633,9 +633,144 @@ let g:rnvimr_layout = { 'relative': 'editor',
             \ 'style': 'minimal' }
 let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
-" "============================\ defx.nvim /=============================
+""============================\ defx.nvim /=============================
+nnoremap <silent> <leader>df :Defx<CR>
+" call defx#custom#option('_', {
+"       \ 'resume': 1,
+"       \ 'winwidth': 30,
+"       \ 'split': 'vertical',
+"       \ 'direction': 'topleft',
+"       \ 'show_ignored_files': 0,
+"       \ 'columns': 'mark:indent:git:icons:filename',
+"       \ })
+call defx#custom#option('_', {
+      \ 'columns': 'mark:indent:git:icon:icons:filename:type:size:time',
+      \ 'sort': 'filename',
+      \ 'preview_height': &lines/2,
+      \ 'split': 'vertical', 'winwidth': 40, 'direction': 'topleft',
+      \ 'root_marker': '[in]: ',
+      \ 'buffer_name': 'Defx',
+      \ 'show_ignored_files': 0, 'ignored_files': '.*,*.png,*.jpg',
+      \ 'toggle': 1, 'resume': 1, 'focus': 1
+      \ })
+      " \ 'floating_preview': 1, 'wincol': &columns/4, 'winrow': &lines/3,
+call defx#custom#column('git', 'indicators', {
+      \ 'Modified'  : '✹ ',
+      \ 'Staged'    : '⚑ ',
+      \ 'Untracked' : '⚝ ',
+      \ 'Renamed'   : '≫ ',
+      \ 'Unmerged'  : '==',
+      \ 'Ignored'   : '~~',
+      \ 'Deleted'   : '✖ ',
+      \ 'Unknown'   : '??'
+      \ })
+" defx-icons plugin
+let g:defx_icons_column_length = 1
+let g:defx_icons_mark_icon = ''
+let g:defx_icons_parent_icon = ""
+call defx#custom#column('mark', { 'readonly_icon': '', 'selected_icon': '' })
+" Events
+" ---
+augroup user_plugin_defx
+    autocmd!
+    " Define defx window mappings
+    autocmd FileType defx call <SID>defx_mappings()
+    " Delete defx if it's the only buffer left in the window
+    autocmd WinEnter * if &filetype == 'defx' && winnr('$') == 1 | bdel | endif
+    " Move focus to the next window if current buffer is defx
+    autocmd TabLeave * if &filetype == 'defx' | wincmd w | endif
+augroup END
+" Internal functions
+" ---
+function! s:jump_dirty(dir) abort
+    " Jump to the next position with defx-git dirty symbols
+    let l:icons = get(g:, 'defx_git_indicators', {})
+    let l:icons_pattern = join(values(l:icons), '\|')
+    if ! empty(l:icons_pattern)
+        let l:direction = a:dir > 0 ? 'w' : 'bw'
+        return search(printf('\(%s\)', l:icons_pattern), l:direction)
+    endif
+endfunction
+
+function! s:defx_toggle_tree() abort
+    " Open current file, or toggle directory expand/collapse
+    if defx#is_directory()
+        return defx#do_action('open_or_close_tree')
+    endif
+    return defx#do_action('multi', ['drop'])
+endfunction
+
+function! DefxChoosewin(context) abort
+    " let l:winnrs = find_winnrs() " Modified for slide
+    let l:winnrs = range(1, winnr('$'))
+    let l:opts = {'auto_choose': 1, 'hook_enable': 0}
+    for filename in a:context.targets
+        call choosewin#start(l:winnrs, l:opts)
+        execute 'edit' filename
+    endfor
+endfunction
+
+function! s:defx_mappings() abort
+    ""Defx window keyboard mappings
+    setlocal signcolumn=no expandtab
+    nnoremap <silent><buffer><expr> <CR>              defx#do_action('call', 'DefxChoosewin')
+    nnoremap <silent><buffer><expr> o                 <sid>defx_toggle_tree()
+    nnoremap <silent><buffer><expr> st                defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
+    nnoremap <silent><buffer><expr> v                 defx#do_action('open', 'botright vsplit')
+    nnoremap <silent><buffer><expr> s                 defx#do_action('open', 'botright split')
+    nnoremap <silent><buffer><expr> P                 defx#do_action('preview')
+    nnoremap <silent><buffer><expr> r                 defx#do_action('rename')
+    nnoremap <silent><buffer><expr> H                 defx#do_action('toggle_ignored_files')
+    nnoremap <silent><buffer><expr> yy                defx#do_action('yank_path')
+    nnoremap <silent><buffer><expr> .                 defx#do_action('repeat')
+    nnoremap <silent><buffer><expr> <Tab>             winnr('$') != 1 ?
+        \ ':<C-u>wincmd w<CR>' :
+        \ ':<C-u> Defx -buffer-name=temp -split=vertical<CR>'
+    nnoremap <silent><buffer><expr> j                 line('.') == line('$') ? 'gg' : 'j'
+    nnoremap <silent><buffer><expr> k                 line('.') == 1 ? 'G' : 'k'
+    nnoremap <silent><buffer><expr> J                 line('.') == line('$') ? 'gg' : '5gj'
+    nnoremap <silent><buffer><expr> K                 line('.') == 1 ? 'G' : '5gk'
+    ""Defx's buffer management
+    nnoremap <silent><buffer><expr> q                 defx#do_action('quit')
+    " nnoremap <silent><buffer><expr> se                defx#do_action('save_session')
+    " nnoremap <silent><buffer><expr> le                defx#do_action('load_session')
+    nnoremap <silent><buffer><expr> <C-r>             defx#do_action('redraw')
+    nnoremap <silent><buffer><expr> <C-g>             defx#do_action('print')
+    ""File/dir management
+    nnoremap <silent><buffer><expr><nowait> c         defx#do_action('copy')
+    nnoremap <silent><buffer><expr><nowait> x         defx#do_action('move')
+    nnoremap <silent><buffer><expr><nowait> m         defx#do_action('move')
+    nnoremap <silent><buffer><expr><nowait> p         defx#do_action('paste')
+    nnoremap <silent><buffer><expr><nowait> r         defx#do_action('rename')
+    " nnoremap <silent><buffer><expr> dd                defx#do_action('remove_trash')
+    nnoremap <silent><buffer><expr> N                 defx#do_action('new_directory')
+    nnoremap <silent><buffer><expr> n                 defx#do_action('new_file')
+    nnoremap <silent><buffer><expr> M                 defx#do_action('new_multiple_files')
+    ""Jump
+    nnoremap <silent><buffer>  [g                     :<C-u>call <SID>jump_dirty(-1)<CR>
+    nnoremap <silent><buffer>  ]g                     :<C-u>call <SID>jump_dirty(1)<CR>
+    ""Change directory
+    nnoremap <silent><buffer><expr> cd                defx#do_action('change_vim_cwd')
+    nnoremap <silent><buffer><expr><nowait> \         defx#do_action('cd', getcwd())
+    nnoremap <silent><buffer><expr><nowait> &         defx#do_action('cd', getcwd())
+    nnoremap <silent><buffer><expr> ~                 defx#async_action('cd')
+    nnoremap <silent><buffer><expr> <BS>              defx#async_action('cd', ['..'])
+    nnoremap <silent><buffer><expr> h                 defx#async_action('cd', ['..'])
+    nnoremap <silent><buffer><expr> u                 defx#do_action('cd', ['..'])
+    nnoremap <silent><buffer><expr> 2u                defx#do_action('cd', ['../..'])
+    nnoremap <silent><buffer><expr> 3u                defx#do_action('cd', ['../../..'])
+    nnoremap <silent><buffer><expr> 4u                defx#do_action('cd', ['../../../..'])
+    ""Selection
+    nnoremap <silent><buffer><expr> s                 defx#do_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr> <Space>           defx#do_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr> <C-a>             defx#do_action('toggle_select_all')
+    nnoremap <silent><buffer><expr> S                 defx#do_action('toggle_sort', 'time')
+    nnoremap <silent><buffer><expr> C                 defx#do_action('toggle_columns', 'mark:git:indent:icons:icon:filename:type:size:time')
+    ""Commands
+    nnoremap <silent><buffer><expr> !       defx#do_action('execute_command')
+    nnoremap <silent><buffer><expr> ex      defx#do_action('execute_system')
+endfunction
 " ""Options available: :h defx-options
-" nnoremap <silent> <leader>df :Defx<CR>
 " " noremap <silent> <leader>df :call g:Defx_toggle_with_my_options()<cr>
 " " function g:Defx_toggle_with_my_options()
 " "     " if &filetype != 'startify'
@@ -691,16 +826,6 @@ let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 "             " \ 'floating_preview': 1, 'wincol': &columns/4, 'winrow': &lines/3,
 " " endfunction
 "
-" function! DefxChoosewin(context) abort
-"     " let l:winnrs = find_winnrs() " Modified for slide
-"     let l:winnrs = range(1, winnr('$'))
-"     let l:opts = {'auto_choose': 1, 'hook_enable': 0}
-"     for filename in a:context.targets
-"     call choosewin#start(l:winnrs, l:opts)
-"     execute 'edit' filename
-"     endfor
-" endfunction
-"
 " ""Define mappings
 " autocmd FileType defx call s:defx_my_mappings()
 " function! s:defx_my_mappings() abort
@@ -741,29 +866,6 @@ let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 "     nnoremap <silent><buffer><expr> <C-g>   defx#do_action('print')
 "     nnoremap <silent><buffer><expr> cd      defx#do_action('change_vim_cwd')
 " endfunction
-"
-"
-" au VimEnter * call defx#custom#column('git', 'indicators', {
-"             \ 'Modified'  : '✹ ',
-"             \ 'Staged'    : '⚑ ',
-"             \ 'Untracked' : '⚝ ',
-"             \ 'Renamed'   : '->',
-"             \ 'Unmerged'  : '==',
-"             \ 'Ignored'   : '~~',
-"             \ 'Deleted'   : '✖ ',
-"             \ 'Unknown'   : '? '
-"             \ })
-" " " ⚐ ★ "
-" " " call defx#custom#column('git', 'indicators', {
-" " " \ 'Modified'  : '✹',
-" " " \ 'Staged'    : '✚',
-" " " \ 'Untracked' : '✭',
-" " " \ 'Renamed'   : '➜',
-" " " \ 'Unmerged'  : '═',
-" " " \ 'Ignored'   : '☒',
-" " " \ 'Deleted'   : '✖',
-" " " \ 'Unknown'   : '?'
-" " " \ })
 
 
 "============================\ vista.vim /=============================
@@ -986,10 +1088,10 @@ noremap ,h :FzfHistory<CR>
 noremap ,; :FzfHistory:<CR>
 noremap ,/ :FzfHistory/<CR>
 ""Mappings
-command FzfMapsn <plug>(fzf-maps-n)
-command FzfMapsi <plug>(fzf-maps-i)
-command FzfMapsx <plug>(fzf-maps-x)
-command FzfMapso <plug>(fzf-maps-o)
+command! FzfMapsn <plug>(fzf-maps-n)
+command! FzfMapsi <plug>(fzf-maps-i)
+command! FzfMapsx <plug>(fzf-maps-x)
+command! FzfMapso <plug>(fzf-maps-o)
 ""This is the default extra key bindings
 " let g:fzf_action = {
 "   \ 'ctrl-t': 'tab split',
@@ -1276,7 +1378,6 @@ nnoremap <silent> <leader>gy <Plug>(coc-type-definition)
 nnoremap <silent> <leader>gi <Plug>(coc-implementation)
 nnoremap <silent> <leader>gr <Plug>(coc-references)
 
-" Use <leader>K to show documentation in preview window.
 function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
         execute 'h '.expand('<cword>')
@@ -1284,7 +1385,9 @@ function! s:show_documentation()
         call CocAction('doHover')
     endif
 endfunction
-nnoremap <silent> <leader>H :call <SID>show_documentation()<CR>
+"
+" Use <leader>K to show documentation in preview window.
+nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 
