@@ -454,3 +454,9 @@ endfunction
 "     call system('curl '.a:url.' -o '.l:path.' '.l:name)
 "     return 0
 " endfunction
+
+""Get SID
+function! g:GetSID()
+    return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+endfunction
+

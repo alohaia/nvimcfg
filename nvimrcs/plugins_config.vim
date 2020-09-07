@@ -682,6 +682,12 @@ augroup user_plugin_defx
 augroup END
 " Internal functions
 " ---
+function! s:SID_PREFIX() abort
+    return matchstr(expand('<sfile>'),
+    \ '<SNR>\d\+_\zeSID_PREFIX$')
+endfunction
+let g:sid = s:SID_PREFIX()
+
 function! s:jump_dirty(dir) abort
     " Jump to the next position with defx-git dirty symbols
     let l:icons = get(g:, 'defx_git_indicators', {})
@@ -692,7 +698,7 @@ function! s:jump_dirty(dir) abort
     endif
 endfunction
 
-function! s:defx_toggle_tree() abort
+function! s:defx_toggle_tree_or_edit() abort
     " Open current file, or toggle directory expand/collapse
     if defx#is_directory()
         return defx#do_action('open_or_close_tree')
@@ -700,10 +706,20 @@ function! s:defx_toggle_tree() abort
     return defx#do_action('multi', ['drop'])
 endfunction
 
-function! DefxChoosewin(context) abort
+function! s:defx_toggle_tree_or_cd(context) abort
+    " Open current file, or toggle directory expand/collapse
+    if defx#is_directory()
+        return defx#call_action('cd', a:context.targets)
+    endif
+    return defx#call_action('multi', ['drop'])
+endfunction
+
+function! s:defx_choosewin(context) abort
     " let l:winnrs = find_winnrs() " Modified for slide
     if defx#is_directory()
-        return defx#call_action('cd', defx#get_candidate()['action__path'])
+        " echomsg string(a:context)
+        " return
+        return defx#call_action('cd', a:context.targets)
     endif
     let l:winnrs = range(1, winnr('$'))
     let l:opts = {'auto_choose': 1, 'hook_enable': 0}
@@ -713,11 +729,26 @@ function! DefxChoosewin(context) abort
     endfor
 endfunction
 
+function s:defx_execute(context) abort
+    let l:name = 'DefsExec'
+    let l:bufnr = floaterm#terminal#get_bufnr(l:name)
+    if l:bufnr == -1
+        execute('FloatermNew --name='.l:name)
+        execute('FloatermToggle '.l:name)
+        execute('FloatermSend ' . a:context.targets[0])
+        execute('FloatermToggle '.l:name)
+    else
+        execute('FloatermSend --name=' . l:name . ' ' . a:context.targets[0])
+        execute('FloatermToggle '.l:name)
+    endif
+endfunction
+
 function! s:defx_mappings() abort
     ""Defx window keyboard mappings
     setlocal signcolumn=no expandtab
-    nnoremap <silent><buffer><expr> <CR>              defx#do_action('call', 'DefxChoosewin')
-    nnoremap <silent><buffer><expr> o                 <sid>defx_toggle_tree()
+    nnoremap <silent><buffer><expr> <CR>              defx#do_action('call', g:sid.'defx_choosewin')
+    nnoremap <silent><buffer><expr> l                 defx#do_action('call', g:sid.'defx_toggle_tree_or_cd')
+    nnoremap <silent><buffer><expr> o                 <sid>defx_toggle_tree_or_edit()
     nnoremap <silent><buffer><expr> st                defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
     nnoremap <silent><buffer><expr> v                 defx#do_action('open', 'botright vsplit')
     nnoremap <silent><buffer><expr> s                 defx#do_action('open', 'botright split')
@@ -735,6 +766,7 @@ function! s:defx_mappings() abort
     nnoremap <silent><buffer><expr> K                 line('.') == 1 ? 'G' : '5gk'
     ""Defx's buffer management
     nnoremap <silent><buffer><expr> q                 defx#do_action('quit')
+    nnoremap <silent><buffer><expr> <Esc>             defx#do_action('quit')
     " nnoremap <silent><buffer><expr> se                defx#do_action('save_session')
     " nnoremap <silent><buffer><expr> le                defx#do_action('load_session')
     nnoremap <silent><buffer><expr> <C-r>             defx#do_action('redraw')
@@ -750,8 +782,8 @@ function! s:defx_mappings() abort
     nnoremap <silent><buffer><expr> n                 defx#do_action('new_file')
     nnoremap <silent><buffer><expr> M                 defx#do_action('new_multiple_files')
     ""Jump
-    nnoremap <silent><buffer>  [g                     :<C-u>call <SID>jump_dirty(-1)<CR>
-    nnoremap <silent><buffer>  ]g                     :<C-u>call <SID>jump_dirty(1)<CR>
+    nnoremap <silent><buffer>  <                      :<C-u>call <SID>jump_dirty(-1)<CR>
+    nnoremap <silent><buffer>  >                      :<C-u>call <SID>jump_dirty(1)<CR>
     ""Change directory
     nnoremap <silent><buffer><expr> cd                defx#do_action('change_vim_cwd')
     nnoremap <silent><buffer><expr><nowait> \         defx#do_action('cd', getcwd())
@@ -764,14 +796,16 @@ function! s:defx_mappings() abort
     nnoremap <silent><buffer><expr> 3u                defx#do_action('cd', ['../../..'])
     nnoremap <silent><buffer><expr> 4u                defx#do_action('cd', ['../../../..'])
     ""Selection
-    nnoremap <silent><buffer><expr> s                 defx#do_action('toggle_select') . 'j'
-    nnoremap <silent><buffer><expr> <Space>           defx#do_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr><nowait> s         defx#do_action('toggle_select')
+    nnoremap <silent><buffer><expr><nowait> <Space>   defx#do_action('toggle_select')
+    nnoremap <silent><buffer><expr> <C-j>             defx#do_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr> <C-k>             defx#do_action('toggle_select') . 'k'
     nnoremap <silent><buffer><expr> <C-a>             defx#do_action('toggle_select_all')
     nnoremap <silent><buffer><expr> S                 defx#do_action('toggle_sort', 'time')
     nnoremap <silent><buffer><expr> C                 defx#do_action('toggle_columns', 'mark:git:indent:icons:icon:filename:type:size:time')
     ""Commands
-    nnoremap <silent><buffer><expr> !       defx#do_action('execute_command')
-    nnoremap <silent><buffer><expr> ex      defx#do_action('execute_system')
+    nnoremap <silent><buffer><expr> !                 defx#do_action('execute_command')
+    nnoremap <silent><buffer><expr> ex                defx#do_action('call', g:sid.'defx_execute')
 endfunction
 " ""Options available: :h defx-options
 " " noremap <silent> <leader>df :call g:Defx_toggle_with_my_options()<cr>
@@ -1643,54 +1677,54 @@ autocmd VimEnter * call after_object#enable([']', '['], '/', '=', ':', '-', '#',
 "===========================\ vim-easymotion /============================
 ""Cauce slow motion:
 ""~/.config/nvim/plugins/argtextobj.vim/plugin/argtextobj.vim L:296
-nnoremap \ <Plug>(easymotion-prefix)
-nnoremap \. <Plug>(easymotion-repeat)
+nmap \ <Plug>(easymotion-prefix)
+nmap \. <Plug>(easymotion-repeat)
 ""Default mappings
 let g:EasyMotion_do_mapping = 0
-nnoremap \f <Plug>(easymotion-f)
-nnoremap \F <Plug>(easymotion-F)
-nnoremap \t <Plug>(easymotion-t)
-nnoremap \T <Plug>(easymotion-T)
-nnoremap \w <Plug>(easymotion-w)
-nnoremap \W <Plug>(easymotion-W)
-nnoremap \b <Plug>(easymotion-b)
-nnoremap \B <Plug>(easymotion-B)
-nnoremap \e <Plug>(easymotion-e)
-nnoremap \E <Plug>(easymotion-E)
-nnoremap \g <Plug>(easymotion-ge)
-nnoremap \g <Plug>(easymotion-gE)
-nnoremap \j <Plug>(easymotion-j)
-nnoremap \k <Plug>(easymotion-k)
-nnoremap \n <Plug>(easymotion-n)
-nnoremap \N <Plug>(easymotion-N)
-nnoremap \s <Plug>(easymotion-s)
+nmap \f <Plug>(easymotion-f)
+nmap \F <Plug>(easymotion-F)
+nmap \t <Plug>(easymotion-t)
+nmap \T <Plug>(easymotion-T)
+nmap \w <Plug>(easymotion-w)
+nmap \W <Plug>(easymotion-W)
+nmap \b <Plug>(easymotion-b)
+nmap \B <Plug>(easymotion-B)
+nmap \e <Plug>(easymotion-e)
+nmap \E <Plug>(easymotion-E)
+nmap \g <Plug>(easymotion-ge)
+nmap \g <Plug>(easymotion-gE)
+nmap \j <Plug>(easymotion-j)
+nmap \k <Plug>(easymotion-k)
+nmap \n <Plug>(easymotion-n)
+nmap \N <Plug>(easymotion-N)
+nmap \s <Plug>(easymotion-s)
 ""Search for two characters.
-nnoremap \2s <Plug>(easymotion-s2)
-nnoremap \2f <Plug>(easymotion-f2)
-nnoremap \2F <Plug>(easymotion-F2)
-nnoremap \2t <Plug>(easymotion-t2)
-nnoremap \2T <Plug>(easymotion-T2)
-" nnoremap \\ <Plug>(easymotion-sl2)
-" nnoremap \\ <Plug>(easymotion-fl2)
-" nnoremap \\ <Plug>(easymotion-Fl2)
-" nnoremap \\ <Plug>(easymotion-tl2)
-" nnoremap \\ <Plug>(easymotion-Tl2)
+nmap \2s <Plug>(easymotion-s2)
+nmap \2f <Plug>(easymotion-f2)
+nmap \2F <Plug>(easymotion-F2)
+nmap \2t <Plug>(easymotion-t2)
+nmap \2T <Plug>(easymotion-T2)
+" nmap \\ <Plug>(easymotion-sl2)
+" nmap \\ <Plug>(easymotion-fl2)
+" nmap \\ <Plug>(easymotion-Fl2)
+" nmap \\ <Plug>(easymotion-tl2)
+" nmap \\ <Plug>(easymotion-Tl2)
 ""Search for any number of characters.
-nnoremap \ns <Plug>(easymotion-sn)
-nnoremap \nf <Plug>(easymotion-fn)
-nnoremap \nF <Plug>(easymotion-Fn)
-nnoremap \nt <Plug>(easymotion-tn)
-nnoremap \nT <Plug>(easymotion-Tn)
-" nnoremap \\ <Plug>(easymotion-sln)
-" nnoremap \\ <Plug>(easymotion-fln)
-" nnoremap \\ <Plug>(easymotion-Fln)
-" nnoremap \\ <Plug>(easymotion-tln)
-" nnoremap \\ <Plug>(easymotion-Tln)
+nmap \ns <Plug>(easymotion-sn)
+nmap \nf <Plug>(easymotion-fn)
+nmap \nF <Plug>(easymotion-Fn)
+nmap \nt <Plug>(easymotion-tn)
+nmap \nT <Plug>(easymotion-Tn)
+" nmap \\ <Plug>(easymotion-sln)
+" nmap \\ <Plug>(easymotion-fln)
+" nmap \\ <Plug>(easymotion-Fln)
+" nmap \\ <Plug>(easymotion-tln)
+" nmap \\ <Plug>(easymotion-Tln)
 ""Over Window Motion
-nnoremap \wf <Plug>(easymotion-overwin-f)
-nnoremap \wF <Plug>(easymotion-overwin-f2)
-nnoremap \wl <Plug>(easymotion-overwin-line)
-nnoremap \ww <Plug>(easymotion-overwin-w)
+nmap \wf <Plug>(easymotion-overwin-f)
+nmap \wF <Plug>(easymotion-overwin-f2)
+nmap \wl <Plug>(easymotion-overwin-line)
+nmap \ww <Plug>(easymotion-overwin-w)
 
 let g:EasyMotion_do_shade = 1
 let g:EasyMotion_smartcase = 1
