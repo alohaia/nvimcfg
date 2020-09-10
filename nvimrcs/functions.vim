@@ -459,4 +459,3 @@ endfunction
 function! g:GetSID()
     return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
 endfunction
-

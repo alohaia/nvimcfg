@@ -90,8 +90,8 @@ endsnippet
 
 snippet dm "Math" wA
 \[
-$1
-.\] $0
+${1:${VISUAL}}
+\]$0
 endsnippet
 
 # context "math()"
@@ -124,18 +124,12 @@ snippet td "superscript" iA
 ^{$1}$0
 endsnippet
 
-# 分数
-# context "math()"
-snippet // "Fraction" iA
-\\frac{$1}{$2}$0
-endsnippet
-
-# context "math()"
+context "math()"
 snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wrA
 \\frac{`!p snip.rv = match.group(1)`}{$1}$0
 endsnippet
 
-# context "math()"
+context "math()"
 priority 1000
 snippet '^.*\)/' "() Fraction" wrA
 `!p
@@ -152,9 +146,9 @@ snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
 endsnippet
 
 # 你可以先用它选择一些文本，然后按下 Tab，打出/，然后再按下 Tab。
-# context "math()"
+context "math()"
 snippet / "Fraction" iA
-\\frac{${VISUAL}}{$1}$0
+\\frac{${1:${VISUAL}}}{$2}$0
 endsnippet
 
 # 例如 sympy Tab 键扩展为 sympy | sympy，sympy 1 + 1 sympy Tab 键扩展为 2。

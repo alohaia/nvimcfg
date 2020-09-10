@@ -655,18 +655,18 @@ call defx#custom#option('_', {
       \ })
       " \ 'floating_preview': 1, 'wincol': &columns/4, 'winrow': &lines/3,
 call defx#custom#column('git', 'indicators', {
-      \ 'Modified'  : '✹ ',
-      \ 'Staged'    : '⚑ ',
-      \ 'Untracked' : '⚝ ',
-      \ 'Renamed'   : '≫ ',
-      \ 'Unmerged'  : '==',
-      \ 'Ignored'   : '~~',
-      \ 'Deleted'   : '✖ ',
-      \ 'Unknown'   : '??'
+      \ 'Modified'  : '✹',
+      \ 'Staged'    : '⚑',
+      \ 'Untracked' : '⚝',
+      \ 'Renamed'   : '≫',
+      \ 'Unmerged'  : '=',
+      \ 'Ignored'   : '~',
+      \ 'Deleted'   : '✖',
+      \ 'Unknown'   : '?'
       \ })
 " defx-icons plugin
 let g:defx_icons_column_length = 1
-let g:defx_icons_mark_icon = ''
+let g:defx_icons_mark_icon = ''    " ✓
 let g:defx_icons_parent_icon = ""
 call defx#custom#column('mark', { 'readonly_icon': '', 'selected_icon': '' })
 " Events

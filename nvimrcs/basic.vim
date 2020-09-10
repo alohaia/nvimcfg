@@ -86,10 +86,8 @@ set nocindent                       " more cleverly than the other two and is co
 set indentexpr=                     " 设置为非空时会覆盖 autoindent 和 smartindent
 
 "============================ 用空格取代<tab> ============================
-set expandtab
-set smarttab
-set shiftwidth=4
-set tabstop=4
+set expandtab shiftwidth=4 tabstop=4 softtabstop=4
+set smarttab                        " 一次删除所有用 <Tab> 键产生的空格
 
 "=============================== 临时文件 ================================
 if has("vms")
@@ -407,6 +405,10 @@ tnoremap <M-q> <C-\><C-n>
 ""4. Browse files
 nnoremap <silent><cr> :e .<cr>
 
+"================================ 复制粘贴 ===============================
+nnoremap <C-c> "+yW""yW
+vnoremap <C-c> "+ygv""y
+
 "================================ 其他操作 ===============================
 " nnoremap <leader>H :vert h<space>
 
@@ -451,6 +453,7 @@ set signcolumn=yes
 
 "============================= wildmenu 设置 =============================
 set wildmenu                        " 命令模式下，在状态栏中显示vim补全选项
+set wildmode=longest:list
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 if has("win16") || has("win32")
