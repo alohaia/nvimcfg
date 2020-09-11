@@ -1,6 +1,6 @@
 # Editing Snippets for UltiSnips
 
-<!-- TOC GFM -->
+<!-- TOC MARKED -->
 
 * [Include Other Snippet Files](#include-other-snippet-files)
 * [Keywords](#keywords)

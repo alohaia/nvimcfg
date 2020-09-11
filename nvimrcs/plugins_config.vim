@@ -600,8 +600,8 @@ let g:rnvimr_border_attr = {'fg': 14, 'bg': -1}
 "let g:rnvimr_hide_gitignore = 1
 ""Link CursorLine into RnvimrNormal highlight in the Floating window
 highlight link RnvimrNormal CursorLine
-"nnoremap <silent> <cr> :RnvimrSync<CR>:RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
-nnoremap <silent> <cr> :RnvimrToggle<CR>
+" nnoremap <silent> <cr> :RnvimrSync<CR>:RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
+" nnoremap <silent> <cr> :RnvimrToggle<CR>
 " <C-\><C-n>:RnvimrResize 0<CR>
 """Resize floating window by all preset layouts
 "tnoremap <silent> <M-i> <C-\><C-n>:RnvimrResize<CR>
@@ -974,22 +974,22 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 "let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#formatter = 'default'  "formater
 ""设置分隔符 https://github.com/ryanoasis/powerline-extra-symbols
-" let g:airline#extensions#tabline#left_sep = '┆'
-" let g:airline#extensions#tabline#left_alt_sep = '┆'
-" let g:airline#extensions#tabline#right_sep = '┆'
-" let g:airline#extensions#tabline#right_alt_sep = '┆'
-" let g:airline_left_sep = '┆'
-" let g:airline_left_alt_sep = '┆'
-" let g:airline_right_sep = '┆'
-" let g:airline_right_alt_sep = '┆'
-let g:airline#extensions#tabline#left_sep = "\ue0b4"
-let g:airline#extensions#tabline#left_alt_sep = "\ue0b5"
-let g:airline#extensions#tabline#right_sep = "\ue0b6"
-let g:airline#extensions#tabline#right_alt_sep = "\ue0b7"
-let g:airline_left_sep = "\ue0b4"
-let g:airline_left_alt_sep = "\ue0b5"
-let g:airline_right_sep = "\ue0b6"
-let g:airline_right_alt_sep = "\ue0b7"
+let g:airline#extensions#tabline#left_sep = '┆'
+let g:airline#extensions#tabline#left_alt_sep = '┆'
+let g:airline#extensions#tabline#right_sep = '┆'
+let g:airline#extensions#tabline#right_alt_sep = '┆'
+let g:airline_left_sep = '┆'
+let g:airline_left_alt_sep = '┆'
+let g:airline_right_sep = '┆'
+let g:airline_right_alt_sep = '┆'
+" let g:airline#extensions#tabline#left_sep = "\ue0b4"
+" let g:airline#extensions#tabline#left_alt_sep = "\ue0b5"
+" let g:airline#extensions#tabline#right_sep = "\ue0b6"
+" let g:airline#extensions#tabline#right_alt_sep = "\ue0b7"
+" let g:airline_left_sep = "\ue0b4"
+" let g:airline_left_alt_sep = "\ue0b5"
+" let g:airline_right_sep = "\ue0b6"
+" let g:airline_right_alt_sep = "\ue0b7"
 ""配置其他字符
 let g:airline_symbols.crypt = '🔒'
 let g:airline_symbols.linenr = '☰'

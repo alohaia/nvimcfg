@@ -199,7 +199,7 @@ set hlsearch                        " 高亮搜索结果
 set incsearch                       " 增量搜索
 set magic                           " 开启 magic 模式
 
-""可视化模式下, */# 向后、前搜索选中的文本.From an idea by Michael Naumann
+""可视化模式下任然可以使用 */# 向后/前搜索选中的文本.From an idea by Michael Naumann
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
@@ -266,10 +266,11 @@ noremap <C-h> <C-w>h
 noremap <C-l> <C-w>l
 
 " split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
-noremap <silent> <leader>sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
-noremap <silent> <leader>sj :set splitbelow<CR>:split<CR>
-noremap <silent> <leader>sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
-noremap <silent> <leader>sl :set splitright<CR>:vsplit<CR>
+" noremap <silent> <leader>sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
+" noremap <silent> <leader>sj :set splitbelow<CR>:split<CR>
+" noremap <silent> <leader>sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
+" noremap <silent> <leader>sl :set splitright<CR>:vsplit<CR>
+" <C-w>v/s <C-w>_/|/=
 
 " Resize splits with arrow keys
 noremap <silent> <up> :res +5<CR>
@@ -288,8 +289,12 @@ nnoremap <leader>ba :bufdo bd<cr>
 nnoremap <leader>bo :call DeleteAllBuffersInWindow('noforce')<cr>
 nnoremap <leader>BO :call DeleteAllBuffersInWindow('force')<cr>
 
-nnoremap = :bnext<cr>
-nnoremap - :bprevious<cr>
+nnoremap <silent> = :bnext<cr>
+nnoremap <silent> - :bprevious<cr>
+nnoremap <silent> ]b :bnext<cr>
+nnoremap <silent> [b :bprevious<cr>
+nnoremap <silent> ]B :blast<cr>
+nnoremap <silent> [B :bfirst<cr>
 
 ""映射<leader>num到num buffer
 " nnoremap <leader>1 :b 1<CR>
@@ -323,6 +328,10 @@ nnoremap <leader>to :tabonly<cr>
 nnoremap <leader>tm :tabmove<space>
 nnoremap + :tabnext<cr>
 nnoremap _ :tabprevious<cr>
+nnoremap ]t :tabnext<cr>
+nnoremap [t :tabprevious<cr>
+nnoremap ]T :tablast<cr>
+nnoremap [T :tabfirst<cr>
 
 ""Let '<leader>tt' toggle between this and the last accessed tab
 let g:lasttab = 1
@@ -354,8 +363,8 @@ nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 
 "============================== 保存和退出 ===============================
 " Fast saving & quitting
-nnoremap <silent> <leader>w :w<cr>
-nnoremap <leader>q :q<cr>
+nnoremap <silent> <leader>W :w<cr>
+nnoremap <leader>q :Q<cr>
 
 " :W sudo saves the file(use suda.vim instead)
 " command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
@@ -403,14 +412,14 @@ nnoremap <leader>ter :call OpenTerminalSmartly()<cr>
 tnoremap <M-q> <C-\><C-n>
 
 ""4. Browse files
-nnoremap <silent><cr> :e .<cr>
+nnoremap <silent><leader><CR> :e .<cr>
 
 "================================ 复制粘贴 ===============================
 nnoremap <C-c> "+yW""yW
 vnoremap <C-c> "+ygv""y
 
 "================================ 其他操作 ===============================
-" nnoremap <leader>H :vert h<space>
+nnoremap <leader>H :vert h<space>
 
 ""这个设置会使输入 i 的时候有一定延迟
 " inoremap ii <esc>
@@ -453,7 +462,8 @@ set signcolumn=yes
 
 "============================= wildmenu 设置 =============================
 set wildmenu                        " 命令模式下，在状态栏中显示vim补全选项
-set wildmode=longest:list
+set wildmode=longest:full
+" set wildmode=longest:list
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 if has("win16") || has("win32")
@@ -476,6 +486,7 @@ nnoremap <leader>e :cd ~/.config/nvim/nvimrcs/<cr>:e<space>
 "    autocmd! bufwritepost ~/.vimrc source ~/.vimrc
 "endif
 
+command! SO source $MYVIMRC
 
 "#########################################################################
 "###############################\ Misc /##################################

@@ -25,14 +25,14 @@
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
 # main function.
-snippet main "main() function" wi
-main (int ${1:argc}, char** ${2:aegv})
+snippet "(int\ )?main(\(\))?" "main() function" bwr
+int main (int ${1:argc}, char** ${2:aegv})
 {
 	${3://Do something here.}
 }$0
 endsnippet
 
-snippet cout "std::cout" w
+snippet "(std::)?cout" "std::cout" rw
 std::cout << ${2:"${1:/* Something here */}\n"};$0
 endsnippet
 
@@ -54,7 +54,7 @@ endsnippet
 snippet while "while loop" bw
 while(${1:true})
 {
-	${2:${VISUAL:////Do Something here.}}
+	${2:${VISUAL://\/\/Do Something here.//}}
 }$0
 endsnippet
 
