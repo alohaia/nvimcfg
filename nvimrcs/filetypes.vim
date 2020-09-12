@@ -40,6 +40,7 @@
 " => C/C++ section
 """"""""""""""""""""""""""""""
 au FileType c,cpp set foldmethod=syntax
+au FileType c,cpp set path+=./include
 
 """"""""""""""""""""""""""""""
 " => Python section

@@ -1448,7 +1448,7 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
+nmap <leader>F  <Plug>(coc-fix-current)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -1658,7 +1658,7 @@ let g:asynctasks_template = {}
 "         \ ]
 
 "============================\ vim-rooter /=============================
-let g:rooter_patterns = ['__vim_project_root', '.git']
+let g:rooter_patterns = ['.rooter', '.git']
 ""Don't echo the project directory.
 let g:rooter_silent_chdir = 1
 

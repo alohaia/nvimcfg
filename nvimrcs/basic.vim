@@ -106,7 +106,7 @@ set directory=~/.cache/nvim/.temp_dirs/swapdir
 "======================= No annoying sound on errors =====================
 set noerrorbells
 set novisualbell
-set tm=500
+set timeoutlen=500
 " Properly disable sound on errors on MacVim
 if has("gui_mac")
     autocmd GUIEnter * set vb t_vb=
@@ -228,7 +228,10 @@ au VimEnter * call SwitchMotionMod()
 nnoremap <silent> \\ :call SwitchMotionMod()<CR>
 
 ""Remap VIM 0 to first non-blank character
-nnoremap 0 ^
+nnoremap ^ g0
+nnoremap g0 ^
+nnoremap 0 g^
+nnoremap g^ 0
 
 ""Move a line of text using ALT+[jk] or Command+[jk]
 ""Thus you should not use mark 'z'
@@ -310,6 +313,8 @@ nnoremap <silent> [B :bfirst<cr>
 ""快速切换到当前编辑的缓冲区中的文件所在的目录
 noremap <leader>. :cd %:p:h<cr>:pwd<cr>
 
+cnoremap <expr> %% getcmdtype()==':' ? expand('%:p:h').'/' : '%%'
+
 ""Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
@@ -328,8 +333,8 @@ nnoremap <leader>to :tabonly<cr>
 nnoremap <leader>tm :tabmove<space>
 nnoremap + :tabnext<cr>
 nnoremap _ :tabprevious<cr>
-nnoremap ]t :tabnext<cr>
-nnoremap [t :tabprevious<cr>
+nnoremap ]t gt<cr>
+nnoremap [t gT<cr>
 nnoremap ]T :tablast<cr>
 nnoremap [T :tabfirst<cr>
 
@@ -364,7 +369,7 @@ nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 "============================== 保存和退出 ===============================
 " Fast saving & quitting
 nnoremap <silent> <leader>W :w<cr>
-nnoremap <leader>q :Q<cr>
+nnoremap <leader>q :q<cr>
 
 " :W sudo saves the file(use suda.vim instead)
 " command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
@@ -462,8 +467,8 @@ set signcolumn=yes
 
 "============================= wildmenu 设置 =============================
 set wildmenu                        " 命令模式下，在状态栏中显示vim补全选项
-set wildmode=longest:full
-" set wildmode=longest:list
+set wildmode=longest:full,full
+" set wildmode=longest:list,full
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 if has("win16") || has("win32")
