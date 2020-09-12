@@ -1,7 +1,32 @@
 # nvimcfg
 
-I believe that the comments in my configuration files is detailed enough.
+<!-- TOC GitLab -->
 
-Though you may come across some problems about dependencies which I don't wrote much in my configuration files, almost all of them can be solved by reading the docs.
+* [How to install?](#how-to-install)
+* [Files](#files)
+* [Some Settings](#some-settings)
+* [Functions](#functions)
+* [Plugins](#plugins)
+* [FAQ](#faq)
 
-And finally, I'm thinking about write more about how to install and use neovim with my configuration. It may come out soon or take longer. I'm not sure.
+<!-- /TOC -->
+
+## How to install?
+
+1. Make sure that you have NeoVim installed properly.
+2. Maybe you'd like to backup your configuration files.
+3. Execute the commands:
+    ```bash
+    git clone https://github.com/alohaia/nvimcfg ~/.config/nvim/
+    ```
+
+## Files
+
+## Some Settings
+
+## Functions
+
+## Plugins
+
+## FAQ
+

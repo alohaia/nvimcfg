@@ -24,21 +24,25 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
-snippet "# fn" "First heading" bA
+snippet "# h1" "First heading" bA
 # `!v expand('%:t:r')`
 endsnippet
 
-snippet `` "Code block" bA
+snippet "cd" "inline code" i
+\`${1:inline code}\`$0
+endsnippet
+
+snippet "\`\`(c)?" "Code block" rbA
 \`\`\`$1
 ${2:${VISUAL:code}}
 \`\`\`$0
 endsnippet
 
-snippet ** "Blod text" iA
+snippet "\*\*(c)?" "Blod text" iA
 **${1:${VISUAL:text}}**$0
 endsnippet
 
-snippet it "Italic text" i
+snippet "it" "Italic text" i
 *${1:${VISUAL}}*$0
 endsnippet
 
