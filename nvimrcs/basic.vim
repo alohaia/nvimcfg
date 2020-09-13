@@ -203,6 +203,10 @@ set magic                           " 开启 magic 模式
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
+""Find and focus.
+nnoremap n nzz
+nnoremap N Nzz
+
 ""Clear highlight when <leader><cr> is pressed
 nnoremap <silent> <esc> :nohl<cr>
 
@@ -239,6 +243,11 @@ nnoremap <M-k> mz:m-2<cr>`z
 nnoremap <M-j> mz:m+<cr>`z
 vnoremap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
 vnoremap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+nnoremap <M-l> "zxl"zP
+nnoremap <M-h> "zxh"zP
+vnoremap <M-l> "zxl"zP`[v`]
+vnoremap <M-h> "zxh"zP`[v`]
 
 if has("mac") || has("macunix")
     nmap <D-j> <M-j>
@@ -299,26 +308,15 @@ nnoremap <silent> [b :bprevious<cr>
 nnoremap <silent> ]B :blast<cr>
 nnoremap <silent> [B :bfirst<cr>
 
-""映射<leader>num到num buffer
-" nnoremap <leader>1 :b 1<CR>
-" nnoremap <leader>2 :b 2<CR>
-" nnoremap <leader>3 :b 3<CR>
-" nnoremap <leader>4 :b 4<CR>
-" nnoremap <leader>5 :b 5<CR>
-" nnoremap <leader>6 :b 6<CR>
-" nnoremap <leader>7 :b 7<CR>
-" nnoremap <leader>8 :b 8<CR>
-" nnoremap <leader>9 :b 9<CR>
-
 ""快速切换到当前编辑的缓冲区中的文件所在的目录
-noremap <leader>. :cd %:p:h<cr>:pwd<cr>
+noremap <leader>. :cd %:p:h<cr>pwd<cr>
 
 cnoremap <expr> %% getcmdtype()==':' ? expand('%:p:h').'/' : '%%'
 
 ""Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
-  set stal=2
+  set showtabline=2
 catch
 endtry
 
@@ -368,7 +366,7 @@ nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 
 "============================== 保存和退出 ===============================
 " Fast saving & quitting
-nnoremap <silent> <leader>W :w<cr>
+nnoremap <silent> <leader>w :w<cr>
 nnoremap <leader>q :q<cr>
 
 " :W sudo saves the file(use suda.vim instead)
@@ -438,11 +436,12 @@ nnoremap <leader>O mzO<esc>`z
 
 imap <M-BS> <Del>
 
-""使用虚拟编辑模式
+""使用虚拟替换模式
 nnoremap R gR
 nnoremap gR R
 nnoremap r gr
 nnoremap gr r
+
 
 "#########################################################################
 "######################\ Status Line and CmdLine /########################
@@ -510,7 +509,7 @@ noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " map <leader>x :e ~/buffer.md<cr>
 
 " Toggle paste mode on and off
-map <leader>pp :setlocal paste!<cr>
+" map <leader>pp :setlocal paste!<cr>
 
 " Use Showhi to show hlgroup
 command! Showhi echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'

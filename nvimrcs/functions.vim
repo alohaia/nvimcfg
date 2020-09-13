@@ -459,3 +459,15 @@ endfunction
 function! g:GetSID()
     return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
 endfunction
+
+"======================= Choose Window with Filter =======================
+function! ChooseWin(...)
+    let l:wins = range(1,winnr('$'))
+    if a:0 == 0
+        let l:available_windows = filter(l:wins, 'index(s:choosewin_ignore_filetypes, getbufvar(winbufnr(v:val), "&filetype")) == -1')
+    else
+        let l:available_windows = filter(l:wins, 'index(a:000[0], getbufvar(winbufnr(v:val), "&filetype")) == -1')
+    endif
+    return choosewin#start(l:available_windows, { 'auto_choose': 1, 'hook_enable': 0 })
+endfunction
+

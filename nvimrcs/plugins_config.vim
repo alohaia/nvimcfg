@@ -90,6 +90,7 @@ Plug 'guns/xterm-color-table.vim'
 ""See highlight info of text under the cursor :Showhi
 "=========================================================================
 ""Description: vim-polyglot，开箱即用型的语法高亮包
+let g:polyglot_disabled = ['markdown']
 Plug 'sheerun/vim-polyglot'
 "=========================================================================
 ""Description: c++ 语法高亮增强包
@@ -721,10 +722,8 @@ function! s:defx_choosewin(context) abort
         " return
         return defx#call_action('cd', a:context.targets)
     endif
-    let l:winnrs = range(1, winnr('$'))
-    let l:opts = {'auto_choose': 1, 'hook_enable': 0}
     for filename in a:context.targets
-        call choosewin#start(l:winnrs, l:opts)
+        call ChooseWin(['defx'])
         execute 'edit '.filename
     endfor
 endfunction
@@ -904,6 +903,45 @@ endfunction
 "     nnoremap <silent><buffer><expr> cd      defx#do_action('change_vim_cwd')
 " endfunction
 
+"============================\ choosewin /=============================
+nnoremap <Tab> :ChooseWin<CR>
+" nnoremap <Tab> :call ChooseWin()<CR>
+let g:choosewin_color_label = {
+            \ 'gui':   ['#af00ff', 'black', 'bold'],
+            \ 'cterm': [129, 16, 'bold']
+            \}
+let g:choosewin_color_label_current = {
+            \ 'gui':   ['#afafff', 'white', 'bold'],
+            \ 'cterm': [147, 15, 'bold']
+            \ }
+let g:choosewin_color_overlay = g:choosewin_color_label
+let g:choosewin_color_overlay_current = g:choosewin_color_label_current
+let g:choosewin_color_land = {
+            \ 'gui':   ['#00ffff', 'Black', 'bold,underline'],
+            \ 'cterm': [51, 15]
+            \}
+let g:choosewin_label_fill = 0
+let g:choosewin_blink_on_land = 0
+let g:choosewin_return_on_single_win = 0
+""Use statusline or overlay
+let g:choosewin_statusline_replace = 0
+let g:choosewin_overlay_enable = 1
+let g:choosewin_overlay_shade = 1
+" let s:keymap = {
+"             \ '0':     'tab_first',
+"             \ '[':     'tab_prev',
+"             \ ']':     'tab_next',
+"             \ '$':     'tab_last',
+"             \ 'x':     'tab_close',
+"             \ ';':     'win_land',
+"             \ '-':     'previous',
+"             \ 's':     'swap',
+"             \ 'S':     'swap_stay',
+"             \ "\<CR>": 'win_land',
+"             \ }
+""Default filetype that will be ignored.
+let s:choosewin_ignore_filetypes = []
+
 
 "============================\ vista.vim /=============================
 ""See the full list of executivs via :echo g:vista#executives
@@ -1011,10 +1049,8 @@ let g:airline_symbols.whitespace = 'Ξ'
 "#########################################################################
 
 "============================\ vim-polyglot /=============================
-""根据语言选择是否开启，如对css禁用此插件
-" let g:polyglot_disabled = ['css']
 ""cpp 的额外的语法插件与此插件不冲突，markdown 高亮和 vim-markdown 提供的高亮几乎一样
-let g:polyglot_disabled = ['markdown']
+" let g:polyglot_disabled = ['markdown']        "转移到上方
 
 "====================\ vim-cpp-enhanced-highlight /=======================
 ""Highlighting of class scope is disabled by default. To enable set
@@ -1442,11 +1478,11 @@ augroup end
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+" xmap <leader>a  <Plug>(coc-codeaction-selected)
+" nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
+" nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>F  <Plug>(coc-fix-current)
 
