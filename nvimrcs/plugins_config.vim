@@ -756,7 +756,7 @@ function! s:defx_mappings() abort
     nnoremap <silent><buffer><expr> H                 defx#do_action('toggle_ignored_files')
     nnoremap <silent><buffer><expr> yy                defx#do_action('yank_path')
     nnoremap <silent><buffer><expr> .                 defx#do_action('repeat')
-    nnoremap <silent><buffer><expr> <Tab>             winnr('$') != 1 ?
+    nnoremap <silent><buffer><expr> b                 winnr('$') != 1 ?
         \ ':<C-u>wincmd w<CR>' :
         \ ':<C-u> Defx -buffer-name=temp -split=vertical<CR>'
     nnoremap <silent><buffer><expr> j                 line('.') == line('$') ? 'gg' : 'j'
