@@ -39,6 +39,7 @@ set number                          " 行首显示数字
 set relativenumber                  " 行首显示相对数字
 set cursorline                      " 突出显示光标所在行
 " set cursorcolumn                    " 突出显示光标所在列
+set colorcolumn=76
 set textwidth=500                   " 设置行宽
 set showmatch                       " 高亮显示配对括号
 set matchtime=2                     " 高亮显示配对括号时，当前括号会每 2/10 秒闪烁一次
@@ -112,12 +113,13 @@ if has("gui_mac")
     autocmd GUIEnter * set vb t_vb=
 endif
 " Add a bit extra margin to the left
-set foldcolumn=1
+set foldcolumn=0
 
 "============================== 编码和语言 ===============================
 set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 set termencoding=utf-8
 set encoding=utf-8
+set emoji
 " let $LANG='zh_CN'
 " source $VIMRUNTIME/delmenu.vim
 " set langmenu='zh_CN'
@@ -452,7 +454,7 @@ set shortmess="atAF"                   " 简化显示信息, 避免烦人的确�
 set laststatus=2
 set ruler                           " 在状态栏显示当前所在的文件位置
 
-set cmdheight=2                     " Make command line Two line high
+set cmdheight=1                     " Make command line Two line high
 set showcmd                         " normal模式下在vim命令行右边显示按键
 
 ""设置数字栏左侧的 signcolumn 总是显示
