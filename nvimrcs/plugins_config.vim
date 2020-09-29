@@ -665,6 +665,13 @@ call defx#custom#column('git', 'indicators', {
       \ 'Deleted'   : '✖',
       \ 'Unknown'   : '?'
       \ })
+call defx#custom#column('indent', 'indent', '  ')
+function! Root(path) abort
+      return fnamemodify(a:path, ':t')
+endfunction
+call defx#custom#source('file', {
+      \  'root': 'Root',
+      \ })
 " defx-icons plugin
 let g:defx_icons_column_length = 1
 let g:defx_icons_mark_icon = ''    " ✓
@@ -756,9 +763,8 @@ function! s:defx_mappings() abort
     nnoremap <silent><buffer><expr> H                 defx#do_action('toggle_ignored_files')
     nnoremap <silent><buffer><expr> yy                defx#do_action('yank_path')
     nnoremap <silent><buffer><expr> .                 defx#do_action('repeat')
-    nnoremap <silent><buffer><expr> b                 winnr('$') != 1 ?
-        \ ':<C-u>wincmd w<CR>' :
-        \ ':<C-u> Defx -buffer-name=temp -split=vertical<CR>'
+    nnoremap <silent><buffer><expr> b                 winnr('$') != 1 ? ':<C-u>wincmd w<CR>'
+                                                          \ : ':<C-u> Defx -buffer-name=temp -split=vertical<CR>'
     nnoremap <silent><buffer><expr> j                 line('.') == line('$') ? 'gg' : 'j'
     nnoremap <silent><buffer><expr> k                 line('.') == 1 ? 'G' : 'k'
     nnoremap <silent><buffer><expr> J                 line('.') == line('$') ? 'gg' : '5gj'
@@ -1029,7 +1035,7 @@ let g:airline_right_alt_sep = '┆'
 " let g:airline_right_sep = "\ue0b6"
 " let g:airline_right_alt_sep = "\ue0b7"
 ""配置其他字符
-let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.crypt = ''
 let g:airline_symbols.linenr = '☰'
 "let g:airline_symbols.linenr = '␊'
 "let g:airline_symbols.linenr = '␤'
@@ -1584,11 +1590,11 @@ map <silent> <F8>  <Plug>VimspectorToggleBreakpoint
 map <silent> <F9>  <Plug>VimspectorToggleConditionalBreakpoint
 map <silent> <F10> <Plug>VimspectorAddFunctionBreakpoint
 ""Changing the default signs⚝ ◉ ♦ 🔴🔵
-sign define vimspectorBP text=◉  texthl=Normal
-sign define vimspectorBPDisabled text=○  texthl=Normal
-sign define vimspectorBPCond text=♦  texthl=Normal
+sign define vimspectorBP text=◉  texthl=ColorColumn
+sign define vimspectorBPDisabled text=○  texthl=ColorColumn
+sign define vimspectorBPCond text=♦  texthl=ColorColumn
 "The program counter, i.e. current line.🔶
-sign define vimspectorPC text=➤➤ texthl=SpellBad
+sign define vimspectorPC text=➤➤ texthl=ColorColumn
 
 "============================\ asyncrun.vim /=============================
 ""运行时自动打开高度为 6 的 quickfix 窗口
@@ -2259,9 +2265,9 @@ let g:signify_sign_add               = '▏'
 let g:signify_sign_delete_first_line = '▔'
 let g:signify_sign_delete            = '▎'
 let g:signify_sign_change            = '░'
-highlight SignifySignAdd    ctermfg=green  guifg=#A6DB29 cterm=NONE gui=NONE
-highlight SignifySignDelete ctermfg=red    guifg=#ff0000 cterm=NONE gui=NONE
-highlight SignifySignChange ctermfg=yellow guifg=#ffff00 cterm=NONE gui=NONE
+highlight SignifySignAdd    ctermfg=green  guifg=#A6DB29
+highlight SignifySignDelete ctermfg=red    guifg=#ff0000
+highlight SignifySignChange ctermfg=yellow guifg=#ffff00
 
 
 "#########################################################################

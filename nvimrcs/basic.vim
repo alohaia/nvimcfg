@@ -38,8 +38,9 @@ set virtualedit=block               " 在指定模式下，使光标可以在没
 set number                          " 行首显示数字
 set relativenumber                  " 行首显示相对数字
 set cursorline                      " 突出显示光标所在行
+" au ColorScheme * hi link CursorLineNr Cursorline
 " set cursorcolumn                    " 突出显示光标所在列
-set colorcolumn=76
+" set colorcolumn=76
 set textwidth=500                   " 设置行宽
 set showmatch                       " 高亮显示配对括号
 set matchtime=2                     " 高亮显示配对括号时，当前括号会每 2/10 秒闪烁一次
@@ -138,6 +139,7 @@ set whichwrap+=<,>,h,l
 ""Recommend: molokai iceberg solarized8_dark solarized8_light
 ""Day:   solarized8_light + solarized
 ""Night: iceberg + tomorrow
+au ColorScheme * call g:Get_hi_colorcolumn_bg()
 " call g:ThemeByTime()
 call g:SwitchTheme(2)
 
@@ -148,7 +150,7 @@ set termguicolors " enable true colors support
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 "================= Adjust conceal characters' highlighting ===============
-call execute('hi Conceal '.g:hi_normal_backup)
+execute('hi Conceal '.g:hi_normal)
 
 "============================== 透明背景 =================================
 "      需要终端的支持，terminator/Tilix/konsole/yakuake 支持透明背景

@@ -59,6 +59,14 @@ endfunction
 " call g:AirlineRandomTheme()
 
 "============================= Switch themes =============================
+function! g:Get_hi_colorcolumn_bg()
+    if !exists('g:hi_colorcolumn_bg')
+        let l:hi = split(execute('silent hi ColorColumn', ''))[-2:-1]
+        let g:hi_colorcolumn_bg = join(l:hi, ' ')
+    endif
+    return g:hi_colorcolumn_bg
+endfunction
+
 function! g:SwitchTheme(choice)
     if a:choice == 0
         colorscheme solarized8_light
@@ -70,6 +78,11 @@ function! g:SwitchTheme(choice)
     elseif a:choice == 2
         colorscheme molokai
         let g:airline_theme = 'airlineish'
+        execute('hi CursorLineNr               '.g:hi_colorcolumn_bg.' ctermfg=208 guifg=#FD971F')
+        execute('hi SignifySignAdd             '.g:hi_colorcolumn_bg)
+        execute('hi SignifySignDelete          '.g:hi_colorcolumn_bg)
+        execute('hi SignifySignDeleteFirstLine '.g:hi_colorcolumn_bg)
+        execute('hi SignifySignChange          '.g:hi_colorcolumn_bg)
     endif
 endfunction
 
@@ -98,11 +111,11 @@ endfunction
 "========================= Backup Normal highlighting ====================
 ""Do NOT call this function in this file.
 function! s:normalColorBackup()
-    if !exists('g:hi_normal_backup')
+    if !exists('g:hi_normal')
         let l:hi_normal = split(execute('silent hi Normal', ''))[2:-1]
-        let g:hi_normal_backup = join(l:hi_normal, ' ')
+        let g:hi_normal = join(l:hi_normal, ' ')
     endif
-    return g:hi_normal_backup
+    return g:hi_normal
 endfunction
 au ColorScheme * call s:normalColorBackup()
 
@@ -115,7 +128,7 @@ function! g:TransparentBg(option)
                 \ 'echoerr "Argument error in function TransparentBg" | return -1'
                 \ : ''
     ""检查备份变量是否存在
-    if !exists('g:hi_normal_backup')
+    if !exists('g:hi_normal')
         call s:normalColorBackup()
     endif
     ""防止重复执行
@@ -128,7 +141,7 @@ function! g:TransparentBg(option)
         hi Normal ctermbg=NONE guibg=NONE
         let s:trans_back_color = 1
     elseif a:option ==0 && s:trans_back_color != 0
-        execute('hi Normal '.g:hi_normal_backup)
+        execute('hi Normal '.g:hi_normal)
         let s:trans_back_color =0
     endif
 endfunction
