@@ -2261,7 +2261,7 @@ let g:agit_no_default_mappings = 1
 "============================\ vim-signify /==============================
 ""default updatetime 4000ms is not good for async update
 set updatetime=100
-let g:signify_sign_add               = '▏'
+let g:signify_sign_add               = '▐'
 let g:signify_sign_delete_first_line = '▔'
 let g:signify_sign_delete            = '▎'
 let g:signify_sign_change            = '░'
