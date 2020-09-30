@@ -84,7 +84,7 @@ function! g:SwitchTheme(choice)
         execute('hi SignifySignDelete          '.g:hi_colorcolumn_bg)
         execute('hi SignifySignDeleteFirstLine '.g:hi_colorcolumn_bg)
         execute('hi SignifySignChange          '.g:hi_colorcolumn_bg)
-        execute('hi VertSplit                  '.g:hi_colorcolumn_bg)
+        execute('hi VertSplit                  '.g:hi_colorcolumn_bg.' ctermfg=black guifg=black')
     endif
 endfunction
 

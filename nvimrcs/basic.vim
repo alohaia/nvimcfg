@@ -69,7 +69,7 @@ set breakat=" ^i!@*-+;:,./?"        " 见 linebreak
 set list                            " 显示特殊字符
 " set listchars=tab:<->,trail:•,extends:>,precedes:<    " 特殊字符显示设置 trail 与　space 冲突   eol:↵,
 set listchars=trail:•,tab:>-
-set fillchars=vert:\ ,
+set fillchars=vert:▏
 
 ""Vim 需要 +xterm_clipboard(vim --version以查看)
 " au VimEnter * set clipboard=unnamedplus
@@ -155,7 +155,7 @@ execute('hi Conceal '.g:hi_normal)
 
 "============================== 透明背景 =================================
 "      需要终端的支持，terminator/Tilix/konsole/yakuake 支持透明背景
-call g:TransparentBg(1)
+call g:TransparentBg(0)
 
 "==================== Set font according to system =======================
 ""Need to improve.
