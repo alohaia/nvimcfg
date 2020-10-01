@@ -582,6 +582,7 @@ function g:Undotree_CustomMap()
 endfunc
 
 "===============================\ rnvimr /================================
+nnoremap <cr> :RnvimrToggle<cr>
 ""Disable Rnvimr to import user configuration.
 "let g:rnvimr_vanilla = 1
 ""Make Ranger replace netrw to be a file explorer
@@ -589,18 +590,21 @@ let g:rnvimr_ex_enable = 1
 ""Make Ranger to be hidden after picking a file
 let g:rnvimr_pick_enable = 1
 ""Disable a border for floating window
-let g:rnvimr_draw_border = 0
+let g:rnvimr_draw_border = 1
 ""Change the border's color
-let g:rnvimr_border_attr = {'fg': 14, 'bg': -1}
+let g:rnvimr_border_attr = {'fg': 39, 'bg': -1}
 ""Set up only two columns in miller mode and draw border with both
-" let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"
+let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"'
+" let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,0"
 "             \ --cmd="set draw_borders both"'
 ""Make Neovim wipe the buffers corresponding to the files deleted by Ranger
 "let g:rnvimr_bw_enable = 1
 ""Hide the files included in gitignore
 "let g:rnvimr_hide_gitignore = 1
 ""Link CursorLine into RnvimrNormal highlight in the Floating window
-highlight link RnvimrNormal CursorLine
+" highlight link RnvimrNormal CursorLine
+highlight default link RnvimrNormal NormalFloat
+highlight default link RnvimrCurses Normal
 " nnoremap <silent> <cr> :RnvimrSync<CR>:RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
 " nnoremap <silent> <cr> :RnvimrToggle<CR>
 " <C-\><C-n>:RnvimrResize 0<CR>

@@ -79,13 +79,15 @@ function! g:SwitchTheme(choice)
         colorscheme molokai
         " colorscheme sublimemonokai
         let g:airline_theme = 'airlineish'
-        execute('hi CursorLineNr               '.g:hi_colorcolumn_bg.' ctermfg=208 guifg=#FD971F')
-        execute('hi SignifySignAdd             '.g:hi_colorcolumn_bg)
-        execute('hi SignifySignDelete          '.g:hi_colorcolumn_bg)
-        execute('hi SignifySignDeleteFirstLine '.g:hi_colorcolumn_bg)
-        execute('hi SignifySignChange          '.g:hi_colorcolumn_bg)
-        execute('hi VertSplit                  '.g:hi_colorcolumn_bg.' ctermfg=black guifg=black')
     endif
+    " ================ Make some adjustments here. =====================
+    execute('hi CursorLineNr               '.g:hi_colorcolumn_bg.' ctermfg=208 guifg=#FD971F')
+    execute('hi SignColumn                 '.g:hi_colorcolumn_bg)
+    execute('hi SignifySignAdd             '.g:hi_colorcolumn_bg)
+    execute('hi SignifySignDelete          '.g:hi_colorcolumn_bg)
+    execute('hi SignifySignDeleteFirstLine '.g:hi_colorcolumn_bg)
+    execute('hi SignifySignChange          '.g:hi_colorcolumn_bg)
+    execute('hi VertSplit                  '.g:hi_colorcolumn_bg.' ctermfg=black guifg=black gui=NONE cterm=NONE')
 endfunction
 
 function! g:ThemeByTime(...)
