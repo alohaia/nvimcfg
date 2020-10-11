@@ -130,3 +130,9 @@ function s:tex_settings()
     inoremap<buffer> <C-s> <c-g>u<Esc>[s1z=`]a<c-g>u
 endfunction
 autocmd BufReadPre tex call s:tex_settings()
+
+""""""""""""""""""""""""""""""
+" => GLSL
+""""""""""""""""""""""""""""""
+au BufRead,BufNewFile *.vs setfiletype glsl
+au BufRead,BufNewFile *.fs setfiletype glsl

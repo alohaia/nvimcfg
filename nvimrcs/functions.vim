@@ -88,6 +88,7 @@ function! g:SwitchTheme(choice)
     execute('hi SignifySignDeleteFirstLine '.g:hi_colorcolumn_bg)
     execute('hi SignifySignChange          '.g:hi_colorcolumn_bg)
     execute('hi VertSplit                  '.g:hi_colorcolumn_bg.' ctermfg=black guifg=black gui=NONE cterm=NONE')
+    " hi cppRainbow_lv1_r0 guifg=#8700ff
 endfunction
 
 function! g:ThemeByTime(...)

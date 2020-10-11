@@ -68,7 +68,7 @@ set breakat=" ^i!@*-+;:,./?"        " 见 linebreak
 " set scrolloff=3                     " 滚动时光标离顶/底段的行数
 set list                            " 显示特殊字符
 " set listchars=tab:<->,trail:•,extends:>,precedes:<    " 特殊字符显示设置 trail 与　space 冲突   eol:↵,
-set listchars=trail:•,tab:>-
+set listchars=trail:˽,tab:>-        " •
 set fillchars=vert:▏
 
 ""Vim 需要 +xterm_clipboard(vim --version以查看)

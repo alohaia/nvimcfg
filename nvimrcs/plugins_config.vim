@@ -327,6 +327,12 @@ Plug 'voldikss/vim-translator'
 "=========================================================================
 ""Description: Bookmarks
 " Plug 'MattesGroeger/vim-bookmarks'
+"=========================================================================
+""Description: Highlighting for opengl
+Plug 'beyondmarc/opengl.vim'
+"=========================================================================
+""Description: Vim syntax highlighting for OpenGL Shading Language
+Plug 'tikhomirov/vim-glsl'
 
 call plug#end()
 
@@ -373,37 +379,36 @@ command! Hvista echo
 
 " ""Defx:
 command! Hdefx echo
-            \"=== \<leader\>df to start.===\n".
-            \"  Enter       - open in chosen window\n".
-            \"  c           - copy\n".
-            \"  x           - move\n".
-            \"  p           - paste\n".
-            \"  E           - open vsplit\n".
-            \"  P           - preview\n".
-            \"  o           - open tree toggle\n".
-            \"  N           - new directory\n".
-            \"  n           - new file\n".
-            \"  M           - new multiple files\n".
-            \"  C           - toggle columns\n".
-            \"  S           - toggle sort by time\n".
-            \"  d           - remove\n".
-            \"  r           - rename\n".
-            \"  !           - execute command\n".
-            \"  ex          - execute system\n".
-            \"  yy          - yank path\n".
-            \"  .           - toggle ignored files\n".
-            \"  ;           - repeat\n".
-            \"  h           - cd ..\n".
-            \"  ~           - cd ~\n".
-            \"  q           - quit\n".
-            \"  s           - toggle select and up\n".
-            \"  C-a         - toggle select all\n".
-            \"  j           - down\n".
-            \"  k           - up\n".
-            \"  C-l         - redraw\n".
-            \"  C-g         - print\n".
-            \"  cd          - change vim cwd"
-" \"  Enter       - open\n".
+            \"===================================== \<leader\>df to start ======================================\n".
+            \"------------- Open & toggle tree -------------|---------------- Change directory ---------------\n".
+            \"  \<CR\>              open in choosen window    |  cd                     change vim cwd          \n".
+            \"  l                 cd or drop                |  %                      cd to cwd               \n".
+            \"  o                 toggle tree or drop       |  ~                      cd home                 \n".
+            \"  t                 drop in new tab           |  \<BS\>                   cd ..                   \n".
+            \"  s                 open in botright split    |  h                      cd ..                   \n".
+            \"  v                 open in botright vsplit   |  u                      cd ..                   \n".
+            \"                                              |  2u                     cd ../..                \n".
+            \"---------- Defx's buffer management ----------|  3u                     cd ../../..             \n".
+            \"  q/\<Esc\>           quit                      |  4u                     cd ../../../..          \n".
+            \"  \<C-r\>             redraw                    |                                                 \n".
+            \"  \<C-g\>             print                     |------------------- Selection -------------------\n".
+            \"                                              |  s                      toggle select           \n".
+            \"------------- File/dir management ------------|  \<Space\>                toggle select           \n".
+            \"  c                 copy                      |  \<C-j\>                  toggle select & j       \n".
+            \"  x                 move                      |  \<C-k\>                  toggle select & k       \n".
+            \"  m                 move                      |  \<C-a\>                  toggle select all       \n".
+            \"  p                 paste                     |  S                      sort by time            \n".
+            \"  r                 rename                    |  C                      toggle columns          \n".
+            \"  dd(abandoned)     remove to trash           |                                                 \n".
+            \"  n                 new file                  |-------------------- Commands--------------------\n".
+            \"  N                 new directory             |  !                      execute command         \n".
+            \"  M                 new multiple files        |  ex                     execute current file    \n".
+            \"                                              |                                                 \n".
+            \"-------------------- Jump --------------------|--------------- Special operations---------------\n".
+            \"  \<                 jump dirty previous       |  P                      preview                 \n".
+            \"  \>                 jump dirty next           |  H                      toggle_ignored_files    \n".
+            \"  b                 leave defx window         |  yy                     yank_path               \n".
+            \"                                              |  .                      repeat                  \n"
 
 ""Soda:
 command! Hsuda vert h suda-usage
@@ -710,7 +715,7 @@ function! s:jump_dirty(dir) abort
     endif
 endfunction
 
-function! s:defx_toggle_tree_or_edit() abort
+function! s:defx_toggle_tree_or_drop() abort
     " Open current file, or toggle directory expand/collapse
     if defx#is_directory()
         return defx#do_action('open_or_close_tree')
@@ -718,7 +723,7 @@ function! s:defx_toggle_tree_or_edit() abort
     return defx#do_action('multi', ['drop'])
 endfunction
 
-function! s:defx_toggle_tree_or_cd(context) abort
+function! s:defx_cd_or_drop(context) abort
     " Open current file, or toggle directory expand/collapse
     if defx#is_directory()
         return defx#call_action('cd', a:context.targets)
@@ -756,23 +761,20 @@ endfunction
 function! s:defx_mappings() abort
     ""Defx window keyboard mappings
     setlocal signcolumn=no expandtab
+    ""Moving Curaor
+    nnoremap <silent><buffer><expr> j                 line('.') == line('$') ? 'go' : 'j'
+    nnoremap <silent><buffer><expr> k                 line('.') == 1 ? 'G<home>' : 'k'
+    nnoremap <silent><buffer><expr> J                 line('.') == line('$') ? 'go' : '5j'
+    nnoremap <silent><buffer><expr> K                 line('.') == 1 ? 'G<home>' : '5k'
+
+    ""Open & toggle tree
     nnoremap <silent><buffer><expr> <CR>              defx#do_action('call', g:sid.'defx_choosewin')
-    nnoremap <silent><buffer><expr> l                 defx#do_action('call', g:sid.'defx_toggle_tree_or_cd')
-    nnoremap <silent><buffer><expr> o                 <sid>defx_toggle_tree_or_edit()
-    nnoremap <silent><buffer><expr> st                defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
-    nnoremap <silent><buffer><expr> v                 defx#do_action('open', 'botright vsplit')
+    nnoremap <silent><buffer><expr> l                 defx#do_action('call', g:sid.'defx_cd_or_drop')
+    nnoremap <silent><buffer><expr> o                 <sid>defx_toggle_tree_or_drop()
+    nnoremap <silent><buffer><expr> t                 defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
     nnoremap <silent><buffer><expr> s                 defx#do_action('open', 'botright split')
-    nnoremap <silent><buffer><expr> P                 defx#do_action('preview')
-    nnoremap <silent><buffer><expr> r                 defx#do_action('rename')
-    nnoremap <silent><buffer><expr> H                 defx#do_action('toggle_ignored_files')
-    nnoremap <silent><buffer><expr> yy                defx#do_action('yank_path')
-    nnoremap <silent><buffer><expr> .                 defx#do_action('repeat')
-    nnoremap <silent><buffer><expr> b                 winnr('$') != 1 ? ':<C-u>wincmd w<CR>'
-                                                          \ : ':<C-u> Defx -buffer-name=temp -split=vertical<CR>'
-    nnoremap <silent><buffer><expr> j                 line('.') == line('$') ? 'gg' : 'j'
-    nnoremap <silent><buffer><expr> k                 line('.') == 1 ? 'G' : 'k'
-    nnoremap <silent><buffer><expr> J                 line('.') == line('$') ? 'gg' : '5gj'
-    nnoremap <silent><buffer><expr> K                 line('.') == 1 ? 'G' : '5gk'
+    nnoremap <silent><buffer><expr> v                 defx#do_action('open', 'botright vsplit')
+
     ""Defx's buffer management
     nnoremap <silent><buffer><expr> q                 defx#do_action('quit')
     nnoremap <silent><buffer><expr> <Esc>             defx#do_action('quit')
@@ -780,6 +782,7 @@ function! s:defx_mappings() abort
     " nnoremap <silent><buffer><expr> le                defx#do_action('load_session')
     nnoremap <silent><buffer><expr> <C-r>             defx#do_action('redraw')
     nnoremap <silent><buffer><expr> <C-g>             defx#do_action('print')
+
     ""File/dir management
     nnoremap <silent><buffer><expr><nowait> c         defx#do_action('copy')
     nnoremap <silent><buffer><expr><nowait> x         defx#do_action('move')
@@ -787,16 +790,19 @@ function! s:defx_mappings() abort
     nnoremap <silent><buffer><expr><nowait> p         defx#do_action('paste')
     nnoremap <silent><buffer><expr><nowait> r         defx#do_action('rename')
     " nnoremap <silent><buffer><expr> dd                defx#do_action('remove_trash')
-    nnoremap <silent><buffer><expr> N                 defx#do_action('new_directory')
     nnoremap <silent><buffer><expr> n                 defx#do_action('new_file')
+    nnoremap <silent><buffer><expr> N                 defx#do_action('new_directory')
     nnoremap <silent><buffer><expr> M                 defx#do_action('new_multiple_files')
+
     ""Jump
     nnoremap <silent><buffer>  <                      :<C-u>call <SID>jump_dirty(-1)<CR>
     nnoremap <silent><buffer>  >                      :<C-u>call <SID>jump_dirty(1)<CR>
+    nnoremap <silent><buffer><expr> b                 winnr('$') != 1 ? ':<C-u>wincmd w<CR>'
+                                                          \ : ':<C-u> Defx -buffer-name=temp -split=vertical<CR>'
+
     ""Change directory
     nnoremap <silent><buffer><expr> cd                defx#do_action('change_vim_cwd')
-    nnoremap <silent><buffer><expr><nowait> \         defx#do_action('cd', getcwd())
-    nnoremap <silent><buffer><expr><nowait> &         defx#do_action('cd', getcwd())
+    nnoremap <silent><buffer><expr><nowait> %         defx#do_action('cd', getcwd())
     nnoremap <silent><buffer><expr> ~                 defx#async_action('cd')
     nnoremap <silent><buffer><expr> <BS>              defx#async_action('cd', ['..'])
     nnoremap <silent><buffer><expr> h                 defx#async_action('cd', ['..'])
@@ -804,6 +810,7 @@ function! s:defx_mappings() abort
     nnoremap <silent><buffer><expr> 2u                defx#do_action('cd', ['../..'])
     nnoremap <silent><buffer><expr> 3u                defx#do_action('cd', ['../../..'])
     nnoremap <silent><buffer><expr> 4u                defx#do_action('cd', ['../../../..'])
+
     ""Selection
     nnoremap <silent><buffer><expr><nowait> s         defx#do_action('toggle_select')
     nnoremap <silent><buffer><expr><nowait> <Space>   defx#do_action('toggle_select')
@@ -811,11 +818,19 @@ function! s:defx_mappings() abort
     nnoremap <silent><buffer><expr> <C-k>             defx#do_action('toggle_select') . 'k'
     nnoremap <silent><buffer><expr> <C-a>             defx#do_action('toggle_select_all')
     nnoremap <silent><buffer><expr> S                 defx#do_action('toggle_sort', 'time')
-    nnoremap <silent><buffer><expr> C                 defx#do_action('toggle_columns', 'mark:git:indent:icons:icon:filename:type:size:time')
+    nnoremap <silent><buffer><expr> C                 defx#do_action('toggle_columns', 'mark:indent:icon:filename')
+
     ""Commands
     nnoremap <silent><buffer><expr> !                 defx#do_action('execute_command')
     nnoremap <silent><buffer><expr> ex                defx#do_action('call', g:sid.'defx_execute')
+
+    ""Special operations
+    nnoremap <silent><buffer><expr> P                 defx#do_action('preview')
+    nnoremap <silent><buffer><expr> H                 defx#do_action('toggle_ignored_files')
+    nnoremap <silent><buffer><expr> yy                defx#do_action('yank_path')
+    nnoremap <silent><buffer><expr> .                 defx#do_action('repeat')
 endfunction
+
 " ""Options available: :h defx-options
 " " noremap <silent> <leader>df :call g:Defx_toggle_with_my_options()<cr>
 " " function g:Defx_toggle_with_my_options()
@@ -2293,17 +2308,17 @@ let g:indentLine_setColors = 1
 " Vim
 let g:indentLine_color_term = 239
 " GVim
-"let g:indentLine_color_gui = '#A4E57E'
 " none X terminal
 "let g:indentLine_color_tty_light = 7 " (default: 4)
 "let g:indentLine_color_dark = 1 " (default: 2)
 " Background (Vim, GVim)
-let g:indentLine_bgcolor_term = 202
-let g:indentLine_bgcolor_gui = '#FF5F00'
+" let g:indentLine_bgcolor_term = 202
+" let g:indentLine_bgcolor_term = 202
+" let g:indentLine_color_gui = '#A4E57E'
+" let g:indentLine_bgcolor_gui = '#FF5F00'
 let g:indentLine_char = '┆'
 "let g:indentLine_char_list = ['|', '¦', '┆', '┊']
-au BufEnter python IndentLinesEnable
-au BufLeave python IndentLinesDisable
+let g:indentLine_fileType = ['python']
 
 "===============================\ rainbow /===============================
 ""https://github.com/luochen1990/rainbow/blob/master/README_zh.md
