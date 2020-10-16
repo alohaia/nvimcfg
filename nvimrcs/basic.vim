@@ -34,7 +34,7 @@ set nottimeout
 set lazyredraw                      " Don't redraw while executing macros (good performance config)
 set regexpengine=1                  " use old regexp engine
 set noautochdir                     " 使用 <leader>. 手动切换到当前目录
-set virtualedit=block               " 在指定模式下，使光标可以在没有文本的地方移动
+set virtualedit=block,insert        " 在指定模式下，使光标可以在没有文本的地方移动
 set number                          " 行首显示数字
 set relativenumber                  " 行首显示相对数字
 set cursorline                      " 突出显示光标所在行
@@ -85,8 +85,11 @@ filetype indent on
 "=================== 自动缩进设置(cindent会覆盖前两项) ===================
 set autoindent                      " 功能最简单的自动缩进
 set smartindent                     " 为C-like语言(及其他语言)设置自动缩进, 设置 cindent 时该选项无效
-set nocindent                       " more cleverly than the other two and is configurable to different indenting styles.
-set indentexpr=                     " 设置为非空时会覆盖 autoindent 和 smartindent
+au FileType cpp    setlocal cindent | setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+au FileType python setlocal cindent | setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+set indentexpr=                     " 设置为非空时会使用 indentkeys 覆盖 cinkeys
+set cpoptions+=I                    " 移动光标时不删除自动产生的缩进
+set cpoptions-=_                    " 使 cw/cW 包含 word 后的空格
 
 "============================ 用空格取代<tab> ============================
 set expandtab shiftwidth=4 tabstop=4 softtabstop=4
@@ -140,7 +143,8 @@ set whichwrap+=<,>,h,l
 ""Recommend: molokai iceberg solarized8_dark solarized8_light
 ""Day:   solarized8_light + solarized
 ""Night: iceberg + tomorrow
-au ColorScheme * call g:Get_hi_colorcolumn_bg()
+" let g:theme_by_time = 0
+" let g:theme_suit = 2
 " call g:ThemeByTime()
 call g:SwitchTheme(2)
 
@@ -151,11 +155,11 @@ set termguicolors " enable true colors support
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 "================= Adjust conceal characters' highlighting ===============
-execute('hi Conceal '.g:hi_normal)
+exe 'hi Conceal '.g:hi_normal
 
 "============================== 透明背景 =================================
 "      需要终端的支持，terminator/Tilix/konsole/yakuake 支持透明背景
-call g:TransparentBg(0)
+call g:TransparentBg(1)
 
 "==================== Set font according to system =======================
 ""Need to improve.
@@ -251,8 +255,8 @@ vnoremap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 nnoremap <M-l> "zxl"zP
 nnoremap <M-h> "zxh"zP
-vnoremap <M-l> "zxl"zP`[v`]
-vnoremap <M-h> "zxh"zP`[v`]
+vnoremap <M-l> "zxl"z`<v`>P
+vnoremap <M-h> "zxh"zP`<v`>
 
 if has("mac") || has("macunix")
     nmap <D-j> <M-j>
@@ -325,8 +329,33 @@ try
 catch
 endtry
 
-""Return to last edit position when opening files (You want this!)
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+""打开文件时自动将光标移动到上次光标所在的位置
+" au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
+"=========== 打开文件或切换缓冲区时自动将光标移动到上次的位置 ============
+function s:position_load()
+    if !exists('s:positions')
+        let s:positions = {}
+    endif
+    if !has_key(s:positions, bufnr())
+        " echo 'add a key'
+        let s:positions[bufnr()] = [line("'\""), col("'\"")]
+    endif
+    " echo 'jump to' s:positions[bufnr()]
+    call cursor(s:positions[bufnr()])
+endfunction
+
+function s:position_save()
+    let l:cursor_posi = getcurpos()
+    let s:positions[bufnr()] = l:cursor_posi[1:2]
+    " echo s:positions
+    " echo 'position saved:' s:positions[bufnr()]
+endfunction
+
+au BufEnter * call s:position_load()
+au BufLeave * call s:position_save()
+" au BufEnter * exec "normal `\"zz"
+" au BufLeave * exec "normal m\"zz"
 
 "=============================== tabs related ============================
 ""Useful mappings for managing tabs

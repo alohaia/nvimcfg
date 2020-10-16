@@ -27,12 +27,26 @@ endif
 "     PlugUpdate | source $MYVIMRC
 " endif
 
+"+-----------------------------------------------------------------------+
+"|                    variables for files below                          |
+"+-----------------------------------------------------------------------+
+" let g:theme_by_time = 0
+" let g:theme_suit = 2
+" "============================== 透明背景 =================================
+" "      需要终端的支持，terminator/Tilix/konsole/yakuake 支持透明背景
+" let g:trans_bg = 1
 
 "============================ Config files ===============================
 execute("source ".g:config_file_path."functions.vim")
 execute("source ".g:config_file_path."basic.vim")
 execute("source ".g:config_file_path."filetypes.vim")
 execute("source ".g:config_file_path."plugins_config.vim")
+
+"+-----------------------------------------------------------------------+
+"|               operations depended on files abovw                      |
+"+-----------------------------------------------------------------------+
+"================= Adjust conceal characters' highlighting ===============
+" exe 'hi Conceal '.g:hi_normal
 
 " Use the internal diff if available.
 " Otherwise use the special 'diffexpr' for Windows.

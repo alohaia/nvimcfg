@@ -59,13 +59,14 @@ endfunction
 " call g:AirlineRandomTheme()
 
 "============================= Switch themes =============================
-function! g:Get_hi_colorcolumn_bg()
+function! s:colorcolumn_bg_backup()
     if !exists('g:hi_colorcolumn_bg')
         let l:hi = split(execute('silent hi ColorColumn', ''))[-2:-1]
         let g:hi_colorcolumn_bg = join(l:hi, ' ')
     endif
     return g:hi_colorcolumn_bg
 endfunction
+au ColorScheme * call s:colorcolumn_bg_backup()
 
 function! g:SwitchTheme(choice)
     if a:choice == 0
@@ -80,15 +81,6 @@ function! g:SwitchTheme(choice)
         " colorscheme sublimemonokai
         let g:airline_theme = 'airlineish'
     endif
-    " ================ Make some adjustments here. =====================
-    execute('hi CursorLineNr               '.g:hi_colorcolumn_bg.' ctermfg=208 guifg=#FD971F')
-    execute('hi SignColumn                 '.g:hi_colorcolumn_bg)
-    execute('hi SignifySignAdd             '.g:hi_colorcolumn_bg)
-    execute('hi SignifySignDelete          '.g:hi_colorcolumn_bg)
-    execute('hi SignifySignDeleteFirstLine '.g:hi_colorcolumn_bg)
-    execute('hi SignifySignChange          '.g:hi_colorcolumn_bg)
-    execute('hi VertSplit                  '.g:hi_colorcolumn_bg.' ctermfg=black guifg=black gui=NONE cterm=NONE')
-    " hi cppRainbow_lv1_r0 guifg=#8700ff
 endfunction
 
 function! g:ThemeByTime(...)
@@ -115,14 +107,14 @@ endfunction
 
 "========================= Backup Normal highlighting ====================
 ""Do NOT call this function in this file.
-function! s:normalColorBackup()
+function! s:normal_color_backup()
     if !exists('g:hi_normal')
         let l:hi_normal = split(execute('silent hi Normal', ''))[2:-1]
         let g:hi_normal = join(l:hi_normal, ' ')
     endif
     return g:hi_normal
 endfunction
-au ColorScheme * call s:normalColorBackup()
+au ColorScheme * call s:normal_color_backup()
 
 "========================= Transparent background ========================
 ""pass 0 to use transparent background and store current bg color in a file.
@@ -134,7 +126,9 @@ function! g:TransparentBg(option)
                 \ : ''
     ""检查备份变量是否存在
     if !exists('g:hi_normal')
-        call s:normalColorBackup()
+        call s:normal_color_backup()
+    elseif !exists('g:hi_colorcolumn_bg')
+        call s:colorcolumn_bg_backup()
     endif
     ""防止重复执行
     if !exists('s:trans_back_color')
@@ -144,10 +138,32 @@ function! g:TransparentBg(option)
     if a:option == 1
         ""设置透明背景
         hi Normal ctermbg=NONE guibg=NONE
+        hi ColorColumn ctermbg=NONE guibg=NONE
         let s:trans_back_color = 1
+        " ================ Make some adjustments here. =====================
+        hi CursorLineNr               ctermbg=NONE guibg=NONE ctermfg=208 guifg=#FD971F
+        hi LineNr                     ctermbg=NONE guibg=NONE
+        hi SignColumn                 ctermbg=NONE guibg=NONE
+        hi SignifySignAdd             ctermbg=NONE guibg=NONE
+        hi SignifySignDelete          ctermbg=NONE guibg=NONE
+        hi SignifySignDeleteFirstLine ctermbg=NONE guibg=NONE
+        hi SignifySignChange          ctermbg=NONE guibg=NONE
+        hi VertSplit                  ctermbg=NONE guibg=NONE ctermfg=black guifg=black gui=NONE cterm=NONE
+        " hi cppRainbow_lv1_r0 guifg=#8700ff
     elseif a:option ==0 && s:trans_back_color != 0
-        execute('hi Normal '.g:hi_normal)
+        exe 'hi Normal '.g:hi_normal
+        exe 'hi ColorColumn '.g:hi_colorcolumn_bg
         let s:trans_back_color =0
+        " ================ Make some adjustments here. =====================
+        exe 'hi CursorLineNr               '.g:hi_colorcolumn_bg.' ctermfg=208 guifg=#FD971F'
+        exe 'hi LineNr                     '.g:hi_colorcolumn_bg
+        exe 'hi SignColumn                 '.g:hi_colorcolumn_bg
+        exe 'hi SignifySignAdd             '.g:hi_colorcolumn_bg
+        exe 'hi SignifySignDelete          '.g:hi_colorcolumn_bg
+        exe 'hi SignifySignDeleteFirstLine '.g:hi_colorcolumn_bg
+        exe 'hi SignifySignChange          '.g:hi_colorcolumn_bg
+        exe 'hi VertSplit                  '.g:hi_colorcolumn_bg.' ctermfg=black guifg=black gui=NONE cterm=NONE'
+        " hi cppRainbow_lv1_r0 guifg=#8700ff
     endif
 endfunction
 
@@ -184,7 +200,7 @@ function! BufcloseCloseIt()
     endif
 
     if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
+        exe "bdelete! ".l:currentBufNum
     endif
 endfunction
 

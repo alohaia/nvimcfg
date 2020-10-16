@@ -317,7 +317,7 @@ Plug 'ron89/thesaurus_query.vim'
 Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 "=========================================================================
 ""Description: Use suda://<file> instead of file to get high permission
-Plug 'lambdalisue/suda.vim' " do stuff like :sudowrite
+" Plug 'lambdalisue/suda.vim' " do stuff like :sudowrite
 "=========================================================================
 ""Description: Display a calendar/clock in vim
 Plug 'itchyny/calendar.vim'
@@ -660,7 +660,7 @@ call defx#custom#option('_', {
       \ 'split': 'vertical', 'winwidth': 40, 'direction': 'topleft',
       \ 'root_marker': '[in]: ',
       \ 'buffer_name': 'Defx',
-      \ 'show_ignored_files': 0, 'ignored_files': '.*,*.png,*.jpg',
+      \ 'show_ignored_files': 0, 'ignored_files': '.*,*.webp,*.png,*.jpg,*.o,*.exe',
       \ 'toggle': 1, 'resume': 1, 'focus': 1
       \ })
       " \ 'floating_preview': 1, 'wincol': &columns/4, 'winrow': &lines/3,
@@ -929,7 +929,7 @@ endfunction
 " endfunction
 
 "============================\ choosewin /=============================
-nnoremap <Tab> :ChooseWin<CR>
+nnoremap <C-w><C-i> :ChooseWin<CR>
 " nnoremap <Tab> :call ChooseWin()<CR>
 let g:choosewin_color_label = {
             \ 'gui':   ['#af00ff', 'black', 'bold'],
@@ -1577,8 +1577,8 @@ let g:UltiSnipsRemoveSelectModeMappings = 0
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<c-space>"
 " 在代码段内跳转
-let g:UltiSnipsJumpForwardTrigger="<M-j>"
-let g:UltiSnipsJumpBackwardTrigger="<M-k>"
+" let g:UltiSnipsJumpForwardTrigger="<c-j>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 ""Add c snippets for cpp files. (改为在 snippets 文件中使用 extends 关键字)
@@ -1699,6 +1699,7 @@ function! s:fzf_task()
 endfunction
 
 command! -nargs=0 AsyncTaskFzf call s:fzf_task()
+command! -nargs=0 FzfTasks call s:fzf_task()
 
 ""Templates for :AsyncTaskEdit
 let g:asynctasks_template = {}
@@ -2377,7 +2378,7 @@ let g:tq_mthesaur_file="~/.config/nvim/thesaurus/mthesaur.txt"
 let g:tq_cilin_txt_file="~/.config/nvim/thesaurus/cilin.txt"
 
 "==============================\ suda.vim /===============================
-let g:suda#prefix = 'sudo:'
+" let g:suda#prefix = 'sudo:'
 
 "============================\ calendar.vim /=============================
 "noremap \\c :Calendar -position=here<CR>
