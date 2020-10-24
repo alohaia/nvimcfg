@@ -96,6 +96,15 @@ set expandtab shiftwidth=4 tabstop=4 softtabstop=4
 set smarttab                        " 一次删除所有用 <Tab> 键产生的空格
 
 "=============================== 临时文件 ================================
+if !isdirectory(expand("~/.cache/nvim/.temp_dirs/backupdir/"))
+    silent !mkdir "~/.cache/nvim/.temp_dirs/backupdir/"
+endif
+if !isdirectory(expand("~/.cache/nvim/.temp_dirs/undodir/"))
+    silent !mkdir "~/.cache/nvim/.temp_dirs/undodir/"
+endif
+if !isdirectory(expand("~/.cache/nvim/.temp_dirs/swapdir/"))
+    silent !mkdir "~/.cache/nvim/.temp_dirs/swapdir/"
+endif
 if has("vms")
     set nobackup                    " do not keep a backup file, use versions instead
     else
@@ -155,7 +164,14 @@ set termguicolors " enable true colors support
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 "================= Adjust conceal characters' highlighting ===============
-exe 'hi Conceal '.g:hi_normal
+function s:set_hi_conceal()
+    if &filetype == 'tex'
+        hi link Conceal texAccent
+    else
+        exe 'hi Conceal '.g:hi_normal
+    endif
+endfunction
+au BufEnter * call s:set_hi_conceal()
 
 "============================== 透明背景 =================================
 "      需要终端的支持，terminator/Tilix/konsole/yakuake 支持透明背景
@@ -333,29 +349,30 @@ endtry
 " au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
 "=========== 打开文件或切换缓冲区时自动将光标移动到上次的位置 ============
-function s:position_load()
-    if !exists('s:positions')
-        let s:positions = {}
-    endif
-    if !has_key(s:positions, bufnr())
-        " echo 'add a key'
-        let s:positions[bufnr()] = [line("'\""), col("'\"")]
-    endif
-    " echo 'jump to' s:positions[bufnr()]
-    call cursor(s:positions[bufnr()])
-endfunction
-
-function s:position_save()
-    let l:cursor_posi = getcurpos()
-    let s:positions[bufnr()] = l:cursor_posi[1:2]
-    " echo s:positions
-    " echo 'position saved:' s:positions[bufnr()]
-endfunction
-
-au BufEnter * call s:position_load()
-au BufLeave * call s:position_save()
-" au BufEnter * exec "normal `\"zz"
-" au BufLeave * exec "normal m\"zz"
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+" function s:position_load()
+"     if !exists('s:positions')
+"         let s:positions = {}
+"     endif
+"     if !has_key(s:positions, bufnr())
+"         " echo 'add a key'
+"         let s:positions[bufnr()] = [line("'\""), col("'\"")]
+"     endif
+"     " echo 'jump to' s:positions[bufnr()]
+"     call cursor(s:positions[bufnr()])
+" endfunction
+"
+" function s:position_save()
+"     let l:cursor_posi = getcurpos()
+"     let s:positions[bufnr()] = l:cursor_posi[1:2]
+"     " echo s:positions
+"     " echo 'position saved:' s:positions[bufnr()]
+" endfunction
+"
+" au BufEnter * call s:position_load()
+" au BufLeave * call s:position_save()
+" " au BufEnter * exec "normal `\"zz"
+" " au BufLeave * exec "normal m\"zz"
 
 "=============================== tabs related ============================
 ""Useful mappings for managing tabs
