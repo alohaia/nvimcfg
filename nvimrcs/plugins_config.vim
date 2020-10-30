@@ -52,7 +52,7 @@ else
     Plug 'roxma/vim-hug-neovim-rpc'
 endif
 "=========================================================================
-""Description: Land on window you chose like tmux's 'display-pane'
+""Description: Land on window you choose like tmux's 'display-pane'
 Plug 't9md/vim-choosewin'
 "=========================================================================
 ""Description: Icons and git status for defx.
@@ -653,6 +653,7 @@ nnoremap <silent> <leader>df :Defx<CR>
 "       \ 'show_ignored_files': 0,
 "       \ 'columns': 'mark:indent:git:icons:filename',
 "       \ })
+""Options
 call defx#custom#option('_', {
       \ 'columns': 'mark:indent:git:icon:icons:filename:type:size:time',
       \ 'sort': 'filename',
@@ -664,23 +665,41 @@ call defx#custom#option('_', {
       \ 'toggle': 1, 'resume': 1, 'focus': 1
       \ })
       " \ 'floating_preview': 1, 'wincol': &columns/4, 'winrow': &lines/3,
+""Columns
 call defx#custom#column('git', 'indicators', {
-      \ 'Modified'  : '✹',
-      \ 'Staged'    : '⚑',
-      \ 'Untracked' : '⚝',
-      \ 'Renamed'   : '≫',
+      \ 'Modified'  : 'M',
+      \ 'Staged'    : 'S',
+      \ 'Untracked' : 'U',
+      \ 'Renamed'   : 'R',
       \ 'Unmerged'  : '=',
       \ 'Ignored'   : '~',
-      \ 'Deleted'   : '✖',
+      \ 'Deleted'   : 'D',
       \ 'Unknown'   : '?'
       \ })
+" call defx#custom#column('git', 'indicators', {
+"       \ 'Modified'  : '✹',
+"       \ 'Staged'    : '⚑',
+"       \ 'Untracked' : '⚝',
+"       \ 'Renamed'   : '≫',
+"       \ 'Unmerged'  : '=',
+"       \ 'Ignored'   : '~',
+"       \ 'Deleted'   : '✖',
+"       \ 'Unknown'   : '?'
+"       \ })
 call defx#custom#column('indent', 'indent', '  ')
-function! Root(path) abort
-      return fnamemodify(a:path, ':t')
-endfunction
+call defx#custom#column('icon', {
+      \ 'directory_icon': '▸',
+      \ 'opened_icon': '▾',
+      \ 'root_icon': ' ',
+      \ })
+
 call defx#custom#source('file', {
       \  'root': 'Root',
       \ })
+function! Root(path) abort
+      return fnamemodify(a:path, ':t')
+endfunction
+
 " defx-icons plugin
 let g:defx_icons_column_length = 1
 let g:defx_icons_mark_icon = ''    " ✓
@@ -830,103 +849,6 @@ function! s:defx_mappings() abort
     nnoremap <silent><buffer><expr> yy                defx#do_action('yank_path')
     nnoremap <silent><buffer><expr> .                 defx#do_action('repeat')
 endfunction
-
-" ""Options available: :h defx-options
-" " noremap <silent> <leader>df :call g:Defx_toggle_with_my_options()<cr>
-" " function g:Defx_toggle_with_my_options()
-" "     " if &filetype != 'startify'
-" "         Defx
-" "             \ -columns=mark:git:indent:icons:icon:filename:type:size:time
-" "             \ -ignored-files='.*'
-" "             \ -vertical-preview -preview-width=50
-" "             \ -sort='filename'
-" "             \ -buffer-name='filebrowser'
-" "             \ -show-ignored-files=0
-" "             \ -focus -toggle
-" "             "\ -columns=git:mark:indent:icons:filename:type
-" "             "\ -split='vertical' -direction='topleft' -winwidth=&columns/2
-" "             "\ -split='horizontal' -direction='botright' -winheight=30
-" "             "\ -split='floating' -wincol=4 -winrow=0
-" "             "\ -preview-height=15
-" "             "\ -floating-preview -preview-height=10 -preview-width=40
-" "             "\ -root-maker=
-" "             "\ -search={path}
-" "             "\ -session-file={path}
-" "             "\ -split='floating' -direction='topleft'
-" "             "\ listed
-" "     " endif
-" " endfunction
-"
-" " autocmd BufReadPre defx call s:defx_my_settings()
-" " function! s:defx_my_settings() abort
-" ""Customize columns: filename icon indent mark size space time type [git icons]
-" call defx#custom#column('icon', {
-"             \ 'directory_icon': '▸',
-"             \ 'opened_icon': '▾',
-"             \ 'root_icon': ' ',
-"             \ })
-" call defx#custom#column('filename', {
-"             \ 'min_width': 40,
-"             \ 'max_width': 40,
-"             \ })
-" call defx#custom#column('mark', {
-"             \ 'readonly_icon': '✗',
-"             \ 'selected_icon': '✓',
-"             \ })
-"
-" ""Customize options
-" call defx#custom#option('_', {
-"             \ 'columns': 'mark:git:indent:icon:icons:space:filename:type:size:time',
-"             \ 'sort': 'filename',
-"             \ 'split': 'vertical', 'winwidth': 30, 'direction': 'topleft',
-"             \ 'preview_height': &lines/2,
-"             \ 'buffer_name': 'Defx', 'root_marker': '<Root>: ',
-"             \ 'show_ignored_files': 0, 'ignored_files': '.*,*.png,*.jpg',
-"             \ 'toggle': 1, 'resume': 1, 'focus': 1
-"             \ })
-"             " \ 'floating_preview': 1, 'wincol': &columns/4, 'winrow': &lines/3,
-" " endfunction
-"
-" ""Define mappings
-" autocmd FileType defx call s:defx_my_mappings()
-" function! s:defx_my_mappings() abort
-"     " nnoremap ; :
-"     " nnoremap <C-l> <C-w>l
-"     " nnoremap <C-h> <C-w>h
-"     " nnoremap <C-j> <C-w>j
-"     " nnoremap <C-k> <C-w>k
-"     ""Actions available: :h defx-actions
-"     " nnoremap <silent><buffer><expr> <CR>    defx#do_action('open')
-"     nnoremap <silent><buffer><expr> <CR>    defx#do_action('call', 'DefxChoosewin')
-"     nnoremap <silent><buffer><expr> c       defx#do_action('copy')
-"     nnoremap <silent><buffer><expr> x       defx#do_action('move')
-"     nnoremap <silent><buffer><expr> p       defx#do_action('paste')
-"     nnoremap <silent><buffer><expr> E       defx#do_action('open', 'vsplit')
-"     nnoremap <silent><buffer><expr> P       defx#do_action('preview')
-"     nnoremap <silent><buffer><expr> o       defx#do_action('open_tree', 'toggle')
-"     nnoremap <silent><buffer><expr> N       defx#do_action('new_directory')
-"     nnoremap <silent><buffer><expr> n       defx#do_action('new_file')
-"     nnoremap <silent><buffer><expr> M       defx#do_action('new_multiple_files')
-"     nnoremap <silent><buffer><expr> C       defx#do_action('toggle_columns', 'mark:git:indent:icons:icon:filename:type:size:time')
-"     nnoremap <silent><buffer><expr> S       defx#do_action('toggle_sort', 'time')
-"     nnoremap <silent><buffer><expr> d       defx#do_action('remove')
-"     nnoremap <silent><buffer><expr> r       defx#do_action('rename')
-"     nnoremap <silent><buffer><expr> !       defx#do_action('execute_command')
-"     nnoremap <silent><buffer><expr> ex      defx#do_action('execute_system')
-"     nnoremap <silent><buffer><expr> yy      defx#do_action('yank_path')
-"     nnoremap <silent><buffer><expr> .       defx#do_action('toggle_ignored_files')
-"     nnoremap <silent><buffer><expr> ;       defx#do_action('repeat')
-"     nnoremap <silent><buffer><expr> h       defx#do_action('cd', ['..'])
-"     nnoremap <silent><buffer><expr> ~       defx#do_action('cd')
-"     nnoremap <silent><buffer><expr> q       defx#do_action('quit')
-"     nnoremap <silent><buffer><expr> s       defx#do_action('toggle_select') . 'j'
-"     nnoremap <silent><buffer><expr> <C-a>   defx#do_action('toggle_select_all')
-"     nnoremap <silent><buffer><expr> j       line('.') == line('$') ? 'gg' : 'j'
-"     nnoremap <silent><buffer><expr> k       line('.') == 1 ? 'G' : 'k'
-"     nnoremap <silent><buffer><expr> <C-l>   defx#do_action('redraw')
-"     nnoremap <silent><buffer><expr> <C-g>   defx#do_action('print')
-"     nnoremap <silent><buffer><expr> cd      defx#do_action('change_vim_cwd')
-" endfunction
 
 "============================\ choosewin /=============================
 nnoremap <C-w><C-i> :ChooseWin<CR>
@@ -2300,6 +2222,7 @@ highlight SignifySignChange ctermfg=yellow guifg=#ffff00
 "   name: get from http://api.zealdocs.org/v1/docsets
 " Plug 'keith/investigate.vim'       " Looking documentation online/offline
 
+"=============================\ indentline /==============================
 " 指定对齐线的尺寸
 let g:indent_guides_guide_size = 1
 " 从第二层开始可视化显示缩进

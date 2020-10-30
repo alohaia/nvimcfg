@@ -55,6 +55,7 @@ set splitright                      " vs 会在右边打开分割窗口
 set completeopt=noinsert,menuone,noselect,preview " longest, 与 noinsert 不兼容
 set noequalalways                   " 防止 vim 关闭窗口时自动调整窗口大小
 set conceallevel=2                  " 完全隐藏 conceal 字符, markdown/tex/...
+set concealcursor=
 set updatetime=200
 " set nrformats=                      " 将所有数字视为十进制
 
@@ -154,8 +155,8 @@ set whichwrap+=<,>,h,l
 ""Night: iceberg + tomorrow
 " let g:theme_by_time = 0
 " let g:theme_suit = 2
-" call g:ThemeByTime()
-call g:SwitchTheme(2)
+call g:ThemeByTime()
+" call g:SwitchTheme(2)
 
 if !has('nvim')
     set t_Co=256
