@@ -33,8 +33,8 @@ set timeoutlen=200                  " 等待时间(ms)
 set nottimeout
 set lazyredraw                      " Don't redraw while executing macros (good performance config)
 set regexpengine=1                  " use old regexp engine
-set noautochdir                     " 使用 <leader>. 手动切换到当前目录
-set virtualedit=block,insert        " 在指定模式下，使光标可以在没有文本的地方移动
+set autochdir                       " 使用 <leader>. 手动切换到当前目录
+set virtualedit=block               " 在指定模式下，使光标可以在没有文本的地方移动
 set number                          " 行首显示数字
 set relativenumber                  " 行首显示相对数字
 set cursorline                      " 突出显示光标所在行
@@ -60,13 +60,13 @@ set updatetime=200
 " set nrformats=                      " 将所有数字视为十进制
 
 ""设置自动折行时建议设置
-set wrap                            " 自动折行
-set showbreak=➜\                    " 或者 let &showbreak = '➜ '
-set linebreak                       " 只在 breakat 指定的符号处折行
-set breakat=" ^i!@*-+;:,./?"        " 见 linebreak
+" set wrap                            " 自动折行
+" set showbreak=➜\                    " 或者 let &showbreak = '➜ '
+" set linebreak                       " 只在 breakat 指定的符号处折行
+" set breakat=" ^i!@*-+;:,./?"        " 见 linebreak
 ""设置不自动换行并调整光标在边界处的行为: 始终离边界五个字符距离，横向显示每次移动一个字符
-" set nowrap sidescroll=1 sidescrolloff=5
-" set scrolloff=3                     " 滚动时光标离顶/底段的行数
+set nowrap sidescroll=1 sidescrolloff=5
+set scrolloff=3                     " 滚动时光标离顶/底段的行数
 set list                            " 显示特殊字符
 " set listchars=tab:<->,trail:•,extends:>,precedes:<    " 特殊字符显示设置 trail 与　space 冲突   eol:↵,
 set listchars=trail:˽,tab:>-        " •
@@ -155,8 +155,8 @@ set whichwrap+=<,>,h,l
 ""Night: iceberg + tomorrow
 " let g:theme_by_time = 0
 " let g:theme_suit = 2
-call g:ThemeByTime()
-" call g:SwitchTheme(2)
+" call g:ThemeByTime()
+call g:SwitchTheme(2)
 
 if !has('nvim')
     set t_Co=256
@@ -350,30 +350,28 @@ endtry
 " au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
 "=========== 打开文件或切换缓冲区时自动将光标移动到上次的位置 ============
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-" function s:position_load()
-"     if !exists('s:positions')
-"         let s:positions = {}
-"     endif
-"     if !has_key(s:positions, bufnr())
-"         " echo 'add a key'
-"         let s:positions[bufnr()] = [line("'\""), col("'\"")]
-"     endif
-"     " echo 'jump to' s:positions[bufnr()]
-"     call cursor(s:positions[bufnr()])
-" endfunction
-"
-" function s:position_save()
-"     let l:cursor_posi = getcurpos()
-"     let s:positions[bufnr()] = l:cursor_posi[1:2]
-"     " echo s:positions
-"     " echo 'position saved:' s:positions[bufnr()]
-" endfunction
-"
-" au BufEnter * call s:position_load()
-" au BufLeave * call s:position_save()
-" " au BufEnter * exec "normal `\"zz"
-" " au BufLeave * exec "normal m\"zz"
+" au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+function s:position_load()
+    if !exists('s:positions')
+        let s:positions = {}
+    endif
+    if !has_key(s:positions, bufnr())
+        " echo 'add a key'
+        let s:positions[bufnr()] = [line("'\""), col("'\"")]
+    endif
+    " echo 'jump to' s:positions[bufnr()]
+    call cursor(s:positions[bufnr()])
+endfunction
+
+function s:position_save()
+    let l:cursor_posi = getcurpos()
+    let s:positions[bufnr()] = l:cursor_posi[1:2]
+    " echo s:positions
+    " echo 'position saved:' s:positions[bufnr()]
+endfunction
+
+au BufEnter,WinEnter * call s:position_load()
+au BufLeave,WinLeave * call s:position_save()
 
 "=============================== tabs related ============================
 ""Useful mappings for managing tabs

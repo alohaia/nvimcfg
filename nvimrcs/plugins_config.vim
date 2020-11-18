@@ -99,6 +99,9 @@ Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['c', 'cpp']}
 ""Description: Highlighting fo go
 Plug 'fatih/vim-go' , { 'for': ['go', 'vim-plug'], 'tag': '*' }
 "=========================================================================
+""Description: Syntax highlighting and improved indentation
+Plug 'pangloss/vim-javascript'
+"=========================================================================
 ""Description: Schemes for vim
 ""Recommend: molokai iceberg solarized8_dark solarized8_light
 Plug 'flazz/vim-colorschemes'
@@ -109,6 +112,7 @@ Plug 'RRethy/vim-illuminate'
 ""Description: Plugin for fuzzy finder, search everything in vim!
 ""Dependencies: fzf, [mlocate, ]others see :h fzf-vim-dependencies
 ""Alternatives: Shougo/denite.nvim
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 "=========================================================================
 ""Description: Fzf interface for creating .gitignore files using the gitignore.io API.
@@ -142,7 +146,7 @@ Plug 'skywind3000/asyncrun.vim'
 Plug 'skywind3000/asynctasks.vim'
 "=========================================================================
 ""Description: Auto change
-Plug 'airblade/vim-rooter'
+" Plug 'airblade/vim-rooter'
 "=========================================================================
 ""Description: <C-l>(if not already used)/<C-g>c (insert) to toggle capslock
 Plug 'tpope/vim-capslock'
@@ -946,6 +950,7 @@ autocmd FileType vista,vista_kind nnoremap <buffer> <silent> f :<c-u>call vista#
 "============================\ vim-devicons /=============================
 let g:webdevicons_enable = 1
 let g:webdevicons_enable_airline_tabline = 1
+let g:airline_powerline_fonts = 1
 
 "============================\ vim-airline /=============================
 if !exists('g:airline_symbols')
@@ -1049,6 +1054,32 @@ let g:go_highlight_types = 1
 let g:go_highlight_variable_assignments = 0
 let g:go_highlight_variable_declarations = 0
 let g:go_doc_keywordprg_enabled = 0
+
+"===========================\ vim-javascript /============================
+set cole=0
+" source: https://github.com/pangloss/vim-javascript/issues/101#issuecomment-45543789
+
+" change to 1 to enable concealing
+let g:javascript_conceal = 1
+
+let g:javascript_conceal_function   = 'ƒ'
+let g:javascript_conceal_null       = 'ø'
+let g:javascript_conceal_this       = '@'
+let g:javascript_conceal_return     = '⇚'
+let g:javascript_conceal_undefined  = '¿'
+let g:javascript_conceal_NaN        = 'ℕ'
+let g:javascript_conceal_prototype  = '¶'
+
+" fix conceal color
+highlight Conceal guifg=#ffb964
+
+"highlight link Conceal SpellCap
+"highlight link Conceal comment
+" source: https://github.com/pangloss/vim-javascript/issues/151
+
+" Enables HTML/CSS syntax highlighting in your JavaScript file.
+let g:javascript_enable_domhtmlcss = 1
+" source: https://github.com/pangloss/vim-javascript
 
 "===========================\ vim-illuminate /============================
 " Time in milliseconds (default 250)
@@ -1561,8 +1592,6 @@ let g:asyncrun_runner.floaterm = function('s:asyncrun_floaterm')
 let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg', '.tasks']
 
 "============================\ asynctasks.vim /=============================
-command! RunDefault AsyncTask default-run
-command! BuildDefault AsyncTask default-build
 command! Run   AsyncTask run
 command! Build AsyncTask build
 ""设置终端的工作位置和工作模式
@@ -1942,6 +1971,7 @@ let g:AutoPairsShortcutToggle=''
 let g:AutoPairsShortcutFastWrap='<M-e>'
 let g:AutoPairsShortcutJump=''
 let g:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '"':'"', '`':'`'}
+au FileType * let b:AutoPairs = g:AutoPairs
 au FileType html let b:AutoPairs['<'] = '>'
 au FileType vim let b:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '`':'`', '<':'>'}
 " 使用 Backspace 删除时会删除 pair 中的另一个
