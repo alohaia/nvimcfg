@@ -37,7 +37,6 @@ endif
 " let g:trans_bg = 1
 
 "============================ Config files ===============================
-lua require('init')
 execute("source ".g:config_file_path."functions.vim")
 execute("source ".g:config_file_path."basic.vim")
 execute("source ".g:config_file_path."filetypes.vim")
