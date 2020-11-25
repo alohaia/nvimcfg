@@ -16,48 +16,6 @@ function! GetRandomInt()
     endif
 endfunction
 
-""========================= Airline random theme =========================
-" let b:airline_themes_list=[
-"             \    "alduin", "angr", "atomic", "ayu_dark", "ayu_light", "ayu_mirage", "badwolf", "base16_3024", "base16_adwaita", "base16_apathy",
-"             \    "base16_ashes", "base16_atelierdune", "base16_atelierforest", "base16_atelierheath", "base16_atelierlakeside", "base16_atelierseaside", "base16_bespin", "base16_brewer", "base16_bright", "base16_chalk",
-"             \    "base16_classic", "base16_codeschool", "base16_colors", "base16color", "base16_default", "base16_eighties", "base16_embers", "base16_flat", "base16_google", "base16_grayscale",
-"             \    "base16_greenscreen", "base16_gruvbox_dark_hard", "base16_harmonic16", "base16_hopscotch", "base16_isotope", "base16_londontube", "base16_marrakesh", "base16_mocha", "base16_monokai", "base16_nord",
-"             \    "base16_oceanicnext", "base16_ocean", "base16_paraiso", "base16_pop", "base16_railscasts", "base16_seti", "base16_shapeshifter", "base16_shell", "base16_snazzy", "base16_solarized",
-"             \    "base16_spacemacs", "base16_summerfruit", "base16_tomorrow", "base16_twilight", "base16", "base16_vim", "behelit", "biogoo", "bubblegum", "cobalt2",
-"             \    "cool", "dark_minimal", "desertink", "deus", "distinguished", "durant", "fairyfloss", "fruit_punch", "hybridline", "hybrid",
-"             \    "jellybeans", "jet", "kalisi", "kolor", "laederon", "light", "lucius", "luna", "minimalist", "molokai",
-"             \    "monochrome", "murmur", "night_owl", "onedark", "ouo", "owo", "papercolor", "peaksea", "powerlineish", "qwq",
-"             \    "ravenpower", "raven", "seagull", "seoul256", "serene", "sierra", "silver", "simple", "soda", "solarized_flood",
-"             \    "solarized", "sol", "term_light", "term", "themes", "tomorrow", "ubaryd", "understated", "violet", "wombat",
-"             \    "xtermlight", "zenburn", "airlineish",
-"             \]
-"
-" " function! AirlineSelectTheme(num)
-" "     if a:num < 0
-" "         let b:airline_theme_selected = GetRandomInt() % 113
-" "         let g:airline_theme = b:airline_themes_list[b:airline_theme_selected]
-" "         echo 'random theme ' b:airline_theme_selected ' :' g:airline_theme 'selected.'
-" "     elseif a:num >= 113
-" "         echo 'Number too big! Select a number smaller than 114.'
-" "     else
-" "         let g:airline_theme = b:airline_themes_list[a:num]
-" "     endif
-" "     source $HOME/.vim/plugins/vim-airline/autoload/airline.vim
-" " endfunction
-"
-" function! g:AirlineRandomTheme()
-"     if !exists('g:airline_random_theme')
-"         let g:airline_random_theme = 0
-"     endif
-"     if g:airline_random_theme == 1
-"         let b:airline_theme_selected = GetRandomInt() % 114
-"         let g:airline_theme = b:airline_themes_list[b:airline_theme_selected]
-"         "":mes[sages] 以查看当前主题信息
-"         au VimEnter * echomsg 'airline theme '.b:airline_theme_selected.':'.b:airline_themes_list[b:airline_theme_selected].' selected.'
-"     endif
-" endfunction
-" call g:AirlineRandomTheme()
-
 "============================= Switch themes =============================
 function! s:colorcolumn_bg_backup()
     if !exists('g:hi_colorcolumn_bg')

@@ -216,6 +216,9 @@ endif
 "================ Use Unix as the standard file type =====================
 set fileformats=unix,dos,mac
 
+"================ Highlighting a selection on yank =======================
+" au! TextYankPost * lua vim.highlight.on_yank {higroup="IncSearch", timeout=150}
+
 
 "#########################################################################
 "##########################\ Search and Replace /#########################

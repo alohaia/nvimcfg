@@ -37,13 +37,14 @@ endif
 " let g:trans_bg = 1
 
 "============================ Config files ===============================
+lua require('init')
 execute("source ".g:config_file_path."functions.vim")
 execute("source ".g:config_file_path."basic.vim")
 execute("source ".g:config_file_path."filetypes.vim")
 execute("source ".g:config_file_path."plugins_config.vim")
 
 "+-----------------------------------------------------------------------+
-"|               operations depended on files abovw                      |
+"|               operations depended on files above                      |
 "+-----------------------------------------------------------------------+
 "================= Adjust conceal characters' highlighting ===============
 " exe 'hi Conceal '.g:hi_normal

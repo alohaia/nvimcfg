@@ -76,6 +76,9 @@ Plug 'wincent/terminus'
 "=========================================================================
 ""Description: 状态栏美化、tabline
 Plug 'vim-airline/vim-airline'
+""Description:Another statusline plugin
+" Plug 'glepnir/galaxyline.nvim'
+" Plug 'kyazdani42/nvim-web-devicons'
 "=========================================================================
 ""Description: Schemes for airline
 ""Dependencies: vim-airline/vim-airline
@@ -92,6 +95,11 @@ Plug 'guns/xterm-color-table.vim'
 ""Description: vim-polyglot，开箱即用型的语法高亮包
 let g:polyglot_disabled = ['markdown']
 Plug 'sheerun/vim-polyglot'
+"=========================================================================
+""Description: Tree Sitter 语法高亮
+Plug 'nvim-tree-sitter/nvim-tree-sitter'
+Plug 'glepnir/zephyr-nvim'
+lua require('zephyr').get_zephyr_color()
 "=========================================================================
 ""Description: c++ 语法高亮增强包
 Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['c', 'cpp']}
@@ -131,21 +139,27 @@ Plug 'brooth/far.vim'
 ""Dependencies: ccls, pip install 'python-language-server[all]'
 ""Alternatives: ncm2/ncm2, ycm-core/YouCompleteMe, dense-analysis/ale
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"========================================================================
+"Description:Conpletion for Neovim's built-in LSP.
+Plug 'nvim-lua/completion-nvim'
+"========================================================================
+"Description:Collection of common configurations for the Nvim LSP client.
+ Plug 'neovim/nvim-lspconfig'
 "=========================================================================
 ""Description:  ultisnips 代码段补全
 Plug 'SirVer/ultisnips'            " improved vim-snipmate
 "=========================================================================
 ""Description: Debug
 Plug 'puremourning/vimspector'
-Plug 'skywind3000/asyncrun.vim'
 "=========================================================================
 ""Description: 为 Vim 引入类似 vscode 的 tasks 任务系统，
 ""             用统一的方式系统化解决各类：编译/运行/测试/部署任务。
 ""             The generic way to handle building/running/testing/deploying
 ""             tasks by imitating vscode's task system.
+Plug 'skywind3000/asyncrun.vim'
 Plug 'skywind3000/asynctasks.vim'
 "=========================================================================
-""Description: Auto change
+""Description: Auto change dir
 " Plug 'airblade/vim-rooter'
 "=========================================================================
 ""Description: <C-l>(if not already used)/<C-g>c (insert) to toggle capslock
@@ -1518,6 +1532,16 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 " " Resume latest coc list.
 " nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
+"=========================\ completion-nvim /==========================
+" lua require'nvim_lsp'.pyls.setup{on_attach=require'completion'.on_attach}
+" lua <<EOF
+" local lspconfig = require'lspconfig'
+" local configs = require'lspconfig/configs'
+"
+" EOF
+"
+" let g:completion_auto_change_source = 1
+
 "============================\ ultisnips /=============================
 " Plug 'alohaia/vim-snippets'               " snips for snipmate and ultisnips
 ""An array of relative directory names OR an array with a single absolute path.
@@ -2335,7 +2359,7 @@ let g:tq_cilin_txt_file="~/.config/nvim/thesaurus/cilin.txt"
 
 "============================\ calendar.vim /=============================
 "noremap \\c :Calendar -position=here<CR>
-noremap \\c :Calendar -view=clock -position=here<CR>
+noremap <silent> \\c :Calendar -view=clock -position=here<CR>
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
 augroup calendar-mappings
