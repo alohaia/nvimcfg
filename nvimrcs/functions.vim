@@ -4,18 +4,6 @@
 "¦ License:        MIT                                                   ¦
 "+-----------------------------------------------------------------------+
 
-""======================== Preset helper functions =======================
-""Get a random int number.
-function! GetRandomInt()
-    if has('nvim')
-        ""How to get random int in nvim?
-        "return RandomInt()
-    else
-        let b:seed = srand()
-        return rand(b:seed)
-    endif
-endfunction
-
 "============================= Switch themes =============================
 function! s:colorcolumn_bg_backup()
     if !exists('g:hi_colorcolumn_bg')

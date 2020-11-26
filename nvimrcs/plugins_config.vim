@@ -19,7 +19,7 @@
 "¦                                                                       ¦
 "+-----------------------------------------------------------------------+
 
-call plug#begin(g:main_runtimepath."plugins/")
+call plug#begin("~/.config/nvim/plugins/")
 
 "=========================================================================
 ""Description: A plugin to manage other plugins.
@@ -97,9 +97,9 @@ let g:polyglot_disabled = ['markdown']
 Plug 'sheerun/vim-polyglot'
 "=========================================================================
 ""Description: Tree Sitter 语法高亮
-Plug 'nvim-tree-sitter/nvim-tree-sitter'
-Plug 'glepnir/zephyr-nvim'
-lua require('zephyr').get_zephyr_color()
+"Plug 'nvim-tree-sitter/nvim-tree-sitter'
+"Plug 'glepnir/zephyr-nvim'
+"lua require('zephyr').get_zephyr_color()
 "=========================================================================
 ""Description: c++ 语法高亮增强包
 Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['c', 'cpp']}

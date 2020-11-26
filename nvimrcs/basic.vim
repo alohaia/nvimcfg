@@ -24,10 +24,8 @@ let g:mapleader = "\<space>"
 "#########################################################################
 
 "============================ 一些不好分类的 =============================
-if !has('nvim')
-    set nocompatible                " 不向后兼容(always 'nocompatible' in neovim)
-    set ttyfast                     " should make scrolling faster(romoved in neovim)
-endif
+set nocompatible                " 不向后兼容(always 'nocompatible' in neovim)
+set ttyfast                     " should make scrolling faster(romoved in neovim)
 set timeout                         " 设置快捷键输入时间限制
 set timeoutlen=200                  " 等待时间(ms)
 set nottimeout
@@ -108,9 +106,9 @@ if !isdirectory(expand("~/.cache/nvim/.temp_dirs/swapdir/"))
 endif
 if has("vms")
     set nobackup                    " do not keep a backup file, use versions instead
-    else
-        set backupdir=~/.cache/nvim/.temp_dirs/backupdir
-        set backup                  " keep a backup file (restore to previous version)
+else
+    set backupdir=~/.cache/nvim/.temp_dirs/backupdir
+    set backup                  " keep a backup file (restore to previous version)
     if has('persistent_undo')       " you can undo even when you close a buffer/VIM
         set undodir=~/.cache/nvim/.temp_dirs/undodir
         set undofile                " keep an undo file (undo changes after closing)
@@ -132,7 +130,6 @@ set foldcolumn=0
 
 "============================== 编码和语言 ===============================
 set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
-set termencoding=utf-8
 set encoding=utf-8
 set emoji
 " let $LANG='zh_CN'
