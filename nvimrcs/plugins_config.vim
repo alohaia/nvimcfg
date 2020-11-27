@@ -350,6 +350,9 @@ Plug 'beyondmarc/opengl.vim'
 "=========================================================================
 ""Description: Vim syntax highlighting for OpenGL Shading Language
 Plug 'tikhomirov/vim-glsl'
+"=========================================================================
+""Description: Personal wiki built in vim
+Plug 'vimwiki/vimwiki'
 
 call plug#end()
 
@@ -1997,6 +2000,7 @@ let g:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '"':'"', '`':'`'}
 au FileType * let b:AutoPairs = g:AutoPairs
 au FileType html let b:AutoPairs['<'] = '>'
 au FileType vim let b:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '`':'`', '<':'>'}
+au FileType vimwiki let b:AutoPairs['='] = '='
 " 使用 Backspace 删除时会删除 pair 中的另一个
 let g:AutoPairsMapBs=1
 " 让使用 <C-h> 删除时不会删除 pair 中的另一个

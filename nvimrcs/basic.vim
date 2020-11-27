@@ -97,27 +97,27 @@ set expandtab shiftwidth=4 tabstop=4 softtabstop=4
 set smarttab                        " 一次删除所有用 <Tab> 键产生的空格
 
 "=============================== 临时文件 ================================
-if !isdirectory(expand("~/.cache/nvim/.temp_dirs/backupdir/"))
-    silent !mkdir "~/.cache/nvim/.temp_dirs/backupdir/"
+if !isdirectory(expand("~/.cache/nvim/backupdir/"))
+    silent !mkdir -p "~/.cache/nvim/backupdir/"
 endif
-if !isdirectory(expand("~/.cache/nvim/.temp_dirs/undodir/"))
-    silent !mkdir "~/.cache/nvim/.temp_dirs/undodir/"
+if !isdirectory(expand("~/.cache/nvim/undodir/"))
+    silent !mkdir -p "~/.cache/nvim/undodir/"
 endif
-if !isdirectory(expand("~/.cache/nvim/.temp_dirs/swapdir/"))
-    silent !mkdir "~/.cache/nvim/.temp_dirs/swapdir/"
+if !isdirectory(expand("~/.cache/nvim/swapdir/"))
+    silent !mkdir -p "~/.cache/nvim/swapdir/"
 endif
 if has("vms")
     set nobackup                    " do not keep a backup file, use versions instead
     else
-        set backupdir=~/.cache/nvim/.temp_dirs/backupdir
+        set backupdir=~/.cache/nvim/backup
         set backup                  " keep a backup file (restore to previous version)
     if has('persistent_undo')       " you can undo even when you close a buffer/VIM
-        set undodir=~/.cache/nvim/.temp_dirs/undodir
+        set undodir=~/.cache/nvim/undo
         set undofile                " keep an undo file (undo changes after closing)
     endif
 endif
 set swapfile
-set directory=~/.cache/nvim/.temp_dirs/swapdir
+set directory=~/.cache/nvim/swap
 
 "======================= No annoying sound on errors =====================
 set noerrorbells
@@ -156,7 +156,7 @@ set whichwrap+=<,>,h,l
 " let g:theme_by_time = 0
 " let g:theme_suit = 2
 " call g:ThemeByTime()
-call g:SwitchTheme(2)
+call g:SwitchTheme(1)
 
 if !has('nvim')
     set t_Co=256
@@ -176,7 +176,7 @@ au BufEnter * call s:set_hi_conceal()
 
 "============================== 透明背景 =================================
 "      需要终端的支持，terminator/Tilix/konsole/yakuake 支持透明背景
-call g:TransparentBg(1)
+call g:TransparentBg(0)
 
 "==================== Set font according to system =======================
 ""Need to improve.
