@@ -33,36 +33,52 @@
 # endglobal
 
 snippet "(# )?H1" "First heading" rbA
-# `!v expand('%:t:r')`
+# ${1:`!v expand('%:t:r')`}$0
 endsnippet
 
 snippet "(\# )?h([1-6])" "Headings" rbA
-`!p
-snip.rv = '#' * int(match.group(2))
-` ${1:${VISUAL:Heading}}
+`!p snip.rv = '#' * int(match.group(2)) ` ${1:${VISUAL:Heading}}$0
 endsnippet
 # `${1:`!p remove_sharp(snip.visual_text())`}$0
 
-snippet cd "inline code" i
-\`${1:inline code}\`$0
+snippet icd "inline code" iwA
+\`${1:Inline code}\`$0
 endsnippet
 
-snippet "\`\`" "Code block" b
+snippet "mcd" "Code block" bA
 \`\`\`$1
-${2:${VISUAL:code}}
-\`\`\`$0
-endsnippet
-
-snippet "\`\`c" "Code block" bA
-\`\`\`$1
-${2:${VISUAL:code}}
+${2:${VISUAL:Code block}}
 \`\`\`$0
 endsnippet
 
 snippet  "Blod text" iA
-**${1:${VISUAL:text}}**$0
+**${1:${VISUAL:Blod text}}**$0
 endsnippet
 
-snippet it "italic text" i
-*${1:${VISUAL}}*$0
+snippet it "italic text" iw
+*${1:${VISUAL:Italic text}}*$0
+endsnippet
+
+snippet ib "italic blod text" iw
+***${1:${VISUAL:italic blod text}}***$0
+endsnippet
+
+snippet dell "delete line" iwA
+~~${1:${VISUAL:delete line}}~~
+endsnippet
+
+snippet sub "subscript" iw
+<sub>${1:${VISUAL:subscript}}</sub>$0
+endsnippet
+
+snippet sup "subscript" iw
+<sup>${1:${VISUAL:superscript}}</sup>$0
+endsnippet
+
+snippet ddate "insert date" iw
+`date +%F-%A`
+endsnippet
+
+snippet sdate "insert date" iw
+`date +%d-%A-%H%M`
 endsnippet

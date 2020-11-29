@@ -242,6 +242,7 @@ Plug 'plasticboy/vim-markdown'
 ""Also support MathJex without this plugin. ???
 " Plug 'iamcco/mathjax-support-for-mkdp'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown', 'vim-plug'] }
+" Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 "=========================================================================
 ""Description: Table Mod
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'markdown', 'vim-plug'] }
@@ -484,13 +485,13 @@ highlight default link WhichKeyFloating  WhichKeyBg
 " return map(commits, '{"line": matchstr(v:val, "\\s\\zs.*"), "cmd": "'. git .' show ". matchstr(v:val, "^\\x\\+") }')
 " endfunction
 
-function s:startify_vim_cfg()
-    return [
-                \ { 'line': "What's this?", 'cmd': 'echo "open a group of files."' },
-                \ { 'line': 'Vim configuration files',
-                \   'cmd': 'cd ~/.config/nvim/nvimrcs/ | e basic.vim | e filetypes.vim | e plugins_config.vim' },
-                \ ]
-endfunction
+" function s:startify_vim_cfg()
+"     return [
+"                 \ { 'line': "What's this?", 'cmd': 'echo "open a group of files."' },
+"                 \ { 'line': 'Vim configuration files',
+"                 \   'cmd': 'cd ~/.config/nvim/nvimrcs/ | e basic.vim | e filetypes.vim | e plugins_config.vim' },
+"                 \ ]
+" endfunction
 
 " function s:startify_defx()
 "     return [
@@ -527,7 +528,9 @@ let g:startify_bookmarks = [
             \]
 ""Add Your commands here.
 let g:startify_commands = [
-            \ {'t': ['Press t to open coc-explorer.', 'CocCommand explorer']},
+            \ {'t': ['Press t to open coc-explorer.',      'CocCommand explorer']},
+            \ {'w': ["Open Index page for Vimwiki.",       'VimwikiIndex']},
+            \ {'d': ["Open Index page for Vimwiki Diary.", 'VimwikiDiaryIndex']},
             \ ]
 " \ {'t': ['Press t to open defx.', 'call g:Defx_toggle_with_my_options()']},
 " \ ':help reference',
@@ -2000,7 +2003,7 @@ let g:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '"':'"', '`':'`'}
 au FileType * let b:AutoPairs = g:AutoPairs
 au FileType html let b:AutoPairs['<'] = '>'
 au FileType vim let b:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '`':'`', '<':'>'}
-au FileType vimwiki let b:AutoPairs['='] = '='
+" au FileType vimwiki let b:AutoPairs['='] = '='
 " 使用 Backspace 删除时会删除 pair 中的另一个
 let g:AutoPairsMapBs=1
 " 让使用 <C-h> 删除时不会删除 pair 中的另一个
@@ -2011,7 +2014,7 @@ let g:AutoPairsMapSpace=1
 let g:AutoPairsMapCR=1
 
 ""FlyMode, 输入 ")", "}", "]" 总是会跳转到后方的 ")", "}", "]" 后面
-let g:AutoPairsFlyMode=0
+let g:AutoPairsFlyMode=1
 ""纠正错误跳转
 let g:AutoPairsShortcutBackInsert='<M-b>'
 
@@ -2031,6 +2034,20 @@ let g:AutoPairsShortcutBackInsert='<M-b>'
 ""高亮数学公式
 let g:vim_markdown_math = 1
 let vim_markdown_folding_disabled = 1
+
+"============================\ vim-instant-markdownm /=============================
+" filetype plugin on
+" "Uncomment to override defaults:
+" "let g:instant_markdown_slow = 1
+" "let g:instant_markdown_autostart = 0
+" "let g:instant_markdown_open_to_the_world = 1
+" "let g:instant_markdown_allow_unsafe_content = 1
+" "let g:instant_markdown_allow_external_content = 0
+" "let g:instant_markdown_mathjax = 1
+" "let g:instant_markdown_logfile = '/tmp/instant_markdown.log'
+" "let g:instant_markdown_autoscroll = 0
+" "let g:instant_markdown_port = 8888
+" "let g:instant_markdown_python = 1
 
 "============================\ markdown-preview.nvim /=============================
 " set to 1, nvim will open the preview window after entering the markdown buffer
@@ -2104,6 +2121,10 @@ let g:mkdp_highlight_css = ''
 let g:mkdp_port = ''
 " preview page title
 " ${name} will be replace with the file name
+let g:mkdp_page_title = '「${name}」'
+" recognized filetypes
+" these filetypes will have MarkdownPreview... commands
+let g:mkdp_filetypes = ['markdown', 'vimwiki']
 
 "============================\ vim-table-mode /=============================
 noremap <LEADER>tm :TableModeToggle<CR>
@@ -2311,9 +2332,6 @@ let g:rainbow_conf = {
             \    'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
             \    'separately': {
             \        '*': {},
-            \        'markdown': {
-            \            'parentheses_options': 'containedin=markdownCode contained',
-            \        },
             \        'tex': {
             \            'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
             \        },
@@ -2332,6 +2350,8 @@ let g:rainbow_conf = {
             \        'html': {
             \            'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
             \        },
+            \        'markdown': 0,
+            \        'vimwiki': 0,
             \        'nerdtree': 0,
             \    }
             \}
@@ -2363,8 +2383,8 @@ let g:tq_cilin_txt_file="~/.config/nvim/thesaurus/cilin.txt"
 "============================\ calendar.vim /=============================
 "noremap \\c :Calendar -position=here<CR>
 noremap <silent> \\c :Calendar -view=clock -position=here<CR>
-let g:calendar_google_calendar = 1
-let g:calendar_google_task = 1
+let g:calendar_google_calendar = 0
+let g:calendar_google_task = 0
 augroup calendar-mappings
     autocmd!
     " diamond cursor
@@ -2398,6 +2418,91 @@ let g:translator_window_max_width = 0.6*&columns
 " let g:translator_window_max_height = 0.6
 " let g:translator_window_borderchars = ['─','│','─','│','┌','┐','┘','└']
 
+"=============================\ vimwiki /=================================
+""Mappings: home/aloha/.config/nvim/ftplugin/vimwiki.vim
+" let g:vimwiki_key_mappings = { 'all_maps': 0, }
+let g:vimwiki_list = []
+let g:vimwiki_conceal_pre = 1
+let g:vimwiki_use_calendar = 1
+call add(g:vimwiki_list, {
+            \'path': '~/vimwiki/',
+            \'diary_index': 'diary',
+            \'diary_header': 'Diary',
+            \'diary_rel_path': 'diary/',
+            \'syntax': 'markdown',
+            \'ext': '.md',
+            \'links_space_char': '_',
+            \'makhi': 1,
+            \'auto_tags': 1,
+            \'auto_diary_index': 0,
+            \'auto_generate_links': 1,
+            \'auto_generate_tags': 0,
+            \'exclude_files': ['**/README.md'],
+            \})
+"auto_tags:          automatically update the tags metadata when current wiki page is saved
+"auto_diary_index:   automatically update the diary index when opened.
+"auto_genrate_links: automatically update generated links when the current wiki page is saved.
+"auto_genrate_tags:  automatically update generated tags when the current wiki page is saved.
+augroup IndexAutoUpdate
+    au!
+    au BufLeave index.md,index.wiki write
+augroup END
+augroup DiaryAutoUpdate
+    au!
+    "Delete old, insert new diary section into diary index file.
+    au BufLeave diary.md,diary.wiki VimwikiDiaryGenerateLinks
+    au BufLeave diary.md,diary.wiki write
+augroup END
+" Exporting to html is only supported for original syntax
+call add(g:vimwiki_list, {
+            \'path': '~/vimwiki_origin/',
+            \'path_html': '~/vimwiki_origin/export/',
+            \'syntax': 'default',
+            \'ext': '.wiki',
+            \'links_space_char': '_',
+            \'auto_tags': 1,
+            \'auto_diary_index': 0,
+            \'auto_generate_links': 1,
+            \'auto_generate_tags': 1,
+            \'exclude_files': ['**/README.md'],
+            \})
+            " \'template_path': '~/vimwiki/templates/',
+            " template_default    default
+let g:vimwiki_diary_months = {
+      \ 1: '一月 January', 2: '二月 February', 3: '三月 March',
+      \ 4: '四月 April', 5: '五月 May', 6: '六月 June',
+      \ 7: '七月 July', 8: '八月 August', 9: '九月 September',
+      \ 10: '十月 October', 11: '十一月 November', 12: '十二月December'
+      \ }
+let g:vimwiki_hl_headers = 1
+let g:vimwiki_hl_cb_checked = 2
+let g:vimwiki_folding = 'expr'
+let g:vimwiki_markdown_link_ext = 1  "将 g:vimwiki_list 中的 ext 添加到 "Link" 的末尾
+""Recommend to set when 'wrap' is seted.
+let g:vimwiki_table_reduce_last_col = 0
+let g:vimwiki_dir_link = 'main'
+let g:vimwiki_html_header_numbering = 2
+let g:vimwiki_links_header = 'Generated Links'
+let g:vimwiki_links_header_level = 2
+let g:vimwiki_tags_header = 'Generated Tags'
+let g:vimwiki_tags_header_level = 2
+let g:vimwiki_auto_header = 1
+let g:vimwiki_markdown_header_style = 0
+"Use table-mode instead
+let g:vimwiki_table_auto_fmt = 1
+let g:vimwiki_key_mappings = {
+            \'table_format': 1,
+            \'table_mappings': 1,
+            \}
+"Prevent any link shortening
+let g:vimwiki_url_maxsave = 0
+""Toggle creation of temporary wikis.
+let g:vimwiki_global_ext = 1
+let g:vimwiki_ext2syntax = {
+            \'.md': 'markdown', '.mkdn': 'markdown',
+            \'.mdwn': 'markdown', '.mdown': 'markdown',
+            \'.markdown': 'markdown', '.mw': 'media'
+            \}
 
 ""utf-8 icons \u259* ... \u2756
 "▐ ░ ▒ ▓ ▔ ▕ ▖ ▗ ▘ ▙ ☁ ☂ ☃ ☄ ★ ☆ ☇ ☈ ☉ ▀ ▁ ▂ ▃ ▄ ▅ ▆ ▇ █ ▉ "

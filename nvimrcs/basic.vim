@@ -71,6 +71,7 @@ set list                            " 显示特殊字符
 " set listchars=tab:<->,trail:•,extends:>,precedes:<    " 特殊字符显示设置 trail 与　space 冲突   eol:↵,
 set listchars=trail:˽,tab:>-        " •
 set fillchars=vert:▏
+set colorcolumn=80
 
 ""Vim 需要 +xterm_clipboard(vim --version以查看)
 " au VimEnter * set clipboard=unnamedplus
@@ -97,27 +98,27 @@ set expandtab shiftwidth=4 tabstop=4 softtabstop=4
 set smarttab                        " 一次删除所有用 <Tab> 键产生的空格
 
 "=============================== 临时文件 ================================
-if !isdirectory(expand("~/.cache/nvim/backupdir/"))
-    silent !mkdir -p "~/.cache/nvim/backupdir/"
+if !isdirectory(expand("~/.cache/nvim/backup/"))
+    silent !mkdir -p "$HOME/.cache/nvim/backup/"
 endif
-if !isdirectory(expand("~/.cache/nvim/undodir/"))
-    silent !mkdir -p "~/.cache/nvim/undodir/"
+if !isdirectory(expand("~/.cache/nvim/undo/"))
+    silent !mkdir -p "$HOME/.cache/nvim/undo/"
 endif
-if !isdirectory(expand("~/.cache/nvim/swapdir/"))
-    silent !mkdir -p "~/.cache/nvim/swapdir/"
+if !isdirectory(expand("~/.cache/nvim/swap/"))
+    silent !mkdir -p "$HOME/.cache/nvim/swap/"
 endif
 if has("vms")
     set nobackup                    " do not keep a backup file, use versions instead
     else
-        set backupdir=~/.cache/nvim/backup
+        set backupdir=$HOME/.cache/nvim/backup
         set backup                  " keep a backup file (restore to previous version)
     if has('persistent_undo')       " you can undo even when you close a buffer/VIM
-        set undodir=~/.cache/nvim/undo
+        set undodir=$HOME/.cache/nvim/undo
         set undofile                " keep an undo file (undo changes after closing)
     endif
 endif
 set swapfile
-set directory=~/.cache/nvim/swap
+set directory=$HOME/.cache/nvim/swap
 
 "======================= No annoying sound on errors =====================
 set noerrorbells
@@ -156,7 +157,7 @@ set whichwrap+=<,>,h,l
 " let g:theme_by_time = 0
 " let g:theme_suit = 2
 " call g:ThemeByTime()
-call g:SwitchTheme(1)
+call g:SwitchTheme(2)
 
 if !has('nvim')
     set t_Co=256
@@ -249,34 +250,38 @@ nnoremap <silent> <esc> :nohl<cr>
 
 "============================ Moving around ==============================
 ""Fast moving
-noremap J 5gj
-noremap K 5gk
+nnoremap J 5gj
+nnoremap K 5gk
+xnoremap J 5gj
+xnoremap K 5gk
 
 ""Moving more convenient when lines wrap
-noremap j gj
-noremap k gk
+nnoremap j gj
+nnoremap k gk
+xnoremap j gj
+xnoremap k gk
 
 ""Moving using <M-S-j/k>
 au VimEnter * call SwitchMotionMod()
 nnoremap <silent> \\ :call SwitchMotionMod()<CR>
 
 ""Remap VIM 0 to first non-blank character
-nnoremap ^ g0
-nnoremap g0 ^
-nnoremap 0 g^
-nnoremap g^ 0
+" nnoremap ^ g0
+" nnoremap g0 ^
+" nnoremap 0 g^
+" nnoremap g^ 0
 
 ""Move a line of text using ALT+[jk] or Command+[jk]
 ""Thus you should not use mark 'z'
 nnoremap <M-k> mz:m-2<cr>`z
 nnoremap <M-j> mz:m+<cr>`z
-vnoremap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vnoremap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+xnoremap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+xnoremap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 nnoremap <M-l> "zxl"zP
 nnoremap <M-h> "zxh"zP
-vnoremap <M-l> "zxl"z`<v`>P
-vnoremap <M-h> "zxh"zP`<v`>
+xnoremap <M-l> "zxl"z`<v`>P
+xnoremap <M-h> "zxh"zP`<v`>
 
 if has("mac") || has("macunix")
     nmap <D-j> <M-j>
@@ -336,6 +341,10 @@ nnoremap <silent> ]b :bnext<cr>
 nnoremap <silent> [b :bprevious<cr>
 nnoremap <silent> ]B :blast<cr>
 nnoremap <silent> [B :bfirst<cr>
+nnoremap <silent> <c-b>n :bnext<cr>
+nnoremap <silent> <c-b><c-n> :bnext<cr>
+nnoremap <silent> <c-b>p :bprevious<cr>
+nnoremap <silent> <c-b><c-p> :bprevious<cr>
 
 ""快速切换到当前编辑的缓冲区中的文件所在的目录
 noremap <leader>. :cd %:p:h<cr>pwd<cr>
@@ -384,6 +393,10 @@ nnoremap <leader>to :tabonly<cr>
 nnoremap <leader>tm :tabmove<space>
 nnoremap + :tabnext<cr>
 nnoremap _ :tabprevious<cr>
+nnoremap <c-t>n :tabnext<cr>
+nnoremap <c-t><c-n> :tabnext<cr>
+nnoremap <c-t>p :tabprevious<cr>
+nnoremap <c-t><c-p> :tabprevious<cr>
 nnoremap ]t gt<cr>
 nnoremap [t gT<cr>
 nnoremap ]T :tablast<cr>
@@ -419,8 +432,8 @@ nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 
 "============================== 保存和退出 ===============================
 " Fast saving & quitting
-nnoremap <silent> <leader>w :w<cr>
-nnoremap <leader>q :q<cr>
+" nnoremap <silent> <leader>w :w<cr>
+" nnoremap <leader>q :q<cr>
 
 " :W sudo saves the file(use suda.vim instead)
 " command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
@@ -490,10 +503,10 @@ nnoremap <leader>O mzO<esc>`z
 imap <M-BS> <Del>
 
 ""使用虚拟替换模式
-nnoremap R gR
-nnoremap gR R
-nnoremap r gr
-nnoremap gr r
+" nnoremap R gR
+" nnoremap gR R
+" nnoremap r gr
+" nnoremap gr r
 
 
 "#########################################################################
