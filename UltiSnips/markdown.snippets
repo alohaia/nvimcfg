@@ -32,47 +32,110 @@
 #     return str[i+1:]
 # endglobal
 
+global !p
+
+colors = [
+	"",
+	"lightgreen",
+	"#00ff90",
+	"lightblue",
+	"#4444dd",
+	"lightyellow",
+	"#dddd11",
+	"pink",
+	"#dd4444"
+]
+
+def set_bg(i):
+	if i >= 1 and i <= 8:
+		return ' style="background-color:' + colors[i] + ';"'
+	else:
+		return ''
+
+endglobal
+
 snippet "(# )?H1" "First heading" rbA
 # ${1:`!v expand('%:t:r')`}$0
 endsnippet
 
+snippet line "A line or heading2" bA
+${2:${1:${VISUAL}}
+}--------------------------
+$0
+endsnippet
+
+snippet ll "A simple line" bA
+--------------------------
+$0
+endsnippet
+
 snippet "(\# )?h([1-6])" "Headings" rbA
-`!p snip.rv = '#' * int(match.group(2)) ` ${1:${VISUAL:Heading}}$0
+`!p snip.rv = '#' * int(match.group(2)) ` ${1:${VISUAL}}$0
 endsnippet
 # `${1:`!p remove_sharp(snip.visual_text())`}$0
 
 snippet icd "inline code" iwA
-\`${1:Inline code}\`$0
+\`${1:${VISUAL}}\`$0
 endsnippet
 
-snippet "mcd" "Code block" bA
+snippet mcd "Code block" bA
 \`\`\`$1
-${2:${VISUAL:Code block}}
+${2:${VISUAL}}
 \`\`\`$0
 endsnippet
 
 snippet  "Blod text" iA
-**${1:${VISUAL:Blod text}}**$0
+**${1:${VISUAL}}**$0
 endsnippet
 
 snippet it "italic text" iw
-*${1:${VISUAL:Italic text}}*$0
+*${1:${VISUAL}}*$0
 endsnippet
 
 snippet ib "italic blod text" iw
-***${1:${VISUAL:italic blod text}}***$0
+***${1:${VISUAL}}***$0
 endsnippet
 
 snippet dell "delete line" iwA
-~~${1:${VISUAL:delete line}}~~
+~~${1:${VISUAL}}~~
 endsnippet
 
-snippet sub "subscript" iw
-<sub>${1:${VISUAL:subscript}}</sub>$0
+snippet sub "subscript" i
+<sub>${1:${VISUAL}}</sub>$0
 endsnippet
 
-snippet sup "subscript" iw
-<sup>${1:${VISUAL:superscript}}</sup>$0
+snippet sup "subscript" i
+<sup>${1:${VISUAL}}</sup>$0
+endsnippet
+
+snippet udl "underline" iwA
+<u>${1:${VISUAL}}</u>$0
+endsnippet
+
+snippet 'bg([0-8])' "highlight" irwA
+<mark`!p snip.rv = set_bg(int(match.group(1)))`>${1:${VISUAL}}</mark>$0
+endsnippet
+
+snippet 'bg ([\#0-9a-zA-Z]*)' "highlight" irw
+<mark style='background-color:${1:`!p snip.rv=match.group(1)`};'>${2:${VISUAL}}</mark>$0
+endsnippet
+
+# snippet "(red|orange|yellow|green|lightblue|blue|purple)" "font color" ri
+# <font color='`!p snip.rv = match.group(1)`'>${1:${VISUAL}}</font>$0
+# endsnippet
+
+snippet 'fg ([\#0-9a-zA-Z]*)' "font color" irw
+<font color='${1:`!p snip.rv = match.group(1)`}'>${2:${VISUAL}}</font>$0
+endsnippet
+
+snippet bl "Break line" i
+
+$0
+endsnippet
+
+snippet br "Break line with <br>" i
+<br>
+$0
 endsnippet
 
 snippet ddate "insert date" iw

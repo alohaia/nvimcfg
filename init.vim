@@ -42,6 +42,9 @@ execute("source ".g:config_file_path."basic.vim")
 execute("source ".g:config_file_path."filetypes.vim")
 execute("source ".g:config_file_path."plugins_config.vim")
 
+colorscheme onedark
+let g:airline_theme = 'onedark'
+
 "+-----------------------------------------------------------------------+
 "|               operations depended on files above                      |
 "+-----------------------------------------------------------------------+

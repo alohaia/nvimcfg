@@ -33,7 +33,7 @@ set timeoutlen=200                  " 等待时间(ms)
 set nottimeout
 set lazyredraw                      " Don't redraw while executing macros (good performance config)
 set regexpengine=1                  " use old regexp engine
-set autochdir                       " 使用 <leader>. 手动切换到当前目录
+set noautochdir                       " 使用 <leader>. 手动切换到当前目录
 set virtualedit=block               " 在指定模式下，使光标可以在没有文本的地方移动
 set number                          " 行首显示数字
 set relativenumber                  " 行首显示相对数字
@@ -157,7 +157,7 @@ set whichwrap+=<,>,h,l
 " let g:theme_by_time = 0
 " let g:theme_suit = 2
 " call g:ThemeByTime()
-call g:SwitchTheme(2)
+" call g:SwitchTheme(3)
 
 if !has('nvim')
     set t_Co=256
@@ -173,11 +173,11 @@ function s:set_hi_conceal()
         exe 'hi Conceal '.g:hi_normal
     endif
 endfunction
-au BufEnter * call s:set_hi_conceal()
+" au BufEnter * call s:set_hi_conceal()
 
 "============================== 透明背景 =================================
 "      需要终端的支持，terminator/Tilix/konsole/yakuake 支持透明背景
-call g:TransparentBg(0)
+au VimEnter * call g:TransparentBg(0)
 
 "==================== Set font according to system =======================
 ""Need to improve.
@@ -250,16 +250,16 @@ nnoremap <silent> <esc> :nohl<cr>
 
 "============================ Moving around ==============================
 ""Fast moving
-nnoremap J 5gj
-nnoremap K 5gk
-xnoremap J 5gj
-xnoremap K 5gk
+nnoremap J 5j
+nnoremap K 5k
+xnoremap J 5j
+xnoremap K 5k
 
 ""Moving more convenient when lines wrap
-nnoremap j gj
-nnoremap k gk
-xnoremap j gj
-xnoremap k gk
+" nnoremap j gj
+" nnoremap k gk
+" xnoremap j gj
+" xnoremap k gk
 
 ""Moving using <M-S-j/k>
 au VimEnter * call SwitchMotionMod()
@@ -295,6 +295,8 @@ inoremap <M-h> <Left>
 inoremap <M-l> <Right>
 inoremap <M-k> <Up>
 inoremap <M-j> <Down>
+inoremap <M-a> <Home>
+inoremap <M-d> <End>
 
 ""For command mod
 cnoremap <C-a> <Home>
@@ -582,3 +584,8 @@ command! Showhi echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
 
+
+"#########################################################################
+"###############################\ Neovide/ ###############################
+"#########################################################################
+let g:neovide_transparency=0.95

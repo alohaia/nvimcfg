@@ -32,7 +32,7 @@ Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 "=========================================================================
 ""Description: Vim Startup Interface
 ""Alternatives: hardcoreplayers/dashboard-nvim
-Plug 'mhinz/vim-startify'
+" Plug 'mhinz/vim-startify'
 "=========================================================================
 ""Description: Visualize vim undotree.
 ""Alternatives: simnalamburt/vim-mundo
@@ -111,7 +111,13 @@ Plug 'pangloss/vim-javascript'
 "=========================================================================
 ""Description: Schemes for vim
 ""Recommend: molokai iceberg solarized8_dark solarized8_light
-Plug 'flazz/vim-colorschemes'
+" Plug 'flazz/vim-colorschemes'
+Plug 'joshdick/onedark.vim'
+" colorscheme onedark
+" let g:airline_theme='onedark'
+Plug 'arcticicestudio/nord-vim'
+Plug 'ayu-theme/ayu-vim' " or other package manager
+Plug 'dracula/vim', { 'as': 'dracula' }
 "=========================================================================
 ""Description: Color other uses of the current word under the cursor.
 Plug 'RRethy/vim-illuminate'
@@ -138,12 +144,12 @@ Plug 'brooth/far.vim'
 ""Dependencies: ccls, pip install 'python-language-server[all]'
 ""Alternatives: ncm2/ncm2, ycm-core/YouCompleteMe, dense-analysis/ale
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"========================================================================
-"Description:Conpletion for Neovim's built-in LSP.
-Plug 'nvim-lua/completion-nvim'
-"========================================================================
-"Description:Collection of common configurations for the Nvim LSP client.
- Plug 'neovim/nvim-lspconfig'
+" "========================================================================
+" "Description:Conpletion for Neovim's built-in LSP.
+" Plug 'nvim-lua/completion-nvim'
+" "========================================================================
+" "Description:Collection of common configurations for the Nvim LSP client.
+"  Plug 'neovim/nvim-lspconfig'
 "=========================================================================
 ""Description:  ultisnips 代码段补全
 Plug 'SirVer/ultisnips'            " improved vim-snipmate
@@ -159,7 +165,7 @@ Plug 'skywind3000/asyncrun.vim'
 Plug 'skywind3000/asynctasks.vim'
 "=========================================================================
 ""Description: Auto change dir
-" Plug 'airblade/vim-rooter'
+Plug 'airblade/vim-rooter'
 "=========================================================================
 ""Description: <C-l>(if not already used)/<C-g>c (insert) to toggle capslock
 Plug 'tpope/vim-capslock'
@@ -354,6 +360,9 @@ Plug 'tikhomirov/vim-glsl'
 "=========================================================================
 ""Description: Personal wiki built in vim
 Plug 'vimwiki/vimwiki'
+"=========================================================================
+""Description: Automatically switch input method.
+" Plug 'lyokha/vim-xkbswitch'
 
 call plug#end()
 
@@ -768,7 +777,8 @@ endfunction
 function! s:defx_cd_or_drop(context) abort
     " Open current file, or toggle directory expand/collapse
     if defx#is_directory()
-        return defx#call_action('cd', a:context.targets)
+        " echo a:context
+        return defx#call_action('cd', a:context.targets[0])
     endif
     return defx#call_action('multi', ['drop'])
 endfunction
@@ -1513,6 +1523,19 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " provide custom statusline: lightline.vim, vim-airline.
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
+let lua_lsp = glob('~/.vscode/extensions/sumneko.lua*', 0, 1)
+if len(lua_lsp)
+    let lua_lsp = lua_lsp[-1] . '\server'
+    call coc#config('languageserver', {
+        \ 'lua-language-server': {
+        \     'cwd': lua_lsp,
+        \     'command': lua_lsp . '\bin\lua-language-server.exe',
+        \     'args': ['-E', '-e', 'LANG="zh-cn"', lua_lsp . '\main.lua'],
+        \     'filetypes': ['lua'],
+        \ }
+    \ })
+endif
+
 " let g:airline#extensions#coc#enabled = 1
 " let airline#extensions#coc#error_symbol = 'E:'
 " let airline#extensions#coc#warning_symbol = 'W:'
@@ -2078,7 +2101,7 @@ let g:mkdp_open_ip = ''
 " specify browser to open preview page
 " default: ''
 " options: chromium, firefox, google-chrome-stable, etc.
-let g:mkdp_browser = ''
+let g:mkdp_browser = 'google-chrome-stable'
 " set to 1, echo preview page url in command line when open preview page
 " default is 0
 let g:mkdp_echo_preview_url = 0
@@ -2382,27 +2405,21 @@ let g:tq_cilin_txt_file="~/.config/nvim/thesaurus/cilin.txt"
 
 "============================\ calendar.vim /=============================
 "noremap \\c :Calendar -position=here<CR>
-noremap <silent> \\c :Calendar -view=clock -position=here<CR>
-let g:calendar_google_calendar = 0
-let g:calendar_google_task = 0
-augroup calendar-mappings
-    autocmd!
-    " diamond cursor
-    autocmd FileType calendar nnoremap <buffer> u <Plug>(calendar_up)
-    autocmd FileType calendar nnoremap <buffer> n <Plug>(calendar_left)
-    autocmd FileType calendar nnoremap <buffer> e <Plug>(calendar_down)
-    autocmd FileType calendar nnoremap <buffer> i <Plug>(calendar_right)
-    autocmd FileType calendar nnoremap <buffer> <c-u> <Plug>(calendar_move_up)
-    autocmd FileType calendar nnoremap <buffer> <c-n> <Plug>(calendar_move_left)
-    autocmd FileType calendar nnoremap <buffer> <c-e> <Plug>(calendar_move_down)
-    autocmd FileType calendar nnoremap <buffer> <c-i> <Plug>(calendar_move_right)
-    autocmd FileType calendar nnoremap <buffer> k <Plug>(calendar_start_insert)
-    autocmd FileType calendar nnoremap <buffer> K <Plug>(calendar_start_insert_head)
-    " unmap <C-n>, <C-p> for other plugins
-    nnoremap ． .
-    autocmd FileType calendar nunmap <buffer> <C-n>
-    autocmd FileType calendar nunmap <buffer> <C-p>
-augroup END
+noremap <silent> \\c :Calendar -task -view=days -cyclic_view -position=here<CR>
+let g:calendar_skip_task_delete_confirm = 1
+let g:calendar_skip_event_delete_confirm = 1
+let g:scalendar_kip_task_clear_completed_confirm = 1
+" let g:calendar_yank_deleting = 0
+let g:calendar_task_delete = 1
+let g:calendar_cache_directory = '~/.config/nvim/.cache/calendar.vim/'
+command! HCalendar echo
+            \"EVENT: dd-mm-yyyy HH:MM - dd-mm-yyyy HH:MM [event-title] (little endian, \"-\" separator)\n".
+            \"EVENT: 23-10-2014 10:00 - 25-10-2014 21:00 [event-title] (little endian, \"-\" separator)\n".
+            \"TASK: yyyy-mm-dd [task-title] note: [task-note]\n".
+            \"TASK: 2014-10-23 [task-title] note: [task-note]"
+
+" let g:calendar_google_calendar = 1
+" let g:calendar_google_task = 1
 
 "===========================\ vim-translator /============================
 nnoremap <silent> <leader>t :TranslateW<cr>
@@ -2425,7 +2442,7 @@ let g:vimwiki_list = []
 let g:vimwiki_conceal_pre = 1
 let g:vimwiki_use_calendar = 1
 call add(g:vimwiki_list, {
-            \'path': '~/vimwiki/',
+            \'path': '~/Shared/vimwiki/',
             \'diary_index': 'diary',
             \'diary_header': 'Diary',
             \'diary_rel_path': 'diary/',
@@ -2436,23 +2453,26 @@ call add(g:vimwiki_list, {
             \'auto_tags': 1,
             \'auto_diary_index': 0,
             \'auto_generate_links': 1,
-            \'auto_generate_tags': 0,
+            \'auto_generate_tags': 1,
             \'exclude_files': ['**/README.md'],
             \})
 "auto_tags:          automatically update the tags metadata when current wiki page is saved
 "auto_diary_index:   automatically update the diary index when opened.
 "auto_genrate_links: automatically update generated links when the current wiki page is saved.
 "auto_genrate_tags:  automatically update generated tags when the current wiki page is saved.
-augroup IndexAutoUpdate
-    au!
-    au BufLeave index.md,index.wiki write
-augroup END
-augroup DiaryAutoUpdate
-    au!
-    "Delete old, insert new diary section into diary index file.
-    au BufLeave diary.md,diary.wiki VimwikiDiaryGenerateLinks
-    au BufLeave diary.md,diary.wiki write
-augroup END
+" augroup IndexAutoUpdate
+"     au!
+"     au BufEnter index.md,index.wiki write
+"     " au BufEnter index.md,index.wiki VimwikiGenerateLinks
+"     " au BufEnter index.md,index.wiki VimwikiGenerateTagLinks
+" augroup END
+" augroup DiaryAutoUpdate
+"     au!
+"     " au BufEnter diary.md,diary.wiki VimwikiGenerateTagLinks
+"     "Delete old, insert new diary section into diary index file.
+"     au BufEnter diary.md,diary.wiki VimwikiDiaryGenerateLinks
+"     au BufEnter diary.md,diary.wiki write
+" augroup END
 " Exporting to html is only supported for original syntax
 call add(g:vimwiki_list, {
             \'path': '~/vimwiki_origin/',
@@ -2466,6 +2486,7 @@ call add(g:vimwiki_list, {
             \'auto_generate_tags': 1,
             \'exclude_files': ['**/README.md'],
             \})
+            " \'nested_syntaxes': {'c++': 'cpp', 'cpp': 'c++'}
             " \'template_path': '~/vimwiki/templates/',
             " template_default    default
 let g:vimwiki_diary_months = {
@@ -2487,7 +2508,7 @@ let g:vimwiki_links_header_level = 2
 let g:vimwiki_tags_header = 'Generated Tags'
 let g:vimwiki_tags_header_level = 2
 let g:vimwiki_auto_header = 1
-let g:vimwiki_markdown_header_style = 0
+let g:vimwiki_markdown_header_style = 1
 "Use table-mode instead
 let g:vimwiki_table_auto_fmt = 1
 let g:vimwiki_key_mappings = {

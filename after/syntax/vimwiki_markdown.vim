@@ -7,8 +7,11 @@
 
 syntax region VimwikiMdRef start=/^>\s/ end=/^$/
 syntax region VimwikiHtmlLable start=/</ end=/>/
+" syntax region VimwikiBlod start=/\*\*/ end=/\*\*/ contains=ALL
 
 hi link VimwikiMdRef Comment
 hi link VimwikiHtmlLable Comment
+
+echomsg "Mine Loaded Successfully."
 
 "![asdfa](sdfasdf)

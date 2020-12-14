@@ -26,7 +26,12 @@ function! s:colorcolumn_bg_backup()
 endfunction
 au ColorScheme * call s:colorcolumn_bg_backup()
 
+" let ayucolor="light"  " for light version of theme
+let ayucolor="mirage" " for mirage version of theme
+" let ayucolor="dark"   " for dark version of theme
+
 function! g:SwitchTheme(choice)
+    set termguicolors     " enable true colors support
     if a:choice == 0
         colorscheme solarized8_light
         let g:airline_theme = 'solarized'
@@ -38,6 +43,18 @@ function! g:SwitchTheme(choice)
         colorscheme molokai
         " colorscheme sublimemonokai
         let g:airline_theme = 'airlineish'
+    elseif a:choice == 3
+        au VimEnter * colorscheme onedark
+        let g:airline_theme = 'onedark'
+    elseif a:choice == 4
+        colorscheme ayu
+        let g:airline_theme = 'ayu'
+    elseif a:choice == 5
+        colorscheme nord
+        let g:airline_theme = 'nord'
+    elseif a:choice == 6
+        au VimEnter * colorscheme dracula
+        let g:airline_theme = 'dracula'
     endif
 endfunction
 
@@ -50,7 +67,7 @@ function! g:ThemeByTime(...)
     if 6 <= l:time && l:time < 18
         call g:SwitchTheme(0)
     else
-        call g:SwitchTheme(1)
+        call g:SwitchTheme(2)
     endif
 endfunction
 
@@ -348,7 +365,7 @@ let s:start_language_status = system(s:set_fcitx_english)    "vim启动时,默�
 
 "此处可以根据编辑的文件后缀名来做更改
 let g:saved_insert_mode_language_status = s:english_enable                     "初始设置 插入模式 输入法为英文
-autocmd BufNewFile,BufRead *.txt,*.text,[Rr][Ee][Aa][Dd][Mm][Ee] 
+autocmd BufNewFile,BufRead *.txt,*.text,*.md,*.wiki,[Rr][Ee][Aa][Dd][Mm][Ee] 
             \let g:saved_insert_mode_language_status = s:chinese_enable        "在编辑*.txt,*.text文件格式的时候
 
 
@@ -385,16 +402,16 @@ autocmd InsertEnter * call s:fcitx_enter_insert_mode()
 "================================ 移动模式 ===============================
 function! g:SwitchMotionMod()
     if !exists("g:motionMod") || g:motionMod == 1
-        noremap <S-M-j> 5<C-e>
-        noremap <S-M-k> 5<C-y>
+        noremap <S-M-j> 5jzz
+        noremap <S-M-k> 5kzz
         if exists('g:motionMod')
-            echo 'Changed to Free mod.'
+            echo 'Changed to Fixed mod.'
         endif
         let g:motionMod = 0
     elseif g:motionMod == 0
-        echo 'Changed to Fixed mod.'
-        noremap <S-M-j> 5jzz
-        noremap <S-M-k> 5kzz
+        echo 'Changed to Free mod.'
+        noremap <S-M-j> 5<C-e>
+        noremap <S-M-k> 5<C-y>
         let g:motionMod = 1
     endif
 endfunction
@@ -463,3 +480,9 @@ function! ChooseWin(...)
     return choosewin#start(l:available_windows, { 'auto_choose': 1, 'hook_enable': 0 })
 endfunction
 
+"================================ Viminal ================================
+function! OpenAsTerminal()
+    au VimEnter * call TransparentBg(1)
+    terminal
+    normal a
+endfunction
