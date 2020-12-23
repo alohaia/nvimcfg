@@ -30,7 +30,6 @@ if !has('nvim')
 endif
 set timeout                         " 设置快捷键输入时间限制
 set timeoutlen=200                  " 等待时间(ms)
-set nottimeout
 set lazyredraw                      " Don't redraw while executing macros (good performance config)
 set regexpengine=1                  " use old regexp engine
 set noautochdir                       " 使用 <leader>. 手动切换到当前目录
@@ -157,7 +156,7 @@ set whichwrap+=<,>,h,l
 " let g:theme_by_time = 0
 " let g:theme_suit = 2
 " call g:ThemeByTime()
-" call g:SwitchTheme(3)
+" call g:SwitchTheme(2)
 
 if !has('nvim')
     set t_Co=256
@@ -183,24 +182,28 @@ au VimEnter * call g:TransparentBg(0)
 ""Need to improve.
 ""Recommand fonts: tonsky/FiraCode, Jetbrains Mono
 ""If you want to use unicode icons, you need nerd-fonts-fire nerd-fonts-jetbrains-mono and etc.
-if has("mac") || has("macunix")
-    set gfn=IBM\ Plex\ Mono:h14,Hack:h14,Source\ Code\ Pro:h15,Menlo:h15
-elseif has("win16") || has("win32") && has("gui_running")
-    "set gfn=IBM\ Plex\ Mono:h14,Source\ Code\ Pro:h12,Bitstream\ Vera\ Sans\ Mono:h11
-    " set the X11 font to use
-    " set guifont=-misc-fixed-medium-r-normal--14-130-75-75-c-70-iso8859-1
-    "set guifont=Bitstream_Vera_Sans_Mono:h15:cANSI
-    set guifont=JetBrains_Mono:h12:cANSI:qDRAFT
-    "set gfw=幼圆:h12:w6.5:b:cGB2312
-    set gfw=黑体:h13:cGB2312
-elseif has("gui_gtk2")
-    set guifont=JetBrains_Mono:h12:cANSI:qDRAFT
-    "set gfn=IBM\ Plex\ Mono\ 14,:Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
-elseif has("linux")
-    set gfn=IBM\ Plex\ Mono\ 14,:Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
-elseif has("unix")
-    set gfn=Monospace\ 11
-endif
+" if has("mac") || has("macunix")
+"     set gfn=IBM\ Plex\ Mono:h14,Hack:h14,Source\ Code\ Pro:h15,Menlo:h15
+" elseif has("win16") || has("win32") && has("gui_running")
+"     "set gfn=IBM\ Plex\ Mono:h14,Source\ Code\ Pro:h12,Bitstream\ Vera\ Sans\ Mono:h11
+"     " set the X11 font to use
+"     " set guifont=-misc-fixed-medium-r-normal--14-130-75-75-c-70-iso8859-1
+"     "set guifont=Bitstream_Vera_Sans_Mono:h15:cANSI
+"     set guifont=JetBrains\ Mono:h12:cANSI:qDRAFT
+"     "set gfw=幼圆:h12:w6.5:b:cGB2312
+"     set gfw=黑体:h13:cGB2312
+" elseif has("gui_gtk2")
+"     set guifont=JetBrains_Mono:h12:cANSI:qDRAFT
+"     "set gfn=IBM\ Plex\ Mono\ 14,:Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
+" elseif has("linux")
+"     set gfn=IBM\ Plex\ Mono\ 14,:Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
+" elseif has("unix")
+"     set gfn=Monospace\ 11
+" endif
+
+" set guifont=JetBrainsMono\ Nerd\ Font\ Mono:h12:cANSI:qDRAFT
+set guifont=PragmataPro\ Mono:h12:cANSI:qDRAFT
+set gfw=黑体:h13:cGB2312
 
 "=============== Set extra options when running in GUI mode ==============
 if has("gui_running")

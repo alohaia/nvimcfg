@@ -32,7 +32,7 @@ Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 "=========================================================================
 ""Description: Vim Startup Interface
 ""Alternatives: hardcoreplayers/dashboard-nvim
-" Plug 'mhinz/vim-startify'
+Plug 'mhinz/vim-startify'
 "=========================================================================
 ""Description: Visualize vim undotree.
 ""Alternatives: simnalamburt/vim-mundo
@@ -111,7 +111,7 @@ Plug 'pangloss/vim-javascript'
 "=========================================================================
 ""Description: Schemes for vim
 ""Recommend: molokai iceberg solarized8_dark solarized8_light
-" Plug 'flazz/vim-colorschemes'
+Plug 'flazz/vim-colorschemes'
 Plug 'joshdick/onedark.vim'
 " colorscheme onedark
 " let g:airline_theme='onedark'
@@ -1573,19 +1573,18 @@ endif
 "============================\ ultisnips /=============================
 " Plug 'alohaia/vim-snippets'               " snips for snipmate and ultisnips
 ""An array of relative directory names OR an array with a single absolute path.
-" let g:UltiSnipsSnippetDirectories=["Ultisnips"]
 " Defines how the edit window is opened.
-let g:UltiSnipsEditSplit= 'context'
+let g:UltiSnipsEditSplit="vertical"
 ""Enable snippmate snippets (dirs named 'snippets' under dirs in &runtimepath)
 " let g:UltiSnipsEnableSnipMate = 1
 let g:UltiSnipsRemoveSelectModeMappings = 0
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<c-space>"
 " 在代码段内跳转
-" let g:UltiSnipsJumpForwardTrigger="<c-j>"
-" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+" let g:UltiSnipsSnippetsDir=[$HOME."/.config/nvim/UltiSnips"]
+" let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 ""Add c snippets for cpp files. (改为在 snippets 文件中使用 extends 关键字)
 " au FileType cpp UltiSnipsAddFiletypes cpp.c
 " autocmd! User UltiSnipsEnterFirstSnippet
@@ -2018,7 +2017,7 @@ let g:surround_insert_tail = "<++>"
 
 "===============================\ auto-pairs /============================
 " 开启/禁用 auto-pairs
-let g:AutoPairsShortcutToggle=''
+let g:AutoPairsShortcutToggle='M-o'
 " 将一对 pair 后面的内容移到 pair 中（在 pair 内按下快捷键）
 let g:AutoPairsShortcutFastWrap='<M-e>'
 let g:AutoPairsShortcutJump=''
@@ -2037,9 +2036,9 @@ let g:AutoPairsMapSpace=1
 let g:AutoPairsMapCR=1
 
 ""FlyMode, 输入 ")", "}", "]" 总是会跳转到后方的 ")", "}", "]" 后面
-let g:AutoPairsFlyMode=1
+" let g:AutoPairsFlyMode=0
 ""纠正错误跳转
-let g:AutoPairsShortcutBackInsert='<M-b>'
+" let g:AutoPairsShortcutBackInsert='<M-b>'
 
 
 "#########################################################################
@@ -2400,6 +2399,17 @@ let g:tq_mthesaur_file="~/.config/nvim/thesaurus/mthesaur.txt"
 ""http://www.datamuse.com/
 let g:tq_cilin_txt_file="~/.config/nvim/thesaurus/cilin.txt"
 
+"========================\ thesaurus_query.vim /==========================
+let g:Hexokinase_highlighters = [ 'backgroundfull' ]
+" let g:Hexokinase_refreshEvents = ['BufWrite', 'BufRead']
+let g:Hexokinase_refreshEvents = ['BufWrite', 'BufRead', 'InsertLeave']
+" Do not scraped any terminal buffers.
+let g:Hexokinase_termDisabled = 1
+" Which FileTypes not to scrape.
+" let g:Hexokinase_ftDisabled = []
+" Which FileTypes to scrape automatically.
+" let g:Hexokinase_ftEnabled = ['css', 'html', 'javascript']
+
 "==============================\ suda.vim /===============================
 " let g:suda#prefix = 'sudo:'
 
@@ -2480,6 +2490,7 @@ call add(g:vimwiki_list, {
             \'syntax': 'default',
             \'ext': '.wiki',
             \'links_space_char': '_',
+            \'auto_toc': 1,
             \'auto_tags': 1,
             \'auto_diary_index': 0,
             \'auto_generate_links': 1,
@@ -2502,6 +2513,8 @@ let g:vimwiki_markdown_link_ext = 1  "将 g:vimwiki_list 中的 ext 添加到 "L
 ""Recommend to set when 'wrap' is seted.
 let g:vimwiki_table_reduce_last_col = 0
 let g:vimwiki_dir_link = 'main'
+let g:vimwiki_toc_header = 'Table of Contents'
+let g:vimwiki_toc_header_level = 2
 let g:vimwiki_html_header_numbering = 2
 let g:vimwiki_links_header = 'Generated Links'
 let g:vimwiki_links_header_level = 2

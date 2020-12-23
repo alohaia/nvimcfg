@@ -115,21 +115,21 @@ autocmd BufRead *.twig set syntax=html filetype=html
 """"""""""""""""""""""""""""""
 function s:markdown_settings()
     setlocal spell
-    setlocal spelllang = en_US
+    setlocal spelllang=en_us,nl,cjk
     inoremap<buffer> <C-s> <c-g>u<Esc>[s1z=`]a<c-g>u
 endfunction
-autocmd BufReadPre markdown call s:tex_settings()
+autocmd BufReadPre *.md,*.vimwiki call s:tex_settings()
 
-
+au FileType wiki,markdown setlocal wrap
 """"""""""""""""""""""""""""""
 " => LaTex
 """"""""""""""""""""""""""""""
 function s:tex_settings()
     setlocal spell
-    setlocal spelllang = en_US
+    setlocal spelllang=en_us,nl,cjk
     inoremap<buffer> <C-s> <c-g>u<Esc>[s1z=`]a<c-g>u
 endfunction
-autocmd BufReadPre tex call s:tex_settings()
+autocmd BufReadPre *.tex call s:tex_settings()
 
 """"""""""""""""""""""""""""""
 " => GLSL

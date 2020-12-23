@@ -120,9 +120,9 @@ snippet 'bg ([\#0-9a-zA-Z]*)' "highlight" irw
 <mark style='background-color:${1:`!p snip.rv=match.group(1)`};'>${2:${VISUAL}}</mark>$0
 endsnippet
 
-# snippet "(red|orange|yellow|green|lightblue|blue|purple)" "font color" ri
-# <font color='`!p snip.rv = match.group(1)`'>${1:${VISUAL}}</font>$0
-# endsnippet
+snippet "(red|orange|yellow|green|lightblue|blue|purple)" "font color" ri
+<font color='`!p snip.rv = match.group(1)`'>${1:${VISUAL}}</font>$0
+endsnippet
 
 snippet 'fg ([\#0-9a-zA-Z]*)' "font color" irw
 <font color='${1:`!p snip.rv = match.group(1)`}'>${2:${VISUAL}}</font>$0
@@ -144,4 +144,20 @@ endsnippet
 
 snippet sdate "insert date" iw
 `date +%d-%A-%H%M`
+endsnippet
+
+snippet tgm "trigger menu" iw
+<details><summary>
+${1:summary}
+</summary>
+${2:${VISUAL}}
+</details>
+endsnippet
+
+snippet img "image tag" iw
+<img ${3:alt='${2:$1}'} src='${1:${VISUAL}}' align='${4:middle}' width="${5:%100}" height="$5">$0
+endsnippet
+
+snippet tag "Html tags" iw
+<${1:tag}>${2:${VISUAL}}</$1>$0
 endsnippet

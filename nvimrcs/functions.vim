@@ -402,16 +402,16 @@ autocmd InsertEnter * call s:fcitx_enter_insert_mode()
 "================================ 移动模式 ===============================
 function! g:SwitchMotionMod()
     if !exists("g:motionMod") || g:motionMod == 1
-        noremap <S-M-j> 5jzz
-        noremap <S-M-k> 5kzz
+        noremap <S-M-j> 5<C-e>
+        noremap <S-M-k> 5<C-y>
         if exists('g:motionMod')
-            echo 'Changed to Fixed mod.'
+            echo 'Changed to Free mod.'
         endif
         let g:motionMod = 0
     elseif g:motionMod == 0
-        echo 'Changed to Free mod.'
-        noremap <S-M-j> 5<C-e>
-        noremap <S-M-k> 5<C-y>
+        noremap <S-M-j> 5jzz
+        noremap <S-M-k> 5kzz
+        echo 'Changed to Fixed mod.'
         let g:motionMod = 1
     endif
 endfunction
