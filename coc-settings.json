@@ -69,6 +69,7 @@
     "diagnostic.refreshOnInsertMode": false,
     "diagnostic.refreshAfterSave": false,
     "diagnostic.checkCurrentLine": true,
+    // "diagnostic.messageTarget": "echo",
 
     "diagnostic.virtualText": true,
     "diagnostic.virtualTextPrefix": " ❯❯❯ ",
@@ -243,12 +244,12 @@
             }
         },
         //proxychains -q yay -S lua-emmy-language-server-bin
-        "lua": {
-            "command": "java",
-            "args": ["-cp", "/usr/lib/lua-emmy-language-server/EmmyLua-LS-all.jar", "com.tang.vscode.MainKt"],
-            "filetypes": ["lua"],
-            "rootPatterns": [".git/"]
-        },
+        //"lua": {
+        //    "command": "java",
+        //    "args": ["-cp", "/usr/lib/lua-emmy-language-server/EmmyLua-LS-all.jar", "com.tang.vscode.MainKt"],
+        //    "filetypes": ["lua"],
+        //    "rootPatterns": [".git/"]
+        //},
         "golang": {
             "command": "gopls",
             "rootPatterns": ["go.mod"],

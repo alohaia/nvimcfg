@@ -1,7 +1,27 @@
-snippet map
-{'${1:key}', [[${2:command}]]},$0
+snippet "comment (.*)" "Comment with description." rb
+--[[ ${1:`!p snip.rv = match.group(1)`}
+${VISUAL}
+]]$0
 endsnippet
 
-snippet cmp
-{'${1:key}', [[${2:command}]], {${3:options}}},$0
+snippet func "function" bA
+function ${1:funcname} (${2:paramters})
+	${3}
+end$0
+endsnippet
+
+snippet for "for loop" bA
+for ${1:condition} do
+	${2}
+end$0
+endsnippet
+
+snippet if "if" bA
+if ${1:condition} then
+	${2}
+end$0
+endsnippet
+
+snippet map "mapping" bwA
+\{'${1:mod}', '${2:keys}', '${3:contents}'\},$0
 endsnippet
