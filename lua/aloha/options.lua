@@ -1,70 +1,92 @@
-local settings = require("aloha.settings")
+local settings = aloha.settings
+local merge = aloha.utils.merge
 
-local options = {}
+aloha.options = {}
+local options = aloha.options
+
+-- option-list lua-vim-options
 
 options.g_options = {
-    -- compatible = false,
-    lazyredraw = true,
-    timeout = true,
-    timeoutlen=200,
-    autochdir=false,
-    virtualedit="block",
-    shiftround=true,
-    backspace='start,eol,indent',
-    hidden=true,
-    tags='./tags;,tags,./.tags',
-    completeopt='noinsert,menuone,noselect,preview',
-    sidescroll=1,
-    sidescrolloff=5,
-    scrolloff=3,
-    listchars='trail:˽,tab:>-',
-    fillchars='vert:▏',
-    shiftwidth=4,
-    tabstop=4,
-    undofile=true,
-    number=true,
-    relativenumber=true,
-    cursorline=true,
-    colorcolumn='76',
-    foldlevel=999,
-    conceallevel=2,
-    wrap=false,
-    list=true,
-    -- wildchar foe cmap, <c-i>
-    wildcharm=9
+    termguicolors  = true;
+    cpoptions   = 'aABceFsI';
+    lazyredraw  = true,
+    timeout     = true,
+    timeoutlen  = 500,
+    autochdir   = false,
+    virtualedit = "block",
+    hidden      = true,
+    tags        = './tags;,tags,./.tags',
+    smarttab    = true,
+    -- wildchar for cmap, <c-i>
+    wildcharm   = 9,
+
+    backup      = true,
+    directory   = settings.cache_dirs.swap,
+    undodir     = settings.cache_dirs.undo,
+    backupdir   = settings.cache_dirs.backup,
+
+    completeopt = 'noinsert,menuone,noselect,preview',
+
+    backspace = 'start,eol,indent', whichwrap='b,s,<,>,h,l',
+    sidescroll = 1, sidescrolloff = 5, scrolloff = 3,
+    listchars = 'trail:˽,tab:>-', fillchars = 'vert:▏',
+
+    fileencodings = 'utf-8,ucs-bom,gb18030,gbk,gb2312,cp936',
+    emoji = true,
+
+    equalalways = false,
 }
 
 options.w_options = {
-    number=true,
-    relativenumber=true,
-    cursorline=true,
-    colorcolumn='76',
-    foldlevel=999,
-    conceallevel=2,
-    wrap=false,
-    sidescrolloff=5,
-    scrolloff=3,
-    list=true,
-    listchars='trail:˽,tab:>-',
-    fillchars='vert:▏'
+    foldlevel      = 999,
+    conceallevel   = 2,
+    wrap           = false,
+    sidescrolloff  = 5,
+    scrolloff      = 3,
+    list           = true,
+    number         = true,
+    relativenumber = true,
+    cursorline     = true,
+    colorcolumn    = '88',
+    signcolumn     = 'yes',
+    foldmethod     = 'expr',
+    foldexpr       = 'nvim_treesitter#foldexpr()',
+    foldcolumn     = '1',
 }
 
 options.b_options = {
-    shiftwidth=4,
-    tabstop=4,
-    tags='./tags;,tags,./.tags',
-    undofile=true
+    swapfile    = true,
+    undofile    = true,
+    -- see :h tabstop
+    -- tabstop = 8, softtabstop = 4, shiftwidth = 4, expandtab = false,
+    -- tabstop = 4, shiftwidth = 4, -- plus a modeline
+    expandtab,
+    tabstop = 4,
+    shiftwidth = 4,
+    -- 1.
+    autoindent = true,
+    -- 2.
+    -- smartindent = true, -- !cindent | !indentexpr
+    -- 3.
+    -- cinwords = 'if,else,while,do,for,switch', -- smartindent | cindent
+    -- cinkeys = '0{,0},0),0],:,0#,!^F,o,O,e', -- cindent & !indentexpr
+    -- 4.
+    indentkeys = '0{,0},0),0],:,0#,!^F,o,O,e', -- indentexpr
+    -- set indentexpr = Get{Vim|Lua|Cpp}Indent -- Xcindent Xsmartindent !lisp
 }
 
 function options:init()
-    for k,v in pairs(self.g_options) do
-        vim.o[k] = v
+    for o,v in pairs(self.g_options) do
+        vim.o[o] = v
     end
-    for k,v in pairs(self.w_options) do
-        vim.wo[k] = v
+    -- vim.cmd[[ set indentexpr = cindent() ]]
+    for o,v in pairs(self.w_options) do
+        vim.wo[o] = v
+        vim.o[o] = v
     end
-    for k,v in pairs(self.b_options) do
-        vim.bo[k] = v
+    for o,v in pairs(self.b_options) do
+        vim.bo[o] = v
+        vim.o[o] = v
     end
 end
 

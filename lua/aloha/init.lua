@@ -1,15 +1,17 @@
-aloha = {}
-
-aloha.prepare = require('aloha.prepare')
-aloha.options = require('aloha.options')
-aloha.mappings = require('aloha.mappings')
-aloha.plugins = require('aloha.plugins')
+_G.aloha = {}
 
 function aloha:init()
-	aloha.prepare:init()
-	aloha.options:init()
-	aloha.mappings:init()
-	aloha.plugins:init()
+    -- set aloha.settings and aloha.utils
+    require('aloha.settings')
+    require('aloha.utils')
+
+    require('aloha.plugins'):init()
+    require('aloha.prepare'):init()
+    require('aloha.options'):init()
+    require('aloha.mappings'):init()
+    -- vim global variables
+    vim.g.python_host_prog  = '/usr/bin/python'
+    vim.g.python3_host_prog = '/usr/bin/python3'
 end
 
 return aloha

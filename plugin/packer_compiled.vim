@@ -186,12 +186,12 @@ command! -nargs=* -range -bang -complete=file TableModeToggle call s:load(['vim-
 augroup packer_load_aucmds
   au!
   " Filetype lazy-loads
+  au FileType text ++once call s:load(['vim-table-mode'], { "ft": "text" })
+  au FileType pandoc.markdown ++once call s:load(['markdown-preview.nvim'], { "ft": "pandoc.markdown" })
+  au FileType python ++once call s:load(['indentLine'], { "ft": "python" })
   au FileType wiki ++once call s:load(['vim-table-mode', 'vim-markdown-toc'], { "ft": "wiki" })
   au FileType rmd ++once call s:load(['markdown-preview.nvim'], { "ft": "rmd" })
-  au FileType python ++once call s:load(['indentLine'], { "ft": "python" })
-  au FileType pandoc.markdown ++once call s:load(['markdown-preview.nvim'], { "ft": "pandoc.markdown" })
-  au FileType markdown ++once call s:load(['vim-table-mode', 'vim-markdown-toc', 'markdown-preview.nvim'], { "ft": "markdown" })
-  au FileType text ++once call s:load(['vim-table-mode'], { "ft": "text" })
   au FileType go ++once call s:load(['vim-go'], { "ft": "go" })
+  au FileType markdown ++once call s:load(['markdown-preview.nvim', 'vim-table-mode', 'vim-markdown-toc'], { "ft": "markdown" })
   " Event lazy-loads
 augroup END

@@ -1,29 +1,465 @@
-"+-----------------------------------------------------------------------+
-"¦ Maintainer:     aloha                                                 ¦
-"¦                                                                       ¦
-"¦ License:        MIT                                                   ¦
-"¦                                                                       ¦
-"¦ Sections:                                                             ¦
-"¦                 -> Help Commands                                      ¦
-"¦                 -> User Interface ( VIM-IDE )                         ¦
-"¦                 -> Color and Highlighting                             ¦
-"¦                 -> Search and Replace                                 ¦
-"¦                 -> Completion and Syntax Checking                     ¦
-"¦                 -> For Project                                        ¦
-"¦                 -> General Editing Enhancement                        ¦
-"¦                 -> MarkDown                                           ¦
-"¦                 -> Terminal Improvement                               ¦
-"¦                 -> Git Related                                        ¦
-"¦                 -> Misc                                               ¦
-"¦                 -> Abandoned Plugins                                  ¦
-"¦                                                                       ¦
-"+-----------------------------------------------------------------------+
-"#########################################################################
-"############################\ Help Commands /############################
-"#########################################################################
+colorscheme onedark
 
-""Note: To get fullly mastered, read this file and plugins' docs.
+let s:transparent_background = 0
 
+"============================= Switch themes =============================
+function! s:colorcolumn_bg_backup()
+    if !exists('g:hi_colorcolumn_bg')
+        let l:hi = split(execute('silent hi ColorColumn', ''))[-2:-1]
+        let g:hi_colorcolumn_bg = join(l:hi, ' ')
+    endif
+    return g:hi_colorcolumn_bg
+endfunction
+au ColorScheme * call s:colorcolumn_bg_backup()
+
+" let ayucolor="light"  " for light version of theme
+let ayucolor="mirage" " for mirage version of theme
+" let ayucolor="dark"   " for dark version of theme
+
+function! g:SwitchTheme(choice)
+    set termguicolors     " enable true colors support
+    if a:choice == 0
+        colorscheme solarized8_light
+        let g:airline_theme = 'solarized'
+    elseif a:choice == 1
+        colorscheme iceberg
+        ""angr atomic
+        let g:airline_theme = 'tomorrow'
+    elseif a:choice == 2
+        colorscheme molokai
+        " colorscheme sublimemonokai
+        let g:airline_theme = 'airlineish'
+    elseif a:choice == 3
+        au VimEnter * colorscheme onedark
+        let g:airline_theme = 'onedark'
+    elseif a:choice == 4
+        colorscheme ayu
+        let g:airline_theme = 'ayu'
+    elseif a:choice == 5
+        colorscheme nord
+        let g:airline_theme = 'nord'
+    elseif a:choice == 6
+        au VimEnter * colorscheme dracula
+        let g:airline_theme = 'dracula'
+    endif
+endfunction
+
+function! g:ThemeByTime(...)
+    if a:0 != 0
+        let l:time = a:000[0]
+    else
+        let l:time = system('date +%H')
+    endif
+    if 6 <= l:time && l:time < 18
+        call g:SwitchTheme(0)
+    else
+        call g:SwitchTheme(2)
+    endif
+endfunction
+
+"======================== Open a terminal smartly ========================
+function! g:OpenTerminalSmartly()
+    if winwidth(0)*1.0/winheight(0) > 3
+        vsplit | terminal
+    else
+        split  | terminal
+    endif
+endfunction
+
+"========================= Backup Normal highlighting ====================
+""Do NOT call this function in this file.
+function! s:normal_color_backup()
+    if !exists('g:hi_normal')
+        let l:hi_normal = split(execute('silent hi Normal', ''))[2:-1]
+        let g:hi_normal = join(l:hi_normal, ' ')
+    endif
+    return g:hi_normal
+endfunction
+au ColorScheme * call s:normal_color_backup()
+
+"========================= Transparent background ========================
+""pass 0 to use transparent background and store current bg color in a file.
+""pass 1 to use color specified by the file.
+function! g:TransparentBg(option)
+    ""检查输入
+    execute a:option != 0 && a:option != 1 ?
+                \ 'echoerr "Argument error in function TransparentBg" | return -1'
+                \ : ''
+    ""检查备份变量是否存在
+    if !exists('g:hi_normal')
+        call s:normal_color_backup()
+    elseif !exists('g:hi_colorcolumn_bg')
+        call s:colorcolumn_bg_backup()
+    endif
+    ""防止重复执行
+    if !exists('s:trans_back_color')
+        let s:trans_back_color = -1
+    endif
+    ""根据选项设置背景
+    if a:option == 1
+        ""设置透明背景
+        hi Normal ctermbg=NONE guibg=NONE
+        hi ColorColumn ctermbg=NONE guibg=NONE
+        let s:trans_back_color = 1
+        " ================ Make some adjustments here. =====================
+        hi CursorLineNr               ctermbg=NONE guibg=NONE ctermfg=208 guifg=#FD971F
+        hi LineNr                     ctermbg=NONE guibg=NONE
+        hi SignColumn                 ctermbg=NONE guibg=NONE
+        hi SignifySignAdd             ctermbg=NONE guibg=NONE
+        hi SignifySignDelete          ctermbg=NONE guibg=NONE
+        hi SignifySignDeleteFirstLine ctermbg=NONE guibg=NONE
+        hi SignifySignChange          ctermbg=NONE guibg=NONE
+        hi VertSplit                  ctermbg=NONE guibg=NONE ctermfg=black guifg=black gui=NONE cterm=NONE
+        " hi cppRainbow_lv1_r0 guifg=#8700ff
+    elseif a:option ==0 && s:trans_back_color != 0
+        exe 'hi Normal '.g:hi_normal
+        exe 'hi ColorColumn '.g:hi_colorcolumn_bg
+        let s:trans_back_color =0
+        " ================ Make some adjustments here. =====================
+        exe 'hi CursorLineNr               '.g:hi_colorcolumn_bg.' ctermfg=208 guifg=#FD971F'
+        exe 'hi LineNr                     '.g:hi_colorcolumn_bg
+        exe 'hi SignColumn                 '.g:hi_colorcolumn_bg
+        exe 'hi SignifySignAdd             '.g:hi_colorcolumn_bg
+        exe 'hi SignifySignDelete          '.g:hi_colorcolumn_bg
+        exe 'hi SignifySignDeleteFirstLine '.g:hi_colorcolumn_bg
+        exe 'hi SignifySignChange          '.g:hi_colorcolumn_bg
+        exe 'hi VertSplit                  '.g:hi_colorcolumn_bg.' ctermfg=black guifg=black gui=NONE cterm=NONE'
+        " hi cppRainbow_lv1_r0 guifg=#8700ff
+    endif
+endfunction
+
+"================================== HasPaste =============================
+" function! HasPaste()
+"     if &paste
+"         return 'PASTE MODE  '
+"     endif
+"     return ''
+" endfunction
+
+"==== Delete trailing white space on save, useful for some filetypes =====
+fun! CleanExtraSpaces()
+    let save_cursor = getpos(".")
+    let old_query = getreg('/')
+    silent! %s/\s\+$//e
+    call setpos('.', save_cursor)
+    call setreg('/', old_query)
+endfun
+
+"============= Don't close window, when deleting a buffer ================
+function! BufcloseCloseIt()
+    let l:currentBufNum = bufnr("%")
+    let l:alternateBufNum = bufnr("#")
+
+    if buflisted(l:alternateBufNum)
+        buffer #
+    else
+        bnext
+    endif
+
+    if bufnr("%") == l:currentBufNum
+        new
+    endif
+
+    if buflisted(l:currentBufNum)
+        exe "bdelete! ".l:currentBufNum
+    endif
+endfunction
+
+""Delete all buffers except the one in current window.
+fun! DeleteAllBuffersInWindow(option)
+    let s:curWinNr = winnr()
+    if winbufnr(s:curWinNr) == 1
+        ret
+    endif
+    let s:curBufNr = bufnr("%")
+    exe "bn"
+    let s:nextBufNr = bufnr("%")
+    while s:nextBufNr != s:curBufNr
+        exe "bn"
+        if a:option == 'force'
+            exe "bdel! ".s:nextBufNr
+        else
+            exe "bdel ".s:nextBufNr
+        endif
+        let s:nextBufNr = bufnr("%")
+    endwhile
+endfun
+
+function! CmdLine(str)
+    call feedkeys(":" . a:str)
+endfunction 
+
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+func! DeleteTillSlash()
+    let g:cmd = getcmdline()
+
+    if has("win16") || has("win32")
+        let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
+    else
+        let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
+    endif
+
+    if g:cmd == g:cmd_edited
+        if has("win16") || has("win32")
+            let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
+        else
+            let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
+        endif
+    endif
+
+    return g:cmd_edited
+endfunc
+
+func! CurrentFileDir(cmd)
+    return a:cmd . " " . expand("%:p:h") . "/"
+endfunc
+
+"================================ 窗口操作 ===============================
+func! FullScreen()
+     " GUI is running or is about to start.
+    if (has("win16") || has("win32")) && has("gui_running")
+        simalt ~x
+    elseif has('linux')
+        "if exists("+lines")
+        "    set lines=9999
+        "endif
+        "if exists("+columns")
+        "    set columns=9999
+        "endif
+    endif
+    let g:Full_Screen = 1
+endfunc
+
+func! ShrinkScreen()
+    if has("win32") && has("gui_running")
+        set lines=35 columns=100
+    elseif has('linux')
+        "set lines=25 columns=75
+    endif
+    let g:Full_Screen = 0
+endfunc
+
+func! ToggleFullScreen()
+    if g:Full_Screen == 0
+        call FullScreen()
+    else
+        call ShrinkScreen()
+    endif
+endfunc
+
+function! BigWindow()
+    call FullScreen()
+    NERDTree
+    TagbarOpen
+endfunction
+
+function! SmallWindow()
+    call ShrinkScreen()
+    " vim-plug 中设置 NERDTree 不会自动启动
+    if exists("g:NERDTree")
+        NERDTreeClose
+    endif
+    TagbarClose
+endfunction
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"Author : 路永磊
+"plugin : awheel_fcitx.vim
+"Date   : 2020-05-29
+"Usage  : 解决vim使用中文输入法时的干扰问题
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let s:chinese_enable = 2                                     "若当前系统为中文输入法,则获取的输入法状态值为 2
+let s:english_enable = 1                                     "若当前系统为英文输入法,则获取的输入法状态值为 1
+let s:get_fcitx_language_status = "fcitx-remote"             "获取当前输入法的状态值
+let s:set_fcitx_chinese         = "fcitx-remote -o"          "把输入法设置为 中文
+let s:set_fcitx_english         = "fcitx-remote -c"          "把输入法设置为 英文
+
+let s:start_language_status = system(s:set_fcitx_english)    "vim启动时,默认把输入法设置为英文
+
+
+
+"此处可以根据编辑的文件后缀名来做更改
+let g:saved_insert_mode_language_status = s:english_enable                     "初始设置 插入模式 输入法为英文
+autocmd BufNewFile,BufRead *.txt,*.text,*.md,*.wiki,[Rr][Ee][Aa][Dd][Mm][Ee] 
+            \let g:saved_insert_mode_language_status = s:chinese_enable        "在编辑*.txt,*.text文件格式的时候
+
+
+
+"当退出 插入模式 时,会把输入法设置为英文 
+function! s:fcitx_2_english()
+    let s:exit_insert_status = system(s:get_fcitx_language_status)      "检查退出 插入模式 时,输入法的状态
+    if s:exit_insert_status != s:english_enable                         "如果退出 插入模式 时,输入法不是英文
+        let l:temp = system(s:set_fcitx_english)                        "将输入法设置为英文
+    endif
+    let g:saved_insert_mode_language_status = s:exit_insert_status      "保存退出 插入模式 时的输入法状态 
+endfunction
+
+"当进入 插入模式 时,输入法会自动选择语言为上一次插入模式使用的语言
+function! s:fcitx_enter_insert_mode()
+    let s:enter_insert_status = system(s:get_fcitx_language_status)     "获取进入 插入模式 时,输入法的状态
+    if s:enter_insert_status != g:saved_insert_mode_language_status     "如果当前输入法语言和上一次退出插入模式时的语言不一样
+        if g:saved_insert_mode_language_status == s:chinese_enable      "改变输入法当前语言为上一次退出插入模式时的语言
+            let l:temp = system(s:set_fcitx_chinese)
+        else
+            let l:temp = system(s:set_fcitx_english)
+        endif
+    endif
+endfunction
+
+
+"退出插入模式调用的函数
+autocmd InsertLeave * call s:fcitx_2_english()
+
+"进入插入模式调用的函数
+autocmd InsertEnter * call s:fcitx_enter_insert_mode()
+
+
+"================================ 移动模式 ===============================
+function! g:SwitchMotionMod()
+    if !exists("g:motionMod") || g:motionMod == 1
+        noremap <S-M-j> 5<C-e>
+        noremap <S-M-k> 5<C-y>
+        if exists('g:motionMod')
+            echo 'Changed to Free mod.'
+        endif
+        let g:motionMod = 0
+    elseif g:motionMod == 0
+        noremap <S-M-j> 5jzz
+        noremap <S-M-k> 5kzz
+        echo 'Changed to Fixed mod.'
+        let g:motionMod = 1
+    endif
+endfunction
+
+
+""Get SID
+function! g:GetSID()
+    return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+endfunction
+
+"======================= Choose Window with Filter =======================
+function! ChooseWin(...)
+    let l:wins = range(1,winnr('$'))
+    if a:0 == 0
+        let l:available_windows = filter(l:wins, 'index(s:choosewin_ignore_filetypes, getbufvar(winbufnr(v:val), "&filetype")) == -1')
+    else
+        let l:available_windows = filter(l:wins, 'index(a:000[0], getbufvar(winbufnr(v:val), "&filetype")) == -1')
+    endif
+    return choosewin#start(l:available_windows, { 'auto_choose': 1, 'hook_enable': 0 })
+endfunction
+
+"================================ Viminal ================================
+function! OpenAsTerminal()
+    au VimEnter * call TransparentBg(1)
+    terminal
+    normal a
+endfunction
+
+au VimEnter * call g:TransparentBg(s:transparent_background)
+""""""""""""""""""""""""""""""
+" => C/C++ section
+""""""""""""""""""""""""""""""
+au FileType c,cpp set path+=./include
+
+""""""""""""""""""""""""""""""
+" => Python section
+""""""""""""""""""""""""""""""
+" let python_highlight_all = 1
+
+" au BufNewFile,BufRead *.jinja set syntax=htmljinja
+" au BufNewFile,BufRead *.mako set ft=mako
+
+" au FileType python map <buffer> F :set foldmethod=indent<cr>
+
+""""""""""""""""""""""""""""""
+" => JavaScript section
+"""""""""""""""""""""""""""""""
+au FileType javascript call JavaScriptFold()
+au FileType javascript setl fen
+au FileType javascript setl nocindent
+
+au FileType javascript imap <C-t> $log();<esc>hi
+au FileType javascript imap <C-a> alert();<esc>hi
+
+au FileType javascript inoremap <buffer> $r return 
+au FileType javascript inoremap <buffer> $f // --- PH<esc>FP2xi
+
+function! JavaScriptFold() 
+    setl foldlevelstart=1
+    syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+
+    function! FoldText()
+        return substitute(getline(v:foldstart), '{.*', '{...}', '')
+    endfunction
+    setl foldtext=FoldText()
+endfunction
+
+
+""""""""""""""""""""""""""""""
+" => CoffeeScript section
+"""""""""""""""""""""""""""""""
+function! CoffeeScriptFold()
+    setl foldlevelstart=1
+endfunction
+au FileType coffee call CoffeeScriptFold()
+
+au FileType gitcommit call setpos('.', [0, 1, 1, 0])
+
+""""""""""""""""""""""""""""""
+" => Twig section
+""""""""""""""""""""""""""""""
+autocmd BufRead *.twig set syntax=html filetype=html
+
+
+""""""""""""""""""""""""""""""
+" => Markdown
+""""""""""""""""""""""""""""""
+function s:markdown_settings()
+    setlocal spell
+    setlocal spelllang=en_us,cjk
+    inoremap<buffer> <C-s> <c-g>u<Esc>[s1z=`]a<c-g>u
+endfunction
+autocmd BufReadPre *.md,*.vimwiki call s:markdown_settings()
+
+au FileType wiki,markdown setlocal wrap
+""""""""""""""""""""""""""""""
+" => LaTex
+""""""""""""""""""""""""""""""
+function s:tex_settings()
+    setlocal spell
+    setlocal spelllang=en_us,cjk
+    inoremap<buffer> <C-s> <c-g>u<Esc>[s1z=`]a<c-g>u
+endfunction
+autocmd BufReadPre *.tex call s:tex_settings()
+
+""""""""""""""""""""""""""""""
+" => GLSL
+""""""""""""""""""""""""""""""
+au BufRead,BufNewFile *.vs setfiletype glsl
+au BufRead,BufNewFile *.fs setfiletype glsl
+
+"+--------------------------------------------------------------------------+" 
+"|                              Helper Commands                             |"
+"+--------------------------------------------------------------------------+"
 ""Startify:
 command! Hstartify echo
             \"=== :h startify-usage to see the doc ===\n".
@@ -120,10 +556,6 @@ command! Hvimspector echo
             \"  Type :call vimspe\<tab\> to see more functions."
 
 "============================\ vim-which-key /=============================
-nnoremap <leader><leader> :<c-u>WhichKey ''<left>
-" set timeoutlen=200                " in basic.vim
-let g:which_key_map =  {}
-let g:which_key_map.j = { 'name' : '+file' }
 hi WhichKeyBg ctermfg=252 ctermbg=233 guifg=#F8F8F2 guibg=#1B1D1E
 " highlight default link WhichKey          Function
 " highlight default link WhichKeySeperator DiffAdded
@@ -135,133 +567,7 @@ highlight default link WhichKeyFloating  WhichKeyBg
 "############################\ User Interface /###########################
 "#########################################################################
 
-"============================\ vim-startify /=============================
-" e q <cr> | b s v t | B S V T <nums>/again |
-":h startify-faq
-"" Functions
-" function! s:list_commits()
-"     let git = 'git -C ~/repo'
-"     let commits = systemlist(git .' log --oneline | head -n10')
-"     let git = 'G'. git[1:]
-" return map(commits, '{"line": matchstr(v:val, "\\s\\zs.*"), "cmd": "'. git .' show ". matchstr(v:val, "^\\x\\+") }')
-" endfunction
-
-" function s:startify_vim_cfg()
-"     return [
-"                 \ { 'line': "What's this?", 'cmd': 'echo "open a group of files."' },
-"                 \ { 'line': 'Vim configuration files',
-"                 \   'cmd': 'cd ~/.config/nvim/nvimrcs/ | e basic.vim | e filetypes.vim | e plugins_config.vim' },
-"                 \ ]
-" endfunction
-
-" function s:startify_defx()
-"     return [
-"                 \ {'line': 'Press 0 to open defx.', 'cmd': 'call g:Defx_toggle_with_my_options()'},
-"                 \ ]
-" endfunction
-" call startify#open_buffers() |
-
-""打开文件时自动将root目录切换为文件所在目录
-""At the moment only git, hg, bzr and svn are supported.
-let g:startify_change_to_vcs_dir=1
-""打开文件时自动切换到文件所在目录
-let g:startify_change_to_dir=0
-""使用 Unicode 字符
-let g:startify_fortune_use_unicode = 1
-""左边空白的宽度
-let g:startify_padding_left = 3
-""指定 session 目录
-let g:startify_session_dir = expand('$HOME/.config/nvim/.cache/startify')
-""在退出Vim或加载新的session前保存当前session
-let g:startify_session_persistence = 0
-""自动加载session
-let g:startify_session_autoload = 1
-""过滤列表，支持正则表达式
-let g:startify_skiplist = [
-            \ '\.git',
-            \ ]
-""'file'和'dir'中的最大项目数量
-let g:startify_files_number = 10
-""Add your bookmarks here:
-let g:startify_bookmarks = [
-            \   '~/.config/nvim/plugins/vimspector/docs/schema/vimspector.schema.json',
-            \   '~/.config/nvim/plugins/vimspector/docs/schema/gadgets.schema.json',
-            \]
-""Add Your commands here.
-let g:startify_commands = [
-            \ {'t': ['Press t to open coc-explorer.',      'CocCommand explorer']},
-            \ {'w': ["Open Index page for Vimwiki.",       'VimwikiIndex']},
-            \ {'d': ["Open Index page for Vimwiki Diary.", 'VimwikiDiaryIndex']},
-            \ ]
-" \ {'t': ['Press t to open defx.', 'call g:Defx_toggle_with_my_options()']},
-" \ ':help reference',
-" \ ['Vim Reference', 'h ref'],
-" \ {'?': ['Vim Reference', 'h ref']},
-" \ {'h': 'h ref'},
-" \ {'m': ['My magical function', 'call Magic()']},
-""菜单列表
-let g:startify_lists = [
-            \ { 'type': 'commands',                     'header': ['   Commands']            },
-            \ { 'type': 'files',                        'header': ['   Recent Opened Files'] },
-            \ { 'type': 'sessions',                     'header': ['   Sessions']            },
-            \ { 'type': 'dir',                          'header': ['   PWD: '. getcwd()]     },
-            \ { 'type': 'bookmarks',                    'header': ['   Bookmarks']           },
-            \ ]
-            "\ { 'type': function('s:startify_vim_cfg'), 'header': ['   FileGroups']          },
-            "\ { 'type': function('s:startify_defx'),    'header': ['   Open Defx']           },
-            "\ { 'type': function('s:list_commits'),     'header': ['   Commits']             },
-" let g:ascii = [
-"       \ '        __',
-"       \ '.--.--.|__|.--------.',
-"       \ '|  |  ||  ||        |',
-"       \ ' \___/ |__||__|__|__|',
-"       \ ''
-"       \]
-" let g:startify_custom_header = g:ascii + startify#fortune#boxed()
-" let g:startify_custom_header =
-"     \ startify#pad(split(system('fortune | cowsay'), '\n'))
-" let g:startify_custom_header = [
-"     \ '                                 ________  __ __        ',
-"     \ '            __                  /\_____  \/\ \\ \       ',
-"     \ '    __  __ /\_\    ___ ___      \/___//''/''\ \ \\ \    ',
-"     \ '   /\ \/\ \\/\ \ /'' __` __`\        /'' /''  \ \ \\ \_ ',
-"     \ '   \ \ \_/ |\ \ \/\ \/\ \/\ \      /'' /''__  \ \__ ,__\',
-"     \ '    \ \___/  \ \_\ \_\ \_\ \_\    /\_/ /\_\  \/_/\_\_/  ',
-"     \ '     \/__/    \/_/\/_/\/_/\/_/    \//  \/_/     \/_/    ',
-"     \ ]
-" let g:startify_custom_header = split(system('fortune | cowsay'), '\n')
-""Example: ctermfg=252 ctermbg=233 guifg=#F8F8F2 guibg=#1B1D1E
-" highlight StartifyBracket ctermfg=86  guifg=#5fffdf
-" highlight StartifyFooter  ctermfg=50  guifg=#00ffdf
-" highlight StartifyHeader  ctermfg=50  guifg=#00ffdf
-" highlight StartifyNumber  ctermfg=215 guifg=
-" highlight StartifyPath    ctermfg=245 guifg=
-" highlight StartifySlash   ctermfg=240 guifg=
-" highlight StartifySpecial ctermfg=240 guifg=
-
 "==============================\ undotree /===============================
-nnoremap <leader>ut :UndotreeToggle<cr>
-""Layout: <position> <vertical> <width> new | <position> <height> new
-let g:undotree_CustomUndotreeCmd  = 'topleft vertical 30 new'
-let g:undotree_CustomDiffpanelCmd = 'botright 10 new'
-""Auto open the diff window.
-" let g:undotree_DiffAutoOpen = 1
-""Whether to stay in current after Undotree being opened.
-let g:undotree_SetFocusWhenToggle = 1
-""Tree node shape
-let g:undotree_TreeNodeShape = '⚑'
-""Use relative timestamp.
-let g:undotree_RelativeTimestamp = 0
-""Get short timestamps.
-" let g:undotree_ShortIndicators = 0
-""Highlight the changed text.
-" let g:undotree_HighlightChangedText = 1
-""Highlight groups.
-" let g:undotree_HighlightSyntaxAdd    = "DiffAdd"
-" let g:undotree_HighlightSyntaxChange = "DiffChange"
-" let g:undotree_WindowLayout = 2
-""Whether to shoe help line.
-let g:undotree_HelpLine = 0
 ""Custom mappings.
 function g:Undotree_CustomMap()
     nnoremap <buffer> u <plug>UndotreeNextState
@@ -271,124 +577,15 @@ function g:Undotree_CustomMap()
 endfunc
 
 "===============================\ rnvimr /================================
-nnoremap <cr> :RnvimrToggle<cr>
-""Disable Rnvimr to import user configuration.
-"let g:rnvimr_vanilla = 1
-""Make Ranger replace netrw to be a file explorer
-let g:rnvimr_ex_enable = 1
-""Make Ranger to be hidden after picking a file
-let g:rnvimr_pick_enable = 1
-""Disable a border for floating window
-let g:rnvimr_draw_border = 1
-""Change the border's color
-let g:rnvimr_border_attr = {'fg': 39, 'bg': -1}
-""Set up only two columns in miller mode and draw border with both
-let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"'
-" let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,0"
-"             \ --cmd="set draw_borders both"'
-""Make Neovim wipe the buffers corresponding to the files deleted by Ranger
-"let g:rnvimr_bw_enable = 1
-""Hide the files included in gitignore
-"let g:rnvimr_hide_gitignore = 1
-""Link CursorLine into RnvimrNormal highlight in the Floating window
-" highlight link RnvimrNormal CursorLine
 highlight default link RnvimrNormal NormalFloat
 highlight default link RnvimrCurses Normal
-" nnoremap <silent> <cr> :RnvimrSync<CR>:RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
-" nnoremap <silent> <cr> :RnvimrToggle<CR>
-" <C-\><C-n>:RnvimrResize 0<CR>
-"""Resize floating window by all preset layouts
-"tnoremap <silent> <M-i> <C-\><C-n>:RnvimrResize<CR>
-"""Resize floating window by special preset layouts
-"tnoremap <silent> <M-l> <C-\><C-n>:RnvimrResize 1,8,9,11,5<CR>
-"""Resize floating window by single preset layout
-"tnoremap <silent> <M-y> <C-\><C-n>:RnvimrResize 6<CR>
-""Default shortcuts
-" let g:rnvimr_action = {
-"             \ '<C-t>': 'NvimEdit tabedit',
-"             \ '<C-x>': 'NvimEdit split',
-"             \ '<C-v>': 'NvimEdit vsplit',
-"             \ 'gw': 'JumpNvimCwd',
-"             \ 'yw': 'EmitRangerCwd'
-"             \ }
-""Default layout
-" let g:rnvimr_layout = { 'relative': 'editor',
-"             \ 'width': float2nr(round(0.6 * &columns)),
-"             \ 'height': float2nr(round(0.6 * &lines)),
-"             \ 'col': float2nr(round(0.2 * &columns)),
-"             \ 'row': float2nr(round(0.2 * &lines)),
-"             \ 'style': 'minimal' }
-""Let ranger occupies the whole screen
-let g:rnvimr_layout = { 'relative': 'editor',
-            \ 'width': &columns,
-            \ 'height': &lines,
-            \ 'col': 0,
-            \ 'row': 0,
-            \ 'style': 'minimal' }
-let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
 ""============================\ defx.nvim /=============================
-nnoremap <silent> <leader>df :Defx<CR>
-" call defx#custom#option('_', {
-"       \ 'resume': 1,
-"       \ 'winwidth': 30,
-"       \ 'split': 'vertical',
-"       \ 'direction': 'topleft',
-"       \ 'show_ignored_files': 0,
-"       \ 'columns': 'mark:indent:git:icons:filename',
-"       \ })
-""Options
-call defx#custom#option('_', {
-      \ 'columns': 'mark:indent:git:icon:icons:filename:type:size:time',
-      \ 'sort': 'filename',
-      \ 'preview_height': &lines/2,
-      \ 'split': 'vertical', 'winwidth': 40, 'direction': 'topleft',
-      \ 'root_marker': '[in]: ',
-      \ 'buffer_name': 'Defx',
-      \ 'show_ignored_files': 0, 'ignored_files': '.*,*.webp,*.png,*.jpg,*.o,*.exe',
-      \ 'toggle': 1, 'resume': 1, 'focus': 1
-      \ })
-      " \ 'floating_preview': 1, 'wincol': &columns/4, 'winrow': &lines/3,
-""Columns
-call defx#custom#column('git', 'indicators', {
-      \ 'Modified'  : 'M',
-      \ 'Staged'    : 'S',
-      \ 'Untracked' : 'U',
-      \ 'Renamed'   : 'R',
-      \ 'Unmerged'  : '=',
-      \ 'Ignored'   : '~',
-      \ 'Deleted'   : 'D',
-      \ 'Unknown'   : '?'
-      \ })
-" call defx#custom#column('git', 'indicators', {
-"       \ 'Modified'  : '✹',
-"       \ 'Staged'    : '⚑',
-"       \ 'Untracked' : '⚝',
-"       \ 'Renamed'   : '≫',
-"       \ 'Unmerged'  : '=',
-"       \ 'Ignored'   : '~',
-"       \ 'Deleted'   : '✖',
-"       \ 'Unknown'   : '?'
-"       \ })
-call defx#custom#column('indent', 'indent', '  ')
-call defx#custom#column('icon', {
-      \ 'directory_icon': '▸',
-      \ 'opened_icon': '▾',
-      \ 'root_icon': ' ',
-      \ })
-
-call defx#custom#source('file', {
-      \  'root': 'Root',
-      \ })
 function! Root(path) abort
       return fnamemodify(a:path, ':t')
 endfunction
 
 " defx-icons plugin
-let g:defx_icons_column_length = 1
-let g:defx_icons_mark_icon = ''    " ✓
-let g:defx_icons_parent_icon = ""
-call defx#custom#column('mark', { 'readonly_icon': '', 'selected_icon': '' })
 " Events
 " ---
 augroup user_plugin_defx
@@ -535,103 +732,14 @@ function! s:defx_mappings() abort
     nnoremap <silent><buffer><expr> .                 defx#do_action('repeat')
 endfunction
 
-"============================\ choosewin /=============================
-nnoremap <C-w><C-i> :ChooseWin<CR>
-" nnoremap <Tab> :call ChooseWin()<CR>
-let g:choosewin_color_label = {
-            \ 'gui':   ['#af00ff', 'black', 'bold'],
-            \ 'cterm': [129, 16, 'bold']
-            \}
-let g:choosewin_color_label_current = {
-            \ 'gui':   ['#afafff', 'white', 'bold'],
-            \ 'cterm': [147, 15, 'bold']
-            \ }
-let g:choosewin_color_overlay = g:choosewin_color_label
-let g:choosewin_color_overlay_current = g:choosewin_color_label_current
-let g:choosewin_color_land = {
-            \ 'gui':   ['#00ffff', 'Black', 'bold,underline'],
-            \ 'cterm': [51, 15]
-            \}
-let g:choosewin_label_fill = 0
-let g:choosewin_blink_on_land = 0
-let g:choosewin_return_on_single_win = 0
-""Use statusline or overlay
-let g:choosewin_statusline_replace = 0
-let g:choosewin_overlay_enable = 1
-let g:choosewin_overlay_shade = 1
-" let s:keymap = {
-"             \ '0':     'tab_first',
-"             \ '[':     'tab_prev',
-"             \ ']':     'tab_next',
-"             \ '$':     'tab_last',
-"             \ 'x':     'tab_close',
-"             \ ';':     'win_land',
-"             \ '-':     'previous',
-"             \ 's':     'swap',
-"             \ 'S':     'swap_stay',
-"             \ "\<CR>": 'win_land',
-"             \ }
-""Default filetype that will be ignored.
-let s:choosewin_ignore_filetypes = []
-
-
 "============================\ vista.vim /=============================
-""See the full list of executivs via :echo g:vista#executives
-let g:vista_default_executive = 'ctags'
-""Don't sort tags
-let g:vista_ctags_project_opts = '--sort=no -R -o .tags'
-let g:vista_executive_for = {
-            \ 'vimwiki': 'markdown',
-            \ 'pandoc': 'markdown',
-            \ 'markdown': 'toc',
-            \ }
-" let g:vista_finder_alternative_executives = ['coc']
-let g:vista_enable_markdown_extension = 1
-""Toggle Vista
-noremap <silent> <leader>vt :Vista!!<CR>
-""Fzf, try :Vista finder <tab>
-let g:airline#extensions#fzf#enabled = 1
-""Show markdown outline properly. default 1
-let g:vista_enable_markdown_extension = 1
-noremap <silent> ,T :Vista finder<CR>
-let g:vista_fzf_preview = ['right:50%']
-"noremap <silent> <F8> :Vista finder<CR>    "search tags recursively.
-"let g:vista_sidebar_position = 'vertical botright'
-let g:vista_sidebar_width = 50
-"?let g:vista_sidebar_keepalt = 1
-let g:vista_fold_toggle_icons = ['▾', '▸']
-""Only works for LSP executivea, not for ctags
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-"let g:vista_echo_cursor = 1
-let g:vista_cursor_delay = 200
-""echo scroll foating_win both
-"let g:vista_echo_cursor_strategy = 'echo'
-"let g:vista_floating_delay=100
-let g:vista_update_on_text_changed = 1
-let g:vista_update_on_text_changed_delay = 2000
-let g:vista_close_on_jump = 1
-let g:vista_stay_on_open = 1
-""Disable blink
-let g:vista_blink = [0, 0]
-let g:vista_top_level_blink = [0, 0]
-"let g:vista_disable_statusline = exists('g:loaded_airline') || exists('g:loaded_lightline')
-""Use beautiful icons
-"let g:vista#renderer#enable_icon = exists('g:vista#renderer#icons') || exists('g:airline_powerline_fonts')
+autocmd FileType vista,vista_kind nnoremap <buffer> <silent> f :<c-u>call vista#finder#fzf#Run()<CR>
 let g:vista#renderer#icons = {
             \   "function": "\uf794",
             \   "variable": "\uf71b",
             \  }
-" function! NearestMethodOrFunction() abort
-"     return get(b:, 'vista_nearest_method_or_function', '')
-" endfunction
-" set statusline+=%{NearestMethodOrFunction()}
-" autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
-autocmd FileType vista,vista_kind nnoremap <buffer> <silent> f :<c-u>call vista#finder#fzf#Run()<CR>
 
 "============================\ vim-devicons /=============================
-let g:webdevicons_enable = 1
-let g:webdevicons_enable_airline_tabline = 1
-let g:airline_powerline_fonts = 1
 
 "============================\ vim-airline /=============================
 if !exists('g:airline_symbols')
@@ -2190,6 +2298,11 @@ let g:vimwiki_ext2syntax = {
             \'.markdown': 'markdown', '.mw': 'media'
             \}
 
+
+"=============================\ nvim-treesitter /=================================
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+
 ""utf-8 icons \u259* ... \u2756
 "▐ ░ ▒ ▓ ▔ ▕ ▖ ▗ ▘ ▙ ☁ ☂ ☃ ☄ ★ ☆ ☇ ☈ ☉ ▀ ▁ ▂ ▃ ▄ ▅ ▆ ▇ █ ▉ "
 "╰ ╱ ╲ ╳ ╴ ╵ ╶ ╷ ╸ ╹ ╠ ╡ ╢ ╣ ╤ ╥ ╦ ╧ ╨ ╩ ═ ║ ╒ ╓ ╔ ╕ ╖ ╗ ╘ ╙ "
@@ -2199,3 +2312,404 @@ let g:vimwiki_ext2syntax = {
 "♔ ♕ ♖ ♗ ♘ ♙ ♚ ♛ ♜ ♝ ♞ ♟ "
 "⎗ ⎘ ⎙ ⎚ ⏍ ⏻ 🗂 "
 "|¦┊
+"================= Adjust conceal characters' highlighting ===============
+function s:set_hi_conceal()
+    if &filetype == 'tex'
+        hi link Conceal texAccent
+    else
+        exe 'hi Conceal '.g:hi_normal
+    endif
+endfunction
+" au BufEnter * call s:set_hi_conceal()
+
+
+"=============== Set extra options when running in GUI mode ==============
+if has("gui_running")
+    " set guifont=JetBrainsMono\ Nerd\ Font\ Mono:h12:cANSI:qDRAFT
+    set guifont=PragmataPro\ Mono:h12:cANSI:qDRAFT
+    set gfw=黑体:h13:cGB2312
+    set guioptions-=r
+    set guioptions-=R
+    set guioptions-=l
+    set guioptions-=L
+    set guioptions-=m
+    set guioptions-=T
+    set guioptions-=e
+    set guitablabel=%M\ %t
+endif
+
+"================ Use Unix as the standard file type =====================
+set fileformats=unix,dos,mac
+
+"================ Highlighting a selection on yank =======================
+" au! TextYankPost * lua vim.highlight.on_yank {higroup="IncSearch", timeout=150}
+
+
+"#########################################################################
+"##########################\ Search and Replace /#########################
+"#########################################################################
+set ignorecase smartcase            " 只有小写时忽略大小写
+set hlsearch                        " 高亮搜索结果
+set incsearch                       " 增量搜索
+set magic                           " 开启 magic 模式
+
+""可视化模式下任然可以使用 */# 向后/前搜索选中的文本.From an idea by Michael Naumann
+vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+
+""Find and focus.
+nnoremap n nzz
+nnoremap N Nzz
+
+""Clear highlight when <leader><cr> is pressed
+nnoremap <silent> <esc> :nohl<cr>
+
+""When you press <leader>r you can search and replace the selected text
+"vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
+
+
+"#########################################################################
+"################\ Moving around, Tabs, Windows and Buffers /#############
+"#########################################################################
+
+"============================ Moving around ==============================
+""Fast moving
+nnoremap J 5j
+nnoremap K 5k
+xnoremap J 5j
+xnoremap K 5k
+
+""Moving more convenient when lines wrap
+" nnoremap j gj
+" nnoremap k gk
+" xnoremap j gj
+" xnoremap k gk
+
+""Moving using <M-S-j/k>
+au VimEnter * call SwitchMotionMod()
+nnoremap <silent> \\ :call SwitchMotionMod()<CR>
+
+""Remap VIM 0 to first non-blank character
+" nnoremap ^ g0
+" nnoremap g0 ^
+" nnoremap 0 g^
+" nnoremap g^ 0
+
+""Move a line of text using ALT+[jk] or Command+[jk]
+""Thus you should not use mark 'z'
+nnoremap <M-k> mz:m-2<cr>`z
+nnoremap <M-j> mz:m+<cr>`z
+xnoremap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+xnoremap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+nnoremap <M-l> "zxl"zP
+nnoremap <M-h> "zxh"zP
+xnoremap <M-l> "zxl"z`<v`>P
+xnoremap <M-h> "zxh"zP`<v`>
+
+if has("mac") || has("macunix")
+    nmap <D-j> <M-j>
+    nmap <D-k> <M-k>
+    vmap <D-j> <M-j>
+    vmap <D-k> <M-k>
+endif
+
+""For insert mode
+inoremap <M-h> <Left>
+inoremap <M-l> <Right>
+inoremap <M-k> <Up>
+inoremap <M-j> <Down>
+inoremap <M-a> <Home>
+inoremap <M-d> <End>
+
+""For command mod
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-h> <Left>
+cnoremap <C-l> <Right>
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
+
+"============================ windows related ============================
+""Moving around windows.
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-h> <C-w>h
+noremap <C-l> <C-w>l
+
+" split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
+" noremap <silent> <leader>sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
+" noremap <silent> <leader>sj :set splitbelow<CR>:split<CR>
+" noremap <silent> <leader>sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
+" noremap <silent> <leader>sl :set splitright<CR>:vsplit<CR>
+" <C-w>v/s <C-w>_/|/=
+
+" Resize splits with arrow keys
+noremap <silent> <up> :res +5<CR>
+noremap <silent> <down> :res -5<CR>
+noremap <silent> <left> :vertical resize-5<CR>
+noremap <silent> <right> :vertical resize+5<CR>
+
+"============================ buffers related ============================
+
+""关闭缓冲区，保留窗口
+nnoremap <leader>bd :call g:BufcloseCloseIt()<cr>
+""Close all the buffers
+nnoremap <leader>ba :bufdo bd<cr>
+""Close all the other buffers
+""https://blog.csdn.net/magicpang/article/details/2308167
+nnoremap <leader>bo :call DeleteAllBuffersInWindow('noforce')<cr>
+nnoremap <leader>BO :call DeleteAllBuffersInWindow('force')<cr>
+
+nnoremap <silent> = :bnext<cr>
+nnoremap <silent> - :bprevious<cr>
+nnoremap <silent> ]b :bnext<cr>
+nnoremap <silent> [b :bprevious<cr>
+nnoremap <silent> ]B :blast<cr>
+nnoremap <silent> [B :bfirst<cr>
+nnoremap <silent> <c-b>n :bnext<cr>
+nnoremap <silent> <c-b><c-n> :bnext<cr>
+nnoremap <silent> <c-b>p :bprevious<cr>
+nnoremap <silent> <c-b><c-p> :bprevious<cr>
+
+""快速切换到当前编辑的缓冲区中的文件所在的目录
+noremap <leader>. :cd %:p:h<cr>pwd<cr>
+
+cnoremap <expr> %% getcmdtype()==':' ? expand('%:p:h').'/' : '%%'
+
+""Specify the behavior when switching between buffers
+try
+  set switchbuf=useopen,usetab,newtab
+  set showtabline=2
+catch
+endtry
+
+""打开文件时自动将光标移动到上次光标所在的位置
+" au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
+"=========== 打开文件或切换缓冲区时自动将光标移动到上次的位置 ============
+" au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+function s:position_load()
+    if !exists('s:positions')
+        let s:positions = {}
+    endif
+    if !has_key(s:positions, bufnr())
+        " echo 'add a key'
+        let s:positions[bufnr()] = [line("'\""), col("'\"")]
+    endif
+    " echo 'jump to' s:positions[bufnr()]
+    call cursor(s:positions[bufnr()])
+endfunction
+
+function s:position_save()
+    let l:cursor_posi = getcurpos()
+    let s:positions[bufnr()] = l:cursor_posi[1:2]
+    " echo s:positions
+    " echo 'position saved:' s:positions[bufnr()]
+endfunction
+
+au BufEnter,WinEnter * call s:position_load()
+au BufLeave,WinLeave * call s:position_save()
+
+"=============================== tabs related ============================
+""Useful mappings for managing tabs
+nnoremap <leader>tn :tabnew<cr>
+nnoremap <leader>tc :tabclose<cr>
+nnoremap <leader>to :tabonly<cr>
+nnoremap <leader>tm :tabmove<space>
+nnoremap + :tabnext<cr>
+nnoremap _ :tabprevious<cr>
+nnoremap <c-t>n :tabnext<cr>
+nnoremap <c-t><c-n> :tabnext<cr>
+nnoremap <c-t>p :tabprevious<cr>
+nnoremap <c-t><c-p> :tabprevious<cr>
+nnoremap ]t gt<cr>
+nnoremap [t gT<cr>
+nnoremap ]T :tablast<cr>
+nnoremap [T :tabfirst<cr>
+
+""Let '<leader>tt' toggle between this and the last accessed tab
+let g:lasttab = 1
+nnoremap <Leader>tt :exe "tabn ".g:lasttab<CR>
+au TabLeave * let g:lasttab = tabpagenr()
+
+""Opens a new tab with the current buffer's path
+""Super useful when editing files in the same directory
+nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
+
+
+"#########################################################################
+"############################\ Keys and Mappings /########################
+"#########################################################################
+
+"---------------------------------------------------------------------------"
+" Commands \ Modes | Normal | Insert | Command | Visual | Select | Operator |
+"------------------|--------|--------|---------|--------|--------|----------|
+" map  / noremap   |    @   |   -    |    -    |   @    |   @    |    @     |
+" nmap / nnoremap  |    @   |   -    |    -    |   -    |   -    |    -     |
+" vmap / vnoremap  |    -   |   -    |    -    |   @    |   @    |    -     |
+" omap / onoremap  |    -   |   -    |    -    |   -    |   -    |    @     |
+" xmap / xnormap   |    -   |   -    |    -    |   @    |   -    |    -     |
+" smap / snoremap  |    -   |   -    |    -    |   -    |   @    |    -     |
+" map! / noremap!  |    -   |   @    |    @    |   -    |   -    |    -     |
+" imap / inoremap  |    -   |   @    |    -    |   -    |   -    |    -     |
+" cmap / cnoremap  |    -   |   -    |    @    |   -    |   -    |    -     |
+"---------------------------------------------------------------------------"
+
+"============================== 保存和退出 ===============================
+" Fast saving & quitting
+" nnoremap <silent> <leader>w :w<cr>
+" nnoremap <leader>q :q<cr>
+
+" :W sudo saves the file(use suda.vim instead)
+" command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+
+"================== 折叠命令syntax/indent模式 (vim 自带) =================
+" zc 折叠
+" zC 对所在范围内所有嵌套的折叠点进行折叠
+" zo 展开折叠
+" zO 对所在范围内所有嵌套的折叠点展开
+" [z 到当前打开的折叠的开始处。
+" ]z 到当前打开的折叠的末尾处。
+" zj 向下移动到达下一个折叠的开始处。关闭的折叠也被计入。
+" zk 向上移动到前一折叠的结束处。关闭的折叠也被计入。
+" zR 打开全部折叠
+" zM 关闭所有折叠
+" zd 删除光标所在的折叠
+" zE 删除所有折叠
+
+"================================ 窗口操作 ===============================
+" " 1. <leader>+空格 切换全屏和小屏
+" "    For GVim on windows.
+" if has("win32") && has("gui_running")
+"     nnoremap <leader><space> :call ToggleFullScreen()<cr>
+" endif
+"
+" let g:make_full_screen = 1
+"     if has("win32") && has("gui_running") && g:make_full_screen == 1
+"     au VimEnter * call FullScreen()
+" endif
+"
+" " 2. Bwin/Swin转换屏幕显示内容（也会改变Gvim窗口大小）
+" " 注意 Bwin 会打开 NERDTree 和 Tagbar
+" command! Bwin call BigWindow()
+" command! Swin call SmallWindow()
+
+" 3. 打开终端
+""根据窗口宽高比自动在垂直/水平窗口打开终端
+""你可以在functions.vim找到该函数并调整参数
+nnoremap <leader>ter :call OpenTerminalSmartly()<cr>
+""在neovim中进入终端时自动进入终端模式(C-\+C+N退出)
+" if has('nvim')
+"     autocmd TermOpen * startinsert
+" endif
+"" Alt+q 返回终端normal模式
+tnoremap <M-q> <C-\><C-n>
+
+""4. Browse files
+nnoremap <silent><leader><CR> :e .<cr>
+
+"================================ 复制粘贴 ===============================
+nnoremap <C-c> "+yW""yW
+vnoremap <C-c> "+ygv""y
+
+"================================ 其他操作 ===============================
+nnoremap <leader>H :vert h<space>
+
+""这个设置会使输入 i 的时候有一定延迟
+" inoremap ii <esc>
+nnoremap Y y$
+
+noremap ; :
+noremap : ;
+
+nnoremap <leader>o mzo<esc>`z
+nnoremap <leader>O mzO<esc>`z
+
+imap <M-BS> <Del>
+
+""使用虚拟替换模式
+" nnoremap R gR
+" nnoremap gR R
+" nnoremap r gr
+" nnoremap gr r
+
+
+"#########################################################################
+"######################\ Status Line and CmdLine /########################
+"#########################################################################
+
+set shortmess="atAF"                   " 简化显示信息, 避免烦人的确认信息，详见 :h shm
+""Always show the status line
+set laststatus=2
+set ruler                           " 在状态栏显示当前所在的文件位置
+
+set cmdheight=1                     " Make command line Two line high
+set showcmd                         " normal模式下在vim命令行右边显示按键
+
+""设置数字栏左侧的 signcolumn 总是显示
+" if has("patch-8.1.1564")
+"   " Recently vim can merge signcolumn and number column into one
+"   set signcolumn=number
+" else
+"   set signcolumn=yes
+" endif
+set signcolumn=yes
+
+"============================= wildmenu 设置 =============================
+set wildmenu                        " 命令模式下，在状态栏中显示vim补全选项
+set wildmode=longest:full,full
+" set wildmode=longest:list,full
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+if has("win16") || has("win32")
+    set wildignore+=.git\*,.hg\*,.svn\*
+else
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+endif
+
+
+"#########################################################################
+"######################\ Vim Configuration Files /########################
+"#########################################################################
+
+"=================== Fast editing of vimrc configs =======================
+nnoremap <leader>e :cd ~/.config/nvim/nvimrcs/<cr>:e<space>
+
+"if has("win16") || has("win32") && has('gui_running')
+"    autocmd! bufwritepost $VIMRUNTIME/.vimrc source $VIMRUNTIME/.vimrc
+"elseif has("linux")
+"    autocmd! bufwritepost ~/.vimrc source ~/.vimrc
+"endif
+
+command! SO source $MYVIMRC
+
+"#########################################################################
+"###############################\ Misc /##################################
+"#########################################################################
+
+" Automatically clean extra spaces
+autocmd BufWritePre *.c,*.cpp,*.h,*.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
+
+" Remove the Windows ^M - when the encodings gets messed up
+noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+" Quickly open a buffer for scribble
+" map <leader>q :e ~/buffer<cr>
+
+" Quickly open a markdown buffer for scribble
+" map <leader>x :e ~/buffer.md<cr>
+
+" Toggle paste mode on and off
+" map <leader>pp :setlocal paste!<cr>
+
+" Use Showhi to show hlgroup
+command! Showhi echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
+
+
+"#########################################################################
+"###############################\ Neovide/ ###############################
+"#########################################################################
+let g:neovide_transparency=0.95

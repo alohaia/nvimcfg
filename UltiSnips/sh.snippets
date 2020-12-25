@@ -1,0 +1,35 @@
+global !p
+linelen = 88
+
+def floor(i):
+    if int(i) == i:
+        return int(i)
+    elif i > 0:
+        return int(i)
+    elif i < 0:
+        return int(i) - 1
+
+def ceil(i):
+    if int(i) == i:
+        return int(i)
+    elif i > 0:
+        return int(i) + 1
+    elif i < 0:
+        return int(i)
+endglobal
+
+snippet line "Comment Using Line" bw
+`!p snip.rv = '#' * floor((linelen - 4 - len(t[1])) / 2)`\ ${1} /`!p snip.rv = '#' * ceil((linelen - 4 - len(t[1])) / 2)`
+$0
+endsnippet
+
+snippet box "Comment Using Box" bw
+`!p snip.rv = '#' * linelen`
+`!p snip.rv = '#' + ' ' * floor((linelen - 6 - len(t[1])) / 2)`\ ${1} /`!p snip.rv = ' ' * ceil((linelen - 6 - len(t[1])) / 2) + '#'`
+`!p snip.rv = '#' * linelen`
+$0
+endsnippet
+
+snippet hi "Highlight" i
+\033[1;${2:color};40m${1:string}\033[0m$0
+endsnippet

@@ -1,7 +1,8 @@
-local settings = require"aloha.settings"
-local functions = require"aloha.functions"
+local settings = aloha.settings
+local utils = aloha.utils
 
-mappings = {}
+aloha.mappings = {}
+local mappings = aloha.mappings
 
 -- abbreviate
 
@@ -9,7 +10,6 @@ mappings = {}
 mappings.default_args = {
     noremap    = true,
     silent     = true,
-    unique     = true
 }
 
 
@@ -29,23 +29,32 @@ mappings.default_args = {
 
 mappings.keymappings = {
     -- mode keys content extra
-    -- {'n', ';', ':', { nowait = true }},
-    -- {'n', ':', ';'},
-    -- {'x', ';', ':', { nowait = true }},
-    -- {'x', ':', ';'},
+    {'n', ';', ':', {silent = false, nowait = true }},
+    {'n', ':', ';'},
+    {'x', ';', ':', {silent = false, nowait = true }},
+    {'x', ':', ';'},
     {'n', 'J', '5j'},
     {'n', 'K', '5k'},
     {'x', 'J', '5j'},
     {'x', 'K', '5k'},
+
     {'n', '<C-h>', '<C-w><C-h>'},
     {'n', '<C-j>', '<C-w><C-j>'},
     {'n', '<C-k>', '<C-w><C-k>'},
     {'n', '<C-l>', '<C-w><C-l>'},
+    {'x', '<C-h>', '<C-w><C-h>'},
+    {'x', '<C-j>', '<C-w><C-j>'},
+    {'x', '<C-k>', '<C-w><C-k>'},
+    {'x', '<C-l>', '<C-w><C-l>'},
 
     {'n', '-', '<Cmd>bp<cr>'},
     {'n', '=', '<Cmd>bn<cr>'},
     {'n', '_', '<Cmd>tabprevious<cr>'},
     {'n', '+', '<Cmd>tabnext<cr>'},
+    {'x', '-', '<Cmd>bp<cr>'},
+    {'x', '=', '<Cmd>bn<cr>'},
+    {'x', '_', '<Cmd>tabprevious<cr>'},
+    {'x', '+', '<Cmd>tabnext<cr>'},
 
     {'i', '<UP>',    '<Nul>'},
     {'i', '<DOWN>',  '<Nul>'},
@@ -60,16 +69,19 @@ mappings.keymappings = {
     {'n', '<leader>o', 'mzo<esc>`z'},
     {'n', '<leader>O', 'mzO<esc>`z'},
 
-    {'n', '<leader>h', "<Cmd>h '<C-r>C-w>'<cr>"},
+    {'n', '<leader>p', ':lua print(vim.o.<C-r><C-w>)<CR>', {silent = false}},
+    {'n', '<leader>b', ':lua print(vim.bo.<C-r><C-w>)<CR>', {silent = false}},
+    {'n', '<leader>w', ':lua print(vim.wo.<C-r><C-w>)<CR>', {silent = false}},
 
-    {'c', '%%', "getcmdtype()==':' ? expand('%:p:h').'/' : '%%'", {expr = true}}
+    {'c', '<M-p>', "getcmdtype()==':' ? expand('%:p:h').'/' : '%%'", {silent = false, expr = true}},
+    -- {'n', '<leader><leader>', ':<C-u>WhichKey ""<Left>', {silent = false}},
 }
 
 function mappings:init()
     vim.g.mapleader = settings.mapleader
+    self.keymappings = utils.merge(self.keymappings, _G.aloha.mapping_addition)
     for _,map in pairs(self.keymappings) do
-        -- eg. vim.api.nvim_set_keymap('n', '<leader><Space>', ':set hlsearch!<CR>', { noremap = true, silent = true })
-        vim.api.nvim_set_keymap(map[1], map[2], map[3], functions.merge(self.default_args, map[4]))
+        vim.api.nvim_set_keymap(map[1], map[2], map[3], utils.merge(self.default_args, map[4]))
     end
 end
 

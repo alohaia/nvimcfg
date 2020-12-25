@@ -1,25 +1,25 @@
 global !p
 def floor(i):
-	if int(i) == i:
-		return i
-	elif i > 0:
-		return int(i)
-	elif i < 0:
-		return int(i) - 1
+    if int(i) == i:
+        return int(i)
+    elif i > 0:
+        return int(i)
+    elif i < 0:
+        return int(i) - 1
 
 def ceil(i):
-	if int(i) == i:
-		return i + 1
-	elif i > 0:
-		return int(i) + 1
-	elif i < 0:
-		return int(i)
+    if int(i) == i:
+        return int(i)
+    elif i > 0:
+        return int(i) + 1
+    elif i < 0:
+        return int(i)
 
 endglobal
 
 snippet func "function" bA
 function ${1:funcname}(${2:paramters})
-	${3}
+    ${3}
 endfunction
 $0
 endsnippet

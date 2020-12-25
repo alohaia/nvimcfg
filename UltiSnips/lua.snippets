@@ -1,27 +1,60 @@
-snippet "comment (.*)" "Comment with description." rb
+global !p
+linelen = 88
+
+def floor(i):
+    if int(i) == i:
+        return int(i)
+    elif i > 0:
+        return int(i)
+    elif i < 0:
+        return int(i) - 1
+
+def ceil(i):
+    if int(i) == i:
+        return int(i)
+    elif i > 0:
+        return int(i) + 1
+    elif i < 0:
+        return int(i)
+endglobal
+
+snippet "cmt (.*)" "Comment with description." rbw
 --[[ ${1:`!p snip.rv = match.group(1)`}
 ${VISUAL}
 ]]$0
 endsnippet
 
+snippet line "Comment Using Line" bw
+`!p snip.rv = '-' * floor((linelen - 4 - len(t[1])) / 2)`\ ${1} /`!p snip.rv = '-' * ceil((linelen - 4 - len(t[1])) / 2)`
+$0
+endsnippet
+
+snippet box "Comment Using Box" bw
+`!p snip.rv = '-' * linelen`
+`!p snip.rv = '--' + ' ' * floor((linelen - 8 - len(t[1])) / 2)`\ ${1} /`!p snip.rv = ' ' * ceil((linelen - 8 - len(t[1])) / 2) + '--'`
+`!p snip.rv = '-' * linelen`
+$0
+endsnippet
+
 snippet func "function" bA
 function ${1:funcname} (${2:paramters})
-	${3}
+    ${3}
 end$0
 endsnippet
 
 snippet for "for loop" bA
 for ${1:condition} do
-	${2}
+    ${2}
 end$0
 endsnippet
 
 snippet if "if" bA
 if ${1:condition} then
-	${2}
+    ${2}
 end$0
 endsnippet
 
-snippet map "mapping" bwA
+snippet map "mapping" bw
 \{'${1:mod}', '${2:keys}', '${3:contents}'\},$0
 endsnippet
+
