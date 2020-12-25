@@ -1,7 +1,7 @@
 "+-----------------------------------------------------------------------+
 "¦ Maintainer:     aloha                                                 ¦
 "¦                                                                       ¦
-"¦ License:        MIT                                                   ¦
+"¦ License:        MIT                                                   ¦              
 "¦                                                                       ¦
 "¦ Sections:                                                             ¦
 "¦                 -> Some Build-in Settings of Vim                      ¦
@@ -29,7 +29,7 @@ if !has('nvim')
     set ttyfast                     " should make scrolling faster(romoved in neovim)
 endif
 set timeout                         " 设置快捷键输入时间限制
-set timeoutlen=200                  " 等待时间(ms)
+set timeoutlen=500                  " 等待时间(ms)
 set lazyredraw                      " Don't redraw while executing macros (good performance config)
 set regexpengine=1                  " use old regexp engine
 set noautochdir                       " 使用 <leader>. 手动切换到当前目录
@@ -93,7 +93,7 @@ set cpoptions+=I                    " 移动光标时不删除自动产生的缩
 set cpoptions-=_                    " 使 cw/cW 包含 word 后的空格
 
 "============================ 用空格取代<tab> ============================
-set expandtab shiftwidth=4 tabstop=4 softtabstop=4
+set expandtab shiftwidth=4 tabstop=4
 set smarttab                        " 一次删除所有用 <Tab> 键产生的空格
 
 "=============================== 临时文件 ================================
@@ -122,7 +122,6 @@ set directory=$HOME/.cache/nvim/swap
 "======================= No annoying sound on errors =====================
 set noerrorbells
 set novisualbell
-set timeoutlen=500
 " Properly disable sound on errors on MacVim
 if has("gui_mac")
     autocmd GUIEnter * set vb t_vb=
@@ -132,8 +131,6 @@ set foldcolumn=0
 
 "============================== 编码和语言 ===============================
 set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
-set termencoding=utf-8
-set encoding=utf-8
 set emoji
 " let $LANG='zh_CN'
 " source $VIMRUNTIME/delmenu.vim

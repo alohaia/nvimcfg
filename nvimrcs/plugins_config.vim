@@ -519,7 +519,7 @@ let g:startify_fortune_use_unicode = 1
 ""左边空白的宽度
 let g:startify_padding_left = 3
 ""指定 session 目录
-let g:startify_session_dir = expand('$HOME/.config/nvim/.cache/startify')
+let g:startify_session_dir = expand('$HOME/.cache/nvim/startify')
 ""在退出Vim或加载新的session前保存当前session
 let g:startify_session_persistence = 0
 ""自动加载session
