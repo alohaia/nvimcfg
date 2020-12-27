@@ -17,8 +17,18 @@ options.g_options = {
     hidden      = true,
     tags        = './tags;,tags,./.tags',
     smarttab    = true,
-    -- wildchar for cmap, <c-i>
-    wildcharm   = 9,
+    -- wildchar for cmap, <c-z>
+    -- set wildcharm = <C-z> | echo &wildcharm
+    wildcharm   = 26,
+    wildmode    = 'longest:full,full',
+    wildignore  = '*.o,*~,*.pyc',
+
+    fileformats = 'unix,dos,mac',
+    ignorecase  = true,
+    smartcase   = true,
+    hlsearch    = true,
+    incsearch   = true,
+    magic       = true,
 
     backup      = true,
     directory   = settings.cache_dirs.swap,
@@ -35,6 +45,12 @@ options.g_options = {
     emoji = true,
 
     equalalways = false,
+
+    switchbuf='useopen,usetab,newtab',
+
+    showtabline=2,
+
+    shortmess="atAF",
 }
 
 options.w_options = {
@@ -51,7 +67,7 @@ options.w_options = {
     signcolumn     = 'yes',
     foldmethod     = 'expr',
     foldexpr       = 'nvim_treesitter#foldexpr()',
-    foldcolumn     = '1',
+    foldcolumn     = '0',
 }
 
 options.b_options = {

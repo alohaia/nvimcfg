@@ -1,86 +1,116 @@
 aloha.plugins.list = {}
 local list = aloha.plugins.list
 
+local config = aloha.plugins.config
+
 list.packages = {
     {'wbthomason/packer.nvim', opt = true},
-    'tpope/vim-surround',
-    {'AndrewRadev/splitjoin.vim'},
-    {'Chiel92/vim-autoformat'},
-    {'KabbAmine/zeavim.vim'},
-    {'RRethy/vim-hexokinase', run = 'make hexokinase' },
-    {'RRethy/vim-illuminate'},
-    {'Shougo/defx.nvim'},
-    {'SirVer/ultisnips'},
-    {'Yggdroot/indentLine', ft = { 'python' }},
-    {'airblade/vim-rooter'},
-    {'brooth/far.vim'},
-    {'chrisbra/NrrwRgn'},
-    {'cohama/agit.vim'},
-    {'dhruvasagar/vim-table-mode', cmd = 'TableModeToggle', ft = { 'text', 'markdown', 'wiki' }},
-    {'dkarter/bullets.vim'},
-    {'dracula/vim', as = 'dracula' },
-    {'easymotion/vim-easymotion'},
-    {'fatih/vim-go', ft = { 'go' }},
-    {'flazz/vim-colorschemes'},
-    {'fszymanski/fzf-gitignore'},
-    {'godlygeek/tabular'},
-    {'guns/xterm-color-table.vim'},
-    {'hotoo/pangu.vim'},
-    {'iamcco/markdown-preview.nvim', ft = { 'markdown', 'pandoc.markdown', 'rmd' }, run = 'sh -c "cd app && yarn install"' },
-    {'itchyny/calendar.vim'},
-    {'jiangmiao/auto-pairs'},
-    {'joshdick/onedark.vim'},
+
+    -- Search and Replace
     {'junegunn/fzf.vim'},
-    {'junegunn/goyo.vim'},
-    {'junegunn/vim-after-object'},
-    {'kevinhwang91/rnvimr'},
+    {'pechorin/any-jump.vim'},
+    {'rhysd/clever-f.vim'},
+    -- taglist
+    {'liuchengxu/vista.vim'},
+
+    -- File Operation
+    {'Shougo/defx.nvim'},
     {'kristijanhusak/defx-git'},
     {'kristijanhusak/defx-icons'},
-    {'lervag/vimtex'},
-    {'liuchengxu/vim-which-key'},
-    {'liuchengxu/vista.vim'},
-    {'luochen1990/rainbow'},
-    {'mbbill/undotree'},
-    {'mg979/vim-visual-multi', options = { rev = 'master' }},
-    {'mhinz/vim-signify'},
+    {'kevinhwang91/rnvimr'},
+
+    -- Git
+    {'tpope/vim-fugitive'},
+    {'cohama/agit.vim'},
     {'mhinz/vim-startify'},
-    {'mzlogin/vim-markdown-toc', ft = { 'markdown', 'wiki' }},
-    {'neoclide/coc.nvim', rev = 'release' },
-    {'octol/vim-cpp-enhanced-highlight', on_ft = { 'c', 'cpp' }},
-    {'pangloss/vim-javascript'},
-    {'pechorin/any-jump.vim'},
-    {'plasticboy/vim-markdown'},
-    {'preservim/nerdcommenter'},
-    {'puremourning/vimspector'},
-    {'rafalbromirski/vim-airlineish'},
-    {'rhysd/clever-f.vim'},
-    {'ron89/thesaurus_query.vim'},
+    {'ron89/thesaurus_query.vim',
+        ft = { 'text', 'markdown', 'wiki' }
+    },
+
+    -- Text Editing
+    {'tpope/vim-abolish'},
+    {'tpope/vim-commentary'},
+    {'preservim/nerdcommenter', disable = true},
+    {'tpope/vim-capslock'},
+    {'tpope/vim-endwise'},
+    {'tpope/vim-repeat'},
+    {'tpope/vim-surround'},
+    {'easymotion/vim-easymotion'},
+    {'svermeulen/vim-yoink'},
+    {'jiangmiao/auto-pairs', config = config.auto_pairs},
+    {'junegunn/vim-after-object'},
+    {'chrisbra/NrrwRgn'},
+    {'svermeulen/vim-subversive'},
+
+    -- Visual Improvements
+    {'RRethy/vim-hexokinase', run = 'make hexokinase' },
+    {'vim-airline/vim-airline'},
+    {'Yggdroot/indentLine', ft = { 'python' }},
+    {'RRethy/vim-illuminate'},
+    {'joshdick/onedark.vim'},
+    {'luochen1990/rainbow'},
     {'ryanoasis/vim-devicons'},
-    {'sheerun/vim-polyglot'},
+
+    -- Syntax and Highlighting
+    {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'},
+    {'beyondmarc/opengl.vim', ft = { 'c', 'cpp' }},
+    {'tikhomirov/vim-glsl', ft = 'glsl'},
+
+    -- Linting and Grammar Checking
+    {'neoclide/coc.nvim'},
+
+    -- Note Taking
+    {'vimwiki/vimwiki'},
+    {'dhruvasagar/vim-table-mode', ft = { 'text', 'markdown', 'wiki' }},
+    {'dkarter/bullets.vim', ft = { 'text', 'markdown', 'wiki' }},
+
+    -- Useful Functionalities
+    {'voldikss/vim-floaterm'},
+    {'t9md/vim-choosewin'},
+    -- Tasks
     {'skywind3000/asyncrun.vim'},
     {'skywind3000/asynctasks.vim'},
-    {'svermeulen/vim-subversive'},
-    {'svermeulen/vim-yoink'},
-    {'t9md/vim-choosewin'},
-    {'tikhomirov/vim-glsl'},
-    {'tpope/vim-abolish'},
-    {'tpope/vim-capslock'},
-    {'tpope/vim-commentary'},
-    {'tpope/vim-endwise'},
-    {'tpope/vim-fugitive'},
-    {'tpope/vim-repeat'},
-    {'vim-airline/vim-airline'},
-    {'vim-airline/vim-airline-themes'},
-    {'vimwiki/vimwiki'},
-    {'voldikss/vim-floaterm'},
+    -- Helper
+    {'liuchengxu/vim-which-key', cmd = {'WhichKey', 'WhichKeyVisual'}},
     {'voldikss/vim-translator'},
-    {'alohaia/md-img-paste.vim'},
-    {'arcticicestudio/nord-vim'},
-    {'beyondmarc/opengl.vim'},
-    -- {'wincent/terminus'},
-    {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
-}
+    {'KabbAmine/zeavim.vim'},
+    -- Snippet
+    {'SirVer/ultisnips'},
+    -- Beyond of Programming
+    {'iamcco/markdown-preview.nvim',
+        ft = { 'text', 'markdown', 'wiki' },
+        run = 'sh -c "cd app && yarn install"' },
+    {'mzlogin/vim-markdown-toc', ft = { 'markdown', 'wiki' }},
+    {'lervag/vimtex'},
+    -- Multi cursor
+    {'mg979/vim-visual-multi', config = config.visual_nulti},
+    -- Undotree
+    {'mbbill/undotree'},
 
+    -- Disabled Plugins ( Need :PackerCompile to make this work )
+    {'airblade/vim-rooter', disable = true},
+    {'wincent/terminus', disable = true},
+    {'puremourning/vimspector', disable = true, ft = { 'c', 'cpp', 'python', 'rust', 'ruby', 'go' }},
+    {'vim-airline/vim-airline-themes', disable = true},
+    {'fatih/vim-go', disable = true, ft = { 'go' }},
+    {'pangloss/vim-javascript', disable = true},
+    {'octol/vim-cpp-enhanced-highlight', disable = true, ft = { 'c', 'cpp' }},
+    {'plasticboy/vim-markdown', disable = true, ft = { 'markdown', 'wiki' }},
+    {'alohaia/md-img-paste.vim', disable = true, ft = { 'markdown', 'wiki' }},
+    {'arcticicestudio/nord-vim', disable = true},
+    {'godlygeek/tabular', disable = true},
+    {'hotoo/pangu.vim', disable = true},
+    {'guns/xterm-color-table.vim', disable = true},
+    {'itchyny/calendar.vim', disable = true},
+    {'junegunn/goyo.vim', disable = true, ft = { 'text', 'markdown', 'wiki' }},
+    {'Chiel92/vim-autoformat', disable = true},
+    {'AndrewRadev/splitjoin.vim', disable = true},
+    {'dracula/vim', disable = true, as = 'dracula' },
+    {'flazz/vim-colorschemes', disable = true},
+    {'fszymanski/fzf-gitignore', disable = true},
+    {'rafalbromirski/vim-airlineish', disable = true},
+    {'sheerun/vim-polyglot', disable = true},
+}
 
 --{{ Plugin List
 function list:init()

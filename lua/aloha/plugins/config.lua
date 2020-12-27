@@ -1,6 +1,8 @@
 ----------------------------------------------------------------------------------------
 --                         \ Settings and Global Variables /                          --
 ----------------------------------------------------------------------------------------
+aloha.plugins.config = {}
+local config = aloha.plugins.config
 
 -------------------------------\ Require and Abbreviate /-------------------------------
 local g          = vim.g
@@ -23,7 +25,7 @@ g.startify_session_persistence = 0
 g.startify_session_autoload    = 1
 g.startify_skiplist            = {
     [[\.git]],
-}
+}           
 g.startify_files_number = 10
 g.startify_bookmarks = {
     '~/.config/nvim/plugins/vimspector/docs/schema/vimspector.schema.json',
@@ -160,6 +162,10 @@ g.vista_close_on_jump                = 1
 g.vista_stay_on_open                 = 1
 g.vista_blink                        = {0, 0}
 g.vista_top_level_blink              = {0, 0}
+-- g['vista#renderer#icons'] = {
+--     function = "",
+--     variable = "",
+-- }
 
 ------------------------------------\ vim-devicons /------------------------------------
 g.webdevicons_enable                 = 1
@@ -185,5 +191,114 @@ require'nvim-treesitter.configs'.setup {
         enable = true,
     }
 }
+
+---------------------------------------\ yoink /----------------------------------------
+g.yoinkMaxItems = 40
+-- :wshada :rshada
+g.yoinkSavePersistently = 1
+g.yoinkSwapClampAtEnds  = 0
+add_maps(
+    {'n', '<c-n>', '<plug>(YoinkPostPasteSwapBack)',          { silent = false, noremap = false }},
+    {'n', '<c-p>', '<plug>(YoinkPostPasteSwapForward)',       { silent = false, noremap = false }},
+    {'n', 'p',     '<plug>(YoinkPaste_p)',                    { silent = false, noremap = false }},
+    {'n', 'P',     '<plug>(YoinkPaste_P)',                    { silent = false, noremap = false }},
+    {'n', '[y',    '<plug>(YoinkRotateBack)',                 { silent = false, noremap = false }},
+    {'n', ']y',    '<plug>(YoinkRotateForward)',              { silent = false, noremap = false }},
+    {'n', 'y',     '<plug>(YoinkYankPreserveCursorPosition)', { silent = false, noremap = false }},
+    {'x', 'y',     '<plug>(YoinkYankPreserveCursorPosition)', { silent = false, noremap = false }})
+
+-----------------------------------\ vim-easymotiom /-----------------------------------
+g.EasyMotion_do_mapping = 0
+g.EasyMotion_do_shade = 1
+g.EasyMotion_smartcase = 1
+add_maps(
+    {'n', [[\']], ' <Plug>(easymotion-prefix)',       { noremap = false }},
+    {'n', [[\.]], ' <Plug>(easymotion-repeat)',       { noremap = false }},
+    {'n', [[\f]], ' <Plug>(easymotion-f)',            { noremap = false }},
+    {'n', [[\F]], ' <Plug>(easymotion-F)',            { noremap = false }},
+    {'n', [[\t]], ' <Plug>(easymotion-t)',            { noremap = false }},
+    {'n', [[\T]], ' <Plug>(easymotion-T)',            { noremap = false }},
+    {'n', [[\w]], ' <Plug>(easymotion-w)',            { noremap = false }},
+    {'n', [[\W]], ' <Plug>(easymotion-W)',            { noremap = false }},
+    {'n', [[\b]], ' <Plug>(easymotion-b)',            { noremap = false }},
+    {'n', [[\B]], ' <Plug>(easymotion-B)',            { noremap = false }},
+    {'n', [[\e]], ' <Plug>(easymotion-e)',            { noremap = false }},
+    {'n', [[\E]], ' <Plug>(easymotion-E)',            { noremap = false }},
+    {'n', [[\g]], ' <Plug>(easymotion-ge)',           { noremap = false }},
+    {'n', [[\g]], ' <Plug>(easymotion-gE)',           { noremap = false }},
+    {'n', [[\j]], ' <Plug>(easymotion-j)',            { noremap = false }},
+    {'n', [[\k]], ' <Plug>(easymotion-k)',            { noremap = false }},
+    {'n', [[\n]], ' <Plug>(easymotion-n)',            { noremap = false }},
+    {'n', [[\N]], ' <Plug>(easymotion-N)',            { noremap = false }},
+    {'n', [[\s]], ' <Plug>(easymotion-s)',            { noremap = false }},
+    {'n', [[\2s]], '<Plug>(easymotion-s2)',           { noremap = false }},
+    {'n', [[\2f]], '<Plug>(easymotion-f2)',           { noremap = false }},
+    {'n', [[\2F]], '<Plug>(easymotion-F2)',           { noremap = false }},
+    {'n', [[\2t]], '<Plug>(easymotion-t2)',           { noremap = false }},
+    {'n', [[\2T]], '<Plug>(easymotion-T2)',           { noremap = false }},
+    {'n', [[\ns]], '<Plug>(easymotion-sn)',           { noremap = false }},
+    {'n', [[\nf]], '<Plug>(easymotion-fn)',           { noremap = false }},
+    {'n', [[\nF]], '<Plug>(easymotion-Fn)',           { noremap = false }},
+    {'n', [[\nt]], '<Plug>(easymotion-tn)',           { noremap = false }},
+    {'n', [[\nT]], '<Plug>(easymotion-Tn)',           { noremap = false }},
+    {'n', [[\wf]], '<Plug>(easymotion-overwin-f)',    { noremap = false }},
+    {'n', [[\wF]], '<Plug>(easymotion-overwin-f2)',   { noremap = false }},
+    {'n', [[\wl]], '<Plug>(easymotion-overwin-line)', { noremap = false }},
+    {'n', [[\ww]], '<Plug>(easymotion-overwin-w)',    { noremap = false }})
+
+-----------------------------------\ vim-subversive /-----------------------------------
+function config.vim_subversive()
+    g.subversiveCurrentTextRegister = 1
+    add_maps(
+        {'n', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false }},
+        {'x', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false }},
+        {'x', 'p',                  '<plug>(SubversiveSubstitute)',                 { noremap = false }},
+        {'x', 'P',                  '<plug>(SubversiveSubstitute)',                 { noremap = false }},
+        {'n', 'ss',                 '<plug>(SubversiveSubstituteLine)',             { noremap = false }},
+        {'n', 'S',                  '<plug>(SubversiveSubstituteToEndOfLine)',      { noremap = false }},
+        {'n', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false }},
+        {'x', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false }},
+        {'n', '<leader>ss',         '<plug>(SubversiveSubstituteWordRange)',        { noremap = false }},
+        {'n', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false }},
+        {'x', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false }},
+        {'n', '<leader>crr',        '<plug>(SubversiveSubstituteWordRangeConfirm)', { noremap = false }},
+        {'n', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false }},
+        {'x', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false }},
+        {'n', '<leader><leader>ss', '<plug>(SubversiveSubvertWordRange)',           { noremap = false }})
+end
+
+------------------------------------\ clever-f.vim /------------------------------------
+function config.clevar_f()
+    g.clever_f_smart_case              = 1
+    g.clever_f_use_migemo              = 1
+    g.clever_f_fix_key_direction       = 1
+    g.clever_f_chars_match_any_signs   = ''
+    g.clever_f_repeat_last_char_inputs = { [[\<CR>]], [[\<Tab>]] }
+    g.clever_f_mark_direct             = 1
+    g.clever_f_mark_direct_color       = "CleverFDefaultLabel"
+end
+
+----------------------------------\ vim-visual-multi /----------------------------------
+function config.visual_multi()
+    g.VM_leader = { default = ',', visual = ',', buffer = ',' }
+    g.VM_default_mappings = 0
+end
+
+------------------------------------\ vim-surround /------------------------------------
+-- g.surround_{char2nr("d")} = "<div\1id: \r1.*\r id=\"&\"\1>\r</div>"
+-- g.surround_insert_tail = "<++>"
+
+-------------------------------------\ auto-pairs /-------------------------------------
+function config.auto_pairs()
+    print('[Config]autopairs')
+    g.AutoPairsShortcutToggle   = 'M-o'
+    g.AutoPairsShortcutFastWrap = '<M-e>'
+    g.AutoPairsShortcutJump     = ''
+    g.AutoPairsMapBs            = 1
+    g.AutoPairsMapCh            = 0
+    g.AutoPairsMapSpace         = 1
+    g.AutoPairsMapCR            = 1
+end
+
 
 return true
