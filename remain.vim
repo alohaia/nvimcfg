@@ -763,6 +763,7 @@ let g:mdip_imgdir = '%:p:t:r'
 let g:mdip_imgdir_prefix = ''
 let g:mdip_imgdir_postfix = '.asserts'
 "===============================\ vimtex /================================
+au FileType tex command! FzfTex call vimtex#fzf#run('ctli', g:fzf_layout)
 let g:tex_flavor = 'latex'
 let g:vimtex_view_method = 'zathura'
 let g:vimtex_quickfix_mode = 0
@@ -770,7 +771,6 @@ let g:vimtex_complete_close_braces = 1
 let g:vimtex_cache_root = expand('~/.config/nvim/.cache/vimtex')
 let g:vimtex_mappings_enabled = 1
 let g:tex_conceal='abdmg'
-au FileType tex command! FzfTex call vimtex#fzf#run('ctli', g:fzf_layout)
 let g:vimtex_compiler_method = 'latexmk'
 let g:vimtex_compiler_latexmk = {
             \ 'build_dir' : '',
@@ -801,33 +801,11 @@ let g:vimtex_compiler_latexrun_engines = {
             \ 'lualatex'         : 'lualatex',
             \ 'xelatex'          : 'xelatex',
             \}
-"=============================\ pangu.vim /===============================
-autocmd BufWritePre *.markdown,*.md,*.text,*.txt,*.wiki,*.cnx call PanGuSpacing()
-"#########################################################################
-"#########################\ Terminal Impvovement /########################
-"#########################################################################
-"============================\ vim-floaterm /=============================
-let g:floaterm_keymap_toggle = '<F1>'
-let g:floaterm_keymap_prev   = '<F2>'
-let g:floaterm_keymap_next   = '<F3>'
-let g:floaterm_keymap_new    = '<F4>'
-let g:floaterm_gitcommit='floaterm'
-let g:floaterm_autoinsert=1
-let g:floaterm_width=0.8
-let g:floaterm_height=0.8
-let g:floaterm_wintitle=1
-let g:floaterm_autoclose=1
 autocmd User Startified setlocal buflisted
 "#########################################################################
 "#############################\ Git Related /#############################
 "#########################################################################
-let g:agit_no_default_mappings = 1
 "============================\ vim-signify /==============================
-set updatetime=100
-let g:signify_sign_add               = '▐'
-let g:signify_sign_delete_first_line = '▔'
-let g:signify_sign_delete            = '▎'
-let g:signify_sign_change            = '░'
 highlight SignifySignAdd    ctermfg=green  guifg=#A6DB29
 highlight SignifySignDelete ctermfg=red    guifg=#ff0000
 highlight SignifySignChange ctermfg=yellow guifg=#ffff00
@@ -836,12 +814,6 @@ highlight SignifySignChange ctermfg=yellow guifg=#ffff00
 "#########################################################################
 "=============================\ zeavim.vim /==============================
 "=============================\ indentline /==============================
-let g:indent_guides_guide_size = 1
-let g:indent_guides_start_level = 2
-let g:indentLine_setColors = 1
-let g:indentLine_color_term = 239
-let g:indentLine_char = '┆'
-let g:indentLine_fileType = ['python']
 "===============================\ rainbow /===============================
 let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 let g:rainbow_conf = {
@@ -874,103 +846,15 @@ let g:rainbow_conf = {
             \        'nerdtree': 0,
             \    }
             \}
-"===========================\ vim-autoformat /============================
-nnoremap \\f :Autoformat<CR>
-let g:formatdef_custom_js = '"js-beautify -t"'
-let g:formatters_javascript = ['custom_js']
-au BufWrite *.js :Autoformat
-"==============================\ goyo.vim /===============================
-command! Zen Goyo 85%x85%
-"========================\ thesaurus_query.vim /==========================
-let g:tq_map_keys = 0
-noremap  <Leader>cw :ThesaurusQueryReplaceCurrentWord <CR>
-let g:tq_openoffice_en_file="~/.config/nvim/thesaurus/th_en_US_new"
-let g:tq_mthesaur_file="~/.config/nvim/thesaurus/mthesaur.txt"
-let g:tq_cilin_txt_file="~/.config/nvim/thesaurus/cilin.txt"
-"========================\ thesaurus_query.vim /==========================
-let g:Hexokinase_highlighters = [ 'backgroundfull' ]
-let g:Hexokinase_refreshEvents = ['BufWrite', 'BufRead', 'InsertLeave']
-let g:Hexokinase_termDisabled = 1
 "==============================\ suda.vim /===============================
-"============================\ calendar.vim /=============================
-noremap <silent> \\c :Calendar -task -view=days -cyclic_view -position=here<CR>
-let g:calendar_skip_task_delete_confirm = 1
-let g:calendar_skip_event_delete_confirm = 1
-let g:scalendar_kip_task_clear_completed_confirm = 1
-let g:calendar_task_delete = 1
-let g:calendar_cache_directory = '~/.config/nvim/.cache/calendar.vim/'
-command! HCalendar echo
-            \"EVENT: dd-mm-yyyy HH:MM - dd-mm-yyyy HH:MM [event-title] (little endian, \"-\" separator)\n".
-            \"EVENT: 23-10-2014 10:00 - 25-10-2014 21:00 [event-title] (little endian, \"-\" separator)\n".
-            \"TASK: yyyy-mm-dd [task-title] note: [task-note]\n".
-            \"TASK: 2014-10-23 [task-title] note: [task-note]"
 "===========================\ vim-translator /============================
-nnoremap <silent> <leader>t :TranslateW<cr>
-vnoremap <silent> <leader>t :Translate<cr>
-noremap <silent> <leader>r :TranslateR<cr>
-let g:translator_history_enable = 1
-let g:translator_window_type = 'popup'
-let g:translator_window_max_width = 0.6*&columns
 "=============================\ vimwiki /=================================
-let g:vimwiki_list = []
-let g:vimwiki_conceal_pre = 1
-let g:vimwiki_use_calendar = 1
-call add(g:vimwiki_list, {
-            \'path': '~/Shared/vimwiki/',
-            \'diary_index': 'diary',
-            \'diary_header': 'Diary',
-            \'diary_rel_path': 'diary/',
-            \'syntax': 'markdown',
-            \'ext': '.md',
-            \'links_space_char': '_',
-            \'makhi': 1,
-            \'auto_tags': 1,
-            \'auto_diary_index': 0,
-            \'auto_generate_links': 1,
-            \'auto_generate_tags': 1,
-            \'exclude_files': ['**/README.md'],
-            \})
-call add(g:vimwiki_list, {
-            \'path': '~/vimwiki_origin/',
-            \'path_html': '~/vimwiki_origin/export/',
-            \'syntax': 'default',
-            \'ext': '.wiki',
-            \'links_space_char': '_',
-            \'auto_toc': 1,
-            \'auto_tags': 1,
-            \'auto_diary_index': 0,
-            \'auto_generate_links': 1,
-            \'auto_generate_tags': 1,
-            \'exclude_files': ['**/README.md'],
-            \})
 let g:vimwiki_diary_months = {
       \ 1: '一月 January', 2: '二月 February', 3: '三月 March',
       \ 4: '四月 April', 5: '五月 May', 6: '六月 June',
       \ 7: '七月 July', 8: '八月 August', 9: '九月 September',
       \ 10: '十月 October', 11: '十一月 November', 12: '十二月December'
       \ }
-let g:vimwiki_hl_headers = 1
-let g:vimwiki_hl_cb_checked = 2
-let g:vimwiki_folding = 'expr'
-let g:vimwiki_markdown_link_ext = 1  "将 g:vimwiki_list 中的 ext 添加到 "Link" 的末尾
-let g:vimwiki_table_reduce_last_col = 0
-let g:vimwiki_dir_link = 'main'
-let g:vimwiki_toc_header = 'Table of Contents'
-let g:vimwiki_toc_header_level = 2
-let g:vimwiki_html_header_numbering = 2
-let g:vimwiki_links_header = 'Generated Links'
-let g:vimwiki_links_header_level = 2
-let g:vimwiki_tags_header = 'Generated Tags'
-let g:vimwiki_tags_header_level = 2
-let g:vimwiki_auto_header = 1
-let g:vimwiki_markdown_header_style = 1
-let g:vimwiki_table_auto_fmt = 1
-let g:vimwiki_key_mappings = {
-            \'table_format': 1,
-            \'table_mappings': 1,
-            \}
-let g:vimwiki_url_maxsave = 0
-let g:vimwiki_global_ext = 1
 let g:vimwiki_ext2syntax = {
             \'.md': 'markdown', '.mkdn': 'markdown',
             \'.mdwn': 'markdown', '.mdown': 'markdown',

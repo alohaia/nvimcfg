@@ -193,8 +193,6 @@ end
 
 -- Pre-load configuration
 -- Post-load configuration
--- Config for: auto-pairs
-loadstring("\27LJ\2\n—\2\0\0\3\1\f\0\0256\0\0\0'\2\1\0B\0\2\1-\0\0\0'\1\3\0=\1\2\0-\0\0\0'\1\5\0=\1\4\0-\0\0\0'\1\a\0=\1\6\0-\0\0\0)\1\1\0=\1\b\0-\0\0\0)\1\0\0=\1\t\0-\0\0\0)\1\1\0=\1\n\0-\0\0\0)\1\1\0=\1\v\0K\0\1\0\1À\19AutoPairsMapCR\22AutoPairsMapSpace\19AutoPairsMapCh\19AutoPairsMapBs\5\26AutoPairsShortcutJump\n<M-e>\30AutoPairsShortcutFastWrap\bM-o\28AutoPairsShortcutToggle\22[Config]autopairs\nprint\0")()
 -- Conditional loads
 -- Load plugins in order defined by `after`
 END
@@ -205,20 +203,20 @@ endfunction
 
 
 " Command lazy-loads
-command! -nargs=* -range -bang -complete=file WhichKey call s:load(['vim-which-key'], { "cmd": "WhichKey", "l1": <line1>, "l2": <line2>, "bang": <q-bang>, "args": <q-args> })
 command! -nargs=* -range -bang -complete=file WhichKeyVisual call s:load(['vim-which-key'], { "cmd": "WhichKeyVisual", "l1": <line1>, "l2": <line2>, "bang": <q-bang>, "args": <q-args> })
+command! -nargs=* -range -bang -complete=file WhichKey call s:load(['vim-which-key'], { "cmd": "WhichKey", "l1": <line1>, "l2": <line2>, "bang": <q-bang>, "args": <q-args> })
 
 " Keymap lazy-loads
 
 augroup packer_load_aucmds
   au!
   " Filetype lazy-loads
-  au FileType python ++once call s:load(['indentLine'], { "ft": "python" })
-  au FileType cpp ++once call s:load(['opengl.vim'], { "ft": "cpp" })
-  au FileType text ++once call s:load(['markdown-preview.nvim', 'vim-table-mode', 'thesaurus_query.vim', 'bullets.vim'], { "ft": "text" })
-  au FileType wiki ++once call s:load(['markdown-preview.nvim', 'vim-markdown-toc', 'vim-table-mode', 'thesaurus_query.vim', 'bullets.vim'], { "ft": "wiki" })
-  au FileType markdown ++once call s:load(['markdown-preview.nvim', 'vim-markdown-toc', 'vim-table-mode', 'thesaurus_query.vim', 'bullets.vim'], { "ft": "markdown" })
-  au FileType glsl ++once call s:load(['vim-glsl'], { "ft": "glsl" })
   au FileType c ++once call s:load(['opengl.vim'], { "ft": "c" })
+  au FileType markdown ++once call s:load(['vim-table-mode', 'bullets.vim', 'vim-markdown-toc', 'thesaurus_query.vim', 'markdown-preview.nvim'], { "ft": "markdown" })
+  au FileType cpp ++once call s:load(['opengl.vim'], { "ft": "cpp" })
+  au FileType glsl ++once call s:load(['vim-glsl'], { "ft": "glsl" })
+  au FileType text ++once call s:load(['vim-table-mode', 'bullets.vim', 'thesaurus_query.vim', 'markdown-preview.nvim'], { "ft": "text" })
+  au FileType python ++once call s:load(['indentLine'], { "ft": "python" })
+  au FileType wiki ++once call s:load(['vim-table-mode', 'bullets.vim', 'vim-markdown-toc', 'thesaurus_query.vim', 'markdown-preview.nvim'], { "ft": "wiki" })
   " Event lazy-loads
 augroup END
