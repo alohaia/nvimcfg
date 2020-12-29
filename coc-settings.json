@@ -243,13 +243,16 @@
                 }
             }
         },
-        //proxychains -q yay -S lua-emmy-language-server-bin
         //"lua": {
         //    "command": "java",
         //    "args": ["-cp", "/usr/lib/lua-emmy-language-server/EmmyLua-LS-all.jar", "com.tang.vscode.MainKt"],
         //    "filetypes": ["lua"],
         //    "rootPatterns": [".git/"]
         //},
+        "lua": {
+            "command": "lua-lsp",
+            "filetypes": ["lua"]
+        },
         "golang": {
             "command": "gopls",
             "rootPatterns": ["go.mod"],

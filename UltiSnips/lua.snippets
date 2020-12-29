@@ -29,16 +29,23 @@ snippet line "Comment Using Line" bw
 $0
 endsnippet
 
-snippet box "Comment Using Box" bw
+snippet Box "Comment Using Big Box" bw
 `!p snip.rv = '-' * linelen`
 `!p snip.rv = '--' + ' ' * floor((linelen - 8 - len(t[1])) / 2)`\ ${1} /`!p snip.rv = ' ' * ceil((linelen - 8 - len(t[1])) / 2) + '--'`
 `!p snip.rv = '-' * linelen`
 $0
 endsnippet
 
+snippet box "Comment Using Small Box" bw
+`!p snip.rv = '--' + '-'  * (len(t[1]) + 2) + '--'`
+-- $1 --
+`!p snip.rv = '--' + '-' * (len(t[1]) + 2) + '--'`
+$0
+endsnippet
+
 snippet func "function" b
-function ${1:funcname}(${2:paramters})
-    ${3}
+function ${1}(${2})
+    ${3:${VISUAL}}
 end$0
 endsnippet
 

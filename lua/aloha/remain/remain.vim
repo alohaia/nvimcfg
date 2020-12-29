@@ -468,7 +468,6 @@ let g:far#mapping = {
 let g:coc_global_extensions = [
             \ 'coc-diagnostic',
             \ 'coc-tabnine',
-            \ 'coc-pyright',
             \ 'coc-sh',
             \ 'coc-css',
             \ 'coc-html',

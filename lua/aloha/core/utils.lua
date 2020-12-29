@@ -1,11 +1,13 @@
 ----------------------------------------------------------------------------------------
 --                           \ Provide Some Tools for Lua /                           --
 ----------------------------------------------------------------------------------------
-_G.aloha.utils.tools = {}
-local tools = _G.aloha.utils.tools = {}
+_G.aloha.utils = {}
+local utils = _G.aloha.utils
+
+local global = aloha.global
 
 -------------------------\ merge without change original tabs /-------------------------
-function tools.merge(...)
+function utils.merge(...)
     local tabs = {...}
     if not tabs then
         return {}
@@ -26,29 +28,29 @@ function tools.merge(...)
 end
 
 ------------------------------------\ len of table /------------------------------------
-function tools.len(t)
-  local leng=0
-  for k, v in pairs(t) do
-    leng=leng+1
-  end
-  return leng;
-end
+-- see :h vim.tbl_count
+-- function utils.len(t)
+--   local leng=0
+--   for k, v in pairs(t) do
+--     leng=leng+1
+--   end
+--   return leng;
+-- end
+utils.len = vim.tbl_count
 
 ---------------------------------------\ mkdir /----------------------------------------
--- function tools.mkdir(dir)
---     if aloha.settings.os_name == 'Darwin' or aloha.settings.os_name == 'Linux' then
+utils.mkdir = vim.fn.mkdir
+-- function utils.mkdir(dir)
+--     if global.os_name == 'Darwin' or global.os_name == 'Linux' then
 --         os.execute('mkdir -p '..dir)
---     elseif aloha.settings.os_name == "Windows" then
+--     elseif global.os_name == "Windows" then
 --         os.execute('mkdir '..dir)
 --     end
 -- end
-function tools.mkdir(dir)
-    os.execute('mkdir -p '..dir)
-end
 
 -------------------------------------\ join paths /-------------------------------------
-function tools.join_paths(path1, path2, ...)
-    local path_sep = aloha.global.os_name == 'Windows' and '\\' or '/'
+function utils.join_paths(path1, path2, ...)
+    local path_sep = global.os_name == 'Windows' and '\\' or '/'
     local joined = path1 .. path_sep .. path2
     for _,path in ipairs({...}) do
         joined = joined .. path_sep .. path
@@ -56,19 +58,4 @@ function tools.join_paths(path1, path2, ...)
     return joined
 end
 
--------------------\ add mappings at any time bofore initialization /-------------------
-_G.aloha.mapping_addition = {}
--- Must be called before 
--- eg. Use in lua/aloha/plugins/config.lua for plugin mappings
--- @map_list: {{'x', ';', ':', {silent = false, nowait = true }}, ...},
-function tools.add_maps(...)
-    _G.aloha.mapping_addition = tools.merge(_G.aloha.mapping_addition, {...})
-end
--- Must be called before 
--- eg. Use in lua/aloha/plugins/config.lua for plugin mappings
--- @map: {'x', ';', ':', {silent = false, nowait = true }},
-function tools.add_map(...)
-    table.insert(_G.aloha.mapping_addition, {...})
-end
-
-return _G.aloha.utils.tools
+return _G.aloha.utils
