@@ -18,6 +18,8 @@ _G.aloha.plugin.list = {
     {'junegunn/fzf.vim'},
     {'pechorin/any-jump.vim'},
     {'rhysd/clever-f.vim'},
+    {'brooth/far.vim'},
+
     -- taglist
     {'liuchengxu/vista.vim'},
 
