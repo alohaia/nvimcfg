@@ -76,7 +76,7 @@ option.b_options = {
     -- see :h tabstop
     -- tabstop = 8, softtabstop = 4, shiftwidth = 4, expandtab = false,
     -- tabstop = 4, shiftwidth = 4, -- plus a modeline
-    expandtab,
+    expandtab =true,
     tabstop = 4,
     shiftwidth = 4,
     -- 1.

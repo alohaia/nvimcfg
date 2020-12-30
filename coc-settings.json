@@ -243,15 +243,12 @@
                 }
             }
         },
-        //"lua": {
-        //    "command": "java",
-        //    "args": ["-cp", "/usr/lib/lua-emmy-language-server/EmmyLua-LS-all.jar", "com.tang.vscode.MainKt"],
-        //    "filetypes": ["lua"],
-        //    "rootPatterns": [".git/"]
-        //},
+		//proxychains -q yay -S lua-emmy-language-server-bin
         "lua": {
-            "command": "lua-lsp",
-            "filetypes": ["lua"]
+            "command": "java",
+            "args": ["-cp", "/usr/lib/lua-emmy-language-server/EmmyLua-LS-all.jar", "com.tang.vscode.MainKt"],
+            "filetypes": ["lua"],
+            "rootPatterns": [".git/"]
         },
         "golang": {
             "command": "gopls",

@@ -29,13 +29,12 @@ function aloha:init()
     -- self.utils:init()
     -- test and debug functionalities
     -- self.test:init()
-    -- base to config
+    -- add and config plugins
+    self.plugin:init()
     self.prepare:init()
     -- vim internal configs
     self.wim:init()
-	vim.cmd('source '..aloha.global.paths.config..'/lua/aloha/remain/remain.vim')
-    -- add and config plugins
-    self.plugin:init()
+    vim.cmd('source '..aloha.global.paths.config..'/lua/aloha/remain/remain.vim')
 
     -------------------
     -- user addition --

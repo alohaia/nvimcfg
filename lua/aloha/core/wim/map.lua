@@ -26,7 +26,6 @@ end
 function map:init()
     vim.g.mapleader = map.leader
     for _,map in pairs(self.list) do
-        -- print(map[2])
         vim.api.nvim_set_keymap(map[1], map[2], map[3], aloha.utils.merge(self.default_args, map[4]))
     end
 end

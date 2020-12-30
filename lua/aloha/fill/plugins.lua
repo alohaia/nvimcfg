@@ -16,19 +16,19 @@ _G.aloha.plugin.list = {
     -- },
     -- Search and Replace
     {'junegunn/fzf.vim'},
-    -- {'pechorin/any-jump.vim'},
+    {'pechorin/any-jump.vim'},
     {'rhysd/clever-f.vim'},
     -- taglist
-    -- {'liuchengxu/vista.vim'},
+    {'liuchengxu/vista.vim'},
 
     -- File Operation
     {'Shougo/defx.nvim'},
     {'kristijanhusak/defx-git'},
     {'kristijanhusak/defx-icons'},
-    -- {'kevinhwang91/rnvimr'},
+    {'kevinhwang91/rnvimr'},
 
     -- Git
-    -- {'tpope/vim-fugitive'},
+    {'tpope/vim-fugitive'},
     {'cohama/agit.vim'},
     {'mhinz/vim-startify'},
     {'ron89/thesaurus_query.vim',
@@ -45,26 +45,27 @@ _G.aloha.plugin.list = {
     {'easymotion/vim-easymotion'},
     {'svermeulen/vim-yoink'},
     {'jiangmiao/auto-pairs'},
-    -- {'junegunn/vim-after-object'},
+    {'junegunn/vim-after-object'},
     -- {'chrisbra/NrrwRgn'},
-    -- {'svermeulen/vim-subversive'},
+    {'svermeulen/vim-subversive'},
 
     -- Visual Improvements
     {'RRethy/vim-hexokinase', run = 'make hexokinase' },
-    -- {'vim-airline/vim-airline'},
+    {'vim-airline/vim-airline'},
     {'Yggdroot/indentLine', ft = { 'python' }},
-    -- {'RRethy/vim-illuminate'},
+    {'RRethy/vim-illuminate'},
     {'joshdick/onedark.vim'},
     {'luochen1990/rainbow'},
-    {'kyazdani42/nvim-web-devicons'},
-    -- {'ryanoasis/vim-devicons'},
+
+    {'kyazdani42/nvim-web-devicons'},   -- need to add manually
+    {'ryanoasis/vim-devicons'},
 
     -- Syntax and Highlighting
     {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'},
     {'beyondmarc/opengl.vim', ft = { 'c', 'cpp' }},
     {'tikhomirov/vim-glsl', ft = 'glsl'},
 
-    -- -- Linting and Grammar Checking
+    -- Linting and Grammar Checking
     {'neoclide/coc.nvim'},
 
     -- Note Taking
@@ -85,11 +86,11 @@ _G.aloha.plugin.list = {
     {'voldikss/vim-translator'},
     {'KabbAmine/zeavim.vim'},
     -- Beyond of Programming
-    -- {'iamcco/markdown-preview.nvim',
-    --     ft = { 'text', 'markdown', 'wiki' },
-    --     run = 'sh -c "cd app && yarn install"' },
-    -- {'mzlogin/vim-markdown-toc', ft = { 'markdown', 'wiki' }},
-    -- {'lervag/vimtex'},
+    {'iamcco/markdown-preview.nvim',
+        ft = { 'text', 'markdown', 'wiki' },
+        run = 'sh -c "cd app && yarn install"' },
+    {'mzlogin/vim-markdown-toc', ft = { 'markdown', 'wiki' }},
+    {'lervag/vimtex'},
     -- Multi cursor
     {'mg979/vim-visual-multi'},
     -- Undotree

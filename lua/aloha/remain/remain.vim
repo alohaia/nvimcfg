@@ -226,8 +226,61 @@ function g:Undotree_CustomMap()
     nnoremap <buffer> E 5<plug>UndotreePreviousState
 endfunc
 "===============================\ rnvimr /================================
+nnoremap <cr> :RnvimrToggle<cr>
+""Disable Rnvimr to import user configuration.
+"let g:rnvimr_vanilla = 1
+""Make Ranger replace netrw to be a file explorer
+let g:rnvimr_ex_enable = 1
+""Make Ranger to be hidden after picking a file
+let g:rnvimr_pick_enable = 1
+""Disable a border for floating window
+let g:rnvimr_draw_border = 1
+""Change the border's color
+let g:rnvimr_border_attr = {'fg': 39, 'bg': -1}
+""Set up only two columns in miller mode and draw border with both
+let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"'
+" let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,0"
+"             \ --cmd="set draw_borders both"'
+""Make Neovim wipe the buffers corresponding to the files deleted by Ranger
+"let g:rnvimr_bw_enable = 1
+""Hide the files included in gitignore
+"let g:rnvimr_hide_gitignore = 1
+""Link CursorLine into RnvimrNormal highlight in the Floating window
+" highlight link RnvimrNormal CursorLine
 highlight default link RnvimrNormal NormalFloat
 highlight default link RnvimrCurses Normal
+" nnoremap <silent> <cr> :RnvimrSync<CR>:RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
+" nnoremap <silent> <cr> :RnvimrToggle<CR>
+" <C-\><C-n>:RnvimrResize 0<CR>
+"""Resize floating window by all preset layouts
+"tnoremap <silent> <M-i> <C-\><C-n>:RnvimrResize<CR>
+"""Resize floating window by special preset layouts
+"tnoremap <silent> <M-l> <C-\><C-n>:RnvimrResize 1,8,9,11,5<CR>
+"""Resize floating window by single preset layout
+"tnoremap <silent> <M-y> <C-\><C-n>:RnvimrResize 6<CR>
+""Default shortcuts
+" let g:rnvimr_action = {
+"             \ '<C-t>': 'NvimEdit tabedit',
+"             \ '<C-x>': 'NvimEdit split',
+"             \ '<C-v>': 'NvimEdit vsplit',
+"             \ 'gw': 'JumpNvimCwd',
+"             \ 'yw': 'EmitRangerCwd'
+"             \ }
+""Default layout
+" let g:rnvimr_layout = { 'relative': 'editor',
+"             \ 'width': float2nr(round(0.6 * &columns)),
+"             \ 'height': float2nr(round(0.6 * &lines)),
+"             \ 'col': float2nr(round(0.2 * &columns)),
+"             \ 'row': float2nr(round(0.2 * &lines)),
+"             \ 'style': 'minimal' }
+""Let ranger occupies the whole screen
+let g:rnvimr_layout = { 'relative': 'editor',
+            \ 'width': &columns,
+            \ 'height': &lines,
+            \ 'col': 0,
+            \ 'row': 0,
+            \ 'style': 'minimal' }
+let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
 "==============================\ defx.nvim /==============================
 function! Root(path) abort
@@ -848,12 +901,92 @@ let g:rainbow_conf = {
 "==============================\ suda.vim /===============================
 "===========================\ vim-translator /============================
 "=============================\ vimwiki /=================================
+""Mappings: home/aloha/.config/nvim/ftplugin/vimwiki.vim
+" let g:vimwiki_key_mappings = { 'all_maps': 0, }
+let g:vimwiki_list = []
+let g:vimwiki_conceal_pre = 1
+let g:vimwiki_use_calendar = 1
+call add(g:vimwiki_list, {
+            \'path': '~/Shared/vimwiki/',
+            \'diary_index': 'diary',
+            \'diary_header': 'Diary',
+            \'diary_rel_path': 'diary/',
+            \'syntax': 'markdown',
+            \'ext': '.md',
+            \'links_space_char': '_',
+            \'makhi': 1,
+            \'auto_tags': 1,
+            \'auto_diary_index': 0,
+            \'auto_generate_links': 1,
+            \'auto_generate_tags': 1,
+            \'exclude_files': ['**/README.md'],
+            \})
+"auto_tags:          automatically update the tags metadata when current wiki page is saved
+"auto_diary_index:   automatically update the diary index when opened.
+"auto_genrate_links: automatically update generated links when the current wiki page is saved.
+"auto_genrate_tags:  automatically update generated tags when the current wiki page is saved.
+" augroup IndexAutoUpdate
+"     au!
+"     au BufEnter index.md,index.wiki write
+"     " au BufEnter index.md,index.wiki VimwikiGenerateLinks
+"     " au BufEnter index.md,index.wiki VimwikiGenerateTagLinks
+" augroup END
+" augroup DiaryAutoUpdate
+"     au!
+"     " au BufEnter diary.md,diary.wiki VimwikiGenerateTagLinks
+"     "Delete old, insert new diary section into diary index file.
+"     au BufEnter diary.md,diary.wiki VimwikiDiaryGenerateLinks
+"     au BufEnter diary.md,diary.wiki write
+" augroup END
+" Exporting to html is only supported for original syntax
+call add(g:vimwiki_list, {
+            \'path': '~/vimwiki_origin/',
+            \'path_html': '~/vimwiki_origin/export/',
+            \'syntax': 'default',
+            \'ext': '.wiki',
+            \'links_space_char': '_',
+            \'auto_toc': 1,
+            \'auto_tags': 1,
+            \'auto_diary_index': 0,
+            \'auto_generate_links': 1,
+            \'auto_generate_tags': 1,
+            \'exclude_files': ['**/README.md'],
+            \})
+            " \'nested_syntaxes': {'c++': 'cpp', 'cpp': 'c++'}
+            " \'template_path': '~/vimwiki/templates/',
+            " template_default    default
 let g:vimwiki_diary_months = {
       \ 1: '一月 January', 2: '二月 February', 3: '三月 March',
       \ 4: '四月 April', 5: '五月 May', 6: '六月 June',
       \ 7: '七月 July', 8: '八月 August', 9: '九月 September',
       \ 10: '十月 October', 11: '十一月 November', 12: '十二月December'
       \ }
+let g:vimwiki_hl_headers = 1
+let g:vimwiki_hl_cb_checked = 2
+let g:vimwiki_folding = 'expr'
+let g:vimwiki_markdown_link_ext = 1  "将 g:vimwiki_list 中的 ext 添加到 "Link" 的末尾
+""Recommend to set when 'wrap' is seted.
+let g:vimwiki_table_reduce_last_col = 0
+let g:vimwiki_dir_link = 'main'
+let g:vimwiki_toc_header = 'Table of Contents'
+let g:vimwiki_toc_header_level = 2
+let g:vimwiki_html_header_numbering = 2
+let g:vimwiki_links_header = 'Generated Links'
+let g:vimwiki_links_header_level = 2
+let g:vimwiki_tags_header = 'Generated Tags'
+let g:vimwiki_tags_header_level = 2
+let g:vimwiki_auto_header = 1
+let g:vimwiki_markdown_header_style = 1
+"Use table-mode instead
+let g:vimwiki_table_auto_fmt = 1
+let g:vimwiki_key_mappings = {
+            \'table_format': 1,
+            \'table_mappings': 1,
+            \}
+"Prevent any link shortening
+let g:vimwiki_url_maxsave = 0
+""Toggle creation of temporary wikis.
+let g:vimwiki_global_ext = 1
 let g:vimwiki_ext2syntax = {
             \'.md': 'markdown', '.mkdn': 'markdown',
             \'.mdwn': 'markdown', '.mdown': 'markdown',

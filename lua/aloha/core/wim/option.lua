@@ -15,6 +15,13 @@ function option:init()
     for o,v in pairs(self.b_options) do
         vim.bo[o] = v
         vim.o[o] = v
+        -- if type(v) == "boolean" then
+        --     vim.cmd('set '..o)
+        --     print('set '..o)
+        -- else
+        --     vim.cmd('set '..o..'='..v)
+        --     print('set '..o..'='..v)
+        -- end
     end
     return self
 end
