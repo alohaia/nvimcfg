@@ -23,7 +23,7 @@ end
 
 --------------------------------------\ ondedark /--------------------------------------
 config.onedark = function()
-	vim.cmd('colorscheme onedark')
+	-- vim.cmd('colorscheme onedark')
 end
 
 ------------------------------------\ vim-startify /------------------------------------
