@@ -40,7 +40,7 @@ global.providers = {
             ['+'] = {'xclip', '-i', '-selection', 'clipboard'}, 
             ['*'] = {'xclip', '-i', '-selection', 'primary'},
         },
-        copy = {
+        paste = {
             ['+'] = {'xclip', '-o', '-selection', 'clipboard'}, 
             ['*'] = {'xclip', '-o', '-selection', 'primary'},
         }
