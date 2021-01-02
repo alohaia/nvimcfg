@@ -15,7 +15,6 @@ _G.aloha.wim.map.list = {
     {'x', 'J', '5j'},
     {'x', 'K', '5k'},
 
-    -- {'x', '*', '/\<<C-r><C-w>\><Cr>'}
     {'n', 'n', 'nzz'},
     {'n', 'N', 'Nzz'},
 
@@ -81,34 +80,22 @@ _G.aloha.wim.map.list = {
     {'x', '<M-h>', [["zxh"zP`<v`>]]},
 
     -- c_Ctrl-A is built-in to "Get all"
-    {'c', '<C-p>', '<Up>'},
-    {'c', '<C-n>', '<Down>'},
-    {'c', '<C-h>', '<Left>'},
-    {'c', '<C-l>', '<Right>'},
-    -- Besides <M-v>
     -- Use <C-q> instead
     {'c', '<C-v>', '<C-r>"', {silent = false}},
-    {'c', '<C-p>', '<Up>'},
-    {'c', '<C-n>', '<Down>'},
+    {'c', '<C-p>', '<Up>', {silent = false}},
+    {'c', '<C-h>', '<Left>', {silent = false}},
+    {'c', '<C-l>', '<Right>', {silent = false}},
+    {'c', '<C-n>', '<Down>', {silent = false}},
 
-    -- {'n', '<leader>o', 'mzo<esc>`z'},
-    -- {'n', '<leader>O', 'mzO<esc>`z'},
+    {'n', '<leader>H', ':vert h<space>'},
+    {'n', '<leader>o', 'mzo<esc>`z'},
+    {'n', '<leader>O', 'mzO<esc>`z'},
 
-    -- {'n', '<leader>H', ':vert h<space>'},
-    -- {'n', '<leader>o', 'mzo<esc>`z'},
-    -- {'n', '<leader>O', 'mzO<esc>`z'},
+    {'n', '<leader>e', ':cd '..global.paths.config..'/lua/aloha<cr>:e<space><C-z>', {silent = false}},
 
-    -- {'n', '<leader>e', ':cd '..global.paths.config..'/lua/aloha<cr>:e<space><C-z>', {silent = false}},
-
-    -- {'c', '<M-e>', "getcmdtype()==':' ? expand('%:p:h').'/' : '%%'", {silent = false, expr = true}},
-    -- {'c', '<C-e>', "getcmdtype()==':' ? '<C-u>e ' . expand('%:p:h').'/' : '%%'", {silent = false, expr = true}},
-
+    {'c', '<M-e>', "getcmdtype()==':' ? expand('%:p:h').'/' : '%%'", {silent = false, expr = true}},
     {'i', '<C-s>', "<c-g>u<Esc>[s1z=`]a<c-g>u"},
 
     {'n', '<C-c>', [["+yW""yW]]},
     {'v', '<C-c>', [["+ygv""y]]},
-
-    -- {'n', '<leader>p', ':lua print(vim.o.<C-r><C-w>)<CR>', {silent = false}},
-    -- {'n', '<leader>b', ':lua print(vim.bo.<C-r><C-w>)<CR>', {silent = false}},
-    -- {'n', '<leader>w', ':lua print(vim.wo.<C-r><C-w>)<CR>', {silent = false}},
 }

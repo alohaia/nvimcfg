@@ -117,9 +117,7 @@
 
     "prettier.printWidth": 100,
 
-    "todolist.autoUpload": true,
-    "todolist.promptForReminder": false,
-
+    "coc-actions.useCursorLine": false,
     "coc-actions.hideCursor": false,
     "coc-actions.showActionKind": true,
 
@@ -185,6 +183,8 @@
     "bookmark.signHl": "Tag",
 
     "todolist.enable": true,
+    "todolist.autoUpload": true,
+    "todolist.promptForReminder": false,
     "todolist.notify": "floating",
     "todolist.maxsize": 5000,
     "todolist.monitor": false,

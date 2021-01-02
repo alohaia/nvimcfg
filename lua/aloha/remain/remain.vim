@@ -74,7 +74,6 @@ function! ChooseWin(...)
     endif
     return choosewin#start(l:available_windows, { 'auto_choose': 1, 'hook_enable': 0 })
 endfunction
-autocmd BufReadPre *.tex *.md,*.vimwiki setlocal spell setlocal spelllang=en_us,cjk
 
 au BufRead,BufNewFile *.vs setfiletype glsl
 au BufRead,BufNewFile *.fs setfiletype glsl
@@ -1072,3 +1071,4 @@ autocmd InsertLeave * call s:fcitx_2_english()
 "进入插入模式调用的函数
 autocmd InsertEnter * call s:fcitx_enter_insert_mode()
 
+autocmd BufReadPre *.tex,*.md,*.vimwiki setlocal spell spelllang=en_us,cjk
