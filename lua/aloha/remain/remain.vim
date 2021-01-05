@@ -889,11 +889,11 @@ call add(g:vimwiki_list, {
 "auto_diary_index:   automatically update the diary index when opened.
 "auto_genrate_links: automatically update generated links when the current wiki page is saved.
 "auto_genrate_tags:  automatically update generated tags when the current wiki page is saved.
-" augroup IndexAutoUpdate
+" augroup indexautoupdate
 "     au!
-"     au BufEnter index.md,index.wiki write
-"     " au BufEnter index.md,index.wiki VimwikiGenerateLinks
-"     " au BufEnter index.md,index.wiki VimwikiGenerateTagLinks
+"     au bufenter index.md,index.wiki write
+"     " au bufenter index.md,index.wiki vimwikigeneratelinks
+"     " au bufenter index.md,index.wiki vimwikigeneratetaglinks
 " augroup END
 " augroup DiaryAutoUpdate
 "     au!
@@ -956,7 +956,7 @@ let g:vimwiki_ext2syntax = {
             \'.mdwn': 'markdown', '.mdown': 'markdown',
             \'.markdown': 'markdown', '.mw': 'media'
             \}
-
+" imap <M-m> <esc>vB<Cr>h"_xhA
 
 
 
@@ -1071,4 +1071,13 @@ autocmd InsertLeave * call s:fcitx_2_english()
 "进入插入模式调用的函数
 autocmd InsertEnter * call s:fcitx_enter_insert_mode()
 
-autocmd BufReadPre *.tex,*.md,*.vimwiki setlocal spell spelllang=en_us,cjk
+autocmd FileType tex,markdown,vimwiki setlocal spell
+
+
+" auto save
+
+augroup autosave
+    au!
+    au InsertLeave *.md,*.wiki silent update
+    au TextChanged *.md,*.wiki silent update
+augroup END

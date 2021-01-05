@@ -5,6 +5,8 @@ _G.aloha.wim.option.list = {}
 local option = _G.aloha.wim.option
 local cache_base = _G.aloha.global.paths.cache_base
 local caches = _G.aloha.global.paths.caches
+local config = _G.aloha.global.paths.config
+local utils = _G.aloha.utils
 
 option.g_options = {
     termguicolors  = true;
@@ -31,9 +33,9 @@ option.g_options = {
     magic       = true,
 
     backup      = true,
-    directory   = cache_base..'/'..caches.swap,
-    undodir     = cache_base..'/'..caches.undo,
-    backupdir   = cache_base..'/'..caches.backup,
+    directory   = utils.join_paths(cache_base, caches.swap),
+    undodir     = utils.join_paths(cache_base, caches.undo),
+    backupdir   = utils.join_paths(cache_base, caches.backup),
 
     completeopt = 'noinsert,menuone,noselect,preview',
 
@@ -89,4 +91,8 @@ option.b_options = {
     -- 4.
     indentkeys = '0{,0},0),0],:,0#,!^F,o,O,e', -- indentexpr
     -- set indentexpr = Get{Vim|Lua|Cpp}Indent -- Xcindent Xsmartindent !lisp
+
+    spelllang = 'en_us,cjk',
+    spellfile = utils.join_paths(config, 'spell', 'en.utf-8.add'),
+    spelloptions = 'camel',
 }

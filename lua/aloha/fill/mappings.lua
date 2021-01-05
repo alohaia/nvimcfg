@@ -98,4 +98,7 @@ _G.aloha.wim.map.list = {
 
     {'n', '<C-c>', [["+yW""yW]]},
     {'v', '<C-c>', [["+ygv""y]]},
+
+    {'i', '<M-m>', '<esc>vB<Cr>h"_xhf)a', {noremap = false}},
+    {'i', '<M-n>', '<esc>vB<Cr>h"_xhA', {noremap = false}},
 }
