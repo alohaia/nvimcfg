@@ -87,7 +87,7 @@ _G.aloha.wim.map.list = {
     {'c', '<C-l>', '<Right>', {silent = false}},
     {'c', '<C-n>', '<Down>', {silent = false}},
 
-    {'n', '<leader>H', ':vert h<space>'},
+    {'n', '<leader>H', ':vert h<space>', {silent = false}},
     {'n', '<leader>o', 'mzo<esc>`z'},
     {'n', '<leader>O', 'mzO<esc>`z'},
 
