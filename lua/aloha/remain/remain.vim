@@ -1081,3 +1081,19 @@ augroup autosave
     au InsertLeave *.md,*.wiki silent update
     au TextChanged *.md,*.wiki silent update
 augroup END
+
+function! Ocr()
+    let l:str = system('ocr')
+    " remove \n
+    let l:str = join(split(l:str), ' ')
+
+    let l:frgs = matchlist(l:str, '\(.*[\u4e00-\u9fa5]\+\) \([\u4e00-\u9fa5]\+.*\)')[1:2]
+    while l:frgs != []
+        let l:str = join(frgs, '')
+        " echo l:str
+        let l:frgs = matchlist(l:str, '\(.*[\u4e00-\u9fa5]\+\) \([\u4e00-\u9fa5]\+.*\)')[1:2]
+    endwhile
+
+    return l:str
+endfunction
+
