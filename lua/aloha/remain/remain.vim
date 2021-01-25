@@ -302,7 +302,7 @@ function s:defx_execute(context) abort
     let l:name = 'DefsExec'
     let l:bufnr = floaterm#terminal#get_bufnr(l:name)
     if l:bufnr == -1
-        execute('FloatermNew --name='.l:name)
+        execute('FloatermNew --title='.l:name)
         execute('FloatermToggle '.l:name)
         execute('FloatermSend ' . a:context.targets[0])
         execute('FloatermToggle '.l:name)
@@ -437,6 +437,11 @@ command! FzfMapsn <plug>(fzf-maps-n)
 command! FzfMapsi <plug>(fzf-maps-i)
 command! FzfMapsx <plug>(fzf-maps-x)
 command! FzfMapso <plug>(fzf-maps-o)
+command! -bang -nargs=* FzfGit
+            \ call fzf#vim#grep(
+            \     'git grep --line-number -- '.shellescape(<q-args>), 0,
+            \ fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
 let g:fzf_layout = {'down':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
 let $FZF_DEFAULT_OPTS = '--layout=reverse --inline-info'
 let $FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git/**'"
@@ -482,126 +487,126 @@ let g:far#mapping = {
 "###################\ Completion and Syntax Checking /####################
 "#########################################################################
 "============================\ coc.nvim /=============================
-let g:coc_global_extensions = [
-            \ 'coc-diagnostic',
-            \ 'coc-tabnine',
-            \ 'coc-sh',
-            \ 'coc-css',
-            \ 'coc-html',
-            \ 'coc-json',
-            \ 'coc-tsserver',
-            \ 'coc-tslint-plugin',
-            \ 'coc-prettier',
-            \ 'coc-stylelint',
-            \ 'coc-syntax',
-            \ 'coc-vimlsp',
-            \ 'coc-yaml',
-            \ 'coc-floaterm',
-            \ 'coc-lists',
-            \ 'coc-explorer',
-            \ 'coc-bookmark'
-            \ ]
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-inoremap <silent><expr> <Tab>
-            \ pumvisible() ? "\<C-n>" :
-            \ <SID>check_back_space() ? "\<Tab>" :
-            \ coc#refresh()
-inoremap <silent><expr> <S-Tab>
-            \ pumvisible() ? "\<C-p>" :
-            \ <SID>check_back_space() ? "\<S-Tab>" :
-            \ coc#refresh()
-inoremap <silent><expr> <C-c> pumvisible() ?
-            \ coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-let g:coc_explorer_global_presets = {
-            \   'nvim': {
-            \     'root-uri': '~/.config/nvim/',
-            \   },
-            \   'tab': {
-            \     'position': 'tab',
-            \     'quit-on-open': 1,
-            \   },
-            \   'floating': {
-            \     'position': 'floating',
-            \     'open-action-strategy': 'sourceWindow',
-            \   },
-            \   'floatingTop': {
-            \     'position': 'floating',
-            \     'floating-position': 'center-top',
-            \     'open-action-strategy': 'sourceWindow',
-            \   },
-            \   'floatingLeftside': {
-            \     'position': 'floating',
-            \     'floating-position': 'left-center',
-            \     'floating-width': 50,
-            \     'open-action-strategy': 'sourceWindow',
-            \   },
-            \   'floatingRightside': {
-            \     'position': 'floating',
-            \     'floating-position': 'right-center',
-            \     'floating-width': 50,
-            \     'open-action-strategy': 'sourceWindow',
-            \   },
-            \   'simplify': {
-            \     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
-            \   }
-            \ }
-nnoremap <leader>ce :CocCommand explorer<CR>
-nmap <Leader>bj <Plug>(coc-bookmark-next)
-nmap <Leader>bk <Plug>(coc-bookmark-prev)
-nmap <leader>bt <Plug>(coc-bookmark-toggle)
-nnoremap <silent> <leader>g[ <Plug>(coc-diagnostic-prev)
-nnoremap <silent> <leader>g] <Plug>(coc-diagnostic-next)
-nnoremap <silent> <leader>gd <Plug>(coc-definition)
-nnoremap <silent> <leader>gy <Plug>(coc-type-definition)
-nnoremap <silent> <leader>gi <Plug>(coc-implementation)
-nnoremap <silent> <leader>gr <Plug>(coc-references)
-function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-    else
-        call CocAction('doHover')
-    endif
-endfunction
-nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
-nmap <leader>rn <Plug>(coc-rename)
-xmap \\f  <Plug>(coc-format-selected)
-nmap \\f  <Plug>(coc-format-selected)
-augroup mygroup
-    autocmd!
-    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-nmap <leader>F  <Plug>(coc-fix-current)
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-command! -nargs=0 Format :call CocAction('format')
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-let lua_lsp = glob('~/.vscode/extensions/sumneko.lua*', 0, 1)
-if len(lua_lsp)
-    let lua_lsp = lua_lsp[-1] . '\server'
-    call coc#config('languageserver', {
-        \ 'lua-language-server': {
-        \     'cwd': lua_lsp,
-        \     'command': lua_lsp . '\bin\lua-language-server.exe',
-        \     'args': ['-E', '-e', 'LANG="zh-cn"', lua_lsp . '\main.lua'],
-        \     'filetypes': ['lua'],
-        \ }
-    \ })
-endif
+" let g:coc_global_extensions = [
+"             \ 'coc-diagnostic',
+"             \ 'coc-tabnine',
+"             \ 'coc-sh',
+"             \ 'coc-css',
+"             \ 'coc-html',
+"             \ 'coc-json',
+"             \ 'coc-tsserver',
+"             \ 'coc-tslint-plugin',
+"             \ 'coc-prettier',
+"             \ 'coc-stylelint',
+"             \ 'coc-syntax',
+"             \ 'coc-vimlsp',
+"             \ 'coc-yaml',
+"             \ 'coc-floaterm',
+"             \ 'coc-lists',
+"             \ 'coc-explorer',
+"             \ 'coc-bookmark'
+"             \ ]
+" function! s:check_back_space() abort
+"     let col = col('.') - 1
+"     return !col || getline('.')[col - 1]  =~ '\s'
+" endfunction
+" inoremap <silent><expr> <Tab>
+"             \ pumvisible() ? "\<C-n>" :
+"             \ <SID>check_back_space() ? "\<Tab>" :
+"             \ coc#refresh()
+" inoremap <silent><expr> <S-Tab>
+"             \ pumvisible() ? "\<C-p>" :
+"             \ <SID>check_back_space() ? "\<S-Tab>" :
+"             \ coc#refresh()
+" inoremap <silent><expr> <C-c> pumvisible() ?
+"             \ coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+" let g:coc_explorer_global_presets = {
+"             \   'nvim': {
+"             \     'root-uri': '~/.config/nvim/',
+"             \   },
+"             \   'tab': {
+"             \     'position': 'tab',
+"             \     'quit-on-open': 1,
+"             \   },
+"             \   'floating': {
+"             \     'position': 'floating',
+"             \     'open-action-strategy': 'sourceWindow',
+"             \   },
+"             \   'floatingTop': {
+"             \     'position': 'floating',
+"             \     'floating-position': 'center-top',
+"             \     'open-action-strategy': 'sourceWindow',
+"             \   },
+"             \   'floatingLeftside': {
+"             \     'position': 'floating',
+"             \     'floating-position': 'left-center',
+"             \     'floating-width': 50,
+"             \     'open-action-strategy': 'sourceWindow',
+"             \   },
+"             \   'floatingRightside': {
+"             \     'position': 'floating',
+"             \     'floating-position': 'right-center',
+"             \     'floating-width': 50,
+"             \     'open-action-strategy': 'sourceWindow',
+"             \   },
+"             \   'simplify': {
+"             \     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+"             \   }
+"             \ }
+" nnoremap <leader>ce :CocCommand explorer<CR>
+" nmap <Leader>bj <Plug>(coc-bookmark-next)
+" nmap <Leader>bk <Plug>(coc-bookmark-prev)
+" nmap <leader>bt <Plug>(coc-bookmark-toggle)
+" nnoremap <silent> <leader>g[ <Plug>(coc-diagnostic-prev)
+" nnoremap <silent> <leader>g] <Plug>(coc-diagnostic-next)
+" nnoremap <silent> <leader>gd <Plug>(coc-definition)
+" nnoremap <silent> <leader>gy <Plug>(coc-type-definition)
+" nnoremap <silent> <leader>gi <Plug>(coc-implementation)
+" nnoremap <silent> <leader>gr <Plug>(coc-references)
+" function! s:show_documentation()
+"     if (index(['vim','help'], &filetype) >= 0)
+"         execute 'h '.expand('<cword>')
+"     else
+"         call CocAction('doHover')
+"     endif
+" endfunction
+" nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
+" nmap <leader>rn <Plug>(coc-rename)
+" xmap \\f  <Plug>(coc-format-selected)
+" nmap \\f  <Plug>(coc-format-selected)
+" augroup mygroup
+"     autocmd!
+"     autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+"     autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+" augroup end
+" nmap <leader>F  <Plug>(coc-fix-current)
+" xmap if <Plug>(coc-funcobj-i)
+" omap if <Plug>(coc-funcobj-i)
+" xmap af <Plug>(coc-funcobj-a)
+" omap af <Plug>(coc-funcobj-a)
+" xmap ic <Plug>(coc-classobj-i)
+" omap ic <Plug>(coc-classobj-i)
+" xmap ac <Plug>(coc-classobj-a)
+" omap ac <Plug>(coc-classobj-a)
+" nmap <silent> <C-s> <Plug>(coc-range-select)
+" xmap <silent> <C-s> <Plug>(coc-range-select)
+" command! -nargs=0 Format :call CocAction('format')
+" command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+" command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" let lua_lsp = glob('~/.vscode/extensions/sumneko.lua*', 0, 1)
+" if len(lua_lsp)
+"     let lua_lsp = lua_lsp[-1] . '\server'
+"     call coc#config('languageserver', {
+"         \ 'lua-language-server': {
+"         \     'cwd': lua_lsp,
+"         \     'command': lua_lsp . '\bin\lua-language-server.exe',
+"         \     'args': ['-E', '-e', 'LANG="zh-cn"', lua_lsp . '\main.lua'],
+"         \     'filetypes': ['lua'],
+"         \ }
+"     \ })
+" endif
 "=========================\ completion-nvim /==========================
 "============================\ ultisnips /=============================
 let g:UltiSnipsEditSplit="vertical"
@@ -631,25 +636,62 @@ sign define vimspectorBPDisabled text=○  texthl=ColorColumn
 sign define vimspectorBPCond text=♦  texthl=ColorColumn
 sign define vimspectorPC text=➤➤ texthl=ColorColumn
 "============================\ asyncrun.vim /=============================
-function s:asyncrun_floaterm(opts)abort
-    let l:name = 'AsyncRun'
-    let l:bufnr = floaterm#terminal#get_bufnr(l:name)
-    if l:bufnr == -1
-        execute('FloatermNew --name='.l:name)
-        execute('FloatermToggle '.l:name)
-        execute('FloatermSend ' . a:opts.cmd)
-        execute('FloatermToggle '.l:name)
-    else
-        execute('FloatermSend --name=' . l:name . ' ' . a:opts.cmd)
-        execute('FloatermToggle '.l:name)
-    endif
+" function s:asyncrun_floaterm(opts)abort
+"     let l:name = 'AsyncRun'
+"     let l:bufnr = floaterm#terminal#get_bufnr(l:name)
+"     if l:bufnr == -1
+"         execute('FloatermNew --name='.l:name)
+"         execute('FloatermToggle '.l:name)
+"         execute('FloatermSend ' . a:opts.cmd)
+"         execute('FloatermToggle '.l:name)
+"     else
+"         execute('FloatermSend --name=' . l:name . ' ' . a:opts.cmd)
+"         execute('FloatermToggle '.l:name)
+"     endif
+" endfunction
+" let g:asyncrun_runner = get(g:, 'asyncrun_runner', {})
+" let g:asyncrun_runner.floaterm = function('s:asyncrun_floaterm')
+let g:asyncrun_rootmarks = ['.git', '.svn', '.root']
+
+function! g:Asyncrun_floaterm(opts)
+    " echo a:opts
+    execute 'FloatermNew --position=bottomright' .
+                    \ ' --wintype=float' .
+                    \ ' --height=0.5' .
+                    \ ' --width=0.5' .
+                    \ ' --title=Aysnctasks:\ ' . a:opts.name .
+                    \ ' --autoclose=0' .
+                    \ ' --cwd=' . a:opts.cwd
+                    \ ' ' . a:opts.cmd
+    " Do not focus on floaterm window, and close it once cursor moves
+    " If you want to jump to the floaterm window, use <C-w>p
+    " You can choose whether to use the following code or not
+    stopinsert | noa wincmd p
+    augroup close-floaterm-runner
+        autocmd!
+        autocmd CmdlineEnter,CursorMoved,InsertEnter * ++nested
+            \ call timer_start(100, { -> s:close_floaterm_runner() })
+    augroup END
+endfunction
+
+function! s:close_floaterm_runner() abort
+    if &ft == 'floaterm' | return | endif
+    for b in tabpagebuflist()
+        if getbufvar(b, '&ft') == 'floaterm' &&
+            \ getbufvar(b, 'floaterm_jobexists') == v:false
+        execute b 'bwipeout!'
+        break
+        endif
+    endfor
+    autocmd! close-floaterm-runner
 endfunction
 let g:asyncrun_runner = get(g:, 'asyncrun_runner', {})
-let g:asyncrun_runner.floaterm = function('s:asyncrun_floaterm')
-let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg', '.tasks']
+let g:asyncrun_runner.floaterm = function('g:Asyncrun_floaterm')
+
 "============================\ asynctasks.vim /=============================
 command! Run   AsyncTask run
 command! Build AsyncTask build
+command! Make AsyncTask make
 let g:asynctasks_term_pos = 'floaterm'
 let g:asynctasks_extra_config = [
             \ '~/.config/nvim/settings/asynctask/tasks.ini',
@@ -688,6 +730,24 @@ endfunction
 command! -nargs=0 AsyncTaskFzf call s:fzf_task()
 command! -nargs=0 FzfTasks call s:fzf_task()
 let g:asynctasks_template = {}
+let g:asynctasks_template.cpp = [
+    \ "[run]",
+    \ "command:c,cpp=$(VIM_PATHNOEXT)",
+    \ "output=terminal",
+    \ "cwd=$(VIM_FILEDIR)",
+    \ "save=2",
+    \ "[build]",
+    \ "command:c=gcc $(VIM_FILENAME) -o $VIM_PATHNOEXT",
+    \ "command:cpp=g++ $(VIM_FILENAME) -o $VIM_PATHNOEXT",
+    \ "output=terminal",
+    \ "cwd=$(VIM_FILEDIR)",
+    \ "save=2"
+    \ ]
+let g:asynctasks_template.c = g:asynctasks_template.cpp
+
+"============================\ floaterm.vim /=============================
+hi link FloatermBorder Normal
+
 "============================\ vim-rooter /=============================
 let g:rooter_patterns = ['.rooter', '.git']
 let g:rooter_silent_chdir = 1
@@ -698,21 +758,6 @@ let g:rooter_silent_chdir = 1
 set statusline^=%{exists('*CapsLockStatusline')?CapsLockStatusline():''}
 "==========================\ vim-after-object /===========================
 autocmd VimEnter * call after_object#enable([']', '['], '/', '=', ':', '-', '#', '*', ' ')
-"===========================\ vim-easymotion /============================
-"============================\ vim-subversive /=============================
-"=============================\ vim-yoink /===============================
-"============================\ clever-f.vim /=============================
-"============================\ nerdcommenter /============================
-" let g:NERDSpaceDelims = 1
-" let g:NERDCompactSexyComs = 1
-" let g:NERDDefaultAlign = 'left'
-" let g:NERDAltDelims_java = 1
-" let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-" let g:NERDCommentEmptyLines = 1
-" let g:NERDTrimTrailingWhitespace = 1
-" let g:NERDToggleCheckAllLines = 1
-"==========================\ vim-visual-multi /===========================
-"============================\ vim-surround /=============================
 vnoremap Si S(i_<esc>f)
 au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
 au FileType php let b:surround_45 = "<?php \r ?>"
@@ -725,10 +770,6 @@ au FileType vim let b:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '`':'`', 
 "#########################################################################
 "###############################\ MarkDown /##############################
 "#########################################################################
-"============================\ vim-markdown /=============================
-" let g:vim_markdown_math = 1
-" let vim_markdown_folding_disabled = 1
-"============================\ vim-instant-markdownm /=============================
 "============================\ markdown-preview.nvim /=============================
 let g:mkdp_auto_start = 0
 let g:mkdp_auto_close = 0
@@ -828,8 +869,6 @@ highlight SignifySignChange ctermfg=yellow guifg=#ffff00
 "#########################################################################
 "#################################\ Msic /################################
 "#########################################################################
-"=============================\ zeavim.vim /==============================
-"=============================\ indentline /==============================
 "===============================\ rainbow /===============================
 let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 let g:rainbow_conf = {
@@ -956,7 +995,6 @@ let g:vimwiki_ext2syntax = {
             \'.mdwn': 'markdown', '.mdown': 'markdown',
             \'.markdown': 'markdown', '.mw': 'media'
             \}
-" imap <M-m> <esc>vB<Cr>h"_xhA
 
 
 
@@ -970,12 +1008,23 @@ function! g:TransparentBg()
     hi ColorColumn ctermbg=NONE guibg=NONE
 endfunction
 
-au ColorScheme onedark call TransparentBg()
+function! s:hi_adjust_onedark()
+    let g:airline_theme = 'airlineish'
+    call g:TransparentBg()
+endfunction
+
+au ColorScheme onedark call s:hi_adjust_onedark()
+
+function! s:hi_adjust_molokai()
+    let g:airline_theme = 'airlineish'
+    hi VertSplit guibg=#1B1D1E
+    call g:TransparentBg()
+endfunction
+
+au ColorScheme molokai call s:hi_adjust_molokai()
 
 colorscheme onedark
-let g:airline_theme = 'onedark'
 " colorscheme molokai
-" let g:airline_theme = 'airlineish'
 
 "============================ Moving around ==============================
 au VimEnter * call SwitchMotionMod()
@@ -1028,9 +1077,9 @@ au TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeou
 
 let s:chinese_enable = 2                                     "若当前系统为中文输入法,则获取的输入法状态值为 2
 let s:english_enable = 1                                     "若当前系统为英文输入法,则获取的输入法状态值为 1
-let s:get_fcitx_language_status = "fcitx-remote"             "获取当前输入法的状态值
-let s:set_fcitx_chinese         = "fcitx-remote -o"          "把输入法设置为 中文
-let s:set_fcitx_english         = "fcitx-remote -c"          "把输入法设置为 英文
+let s:get_fcitx_language_status = "fcitx5-remote"             "获取当前输入法的状态值
+let s:set_fcitx_chinese         = "fcitx5-remote -o"          "把输入法设置为 中文
+let s:set_fcitx_english         = "fcitx5-remote -c"          "把输入法设置为 英文
 
 let s:start_language_status = system(s:set_fcitx_english)    "vim启动时,默认把输入法设置为英文
 

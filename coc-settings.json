@@ -277,7 +277,8 @@
             "rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/", ".hg/"],
             "initializationOptions": {
                 "cache": {
-                    "directory": ".ccls-cache",
+                    "directory": ".ccls-caches",
+                    "hierarchicalPath": true,
                     "format": "binary",
                     "retain": 1
                 },
@@ -285,7 +286,7 @@
                     "snippetSupport": true
                 },
                 "clang": {
-                    "extraArgs": [],
+                    "extraArgs": ["-I ./include"],
                     "excludeArgs": []
                 },
                 "completion": {

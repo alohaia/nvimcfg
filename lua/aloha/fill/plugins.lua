@@ -39,7 +39,7 @@ _G.aloha.plugin.list = {
 
     -- Text Editing
     -- {'tpope/vim-abolish'},
-    {'tpope/vim-commentary'},
+    {'preservim/nerdcommenter'},
     {'tpope/vim-capslock'},
     {'tpope/vim-endwise'},
     {'tpope/vim-surround'},
@@ -56,8 +56,9 @@ _G.aloha.plugin.list = {
     {'vim-airline/vim-airline'},
     {'Yggdroot/indentLine', ft = { 'python' }},
     {'RRethy/vim-illuminate'},
-    {'joshdick/onedark.vim'},
     {'luochen1990/rainbow'},
+    {'joshdick/onedark.vim'},
+    {'altercation/vim-colors-solarized'},
 
     {'kyazdani42/nvim-web-devicons'},   -- need to add manually
     {'ryanoasis/vim-devicons'},
@@ -68,12 +69,13 @@ _G.aloha.plugin.list = {
     {'tikhomirov/vim-glsl', ft = 'glsl'},
 
     -- Linting and Grammar Checking
-    {'neoclide/coc.nvim'},
+    -- {'neoclide/coc.nvim'},
+    {'neovim/nvim-lspconfig'},
+    {'nvim-lua/completion-nvim'},
+    {'nvim-lua/lsp-status.nvim'},
 
     -- Note Taking
-    {
-        'vimwiki/vimwiki',
-    },
+    {'vimwiki/vimwiki'},
 
     -- Useful Functionalities
     {'voldikss/vim-floaterm'},
@@ -97,29 +99,28 @@ _G.aloha.plugin.list = {
     {'mbbill/undotree'},
 
     -- Disabled Plugins ( Need :PackerCompile to make this work )
-    {'dhruvasagar/vim-table-mode', disable = true, ft = { 'text', 'markdown', 'wiki' }},
-    {'dkarter/bullets.vim', disable = true, ft = { 'text', 'markdown', 'wiki' }},
-    {'preservim/nerdcommenter', disable = true},
-    {'airblade/vim-rooter', disable = true},
-    {'wincent/terminus', disable = true},
-    {'puremourning/vimspector', disable = true, ft = { 'c', 'cpp', 'python', 'rust', 'ruby', 'go' }},
-    {'vim-airline/vim-airline-themes', disable = true},
-    {'fatih/vim-go', disable = true, ft = { 'go' }},
-    {'pangloss/vim-javascript', disable = true},
+    {'dhruvasagar/vim-table-mode',       disable = true, ft = { 'text', 'markdown', 'wiki' }},
+    {'dkarter/bullets.vim',              disable = true, ft = { 'text', 'markdown', 'wiki' }},
+    {'airblade/vim-rooter',              disable = true},
+    {'wincent/terminus',                 disable = true},
+    {'puremourning/vimspector',          disable = true, ft = { 'c', 'cpp', 'python', 'rust', 'ruby', 'go' }},
+    {'vim-airline/vim-airline-themes',   disable = true},
+    {'fatih/vim-go',                     disable = true, ft = { 'go' }},
+    {'pangloss/vim-javascript',          disable = true},
     {'octol/vim-cpp-enhanced-highlight', disable = true, ft = { 'c', 'cpp' }},
-    {'plasticboy/vim-markdown', disable = true, ft = { 'markdown', 'wiki' }},
-    {'alohaia/md-img-paste.vim', disable = true, ft = { 'markdown', 'wiki' }},
-    {'arcticicestudio/nord-vim', disable = true},
-    {'godlygeek/tabular', disable = true},
-    {'hotoo/pangu.vim', disable = true},
-    {'guns/xterm-color-table.vim', disable = true},
-    {'itchyny/calendar.vim', disable = true},
-    {'junegunn/goyo.vim', disable = true, ft = { 'text', 'markdown', 'wiki' }},
-    {'Chiel92/vim-autoformat', disable = true},
-    {'AndrewRadev/splitjoin.vim', disable = true},
-    {'dracula/vim', disable = true, as = 'dracula' },
-    {'flazz/vim-colorschemes', disable = true},
-    {'fszymanski/fzf-gitignore', disable = true},
-    {'rafalbromirski/vim-airlineish', disable = true},
-    {'sheerun/vim-polyglot', disable = true},
+    {'plasticboy/vim-markdown',          disable = true, ft = { 'markdown', 'wiki' }},
+    {'alohaia/md-img-paste.vim',         disable = true, ft = { 'markdown', 'wiki' }},
+    {'arcticicestudio/nord-vim',         disable = true},
+    {'godlygeek/tabular',                disable = true},
+    {'hotoo/pangu.vim',                  disable = true},
+    {'guns/xterm-color-table.vim',       disable = true},
+    {'itchyny/calendar.vim',             disable = true},
+    {'junegunn/goyo.vim',                disable = true, ft = { 'text', 'markdown', 'wiki' }},
+    {'Chiel92/vim-autoformat',           disable = true},
+    {'AndrewRadev/splitjoin.vim',        disable = true},
+    {'dracula/vim',                      disable = true, as = 'dracula' },
+    {'flazz/vim-colorschemes',           disable = true},
+    {'fszymanski/fzf-gitignore',         disable = true},
+    {'rafalbromirski/vim-airlineish',    disable = true},
+    {'sheerun/vim-polyglot',             disable = true},
 }

@@ -26,7 +26,7 @@
 
 # main function.
 snippet "(int\ )?main(\(\))?" "main() function" bwr
-int main (int ${1:argc}, char** ${2:argv})
+int main(int ${1:argc}, char** ${2:argv})
 {
 	${3://Do something here.}
 }$0
@@ -52,9 +52,23 @@ switch (${1:varname})
 endsnippet
 
 snippet while "while loop" bw
-while(${1:true})
+while (${1:true})
 {
-	${2:${VISUAL://\/\/Do Something here.//}}
+	${2:${VISUAL}}
+}$0
+endsnippet
+
+snippet for "for loop" bw
+for (${1:int ${2:i} = 0}; ${3:$2 ${4}}; ${5:++$2})
+{
+	${6:${VISUAL}}
+}$0
+endsnippet
+
+snippet if "if" bw
+if (${1:condition})
+{
+	${2:${VISUAL}}
 }$0
 endsnippet
 

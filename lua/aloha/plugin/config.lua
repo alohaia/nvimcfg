@@ -32,7 +32,7 @@ config.startify = function()
     vim.g.startify_change_to_dir       = 0
     vim.g.startify_fortune_use_unicode = 0
     vim.g.startify_padding_left        = 3
-    vim.g.startify_session_dir         = 
+    vim.g.startify_session_dir         =
                 aloha.utils.join_paths(aloha.global.paths.cache_base, 'startify')
     vim.g.startify_session_persistence = 0
     vim.g.startify_session_autoload    = 1
@@ -125,7 +125,7 @@ function config.defx()
         opened_icon    = '▾',
         root_icon      = ' ',
     })
-    
+
     vim.fn['defx#custom#source']('file', {
         root = 'Root',
     })
@@ -238,7 +238,7 @@ function config.yoink()
         {'n', ']y',    '<plug>(YoinkRotateForward)',              { silent = false, noremap = false }},
         {'n', 'y',     '<plug>(YoinkYankPreserveCursorPosition)', { silent = false, noremap = false }},
         {'x', 'y',     '<plug>(YoinkYankPreserveCursorPosition)', { silent = false, noremap = false }})
-    
+
     -----------------------------------\ vim-easymotiom /-----------------------------------
     vim.g.EasyMotion_do_mapping = 0
     vim.g.EasyMotion_do_shade = 1
@@ -334,16 +334,18 @@ end
 
 ------------------------------------\ vim-floaterm /------------------------------------
 function config.floaterm()
-    vim.g.floaterm_keymap_toggle = '<F1>'
-    vim.g.floaterm_keymap_prev   = '<F2>'
-    vim.g.floaterm_keymap_next   = '<F3>'
-    vim.g.floaterm_keymap_new    = '<F4>'
-    vim.g.floaterm_gitcommit     = 'floaterm'
-    vim.g.floaterm_autoinsert    = 1
-    vim.g.floaterm_width         = 0.8
-    vim.g.floaterm_height        = 0.8
-    vim.g.floaterm_wintitle      = 1
-    vim.g.floaterm_autoclose     = 1
+    g.floaterm_keymap_toggle = '<F1>'
+    g.floaterm_keymap_prev   = '<F2>'
+    g.floaterm_keymap_next   = '<F3>'
+    g.floaterm_keymap_new    = '<F4>'
+    g.floaterm_gitcommit     = 'floaterm'
+    g.floaterm_autoinsert    = 1
+    g.floaterm_width         = 0.5
+    g.floaterm_height        = 0.5
+    g.floaterm_autoclose     = 1
+    g.floaterm_title         = 'floaterm: $1/$2'
+    g.floaterm_wintype       = 'popup'
+    g.floaterm_position      = 'bottomright'
 end
 
 ----------------------------------------\ agit /----------------------------------------
@@ -417,6 +419,83 @@ function config.web_devicons()
 	 default = true;
 	}
 end
+
+-----------------------------------\ nerdcommenter /------------------------------------
+g.NERDSpaceDelims = 1
+g.NERDCompactSexyComs = 1
+g.NERDDefaultAlign = 'left'
+g.NERDAltDelims_java = 1
+g.NERDCustomDelimiters = {
+    c = {
+        left = '/**',
+        right = '*/'
+    }
+}
+g.NERDCommentEmptyLines = 1
+g.NERDTrimTrailingWhitespace = 1
+g.NERDToggleCheckAllLines = 1
+
+-------------------------------------\ lspconfig /--------------------------------------
+local nvim_lsp = require('lspconfig')
+nvim_lsp.clangd.setup{on_attach=require'completion'.on_attach}
+nvim_lsp.pyright.setup{on_attach=require'completion'.on_attach}
+nvim_lsp.sumneko_lua.setup{on_attach=require'completion'.on_attach}
+
+add_maps(
+    {'n', 'gD',        '<Cmd>lua vim.lsp.buf.declaration()<CR>'},
+    {'n', 'gd',        '<Cmd>lua vim.lsp.buf.definition()<CR>'},
+    -- {'n', 'K',         '<Cmd>lua vim.lsp.buf.hover()<CR>'},
+    {'n', 'gi',        '<cmd>lua vim.lsp.buf.implementation()<CR>'},
+    -- {'n', '<C-k>',     '<cmd>lua vim.lsp.buf.signature_help()<CR>'},
+    {'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>'},
+    {'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>'},
+    {'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>'},
+    {'n', '<leader>D',  '<cmd>lua vim.lsp.buf.type_definition()<CR>'},
+    {'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>'},
+    {'n', 'gr',        '<cmd>lua vim.lsp.buf.references()<CR>'},
+    {'n', '<leader>e',  '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>'},
+    {'n', '[d',        '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>'},
+    {'n', ']d',        '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>'},
+    {'n', '<leader>q',  '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>'}
+)
+
+
+-- nvim_lsp.ccls.setup {
+--     on_attach = on_attach,
+--     command = "ccls",
+--     args = {},
+--     filetypes = { "c", "cpp", "cuda", "objc", "objcpp" },
+--     rootPatterns = { ".ccls", ".ccls-root", "compile_commands.json", ".git/", ".hg/" },
+--     init_options = {
+--         cache = {
+--             directory = ".ccls-caches",
+--             hierarchicalPath = true,
+--             format = "binary",
+--             retain = 1
+--         },
+--         client = {
+--             snippetSupport = true
+--         },
+--         clang = {
+--             extraArgs = { "-I ./include" },
+--             excludeArgs = {}
+--         },
+--         completion = {
+--             placeholder = true
+--         },
+--         compilationDatabaseDirectory = "",
+--         diagnostics = {
+--             onOpen = 0,
+--             onChange = 1000,
+--             onSave = 0
+--         },
+--         index = {
+--             comments = 2
+--         }
+--     }
+-- }
+-- npm i -g pyright
+-- require'lspconfig'.pyright.setup{}
 
 ----------------------------------------------------------------------------------------
 --               \ Append Configurations to Each Items in Plugin List /               --
