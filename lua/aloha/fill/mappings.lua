@@ -103,4 +103,6 @@ _G.aloha.wim.map.list = {
     {'i', '<M-n>', '<esc>vB<Cr>h"_xhA', {noremap = false}},
 
     {'i', '<M-i>', '<C-r>=Ocr()<cr>'},
+
+    {'t', '<M-q>', '<C-\\><C-n>'},
 }

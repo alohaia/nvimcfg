@@ -27,7 +27,7 @@ _G.aloha.plugin.list = {
     {'Shougo/defx.nvim'},
     {'kristijanhusak/defx-git'},
     {'kristijanhusak/defx-icons'},
-    {'kevinhwang91/rnvimr'},
+    -- {'kevinhwang91/rnvimr'},
 
     -- Git
     {'tpope/vim-fugitive'},
@@ -84,7 +84,7 @@ _G.aloha.plugin.list = {
     {'skywind3000/asyncrun.vim'},
     {'skywind3000/asynctasks.vim'},
     -- Helper
-    {'liuchengxu/vim-which-key', cmd = {'WhichKey', 'WhichKeyVisual'}},
+    -- {'liuchengxu/vim-which-key', cmd = {'WhichKey', 'WhichKeyVisual'}},
     {'voldikss/vim-translator'},
     {'KabbAmine/zeavim.vim'},
     -- Beyond of Programming

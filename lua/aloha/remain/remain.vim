@@ -59,13 +59,13 @@ function! g:SwitchMotionMod()
         echo 'Changed to Fixed mod.'
         let g:motionMod = 1
     endif
-endfunction                                 
-function! g:GetSID()                        
+endfunction
+function! g:GetSID()
     return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
-endfunction                                 
+endfunction
 "======================= Choose Window with Filter =======================
-let g:choosewin_ignore_filetypes = []       
-function! ChooseWin(...)                    
+let g:choosewin_ignore_filetypes = []
+function! ChooseWin(...)
     let l:wins = range(1,winnr('$'))
     if a:0 == 0
         let l:available_windows = filter(l:wins, 'index(g:choosewin_ignore_filetypes, getbufvar(winbufnr(v:val), "&filetype")) == -1')
@@ -176,75 +176,16 @@ command! Haigt echo
             \"di			<Plug>(agit-diff)".
             \"dl			<Plug>(agit-diff-with-local)"
 
-"============================\ vim-which-key /=============================
-hi WhichKeyBg ctermfg=252 ctermbg=233 guifg=#F8F8F2 guibg=#1B1D1E
-highlight default link WhichKeyFloating  WhichKeyBg
 "#########################################################################
 "############################\ User Interface /###########################
 "#########################################################################
 "==============================\ undotree /===============================
 function g:Undotree_CustomMap()
-    nnoremap <buffer> u <plug>UndotreeNextState
-    nnoremap <buffer> e <plug>UndotreePreviousState
-    nnoremap <buffer> U 5<plug>UndotreeNextState
-    nnoremap <buffer> E 5<plug>UndotreePreviousState
+    nnoremap <buffer> n <plug>UndotreeNextState
+    nnoremap <buffer> p <plug>UndotreePreviousState
+    nnoremap <buffer> N 5<plug>UndotreeNextState
+    nnoremap <buffer> P 5<plug>UndotreePreviousState
 endfunc
-"===============================\ rnvimr /================================
-nnoremap <cr> :RnvimrToggle<cr>
-""Disable Rnvimr to import user configuration.
-"let g:rnvimr_vanilla = 1
-""Make Ranger replace netrw to be a file explorer
-let g:rnvimr_ex_enable = 1
-""Make Ranger to be hidden after picking a file
-let g:rnvimr_pick_enable = 1
-""Disable a border for floating window
-let g:rnvimr_draw_border = 1
-""Change the border's color
-let g:rnvimr_border_attr = {'fg': 39, 'bg': -1}
-""Set up only two columns in miller mode and draw border with both
-let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,1"'
-" let g:rnvimr_ranger_cmd = 'ranger --cmd="set column_ratios 1,0"
-"             \ --cmd="set draw_borders both"'
-""Make Neovim wipe the buffers corresponding to the files deleted by Ranger
-"let g:rnvimr_bw_enable = 1
-""Hide the files included in gitignore
-"let g:rnvimr_hide_gitignore = 1
-""Link CursorLine into RnvimrNormal highlight in the Floating window
-" highlight link RnvimrNormal CursorLine
-highlight default link RnvimrNormal NormalFloat
-highlight default link RnvimrCurses Normal
-" nnoremap <silent> <cr> :RnvimrSync<CR>:RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
-" nnoremap <silent> <cr> :RnvimrToggle<CR>
-" <C-\><C-n>:RnvimrResize 0<CR>
-"""Resize floating window by all preset layouts
-"tnoremap <silent> <M-i> <C-\><C-n>:RnvimrResize<CR>
-"""Resize floating window by special preset layouts
-"tnoremap <silent> <M-l> <C-\><C-n>:RnvimrResize 1,8,9,11,5<CR>
-"""Resize floating window by single preset layout
-"tnoremap <silent> <M-y> <C-\><C-n>:RnvimrResize 6<CR>
-""Default shortcuts
-" let g:rnvimr_action = {
-"             \ '<C-t>': 'NvimEdit tabedit',
-"             \ '<C-x>': 'NvimEdit split',
-"             \ '<C-v>': 'NvimEdit vsplit',
-"             \ 'gw': 'JumpNvimCwd',
-"             \ 'yw': 'EmitRangerCwd'
-"             \ }
-""Default layout
-" let g:rnvimr_layout = { 'relative': 'editor',
-"             \ 'width': float2nr(round(0.6 * &columns)),
-"             \ 'height': float2nr(round(0.6 * &lines)),
-"             \ 'col': float2nr(round(0.2 * &columns)),
-"             \ 'row': float2nr(round(0.2 * &lines)),
-"             \ 'style': 'minimal' }
-""Let ranger occupies the whole screen
-let g:rnvimr_layout = { 'relative': 'editor',
-            \ 'width': &columns,
-            \ 'height': &lines,
-            \ 'col': 0,
-            \ 'row': 0,
-            \ 'style': 'minimal' }
-let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
 "==============================\ defx.nvim /==============================
 function! Root(path) abort
@@ -345,11 +286,9 @@ function! s:defx_mappings() abort
     nnoremap <silent><buffer><expr> ~                 defx#async_action('cd')
     nnoremap <silent><buffer><expr> <BS>              defx#async_action('cd', ['..'])
     nnoremap <silent><buffer><expr> h                 defx#async_action('cd', ['..'])
-    nnoremap <silent><buffer><expr> u                 defx#do_action('cd', ['..'])
-    nnoremap <silent><buffer><expr> 2u                defx#do_action('cd', ['../..'])
-    nnoremap <silent><buffer><expr> 3u                defx#do_action('cd', ['../../..'])
-    nnoremap <silent><buffer><expr> 4u                defx#do_action('cd', ['../../../..'])
-    nnoremap <silent><buffer><expr><nowait> s         defx#do_action('toggle_select')
+    nnoremap <silent><buffer><expr> 2h                defx#do_action('cd', ['../..'])
+    nnoremap <silent><buffer><expr> 3h                defx#do_action('cd', ['../../..'])
+    nnoremap <silent><buffer><expr> 4h                defx#do_action('cd', ['../../../..'])
     nnoremap <silent><buffer><expr><nowait> <Space>   defx#do_action('toggle_select')
     nnoremap <silent><buffer><expr> <C-j>             defx#do_action('toggle_select') . 'j'
     nnoremap <silent><buffer><expr> <C-k>             defx#do_action('toggle_select') . 'k'
@@ -366,44 +305,16 @@ endfunction
 
 "============================\ vista.vim /=============================
 autocmd FileType vista,vista_kind nnoremap <buffer> <silent> f :<c-u>call vista#finder#fzf#Run()<CR>
-"============================\ vim-airline /=============================
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled=1    "Smarter tab line: 显示窗口tab和buffers
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#formatter = 'default'  "formater
-let g:airline#extensions#tabline#left_sep = '┆'
-let g:airline#extensions#tabline#left_alt_sep = '┆'
-let g:airline#extensions#tabline#right_sep = '┆'
-let g:airline#extensions#tabline#right_alt_sep = '┆'
-let g:airline_left_sep = '┆'
-let g:airline_left_alt_sep = '┆'
-let g:airline_right_sep = '┆'
-let g:airline_right_alt_sep = '┆'
-let g:airline_symbols.crypt = ''
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.linenr = '㏑'
-let g:airline_symbols.maxlinenr = '¶'
-let g:airline_symbols.branch = '' "
-let g:airline_symbols.dirty='[+]'   "⚡
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.notexists = 'Ɇ'
-let g:airline_symbols.whitespace = 'Ξ'
 "#########################################################################
 "########################\ Color and Highlighting /#######################
 "#########################################################################
-"============================\ vim-polyglot /=============================
-"====================\ vim-cpp-enhanced-highlight /=======================
-let g:cpp_class_scope_highlight = 1
-let g:cpp_member_variable_highlight = 1
-let g:cpp_class_decl_highlight = 1
-let g:cpp_posix_standard = 1
-let g:cpp_experimental_template_highlight = 1
-let g:cpp_concepts_highlight = 1
-let c_no_curly_error=1
+" let g:cpp_class_scope_highlight = 1
+" let g:cpp_member_variable_highlight = 1
+" let g:cpp_class_decl_highlight = 1
+" let g:cpp_posix_standard = 1
+" let g:cpp_experimental_template_highlight = 1
+" let g:cpp_concepts_highlight = 1
+" let c_no_curly_error=1
 "===========================\ vim-illuminate /============================
 let g:Illuminate_delay = 250
 let g:Illuminate_highlightUnderCursor = 1
@@ -731,14 +642,31 @@ command! -nargs=0 AsyncTaskFzf call s:fzf_task()
 command! -nargs=0 FzfTasks call s:fzf_task()
 let g:asynctasks_template = {}
 let g:asynctasks_template.cpp = [
+    \ "[make]",
+    \ "command=make $(VIM_FILENOEXT)",
+    \ "output=terminal",
+    \ "cwd=$(VIM_FILEDIR)",
+    \ "save=2",
     \ "[run]",
-    \ "command:c,cpp=$(VIM_PATHNOEXT)",
+    \ "command=$(VIM_PATHNOEXT)",
     \ "output=terminal",
     \ "cwd=$(VIM_FILEDIR)",
     \ "save=2",
     \ "[build]",
-    \ "command:c=gcc $(VIM_FILENAME) -o $VIM_PATHNOEXT",
-    \ "command:cpp=g++ $(VIM_FILENAME) -o $VIM_PATHNOEXT",
+    \ "command:c=gcc -Wall $(VIM_FILENAME) -o $(VIM_PATHNOEXT)",
+    \ "command:cpp=g++ -Wall $(VIM_FILENAME) -o $(VIM_PATHNOEXT)",
+    \ "output=terminal",
+    \ "cwd=$(VIM_FILEDIR)",
+    \ "save=2",
+    \ "[debug]",
+    \ "command:c=gcc -Wall -g $(VIM_FILENAME) -o $(VIM_PATHNOEXT)",
+    \ "command:cpp=g++ -Wall -g $(VIM_FILENAME) -o $(VIM_PATHNOEXT)",
+    \ "output=terminal",
+    \ "cwd=$(VIM_FILEDIR)",
+    \ "save=2",
+    \ "[compile]",
+    \ "command:c=gcc -Wall -c $(VIM_FILENAME)",
+    \ "command:cpp=g++ -Wall -c $(VIM_FILENAME)",
     \ "output=terminal",
     \ "cwd=$(VIM_FILEDIR)",
     \ "save=2"
@@ -770,95 +698,8 @@ au FileType vim let b:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '`':'`', 
 "#########################################################################
 "###############################\ MarkDown /##############################
 "#########################################################################
-"============================\ markdown-preview.nvim /=============================
-let g:mkdp_auto_start = 0
-let g:mkdp_auto_close = 0
-let g:mkdp_refresh_slow = 0
-let g:mkdp_command_for_global = 0
-let g:mkdp_open_to_the_world = 0
-let g:mkdp_open_ip = ''
-let g:mkdp_browser = 'google-chrome-stable'
-let g:mkdp_echo_preview_url = 0
-let g:mkdp_browserfunc = ''
-let g:mkdp_preview_options = {
-            \ 'mkit': {},
-            \ 'katex': {},
-            \ 'uml': {},
-            \ 'maid': {},
-            \ 'disable_sync_scroll': 0,
-            \ 'sync_scroll_type': 'middle',
-            \ 'hide_yaml_meta': 1,
-            \ 'sequence_diagrams': {},
-            \ 'flowchart_diagrams': {},
-            \ 'content_editable': v:false
-            \ }
-let g:mkdp_markdown_css = ''
-let g:mkdp_highlight_css = ''
-let g:mkdp_port = ''
-let g:mkdp_page_title = '「${name}」'
-let g:mkdp_filetypes = ['markdown', 'vimwiki']
-"============================\ vim-table-mode /=============================
-noremap <LEADER>tm :TableModeToggle<CR>
-"============================\ vim-markdown-toc /=============================
-let g:vmt_cycle_list_item_markers = 1
-let g:vmt_fence_text = 'TOC'
-let g:vmt_fence_closing_text = '/TOC'
-let g:vmt_cycle_list_item_markers = 1
-"============================\ bullets.vim /=============================
-let g:bullets_enable_in_empty_buffers = 0 " default = 1
-au FileType markdown let g:bullets_checkbox_markers = ' X'
-let g:bullets_enabled_file_types = [
-            \ 'markdown',
-            \ 'text',
-            \ 'gitcommit',
-            \ 'scratch',
-            \ 'text'
-            \]
-"============================\ md-img-paste /=============================
-autocmd FileType markdown nnoremap <buffer> <leader>i :call mdip#MarkdownClipboardImage()<cr>
-let g:mdip_imgdir = '%:p:t:r'
-let g:mdip_imgdir_prefix = ''
-let g:mdip_imgdir_postfix = '.asserts'
 "===============================\ vimtex /================================
 au FileType tex command! FzfTex call vimtex#fzf#run('ctli', g:fzf_layout)
-let g:tex_flavor = 'latex'
-let g:vimtex_view_method = 'zathura'
-let g:vimtex_quickfix_mode = 0
-let g:vimtex_complete_close_braces = 1
-let g:vimtex_cache_root = expand('~/.config/nvim/.cache/vimtex')
-let g:vimtex_mappings_enabled = 1
-let g:tex_conceal='abdmg'
-let g:vimtex_compiler_method = 'latexmk'
-let g:vimtex_compiler_latexmk = {
-            \ 'build_dir' : '',
-            \ 'callback' : 1,
-            \ 'continuous' : 1,
-            \ 'executable' : 'latexmk',
-            \ 'hooks' : [],
-            \ 'options' : [
-            \   '-verbose',
-            \   '-file-line-error',
-            \   '-synctex=1',
-            \   '-interaction=nonstopmode',
-            \ ],
-            \}
-let g:vimtex_compiler_latexmk_engines = {
-            \ '_'                : '-xelatex',
-            \ 'pdflatex'         : '-pdf',
-            \ 'dvipdfex'         : '-pdfdvi',
-            \ 'lualatex'         : '-lualatex',
-            \ 'xelatex'          : '-xelatex',
-            \ 'context (pdftex)' : '-pdf -pdflatex=texexec',
-            \ 'context (luatex)' : '-pdf -pdflatex=context',
-            \ 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
-            \}
-let g:vimtex_compiler_latexrun_engines = {
-            \ '_'                : 'xelatex',
-            \ 'pdflatex'         : 'pdflatex',
-            \ 'lualatex'         : 'lualatex',
-            \ 'xelatex'          : 'xelatex',
-            \}
-autocmd User Startified setlocal buflisted
 "#########################################################################
 "#############################\ Git Related /#############################
 "#########################################################################
@@ -1060,7 +901,7 @@ command! Showhi echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 "================================ Viminal ================================
 function! OpenAsTerminal()
     terminal
-    normal a
+    setlocal nonumber
 endfunction
 
 au TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=false}
@@ -1087,18 +928,18 @@ let s:start_language_status = system(s:set_fcitx_english)    "vim启动时,默�
 
 "此处可以根据编辑的文件后缀名来做更改
 let g:saved_insert_mode_language_status = s:english_enable                     "初始设置 插入模式 输入法为英文
-autocmd BufNewFile,BufRead *.txt,*.text,*.md,*.wiki,[Rr][Ee][Aa][Dd][Mm][Ee] 
+autocmd BufNewFile,BufRead *.txt,*.text,*.md,*.wiki,[Rr][Ee][Aa][Dd][Mm][Ee]
             \let g:saved_insert_mode_language_status = s:chinese_enable        "在编辑*.txt,*.text文件格式的时候
 
 
 
-"当退出 插入模式 时,会把输入法设置为英文 
+"当退出 插入模式 时,会把输入法设置为英文
 function! s:fcitx_2_english()
     let s:exit_insert_status = system(s:get_fcitx_language_status)      "检查退出 插入模式 时,输入法的状态
     if s:exit_insert_status != s:english_enable                         "如果退出 插入模式 时,输入法不是英文
         let l:temp = system(s:set_fcitx_english)                        "将输入法设置为英文
     endif
-    let g:saved_insert_mode_language_status = s:exit_insert_status      "保存退出 插入模式 时的输入法状态 
+    let g:saved_insert_mode_language_status = s:exit_insert_status      "保存退出 插入模式 时的输入法状态
 endfunction
 
 "当进入 插入模式 时,输入法会自动选择语言为上一次插入模式使用的语言

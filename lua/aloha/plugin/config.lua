@@ -23,7 +23,7 @@ end
 
 --------------------------------------\ ondedark /--------------------------------------
 config.onedark = function()
-	-- vim.cmd('colorscheme onedark')
+    -- vim.cmd('colorscheme onedark')
 end
 
 ------------------------------------\ vim-startify /------------------------------------
@@ -400,24 +400,25 @@ function config.translator()
     )
     vim.g.translator_history_enable   = 1
     vim.g.translator_window_type      = 'popup'
+    vim.cmd("hi link TranslatorBorder Normal")
 end
 
 ------------------------------------\ web_devicons /------------------------------------
 function config.web_devicons()
     require'nvim-web-devicons'.setup {
-	 -- your personnal icons can go here (to override)
-	 -- DevIcon will be appended to `name`
-	 override = {
-	  zsh = {
-	    icon = "",
-	    color = "#428850",
-	    name = "Zsh"
-	  }
-	 };
-	 -- globally enable default icons (default to false)
-	 -- will get overriden by `get_icons` option
-	 default = true;
-	}
+     -- your personnal icons can go here (to override)
+     -- DevIcon will be appended to `name`
+     override = {
+      zsh = {
+        icon = "",
+        color = "#428850",
+        name = "Zsh"
+      }
+     };
+     -- globally enable default icons (default to false)
+     -- will get overriden by `get_icons` option
+     default = true;
+    }
 end
 
 -----------------------------------\ nerdcommenter /------------------------------------
@@ -458,6 +459,188 @@ add_maps(
     {'n', ']d',        '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>'},
     {'n', '<leader>q',  '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>'}
 )
+
+--------------------------------------\ airline /---------------------------------------
+g.airline_symbols = {
+    crypt      = '',
+    linenr     = '☰',
+    linenr     = '㏑',
+    maxlinenr  = '¶',
+    branch     = '',    -- 
+    dirty      = '[+]',  -- ⚡
+    paste      = 'Þ',
+    spell      = 'Ꞩ',
+    notexists  = 'Ɇ',
+    whitespace = 'Ξ'
+}
+g.airline_powerline_fonts                      = 1
+g['airline#extensions#tabline#enabled']        = 1
+g['airline#extensions#tabline#buffer_nr_show'] = 1
+g['airline#extensions#tabline#formatter']      = 'default'
+g['airline#extensions#tabline#left_sep']       = '┆'
+g['airline#extensions#tabline#left_alt_sep']   = '┆'
+g['airline#extensions#tabline#right_sep']      = '┆'
+g['airline#extensions#tabline#right_alt_sep']  = '┆'
+g['airline_left_sep']                          = '┆'
+g['airline_left_alt_sep']                      = '┆'
+g['airline_right_sep']                         = '┆'
+g['airline_right_alt_sep']                     = '┆'
+
+---------------------------------\ markdown-previwew /----------------------------------
+g.mkdp_auto_start = 0
+g.mkdp_auto_close = 0
+g.mkdp_refresh_slow = 0
+g.mkdp_command_for_global = 0
+g.mkdp_open_to_the_world = 0
+g.mkdp_open_ip = ''
+g.mkdp_browser = 'google-chrome-stable'
+g.mkdp_echo_preview_url = 0
+g.mkdp_browserfunc = ''
+g.mkdp_preview_options = {
+    mkit                = {},
+    katex               = {},
+    uml                 = {},
+    maid                = {},
+    disable_sync_scroll = 0,
+    sync_scroll_type    = 'middle',
+    hide_yaml_meta      = 1,
+    sequence_diagrams   = {},
+    flowchart_diagrams  = {},
+    content_editable    = false
+}
+g.mkdp_markdown_css = ''
+g.mkdp_highlight_css = ''
+g.mkdp_port = ''
+g.mkdp_page_title = '「${name}」'
+g.mkdp_filetypes = {'markdown', 'vimwiki'}
+
+----------------------------------\ vim-markdown-toc /----------------------------------
+g.vmt_cycle_list_item_markers = 1
+g.vmt_fence_text              = 'TOC'
+g.vmt_fence_closing_text      = '/TOC'
+g.vmt_cycle_list_item_markers = 1
+
+---------------------------------------\ vimtex /---------------------------------------
+g.tex_flavor = 'latex'
+g.vimtex_view_method = 'zathura'
+g.vimtex_quickfix_mode = 0
+g.vimtex_compiler_progname = 'nvr'
+g.vimtex_complete_close_braces = 1
+g.vimtex_cache_root = '~/.config/nvim/.cache/vimtex'
+g.vimtex_mappings_enabled = 1
+g.tex_conceal='abdmg'
+g.vimtex_compiler_method = 'latexmk'
+g.vimtex_compiler_latexmk = {
+    build_dir  = '',
+    callback   = 1,
+    continuous = 1,
+    executable = 'latexmk',
+    hooks      = {},
+    options    = {
+        '-verbose',
+        '-file-line-error',
+        '-synctex=1',
+        '-interaction=nonstopmode',
+    },
+}
+g.vimtex_compiler_latexmk_engines = {
+    _        = '-xelatex',
+    pdflatex = '-pdf',
+    dvipdfex = '-pdfdvi',
+    lualatex = '-lualatex',
+    xelatex  = '-xelatex',
+    -- 'context (pdftex)' : '-pdf -pdflatex=texexec',
+    -- 'context (luatex)' : '-pdf -pdflatex=context',
+    -- 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
+}
+g.vimtex_compiler_latexrun_engines = {
+    _         = 'xelatex',
+    pdflatex  = 'pdflatex',
+    lualatex  = 'lualatex',
+    xelatex   = 'xelatex',
+}
+
+--------------------------------------\ vimwiki /---------------------------------------
+-- g.vimwiki_list = {
+--     {
+--         path                = '~/Shared/vimwiki/',
+--         diary_index         = 'diary',
+--         diary_header        = 'Diary',
+--         diary_rel_path      = 'diary/',
+--         syntax              = 'markdown',
+--         ext                 = '.md',
+--         links_space_char    = ' ',
+--         makhi               = 1,
+--         auto_tags           = 1,
+--         auto_diary_index    = 0,
+--         auto_generate_links = 1,
+--         auto_generate_tags  = 1,
+--         exclude_files       = {'**/README.md'},
+--     },
+--     {
+--         path                = '~/vimwiki_origin/',
+--         path_html           = '~/vimwiki_origin/export/',
+--         syntax              = 'default',
+--         ext                 = '.wiki',
+--         links_space_char    = ' ',
+--         auto_toc            = 1,
+--         auto_tags           = 1,
+--         auto_diary_index    = 0,
+--         auto_generate_links = 1,
+--         auto_generate_tags  = 1,
+--         exclude_files       = {'**/README.md'},
+--         }
+-- }
+-- g.vimwiki_conceal_pre = 1
+-- g.vimwiki_use_calendar = 1
+-- g.vimwiki_diary_months = {}
+-- g.vimwiki_diary_months['1'] = '一月 January'
+-- g.vimwiki_diary_months['2']  = '二月 February'
+-- g.vimwiki_diary_months['3']  = '三月 March'
+-- g.vimwiki_diary_months['4']  = '四月 April'
+-- g.vimwiki_diary_months['5']  = '五月 May'
+-- g.vimwiki_diary_months['6']  = '六月 June'
+-- g.vimwiki_diary_months['7']  = '七月 July'
+-- g.vimwiki_diary_months['8']  = '八月 August'
+-- g.vimwiki_diary_months['9']  = '九月 September'
+-- g.vimwiki_diary_months['10'] = '十月 October'
+-- g.vimwiki_diary_months['11'] = '十一月 November'
+-- g.vimwiki_diary_months['12'] = '十二月December'
+-- g.vimwiki_hl_headers            = 1
+-- g.vimwiki_hl_cb_checked         = 2
+-- g.vimwiki_folding               = 'expr'
+-- g.vimwiki_markdown_link_ext     = 1
+-- g.vimwiki_table_reduce_last_col = 0
+-- g.vimwiki_dir_link              = 'main'
+-- g.vimwiki_toc_header            = 'Table of Contents'
+-- g.vimwiki_toc_header_level      = 2
+-- g.vimwiki_html_header_numbering = 2
+-- g.vimwiki_links_header          = 'Generated Links'
+-- g.vimwiki_links_header_level    = 2
+-- g.vimwiki_tags_header           = 'Generated Tags'
+-- g.vimwiki_tags_header_level     = 2
+-- g.vimwiki_auto_header           = 1
+-- g.vimwiki_markdown_header_style = 1
+-- g.vimwiki_table_auto_fmt        = 1
+-- g.vimwiki_key_mappings = {
+--     table_format = 1,
+--     table_mappings = 1,
+-- }
+-- g.vimwiki_url_maxsave = 0
+-- g.vimwiki_global_ext = 1
+-- g.vimwiki_ext2syntax = {}
+-- g.vimwiki_ext2syntax['.md']       = 'markdown'
+-- g.vimwiki_ext2syntax['.mkdn']     = 'markdown'
+-- g.vimwiki_ext2syntax['.mdwn']     = 'markdown'
+-- g.vimwiki_ext2syntax['.mdown']    = 'markdown'
+-- g.vimwiki_ext2syntax['.markdown'] = 'markdown'
+-- g.vimwiki_ext2syntax['.mw']       = 'media'
+
+
+-- auto_tags:          automatically update the tags metadata when current wiki page is saved
+-- auto_diary_index:   automatically update the diary index when opened.
+-- auto_genrate_links: automatically update generated links when the current wiki page is saved.
+-- auto_genrate_tags:  automatically update generated tags when the current wiki page is saved.
 
 
 -- nvim_lsp.ccls.setup {
@@ -521,7 +704,7 @@ function config:list_show()
     for _,package in ipairs(_G.aloha.plugin.list) do
         local normalized = _G.aloha.utils.normal(package[1])
         print(normalized)
-	end
+    end
 end
 
 function config:init()
