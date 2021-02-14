@@ -66,22 +66,24 @@ _G.aloha.plugin.list = {
     -- Syntax and Highlighting
     {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'},
     {'beyondmarc/opengl.vim', ft = { 'c', 'cpp' }},
-    {'tikhomirov/vim-glsl', ft = 'glsl'},
+    {'tikhomirov/vim-glsl'},
 
     -- Linting and Grammar Checking
-    -- {'neoclide/coc.nvim'},
-    {'neovim/nvim-lspconfig'},
-    {'nvim-lua/completion-nvim'},
-    {'nvim-lua/lsp-status.nvim'},
+    {'neoclide/coc.nvim'},
+    -- {'neovim/nvim-lspconfig'},
+    -- {'nvim-lua/completion-nvim'},
+    -- {'nvim-lua/lsp-status.nvim'},
 
     -- Note Taking
     {'vimwiki/vimwiki'},
 
     -- Useful Functionalities
     {'voldikss/vim-floaterm'},
+    {'voldikss/fzf-floaterm'},
     {'t9md/vim-choosewin'},
     -- Tasks
     {'skywind3000/asyncrun.vim'},
+    {'skywind3000/asyncrun.extra'},
     {'skywind3000/asynctasks.vim'},
     -- Helper
     -- {'liuchengxu/vim-which-key', cmd = {'WhichKey', 'WhichKeyVisual'}},

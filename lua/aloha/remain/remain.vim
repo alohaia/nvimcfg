@@ -398,126 +398,123 @@ let g:far#mapping = {
 "###################\ Completion and Syntax Checking /####################
 "#########################################################################
 "============================\ coc.nvim /=============================
-" let g:coc_global_extensions = [
-"             \ 'coc-diagnostic',
-"             \ 'coc-tabnine',
-"             \ 'coc-sh',
-"             \ 'coc-css',
-"             \ 'coc-html',
-"             \ 'coc-json',
-"             \ 'coc-tsserver',
-"             \ 'coc-tslint-plugin',
-"             \ 'coc-prettier',
-"             \ 'coc-stylelint',
-"             \ 'coc-syntax',
-"             \ 'coc-vimlsp',
-"             \ 'coc-yaml',
-"             \ 'coc-floaterm',
-"             \ 'coc-lists',
-"             \ 'coc-explorer',
-"             \ 'coc-bookmark'
-"             \ ]
-" function! s:check_back_space() abort
-"     let col = col('.') - 1
-"     return !col || getline('.')[col - 1]  =~ '\s'
-" endfunction
-" inoremap <silent><expr> <Tab>
-"             \ pumvisible() ? "\<C-n>" :
-"             \ <SID>check_back_space() ? "\<Tab>" :
-"             \ coc#refresh()
-" inoremap <silent><expr> <S-Tab>
-"             \ pumvisible() ? "\<C-p>" :
-"             \ <SID>check_back_space() ? "\<S-Tab>" :
-"             \ coc#refresh()
-" inoremap <silent><expr> <C-c> pumvisible() ?
-"             \ coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-" autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-" let g:coc_explorer_global_presets = {
-"             \   'nvim': {
-"             \     'root-uri': '~/.config/nvim/',
-"             \   },
-"             \   'tab': {
-"             \     'position': 'tab',
-"             \     'quit-on-open': 1,
-"             \   },
-"             \   'floating': {
-"             \     'position': 'floating',
-"             \     'open-action-strategy': 'sourceWindow',
-"             \   },
-"             \   'floatingTop': {
-"             \     'position': 'floating',
-"             \     'floating-position': 'center-top',
-"             \     'open-action-strategy': 'sourceWindow',
-"             \   },
-"             \   'floatingLeftside': {
-"             \     'position': 'floating',
-"             \     'floating-position': 'left-center',
-"             \     'floating-width': 50,
-"             \     'open-action-strategy': 'sourceWindow',
-"             \   },
-"             \   'floatingRightside': {
-"             \     'position': 'floating',
-"             \     'floating-position': 'right-center',
-"             \     'floating-width': 50,
-"             \     'open-action-strategy': 'sourceWindow',
-"             \   },
-"             \   'simplify': {
-"             \     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
-"             \   }
-"             \ }
-" nnoremap <leader>ce :CocCommand explorer<CR>
-" nmap <Leader>bj <Plug>(coc-bookmark-next)
-" nmap <Leader>bk <Plug>(coc-bookmark-prev)
-" nmap <leader>bt <Plug>(coc-bookmark-toggle)
-" nnoremap <silent> <leader>g[ <Plug>(coc-diagnostic-prev)
-" nnoremap <silent> <leader>g] <Plug>(coc-diagnostic-next)
-" nnoremap <silent> <leader>gd <Plug>(coc-definition)
-" nnoremap <silent> <leader>gy <Plug>(coc-type-definition)
-" nnoremap <silent> <leader>gi <Plug>(coc-implementation)
-" nnoremap <silent> <leader>gr <Plug>(coc-references)
-" function! s:show_documentation()
-"     if (index(['vim','help'], &filetype) >= 0)
-"         execute 'h '.expand('<cword>')
-"     else
-"         call CocAction('doHover')
-"     endif
-" endfunction
-" nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
-" nmap <leader>rn <Plug>(coc-rename)
-" xmap \\f  <Plug>(coc-format-selected)
-" nmap \\f  <Plug>(coc-format-selected)
-" augroup mygroup
-"     autocmd!
-"     autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-"     autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-" augroup end
-" nmap <leader>F  <Plug>(coc-fix-current)
-" xmap if <Plug>(coc-funcobj-i)
-" omap if <Plug>(coc-funcobj-i)
-" xmap af <Plug>(coc-funcobj-a)
-" omap af <Plug>(coc-funcobj-a)
-" xmap ic <Plug>(coc-classobj-i)
-" omap ic <Plug>(coc-classobj-i)
-" xmap ac <Plug>(coc-classobj-a)
-" omap ac <Plug>(coc-classobj-a)
-" nmap <silent> <C-s> <Plug>(coc-range-select)
-" xmap <silent> <C-s> <Plug>(coc-range-select)
-" command! -nargs=0 Format :call CocAction('format')
-" command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-" command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-" let lua_lsp = glob('~/.vscode/extensions/sumneko.lua*', 0, 1)
-" if len(lua_lsp)
-"     let lua_lsp = lua_lsp[-1] . '\server'
-"     call coc#config('languageserver', {
-"         \ 'lua-language-server': {
-"         \     'cwd': lua_lsp,
-"         \     'command': lua_lsp . '\bin\lua-language-server.exe',
-"         \     'args': ['-E', '-e', 'LANG="zh-cn"', lua_lsp . '\main.lua'],
-"         \     'filetypes': ['lua'],
-"         \ }
-"     \ })
-" endif
+let g:coc_global_extensions = [
+            \ 'coc-diagnostic',
+            \ 'coc-clangd',
+            \ 'coc-tabnine',
+            \ 'coc-sh',
+            \ 'coc-css',
+            \ 'coc-html',
+            \ 'coc-json',
+            \ 'coc-tsserver',
+            \ 'coc-tslint-plugin',
+            \ 'coc-prettier',
+            \ 'coc-stylelint',
+            \ 'coc-syntax',
+            \ 'coc-vimlsp',
+            \ 'coc-yaml',
+            \ 'coc-floaterm',
+            \ 'coc-lists',
+            \ 'coc-explorer'
+            \ ]
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+inoremap <silent><expr> <Tab>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<Tab>" :
+            \ coc#refresh()
+inoremap <silent><expr> <S-Tab>
+            \ pumvisible() ? "\<C-p>" :
+            \ <SID>check_back_space() ? "\<S-Tab>" :
+            \ coc#refresh()
+inoremap <silent><expr> <C-c> pumvisible() ?
+            \ coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+let g:coc_explorer_global_presets = {
+            \   'nvim': {
+            \     'root-uri': '~/.config/nvim/',
+            \   },
+            \   'tab': {
+            \     'position': 'tab',
+            \     'quit-on-open': 1,
+            \   },
+            \   'floating': {
+            \     'position': 'floating',
+            \     'open-action-strategy': 'sourceWindow',
+            \   },
+            \   'floatingTop': {
+            \     'position': 'floating',
+            \     'floating-position': 'center-top',
+            \     'open-action-strategy': 'sourceWindow',
+            \   },
+            \   'floatingLeftside': {
+            \     'position': 'floating',
+            \     'floating-position': 'left-center',
+            \     'floating-width': 50,
+            \     'open-action-strategy': 'sourceWindow',
+            \   },
+            \   'floatingRightside': {
+            \     'position': 'floating',
+            \     'floating-position': 'right-center',
+            \     'floating-width': 50,
+            \     'open-action-strategy': 'sourceWindow',
+            \   },
+            \   'simplify': {
+            \     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+            \   }
+            \ }
+nnoremap <leader>ce :CocCommand explorer<CR>
+nnoremap <silent> <leader>g[ <Plug>(coc-diagnostic-prev)
+nnoremap <silent> <leader>g] <Plug>(coc-diagnostic-next)
+nnoremap <silent> <leader>gd <Plug>(coc-definition)
+nnoremap <silent> <leader>gy <Plug>(coc-type-definition)
+nnoremap <silent> <leader>gi <Plug>(coc-implementation)
+nnoremap <silent> <leader>gr <Plug>(coc-references)
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocAction('doHover')
+    endif
+endfunction
+nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
+nmap <leader>rn <Plug>(coc-rename)
+xmap \\f  <Plug>(coc-format-selected)
+nmap \\f  <Plug>(coc-format-selected)
+augroup mygroup
+    autocmd!
+    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+nmap <leader>F  <Plug>(coc-fix-current)
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
+command! -nargs=0 Format :call CocAction('format')
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+let lua_lsp = glob('~/.vscode/extensions/sumneko.lua*', 0, 1)
+if len(lua_lsp)
+    let lua_lsp = lua_lsp[-1] . '\server'
+    call coc#config('languageserver', {
+        \ 'lua-language-server': {
+        \     'cwd': lua_lsp,
+        \     'command': lua_lsp . '\bin\lua-language-server.exe',
+        \     'args': ['-E', '-e', 'LANG="zh-cn"', lua_lsp . '\main.lua'],
+        \     'filetypes': ['lua'],
+        \ }
+    \ })
+endif
 "=========================\ completion-nvim /==========================
 "============================\ ultisnips /=============================
 let g:UltiSnipsEditSplit="vertical"
@@ -546,63 +543,51 @@ sign define vimspectorBP text=◉  texthl=ColorColumn
 sign define vimspectorBPDisabled text=○  texthl=ColorColumn
 sign define vimspectorBPCond text=♦  texthl=ColorColumn
 sign define vimspectorPC text=➤➤ texthl=ColorColumn
-"============================\ asyncrun.vim /=============================
-" function s:asyncrun_floaterm(opts)abort
-"     let l:name = 'AsyncRun'
-"     let l:bufnr = floaterm#terminal#get_bufnr(l:name)
-"     if l:bufnr == -1
-"         execute('FloatermNew --name='.l:name)
-"         execute('FloatermToggle '.l:name)
-"         execute('FloatermSend ' . a:opts.cmd)
-"         execute('FloatermToggle '.l:name)
-"     else
-"         execute('FloatermSend --name=' . l:name . ' ' . a:opts.cmd)
-"         execute('FloatermToggle '.l:name)
-"     endif
+"+-------------------------------------------------------------------------------------+
+"|                             \ asyncrun asyncrun_extra /                             |
+"+-------------------------------------------------------------------------------------+
+let g:asyncrun_rootmarks = ['.git', '.svn', '.root']
+let g:asyncrun_extra#floaterm#title_style = 'asyncrun'
+""move to https://github.com/skywind3000/asyncrun.extra/blob/master/plugin/asyncrun_extra.v
+" function! g:Asyncrun_floaterm(opts)
+"     " echo a:opts
+"                     " \ ' --wintype=float' .
+"                     " \ ' --height=0.5' .
+"                     " \ ' --width=0.5' .
+"     execute 'FloatermNew --position=bottomright' .
+"                     \ ' --title=Aysnctasks:\ ' . a:opts.name .
+"                     \ ' --autoclose=0' .
+"                     \ ' --cwd=' . a:opts.cwd
+"                     \ ' ' . a:opts.cmd
+"     " Do not focus on floaterm window, and close it once cursor moves
+"     " If you want to jump to the floaterm window, use <C-w>p
+"     " You can choose whether to use the following code or not
+"     stopinsert | noa wincmd p
+"     augroup close-floaterm-runner
+"         autocmd!
+"         autocmd CmdlineEnter,CursorMoved,InsertEnter * ++nested
+"             \ call timer_start(100, { -> s:close_floaterm_runner() })
+"     augroup END
+" endfunction
+"
+" function! s:close_floaterm_runner() abort
+"     if &ft == 'floaterm' | return | endif
+"     for b in tabpagebuflist()
+"         if getbufvar(b, '&ft') == 'floaterm' &&
+"             \ getbufvar(b, 'floaterm_jobexists') == v:false
+"         execute b 'bwipeout!'
+"         break
+"         endif
+"     endfor
+"     autocmd! close-floaterm-runner
 " endfunction
 " let g:asyncrun_runner = get(g:, 'asyncrun_runner', {})
-" let g:asyncrun_runner.floaterm = function('s:asyncrun_floaterm')
-let g:asyncrun_rootmarks = ['.git', '.svn', '.root']
-
-function! g:Asyncrun_floaterm(opts)
-    " echo a:opts
-    execute 'FloatermNew --position=bottomright' .
-                    \ ' --wintype=float' .
-                    \ ' --height=0.5' .
-                    \ ' --width=0.5' .
-                    \ ' --title=Aysnctasks:\ ' . a:opts.name .
-                    \ ' --autoclose=0' .
-                    \ ' --cwd=' . a:opts.cwd
-                    \ ' ' . a:opts.cmd
-    " Do not focus on floaterm window, and close it once cursor moves
-    " If you want to jump to the floaterm window, use <C-w>p
-    " You can choose whether to use the following code or not
-    stopinsert | noa wincmd p
-    augroup close-floaterm-runner
-        autocmd!
-        autocmd CmdlineEnter,CursorMoved,InsertEnter * ++nested
-            \ call timer_start(100, { -> s:close_floaterm_runner() })
-    augroup END
-endfunction
-
-function! s:close_floaterm_runner() abort
-    if &ft == 'floaterm' | return | endif
-    for b in tabpagebuflist()
-        if getbufvar(b, '&ft') == 'floaterm' &&
-            \ getbufvar(b, 'floaterm_jobexists') == v:false
-        execute b 'bwipeout!'
-        break
-        endif
-    endfor
-    autocmd! close-floaterm-runner
-endfunction
-let g:asyncrun_runner = get(g:, 'asyncrun_runner', {})
-let g:asyncrun_runner.floaterm = function('g:Asyncrun_floaterm')
+" let g:asyncrun_runner.floaterm = function('g:Asyncrun_floaterm')
 
 "============================\ asynctasks.vim /=============================
 command! Run   AsyncTask run
 command! Build AsyncTask build
-command! Make AsyncTask make
+command! Make  AsyncTask make
 let g:asynctasks_term_pos = 'floaterm'
 let g:asynctasks_extra_config = [
             \ '~/.config/nvim/settings/asynctask/tasks.ini',
@@ -612,34 +597,6 @@ let g:asynctasks_environ = {
             \ 'cppc': '/usr/bin/g++',
             \ 'cc': '/usr/bin/gcc',
             \}
-function! s:fzf_sink(what)
-    let p1 = stridx(a:what, '<')
-    if p1 >= 0
-        let name = strpart(a:what, 0, p1)
-        let name = substitute(name, '^\s*\(.\{-}\)\s*$', '\1', '')
-        if name != ''
-            exec "AsyncTask ". fnameescape(name)
-        endif
-    endif
-endfunction
-function! s:fzf_task()
-    let rows = asynctasks#source(&columns * 48 / 100)
-    let source = []
-    for row in rows
-        let name = row[0]
-        let source += [name . '  ' . row[1] . '  : ' . row[2]]
-    endfor
-    let opts = { 'source': source, 'sink': function('s:fzf_sink'),
-                \ 'options': '+m --nth 1 --inline-info --tac' }
-    if exists('g:fzf_layout')
-        for key in keys(g:fzf_layout)
-            let opts[key] = deepcopy(g:fzf_layout[key])
-        endfor
-    endif
-    call fzf#run(opts)
-endfunction
-command! -nargs=0 AsyncTaskFzf call s:fzf_task()
-command! -nargs=0 FzfTasks call s:fzf_task()
 let g:asynctasks_template = {}
 let g:asynctasks_template.cpp = [
     \ "[make]",
@@ -672,6 +629,34 @@ let g:asynctasks_template.cpp = [
     \ "save=2"
     \ ]
 let g:asynctasks_template.c = g:asynctasks_template.cpp
+function! s:fzf_sink(what)
+    let p1 = stridx(a:what, '<')
+    if p1 >= 0
+        let name = strpart(a:what, 0, p1)
+        let name = substitute(name, '^\s*\(.\{-}\)\s*$', '\1', '')
+        if name != ''
+            exec "AsyncTask ". fnameescape(name)
+        endif
+    endif
+endfunction
+function! s:fzf_task()
+    let rows = asynctasks#source(&columns * 48 / 100)
+    let source = []
+    for row in rows
+        let name = row[0]
+        let source += [name . '  ' . row[1] . '  : ' . row[2]]
+    endfor
+    let opts = { 'source': source, 'sink': function('s:fzf_sink'),
+                \ 'options': '+m --nth 1 --inline-info --tac' }
+    if exists('g:fzf_layout')
+        for key in keys(g:fzf_layout)
+            let opts[key] = deepcopy(g:fzf_layout[key])
+        endfor
+    endif
+    call fzf#run(opts)
+endfunction
+command! -nargs=0 AsyncTaskFzf call s:fzf_task()
+command! -nargs=0 FzfTasks call s:fzf_task()
 
 "============================\ floaterm.vim /=============================
 hi link FloatermBorder Normal
@@ -986,4 +971,3 @@ function! Ocr()
 
     return l:str
 endfunction
-

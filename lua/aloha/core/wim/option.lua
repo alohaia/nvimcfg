@@ -10,7 +10,7 @@ function option:init()
     end
     for o,v in pairs(self.w_options) do
         vim.wo[o] = v
-        vim.o[o] = v
+        -- vim.o[o] = v
     end
     for o,v in pairs(self.b_options) do
         vim.bo[o] = v

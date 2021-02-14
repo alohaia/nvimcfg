@@ -253,6 +253,7 @@
                 }
             }
         },
+        // lua-emmy-language-server-bin
         "lua": {
             "command": "java",
             "args": ["-cp", "/usr/lib/lua-emmy-language-server/EmmyLua-LS-all.jar", "com.tang.vscode.MainKt"],
@@ -268,40 +269,40 @@
                 "diagnosticsEnabled": true,
                 "lintTool": "golint"
             }
-        },
-        // https://github.com/MaskRay/ccls/wiki/Customization
-        "ccls": {
-            "command": "ccls",
-            "args": [],
-            "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
-            "rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/", ".hg/"],
-            "initializationOptions": {
-                "cache": {
-                    "directory": ".ccls-caches",
-                    "hierarchicalPath": true,
-                    "format": "binary",
-                    "retain": 1
-                },
-                "client": {
-                    "snippetSupport": true
-                },
-                "clang": {
-                    "extraArgs": ["-I ./include"],
-                    "excludeArgs": []
-                },
-                "completion": {
-                    "placeholder": true
-                },
-                "compilationDatabaseDirectory": "",
-                "diagnostics": {
-                    "onOpen": 0,
-                    "onChange": 1000,
-                    "onSave": 0
-                },
-                "index": {
-                    "comments": 2
-                }
-            }
         }
+        // https://github.com/MaskRay/ccls/wiki/Customization
+        // "ccls": {
+        //     "command": "ccls",
+        //     "args": [],
+        //     "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
+        //     "rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/", ".hg/"],
+        //     "initializationOptions": {
+        //         "cache": {
+        //             "directory": ".ccls-caches",
+        //             "hierarchicalPath": true,
+        //             "format": "binary",
+        //             "retain": 1
+        //         },
+        //         "client": {
+        //             "snippetSupport": true
+        //         },
+        //         "clang": {
+        //             "extraArgs": ["-I ./include"],
+        //             "excludeArgs": []
+        //         },
+        //         "completion": {
+        //             "placeholder": true
+        //         },
+        //         "compilationDatabaseDirectory": "",
+        //         "diagnostics": {
+        //             "onOpen": 0,
+        //             "onChange": 1000,
+        //             "onSave": 0
+        //         },
+        //         "index": {
+        //             "comments": 2
+        //         }
+        //     }
+        // }
     }
 }

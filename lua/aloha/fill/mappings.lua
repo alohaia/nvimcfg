@@ -91,7 +91,7 @@ _G.aloha.wim.map.list = {
     {'n', '<leader>o', 'mzo<esc>`z'},
     {'n', '<leader>O', 'mzO<esc>`z'},
 
-    {'n', '<leader>e', ':cd '..global.paths.config..'/lua/aloha<cr>:e<space><C-z>', {silent = false}},
+    {'n', '<leader>e', ':e '..global.paths.config..'/lua/aloha/<C-z>', {silent = false}},
 
     {'c', '<M-e>', "getcmdtype()==':' ? expand('%:p:h').'/' : '%%'", {silent = false, expr = true}},
     {'i', '<C-s>', "<c-g>u<Esc>[s1z=`^a<c-g>u"},
@@ -99,8 +99,8 @@ _G.aloha.wim.map.list = {
     {'n', '<C-c>', [["+yW""yW]]},
     {'v', '<C-c>', [["+ygv""y]]},
 
-    {'i', '<M-m>', '<esc>vB<Cr>h"_xhf)a', {noremap = false}},
-    {'i', '<M-n>', '<esc>vB<Cr>h"_xhA', {noremap = false}},
+    {'i', '<M-m>', [[<esc>vB<Cr>h"_xf)a]], {noremap = false}},
+    {'i', '<M-n>', [[<esc>vB<Cr>f)a]], {noremap = false}},
 
     {'i', '<M-i>', '<C-r>=Ocr()<cr>'},
 

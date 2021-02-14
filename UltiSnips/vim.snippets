@@ -1,4 +1,6 @@
 global !p
+linelen = 88
+
 def floor(i):
     if int(i) == i:
         return int(i)
@@ -24,13 +26,14 @@ endfunction
 $0
 endsnippet
 
-snippet sect "headings of sections" bwA
-"`!p snip.rv = '=' * (37 - floor(len(t[1]) / 2))` ${1:${VISUAL}} `!p snip.rv = '=' * (37 - ceil(len(t[1]) / 2))`"
+snippet line "Comment Using Line" bw
+"`!p snip.rv = '-' * floor((linelen - 4 - len(t[1])) / 2)`\ ${1} /`!p snip.rv = '-' * ceil((linelen - 4 - len(t[1])) / 2)`
+$0
 endsnippet
 
-snippet box "Box" bwA
-"+--------------------------------------------------------------------------+" 
-"|`!p snip.rv = ' ' * (37 - floor(len(t[1]) / 2))` ${1:${VISUAL}} `!p snip.rv = ' ' * (37 - ceil(len(t[1]) / 2))`|"
-"+--------------------------------------------------------------------------+"
+snippet box "Comment Using Big Box" bw
+"+`!p snip.rv = '-' * (linelen-3)`+
+"|`!p snip.rv = ' ' * floor((linelen - 7 - len(t[1])) / 2)`\ ${1} /`!p snip.rv = ' ' * ceil((linelen - 7 - len(t[1])) / 2)`|
+"+`!p snip.rv = '-' * (linelen-3)`+
 $0
 endsnippet

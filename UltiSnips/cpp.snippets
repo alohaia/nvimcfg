@@ -1,26 +1,26 @@
 # A valid snippet should starts with:
 #
-#		snippet trigger_word [ "description" [ options ] ]
+#        snippet trigger_word [ "description" [ options ] ]
 #
 # and end with:
 #
-#		endsnippet
+#        endsnippet
 #
 # Snippet options:
 #
-#		b - Beginning of line.
-#		i - In-word expansion.
-#		w - Word boundary.
-#		r - Regular expression
-#		e - Custom context snippet
-#		A - Snippet will be triggered automatically, when condition matches.
+#        b - Beginning of line.
+#        i - In-word expansion.
+#        w - Word boundary.
+#        r - Regular expression
+#        e - Custom context snippet
+#        A - Snippet will be triggered automatically, when condition matches.
 #
 # Basic example:
 #
-#		snippet emitter "emitter properties" b
-#		private readonly ${1} = new Emitter<$2>()
-#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
-#		endsnippet
+#        snippet emitter "emitter properties" b
+#        private readonly ${1} = new Emitter<$2>()
+#        public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#        endsnippet
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
@@ -28,7 +28,7 @@
 snippet "(int\ )?main(\(\))?" "main() function" bwr
 int main(int ${1:argc}, char** ${2:argv})
 {
-	${3://Do something here.}
+    ${3://Do something here.}
 }$0
 endsnippet
 
@@ -39,36 +39,36 @@ endsnippet
 snippet enum "enum" bw
 enum ${1:class }${2:name} : ${3:int}
 {
-	${4://Enumerations here.}
+    ${4://Enumerations here.}
 };$0
 endsnippet
 
 snippet switch "switch" bw
 switch (${1:varname})
 {
-	case ${2:constexpr}: $3
-	${4:default: ${5:break;}}
+    case ${2:constexpr}: $3
+    ${4:default: ${5:break;}}
 }$0
 endsnippet
 
 snippet while "while loop" bw
 while (${1:true})
 {
-	${2:${VISUAL}}
+    ${2:${VISUAL}}
 }$0
 endsnippet
 
 snippet for "for loop" bw
 for (${1:int ${2:i} = 0}; ${3:$2 ${4}}; ${5:++$2})
 {
-	${6:${VISUAL}}
+    ${6:${VISUAL}}
 }$0
 endsnippet
 
 snippet if "if" bw
 if (${1:condition})
 {
-	${2:${VISUAL}}
+    ${2:${VISUAL}}
 }$0
 endsnippet
 
@@ -76,10 +76,10 @@ snippet class "class" bw
 class ${1:name}
 {
 private:
-	${2://Private members here.}
+    ${2://Private members here.}
 public:
-	$1();
-	~$1();
+    $1();
+    ~$1();
 };$0
 endsnippet
 
@@ -87,15 +87,22 @@ snippet tclass "template class" bw
 template <class> class ${1:name}
 {
 private:
-	${2://Private members here.}
+    ${2://Private members here.}
 public:
-	$1();
-	~$1();
+    $1();
+    ~$1();
 };$0
 endsnippet
 
+######################################\ Comments /######################################
+snippet sect "Comment sections" bw
+//{{{${1}
+${2:${VISUAL}}
+//}}}$0
+endsnippet
 
-#Adjustments
+####################################\ Adjustments /#####################################
+
 # snippet "    (public|protected|private):" rbA
 # `!p
 # snip.rv = match.group(1)

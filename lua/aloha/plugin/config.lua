@@ -201,7 +201,7 @@ function config.devicons()
 end
 
 ----------------------------------\ nvim-treesitter /-----------------------------------
-config.treesitter = function()
+function config.treesitter()
     require'nvim-treesitter.configs'.setup {
         ensure_installed = 'maintained',
         highlight = {
@@ -404,22 +404,22 @@ function config.translator()
 end
 
 ------------------------------------\ web_devicons /------------------------------------
-function config.web_devicons()
-    require'nvim-web-devicons'.setup {
-     -- your personnal icons can go here (to override)
-     -- DevIcon will be appended to `name`
-     override = {
-      zsh = {
-        icon = "",
-        color = "#428850",
-        name = "Zsh"
-      }
-     };
-     -- globally enable default icons (default to false)
-     -- will get overriden by `get_icons` option
-     default = true;
-    }
-end
+-- function config.web_devicons()
+--     require'nvim-web-devicons'.setup {
+--      -- your personnal icons can go here (to override)
+--      -- DevIcon will be appended to `name`
+--      override = {
+--       zsh = {
+--         icon = "",
+--         color = "#428850",
+--         name = "Zsh"
+--       }
+--      };
+--      -- globally enable default icons (default to false)
+--      -- will get overriden by `get_icons` option
+--      default = true;
+--     }
+-- end
 
 -----------------------------------\ nerdcommenter /------------------------------------
 g.NERDSpaceDelims = 1
@@ -437,28 +437,35 @@ g.NERDTrimTrailingWhitespace = 1
 g.NERDToggleCheckAllLines = 1
 
 -------------------------------------\ lspconfig /--------------------------------------
-local nvim_lsp = require('lspconfig')
-nvim_lsp.clangd.setup{on_attach=require'completion'.on_attach}
-nvim_lsp.pyright.setup{on_attach=require'completion'.on_attach}
-nvim_lsp.sumneko_lua.setup{on_attach=require'completion'.on_attach}
+function config.lspconfig()
+    local nvim_lsp = require('lspconfig')
+    nvim_lsp.clangd.setup{on_attach=require'completion'.on_attach}
+    nvim_lsp.pyright.setup{on_attach=require'completion'.on_attach}
+    nvim_lsp.sumneko_lua.setup{on_attach=require'completion'.on_attach}
 
-add_maps(
-    {'n', 'gD',        '<Cmd>lua vim.lsp.buf.declaration()<CR>'},
-    {'n', 'gd',        '<Cmd>lua vim.lsp.buf.definition()<CR>'},
-    -- {'n', 'K',         '<Cmd>lua vim.lsp.buf.hover()<CR>'},
-    {'n', 'gi',        '<cmd>lua vim.lsp.buf.implementation()<CR>'},
-    -- {'n', '<C-k>',     '<cmd>lua vim.lsp.buf.signature_help()<CR>'},
-    {'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>'},
-    {'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>'},
-    {'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>'},
-    {'n', '<leader>D',  '<cmd>lua vim.lsp.buf.type_definition()<CR>'},
-    {'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>'},
-    {'n', 'gr',        '<cmd>lua vim.lsp.buf.references()<CR>'},
-    {'n', '<leader>e',  '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>'},
-    {'n', '[d',        '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>'},
-    {'n', ']d',        '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>'},
-    {'n', '<leader>q',  '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>'}
-)
+    vim.g.completion_enable_snippet = "UltiSnips"
+
+    aloha.wim.map.add_maps(
+        {'i', '<Cr>',      '<Plug>(completion_trigger)', {silent = false, noremap = false}},
+        {'i', '<tab>',     '<Plug>(completion_smart_tab)', {silent = false, noremap = false}},
+        {'i', '<S-tab>',   '<Plug>(completion_smart_s_tab)', {silent = false, noremap = false}},
+        {'n', 'gD',        '<Cmd>lua vim.lsp.buf.declaration()<CR>'},
+        {'n', 'gd',        '<Cmd>lua vim.lsp.buf.definition()<CR>'},
+        -- {'n', 'K',         '<Cmd>lua vim.lsp.buf.hover()<CR>'},
+        {'n', 'gi',        '<cmd>lua vim.lsp.buf.implementation()<CR>'},
+        -- {'n', '<C-k>',     '<cmd>lua vim.lsp.buf.signature_help()<CR>'},
+        {'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>'},
+        {'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>'},
+        {'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>'},
+        {'n', '<leader>D',  '<cmd>lua vim.lsp.buf.type_definition()<CR>'},
+        {'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>'},
+        {'n', 'gr',        '<cmd>lua vim.lsp.buf.references()<CR>'},
+        {'n', '<leader>e',  '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>'},
+        {'n', '[d',        '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>'},
+        {'n', ']d',        '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>'},
+        {'n', '<leader>q',  '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>'}
+    )
+end
 
 --------------------------------------\ airline /---------------------------------------
 g.airline_symbols = {
@@ -679,6 +686,14 @@ g.vimtex_compiler_latexrun_engines = {
 -- }
 -- npm i -g pyright
 -- require'lspconfig'.pyright.setup{}
+
+---------------------------------------\ zeavim /---------------------------------------
+function config.zeavim()
+    vim.g.zv_file_types = {
+        cpp = "c,cpp,qt,glib,opencv",
+        python = "python,pandas,numpy",
+    }
+end
 
 ----------------------------------------------------------------------------------------
 --               \ Append Configurations to Each Items in Plugin List /               --

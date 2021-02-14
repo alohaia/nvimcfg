@@ -14,7 +14,7 @@ map.default_args = {
 }
 
 -------------------\ add mappings at any time bofore initialization /-------------------
--- @map_list: {{'x', ';', ':', {silent = false, nowait = true }}, ...}
+-- @map_list: {'x', ';', ':', {silent = false, nowait = true }}, ...
 function map.add_maps(...)
     map.list = utils.merge(map.list, {...})
 end
