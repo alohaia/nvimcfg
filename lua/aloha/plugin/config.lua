@@ -174,7 +174,7 @@ function config.vista()
         markdown = 'toc',
     }
     vim.g.vista_enable_markdown_extension    = 1
-    g['airline#extensions#fzf#enabled']  = 1
+    vim.g['airline#extensions#fzf#enabled']  = 1
     vim.g.vista_enable_markdown_extension    = 1
     vim.g.vista_fzf_preview                  = {'right:50%'}
     vim.g.vista_sidebar_width                = 50
@@ -238,45 +238,47 @@ function config.yoink()
         {'n', ']y',    '<plug>(YoinkRotateForward)',              { silent = false, noremap = false }},
         {'n', 'y',     '<plug>(YoinkYankPreserveCursorPosition)', { silent = false, noremap = false }},
         {'x', 'y',     '<plug>(YoinkYankPreserveCursorPosition)', { silent = false, noremap = false }})
+end
 
-    -----------------------------------\ vim-easymotiom /-----------------------------------
+-----------------------------------\ vim-easymotiom /-----------------------------------
+function config.easymotiom()
     vim.g.EasyMotion_do_mapping = 0
-    vim.g.EasyMotion_do_shade = 1
-    vim.g.EasyMotion_smartcase = 1
+    vim.g.EasyMotion_do_shade   = 1
+    vim.g.EasyMotion_smartcase  = 1
     aloha.wim.map.add_maps(
-        {'n', [[\']], ' <Plug>(easymotion-prefix)',       { noremap = false }},
-        {'n', [[\.]], ' <Plug>(easymotion-repeat)',       { noremap = false }},
-        {'n', [[\f]], ' <Plug>(easymotion-f)',            { noremap = false }},
-        {'n', [[\F]], ' <Plug>(easymotion-F)',            { noremap = false }},
-        {'n', [[\t]], ' <Plug>(easymotion-t)',            { noremap = false }},
-        {'n', [[\T]], ' <Plug>(easymotion-T)',            { noremap = false }},
-        {'n', [[\w]], ' <Plug>(easymotion-w)',            { noremap = false }},
-        {'n', [[\W]], ' <Plug>(easymotion-W)',            { noremap = false }},
-        {'n', [[\b]], ' <Plug>(easymotion-b)',            { noremap = false }},
-        {'n', [[\B]], ' <Plug>(easymotion-B)',            { noremap = false }},
-        {'n', [[\e]], ' <Plug>(easymotion-e)',            { noremap = false }},
-        {'n', [[\E]], ' <Plug>(easymotion-E)',            { noremap = false }},
-        {'n', [[\g]], ' <Plug>(easymotion-ge)',           { noremap = false }},
-        {'n', [[\g]], ' <Plug>(easymotion-gE)',           { noremap = false }},
-        {'n', [[\j]], ' <Plug>(easymotion-j)',            { noremap = false }},
-        {'n', [[\k]], ' <Plug>(easymotion-k)',            { noremap = false }},
-        {'n', [[\n]], ' <Plug>(easymotion-n)',            { noremap = false }},
-        {'n', [[\N]], ' <Plug>(easymotion-N)',            { noremap = false }},
-        {'n', [[\s]], ' <Plug>(easymotion-s)',            { noremap = false }},
-        {'n', [[\2s]], '<Plug>(easymotion-s2)',           { noremap = false }},
-        {'n', [[\2f]], '<Plug>(easymotion-f2)',           { noremap = false }},
-        {'n', [[\2F]], '<Plug>(easymotion-F2)',           { noremap = false }},
-        {'n', [[\2t]], '<Plug>(easymotion-t2)',           { noremap = false }},
-        {'n', [[\2T]], '<Plug>(easymotion-T2)',           { noremap = false }},
-        {'n', [[\ns]], '<Plug>(easymotion-sn)',           { noremap = false }},
-        {'n', [[\nf]], '<Plug>(easymotion-fn)',           { noremap = false }},
-        {'n', [[\nF]], '<Plug>(easymotion-Fn)',           { noremap = false }},
-        {'n', [[\nt]], '<Plug>(easymotion-tn)',           { noremap = false }},
-        {'n', [[\nT]], '<Plug>(easymotion-Tn)',           { noremap = false }},
-        {'n', [[\wf]], '<Plug>(easymotion-overwin-f)',    { noremap = false }},
-        {'n', [[\wF]], '<Plug>(easymotion-overwin-f2)',   { noremap = false }},
-        {'n', [[\wl]], '<Plug>(easymotion-overwin-line)', { noremap = false }},
-        {'n', [[\ww]], '<Plug>(easymotion-overwin-w)',    { noremap = false }})
+        {'n', [['']], ' <Plug>(easymotion-prefix)',       { noremap = false }},
+        {'n', [['.]], ' <Plug>(easymotion-repeat)',       { noremap = false }},
+        {'n', [['f]], ' <Plug>(easymotion-f)',            { noremap = false }},
+        {'n', [['F]], ' <Plug>(easymotion-F)',            { noremap = false }},
+        {'n', [['t]], ' <Plug>(easymotion-t)',            { noremap = false }},
+        {'n', [['T]], ' <Plug>(easymotion-T)',            { noremap = false }},
+        {'n', [['w]], ' <Plug>(easymotion-w)',            { noremap = false }},
+        {'n', [['W]], ' <Plug>(easymotion-W)',            { noremap = false }},
+        {'n', [['b]], ' <Plug>(easymotion-b)',            { noremap = false }},
+        {'n', [['B]], ' <Plug>(easymotion-B)',            { noremap = false }},
+        {'n', [['e]], ' <Plug>(easymotion-e)',            { noremap = false }},
+        {'n', [['E]], ' <Plug>(easymotion-E)',            { noremap = false }},
+        {'n', [['g]], ' <Plug>(easymotion-ge)',           { noremap = false }},
+        {'n', [['g]], ' <Plug>(easymotion-gE)',           { noremap = false }},
+        {'n', [['j]], ' <Plug>(easymotion-j)',            { noremap = false }},
+        {'n', [['k]], ' <Plug>(easymotion-k)',            { noremap = false }},
+        {'n', [['n]], ' <Plug>(easymotion-n)',            { noremap = false }},
+        {'n', [['N]], ' <Plug>(easymotion-N)',            { noremap = false }},
+        {'n', [['s]], ' <Plug>(easymotion-s)',            { noremap = false }},
+        {'n', [['2s]], '<Plug>(easymotion-s2)',           { noremap = false }},
+        {'n', [['2f]], '<Plug>(easymotion-f2)',           { noremap = false }},
+        {'n', [['2F]], '<Plug>(easymotion-F2)',           { noremap = false }},
+        {'n', [['2t]], '<Plug>(easymotion-t2)',           { noremap = false }},
+        {'n', [['2T]], '<Plug>(easymotion-T2)',           { noremap = false }},
+        {'n', [['ns]], '<Plug>(easymotion-sn)',           { noremap = false }},
+        {'n', [['nf]], '<Plug>(easymotion-fn)',           { noremap = false }},
+        {'n', [['nF]], '<Plug>(easymotion-Fn)',           { noremap = false }},
+        {'n', [['nt]], '<Plug>(easymotion-tn)',           { noremap = false }},
+        {'n', [['nT]], '<Plug>(easymotion-Tn)',           { noremap = false }},
+        {'n', [['wf]], '<Plug>(easymotion-overwin-f)',    { noremap = false }},
+        {'n', [['wF]], '<Plug>(easymotion-overwin-f2)',   { noremap = false }},
+        {'n', [['wl]], '<Plug>(easymotion-overwin-line)', { noremap = false }},
+        {'n', [['ww]], '<Plug>(easymotion-overwin-w)',    { noremap = false }})
 end
 
 -----------------------------------\ vim-subversive /-----------------------------------
@@ -334,18 +336,19 @@ end
 
 ------------------------------------\ vim-floaterm /------------------------------------
 function config.floaterm()
-    g.floaterm_keymap_toggle = '<F1>'
-    g.floaterm_keymap_prev   = '<F2>'
-    g.floaterm_keymap_next   = '<F3>'
-    g.floaterm_keymap_new    = '<F4>'
-    g.floaterm_gitcommit     = 'floaterm'
-    g.floaterm_autoinsert    = 1
-    g.floaterm_width         = 0.5
-    g.floaterm_height        = 0.5
-    g.floaterm_autoclose     = 1
-    g.floaterm_title         = 'floaterm: $1/$2'
-    g.floaterm_wintype       = 'popup'
-    g.floaterm_position      = 'bottomright'
+    vim.g.floaterm_keymap_toggle = '<F1>'
+    vim.g.floaterm_keymap_prev   = '<F2>'
+    vim.g.floaterm_keymap_next   = '<F3>'
+    vim.g.floaterm_keymap_new    = '<F4>'
+    vim.g.floaterm_gitcommit     = 'floaterm'
+    vim.g.floaterm_autoinsert    = 1
+    vim.g.floaterm_width         = 0.5
+    vim.g.floaterm_height        = 0.5
+    vim.g.floaterm_autoclose     = 1
+    vim.g.floaterm_title         = 'floaterm: $1/$2'
+    vim.g.floaterm_wintype       = 'popup'
+    vim.g.floaterm_position      = 'bottomright'
+    vim.cmd('hi link FloatermBorder Normal')
 end
 
 ----------------------------------------\ agit /----------------------------------------
@@ -422,19 +425,21 @@ end
 -- end
 
 -----------------------------------\ nerdcommenter /------------------------------------
-g.NERDSpaceDelims = 1
-g.NERDCompactSexyComs = 1
-g.NERDDefaultAlign = 'left'
-g.NERDAltDelims_java = 1
-g.NERDCustomDelimiters = {
-    c = {
-        left = '/**',
-        right = '*/'
+function config.nerdcommenter()
+    vim.g.NERDSpaceDelims = 1
+    vim.g.NERDCompactSexyComs = 1
+    vim.g.NERDDefaultAlign = 'left'
+    vim.g.NERDAltDelims_java = 1
+    vim.g.NERDCustomDelimiters = {
+        c = {
+            left = '/**',
+            right = '*/'
+        }
     }
-}
-g.NERDCommentEmptyLines = 1
-g.NERDTrimTrailingWhitespace = 1
-g.NERDToggleCheckAllLines = 1
+    vim.g.NERDCommentEmptyLines = 1
+    vim.g.NERDTrimTrailingWhitespace = 1
+    vim.g.NERDToggleCheckAllLines = 1
+end
 
 -------------------------------------\ lspconfig /--------------------------------------
 function config.lspconfig()
@@ -466,189 +471,6 @@ function config.lspconfig()
         {'n', '<leader>q',  '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>'}
     )
 end
-
---------------------------------------\ airline /---------------------------------------
-g.airline_symbols = {
-    crypt      = '',
-    linenr     = '☰',
-    linenr     = '㏑',
-    maxlinenr  = '¶',
-    branch     = '',    -- 
-    dirty      = '[+]',  -- ⚡
-    paste      = 'Þ',
-    spell      = 'Ꞩ',
-    notexists  = 'Ɇ',
-    whitespace = 'Ξ'
-}
-g.airline_powerline_fonts                      = 1
-g['airline#extensions#tabline#enabled']        = 1
-g['airline#extensions#tabline#buffer_nr_show'] = 1
-g['airline#extensions#tabline#formatter']      = 'default'
-g['airline#extensions#tabline#left_sep']       = '┆'
-g['airline#extensions#tabline#left_alt_sep']   = '┆'
-g['airline#extensions#tabline#right_sep']      = '┆'
-g['airline#extensions#tabline#right_alt_sep']  = '┆'
-g['airline_left_sep']                          = '┆'
-g['airline_left_alt_sep']                      = '┆'
-g['airline_right_sep']                         = '┆'
-g['airline_right_alt_sep']                     = '┆'
-
----------------------------------\ markdown-previwew /----------------------------------
-g.mkdp_auto_start = 0
-g.mkdp_auto_close = 0
-g.mkdp_refresh_slow = 0
-g.mkdp_command_for_global = 0
-g.mkdp_open_to_the_world = 0
-g.mkdp_open_ip = ''
-g.mkdp_browser = 'google-chrome-stable'
-g.mkdp_echo_preview_url = 0
-g.mkdp_browserfunc = ''
-g.mkdp_preview_options = {
-    mkit                = {},
-    katex               = {},
-    uml                 = {},
-    maid                = {},
-    disable_sync_scroll = 0,
-    sync_scroll_type    = 'middle',
-    hide_yaml_meta      = 1,
-    sequence_diagrams   = {},
-    flowchart_diagrams  = {},
-    content_editable    = false
-}
-g.mkdp_markdown_css = ''
-g.mkdp_highlight_css = ''
-g.mkdp_port = ''
-g.mkdp_page_title = '「${name}」'
-g.mkdp_filetypes = {'markdown', 'vimwiki'}
-
-----------------------------------\ vim-markdown-toc /----------------------------------
-g.vmt_cycle_list_item_markers = 1
-g.vmt_fence_text              = 'TOC'
-g.vmt_fence_closing_text      = '/TOC'
-g.vmt_cycle_list_item_markers = 1
-
----------------------------------------\ vimtex /---------------------------------------
-g.tex_flavor = 'latex'
-g.vimtex_view_method = 'zathura'
-g.vimtex_quickfix_mode = 0
-g.vimtex_compiler_progname = 'nvr'
-g.vimtex_complete_close_braces = 1
-g.vimtex_cache_root = '~/.config/nvim/.cache/vimtex'
-g.vimtex_mappings_enabled = 1
-g.tex_conceal='abdmg'
-g.vimtex_compiler_method = 'latexmk'
-g.vimtex_compiler_latexmk = {
-    build_dir  = '',
-    callback   = 1,
-    continuous = 1,
-    executable = 'latexmk',
-    hooks      = {},
-    options    = {
-        '-verbose',
-        '-file-line-error',
-        '-synctex=1',
-        '-interaction=nonstopmode',
-    },
-}
-g.vimtex_compiler_latexmk_engines = {
-    _        = '-xelatex',
-    pdflatex = '-pdf',
-    dvipdfex = '-pdfdvi',
-    lualatex = '-lualatex',
-    xelatex  = '-xelatex',
-    -- 'context (pdftex)' : '-pdf -pdflatex=texexec',
-    -- 'context (luatex)' : '-pdf -pdflatex=context',
-    -- 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
-}
-g.vimtex_compiler_latexrun_engines = {
-    _         = 'xelatex',
-    pdflatex  = 'pdflatex',
-    lualatex  = 'lualatex',
-    xelatex   = 'xelatex',
-}
-
---------------------------------------\ vimwiki /---------------------------------------
--- g.vimwiki_list = {
---     {
---         path                = '~/Shared/vimwiki/',
---         diary_index         = 'diary',
---         diary_header        = 'Diary',
---         diary_rel_path      = 'diary/',
---         syntax              = 'markdown',
---         ext                 = '.md',
---         links_space_char    = ' ',
---         makhi               = 1,
---         auto_tags           = 1,
---         auto_diary_index    = 0,
---         auto_generate_links = 1,
---         auto_generate_tags  = 1,
---         exclude_files       = {'**/README.md'},
---     },
---     {
---         path                = '~/vimwiki_origin/',
---         path_html           = '~/vimwiki_origin/export/',
---         syntax              = 'default',
---         ext                 = '.wiki',
---         links_space_char    = ' ',
---         auto_toc            = 1,
---         auto_tags           = 1,
---         auto_diary_index    = 0,
---         auto_generate_links = 1,
---         auto_generate_tags  = 1,
---         exclude_files       = {'**/README.md'},
---         }
--- }
--- g.vimwiki_conceal_pre = 1
--- g.vimwiki_use_calendar = 1
--- g.vimwiki_diary_months = {}
--- g.vimwiki_diary_months['1'] = '一月 January'
--- g.vimwiki_diary_months['2']  = '二月 February'
--- g.vimwiki_diary_months['3']  = '三月 March'
--- g.vimwiki_diary_months['4']  = '四月 April'
--- g.vimwiki_diary_months['5']  = '五月 May'
--- g.vimwiki_diary_months['6']  = '六月 June'
--- g.vimwiki_diary_months['7']  = '七月 July'
--- g.vimwiki_diary_months['8']  = '八月 August'
--- g.vimwiki_diary_months['9']  = '九月 September'
--- g.vimwiki_diary_months['10'] = '十月 October'
--- g.vimwiki_diary_months['11'] = '十一月 November'
--- g.vimwiki_diary_months['12'] = '十二月December'
--- g.vimwiki_hl_headers            = 1
--- g.vimwiki_hl_cb_checked         = 2
--- g.vimwiki_folding               = 'expr'
--- g.vimwiki_markdown_link_ext     = 1
--- g.vimwiki_table_reduce_last_col = 0
--- g.vimwiki_dir_link              = 'main'
--- g.vimwiki_toc_header            = 'Table of Contents'
--- g.vimwiki_toc_header_level      = 2
--- g.vimwiki_html_header_numbering = 2
--- g.vimwiki_links_header          = 'Generated Links'
--- g.vimwiki_links_header_level    = 2
--- g.vimwiki_tags_header           = 'Generated Tags'
--- g.vimwiki_tags_header_level     = 2
--- g.vimwiki_auto_header           = 1
--- g.vimwiki_markdown_header_style = 1
--- g.vimwiki_table_auto_fmt        = 1
--- g.vimwiki_key_mappings = {
---     table_format = 1,
---     table_mappings = 1,
--- }
--- g.vimwiki_url_maxsave = 0
--- g.vimwiki_global_ext = 1
--- g.vimwiki_ext2syntax = {}
--- g.vimwiki_ext2syntax['.md']       = 'markdown'
--- g.vimwiki_ext2syntax['.mkdn']     = 'markdown'
--- g.vimwiki_ext2syntax['.mdwn']     = 'markdown'
--- g.vimwiki_ext2syntax['.mdown']    = 'markdown'
--- g.vimwiki_ext2syntax['.markdown'] = 'markdown'
--- g.vimwiki_ext2syntax['.mw']       = 'media'
-
-
--- auto_tags:          automatically update the tags metadata when current wiki page is saved
--- auto_diary_index:   automatically update the diary index when opened.
--- auto_genrate_links: automatically update generated links when the current wiki page is saved.
--- auto_genrate_tags:  automatically update generated tags when the current wiki page is saved.
-
 
 -- nvim_lsp.ccls.setup {
 --     on_attach = on_attach,
@@ -687,6 +509,198 @@ g.vimtex_compiler_latexrun_engines = {
 -- npm i -g pyright
 -- require'lspconfig'.pyright.setup{}
 
+
+--------------------------------------\ airline /---------------------------------------
+function config.airline()
+    vim.g.airline_symbols = {
+        crypt      = '',
+        linenr     = '☰',
+        linenr     = '㏑',
+        maxlinenr  = '¶',
+        branch     = '',    -- 
+        dirty      = '[+]',  -- ⚡
+        paste      = 'Þ',
+        spell      = 'Ꞩ',
+        notexists  = 'Ɇ',
+        whitespace = 'Ξ'
+    }
+    vim.g.airline_powerline_fonts                      = 1
+    vim.g['airline#extensions#tabline#enabled']        = 1
+    vim.g['airline#extensions#tabline#buffer_nr_show'] = 1
+    vim.g['airline#extensions#tabline#formatter']      = 'default'
+    vim.g['airline#extensions#tabline#left_sep']       = '┆'
+    vim.g['airline#extensions#tabline#left_alt_sep']   = '┆'
+    vim.g['airline#extensions#tabline#right_sep']      = '┆'
+    vim.g['airline#extensions#tabline#right_alt_sep']  = '┆'
+    vim.g['airline_left_sep']                          = '┆'
+    vim.g['airline_left_alt_sep']                      = '┆'
+    vim.g['airline_right_sep']                         = '┆'
+    vim.g['airline_right_alt_sep']                     = '┆'
+end
+
+---------------------------------\ markdown-previwew /----------------------------------
+function config.markdown_preview()
+    vim.g.mkdp_auto_start = 0
+    vim.g.mkdp_auto_close = 0
+    vim.g.mkdp_refresh_slow = 0
+    vim.g.mkdp_command_for_global = 0
+    vim.g.mkdp_open_to_the_world = 0
+    vim.g.mkdp_open_ip = ''
+    vim.g.mkdp_browser = 'google-chrome-stable'
+    vim.g.mkdp_echo_preview_url = 0
+    vim.g.mkdp_browserfunc = ''
+    vim.g.mkdp_preview_options = {
+        mkit                = {},
+        katex               = {},
+        uml                 = {},
+        maid                = {},
+        disable_sync_scroll = 0,
+        sync_scroll_type    = 'middle',
+        hide_yaml_meta      = 1,
+        sequence_diagrams   = {},
+        flowchart_diagrams  = {},
+        content_editable    = false
+    }
+    vim.g.mkdp_markdown_css = ''
+    vim.g.mkdp_highlight_css = ''
+    vim.g.mkdp_port = ''
+    vim.g.mkdp_page_title = '「${name}」'
+    vim.g.mkdp_filetypes = {'markdown', 'vimwiki'}
+end
+
+----------------------------------\ vim-markdown-toc /----------------------------------
+function config.markdown_toc()
+    vim.g.vmt_cycle_list_item_markers = 1
+    vim.g.vmt_fence_text              = 'TOC'
+    vim.g.vmt_fence_closing_text      = '/TOC'
+    vim.g.vmt_cycle_list_item_markers = 1
+end
+
+---------------------------------------\ vimtex /---------------------------------------
+function config.vimtex()
+    vim.g.tex_flavor = 'latex'
+    vim.g.vimtex_view_method = 'zathura'
+    vim.g.vimtex_quickfix_mode = 0
+    vim.g.vimtex_compiler_progname = 'nvr'
+    vim.g.vimtex_complete_close_braces = 1
+    vim.g.vimtex_cache_root = '~/.config/nvim/.cache/vimtex'
+    vim.g.vimtex_mappings_enabled = 1
+    vim.g.tex_conceal='abdmg'
+    vim.g.vimtex_compiler_method = 'latexmk'
+    vim.g.vimtex_compiler_latexmk = {
+        build_dir  = '',
+        callback   = 1,
+        continuous = 1,
+        executable = 'latexmk',
+        hooks      = {},
+        options    = {
+            '-verbose',
+            '-file-line-error',
+            '-synctex=1',
+            '-interaction=nonstopmode',
+        },
+    }
+    vim.g.vimtex_compiler_latexmk_engines = {
+        _        = '-xelatex',
+        pdflatex = '-pdf',
+        dvipdfex = '-pdfdvi',
+        lualatex = '-lualatex',
+        xelatex  = '-xelatex',
+        -- 'context (pdftex)' : '-pdf -pdflatex=texexec',
+        -- 'context (luatex)' : '-pdf -pdflatex=context',
+        -- 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
+    }
+    vim.g.vimtex_compiler_latexrun_engines = {
+        _         = 'xelatex',
+        pdflatex  = 'pdflatex',
+        lualatex  = 'lualatex',
+        xelatex   = 'xelatex',
+    }
+end
+
+--------------------------------------\ vimwiki /---------------------------------------
+-- g.vimwiki_list = {
+--     {
+--         path                = '~/Shared/vimwiki/',
+--         diary_index         = 'diary',
+--         diary_header        = 'Diary',
+--         diary_rel_path      = 'diary/',
+--         syntax              = 'markdown',
+--         ext                 = '.md',
+--         links_space_char    = ' ',
+--         makhi               = 1,
+--         auto_tags           = 1,
+--         auto_diary_index    = 0,
+--         auto_generate_links = 1,
+--         auto_generate_tags  = 1,
+--         exclude_files       = {'**/README.md'},
+--     },
+--     {
+--         path                = '~/vimwiki_origin/',
+--         path_html           = '~/vimwiki_origin/export/',
+--         syntax              = 'default',
+--         ext                 = '.wiki',
+--         links_space_char    = ' ',
+--         auto_toc            = 1,
+--         auto_tags           = 1,
+--         auto_diary_index    = 0,
+--         auto_generate_links = 1,
+--         auto_generate_tags  = 1,
+--         exclude_files       = {'**/README.md'},
+--         }
+-- }
+-- g.vimwiki_conceal_pre = 1
+-- g.vimwiki_use_calendar = 1
+-- g.vimwiki_diary_months = {
+--     ['1']  = '一月 January',
+--     ['2']  = '二月 February',
+--     ['3']  = '三月 March',
+--     ['4']  = '四月 April',
+--     ['5']  = '五月 May',
+--     ['6']  = '六月 June',
+--     ['7']  = '七月 July',
+--     ['8']  = '八月 August',
+--     ['9']  = '九月 September',
+--     ['10'] = '十月 October',
+--     ['11'] = '十一月 November',
+--     ['12'] = '十二月December',
+-- }
+-- g.vimwiki_hl_headers            = 1
+-- g.vimwiki_hl_cb_checked         = 2
+-- g.vimwiki_folding               = 'expr'
+-- g.vimwiki_markdown_link_ext     = 1
+-- g.vimwiki_table_reduce_last_col = 0
+-- g.vimwiki_dir_link              = 'main'
+-- g.vimwiki_toc_header            = 'Table of Contents'
+-- g.vimwiki_toc_header_level      = 2
+-- g.vimwiki_html_header_numbering = 2
+-- g.vimwiki_links_header          = 'Generated Links'
+-- g.vimwiki_links_header_level    = 2
+-- g.vimwiki_tags_header           = 'Generated Tags'
+-- g.vimwiki_tags_header_level     = 2
+-- g.vimwiki_auto_header           = 1
+-- g.vimwiki_markdown_header_style = 1
+-- g.vimwiki_table_auto_fmt        = 1
+-- g.vimwiki_key_mappings = {
+--     table_format = 1,
+--     table_mappings = 1,
+-- }
+-- g.vimwiki_url_maxsave = 0
+-- g.vimwiki_global_ext = 1
+-- g.vimwiki_ext2syntax = {}
+-- g.vimwiki_ext2syntax['.md']       = 'markdown'
+-- g.vimwiki_ext2syntax['.mkdn']     = 'markdown'
+-- g.vimwiki_ext2syntax['.mdwn']     = 'markdown'
+-- g.vimwiki_ext2syntax['.mdown']    = 'markdown'
+-- g.vimwiki_ext2syntax['.markdown'] = 'markdown'
+-- g.vimwiki_ext2syntax['.mw']       = 'media'
+--
+
+-- auto_tags:          automatically update the tags metadata when current wiki page is saved
+-- auto_diary_index:   automatically update the diary index when opened.
+-- auto_genrate_links: automatically update generated links when the current wiki page is saved.
+-- auto_genrate_tags:  automatically update generated tags when the current wiki page is saved.
+
 ---------------------------------------\ zeavim /---------------------------------------
 function config.zeavim()
     vim.g.zv_file_types = {
@@ -695,13 +709,19 @@ function config.zeavim()
     }
 end
 
+---------------------------------------\ rooter /---------------------------------------
+function config.rooter()
+    vim.g.rooter_patterns = { '.rooter', '.git' }
+    vim.g.rooter_silent_chdir = 1
+end
+
 ----------------------------------------------------------------------------------------
 --               \ Append Configurations to Each Items in Plugin List /               --
 ----------------------------------------------------------------------------------------
 
 -- Normaliza Rpo Name
 -- eg. vim-markdown-preview.nvim ==> markdown_preview
-function _G.aloha.utils.normal(str)
+function _G.aloha.utils.normalize(str)
     local _,b,e = nil
     str = str:match('.*/(.*)$')
 
@@ -712,19 +732,20 @@ function _G.aloha.utils.normal(str)
     -- nil if didn't find
     e,_ = str:find('.[%.%-]n?vim')
 
+    -- replace - with _
     return str:sub(b, e):gsub('-', '_')
 end
 
 function config:list_show()
     for _,package in ipairs(_G.aloha.plugin.list) do
-        local normalized = _G.aloha.utils.normal(package[1])
+        local normalized = _G.aloha.utils.normalize(package[1])
         print(normalized)
     end
 end
 
 function config:init()
     for _,package in ipairs(_G.aloha.plugin.list) do
-        local normalized = _G.aloha.utils.normal(package[1])
+        local normalized = _G.aloha.utils.normalize(package[1])
         if type(config[normalized]) == 'function' then
             config[normalized]()
         end

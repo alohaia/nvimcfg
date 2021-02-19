@@ -658,9 +658,6 @@ endfunction
 command! -nargs=0 AsyncTaskFzf call s:fzf_task()
 command! -nargs=0 FzfTasks call s:fzf_task()
 
-"============================\ floaterm.vim /=============================
-hi link FloatermBorder Normal
-
 "============================\ vim-rooter /=============================
 let g:rooter_patterns = ['.rooter', '.git']
 let g:rooter_silent_chdir = 1
@@ -730,97 +727,97 @@ let g:rainbow_conf = {
 "==============================\ suda.vim /===============================
 "===========================\ vim-translator /============================
 "=============================\ vimwiki /=================================
-""Mappings: home/aloha/.config/nvim/ftplugin/vimwiki.vim
-" let g:vimwiki_key_mappings = { 'all_maps': 0, }
-let g:vimwiki_list = []
-let g:vimwiki_conceal_pre = 1
-let g:vimwiki_use_calendar = 1
-call add(g:vimwiki_list, {
-            \'path': '~/Shared/vimwiki/',
-            \'diary_index': 'diary',
-            \'diary_header': 'Diary',
-            \'diary_rel_path': 'diary/',
-            \'syntax': 'markdown',
-            \'ext': '.md',
-            \'links_space_char': ' ',
-            \'makhi': 1,
-            \'auto_tags': 1,
-            \'auto_diary_index': 0,
-            \'auto_generate_links': 1,
-            \'auto_generate_tags': 1,
-            \'exclude_files': ['**/README.md'],
-            \})
-"auto_tags:          automatically update the tags metadata when current wiki page is saved
-"auto_diary_index:   automatically update the diary index when opened.
-"auto_genrate_links: automatically update generated links when the current wiki page is saved.
-"auto_genrate_tags:  automatically update generated tags when the current wiki page is saved.
-" augroup indexautoupdate
-"     au!
-"     au bufenter index.md,index.wiki write
-"     " au bufenter index.md,index.wiki vimwikigeneratelinks
-"     " au bufenter index.md,index.wiki vimwikigeneratetaglinks
-" augroup END
-" augroup DiaryAutoUpdate
-"     au!
-"     " au BufEnter diary.md,diary.wiki VimwikiGenerateTagLinks
-"     "Delete old, insert new diary section into diary index file.
-"     au BufEnter diary.md,diary.wiki VimwikiDiaryGenerateLinks
-"     au BufEnter diary.md,diary.wiki write
-" augroup END
-" Exporting to html is only supported for original syntax
-call add(g:vimwiki_list, {
-            \'path': '~/vimwiki_origin/',
-            \'path_html': '~/vimwiki_origin/export/',
-            \'syntax': 'default',
-            \'ext': '.wiki',
-            \'links_space_char': ' ',
-            \'auto_toc': 1,
-            \'auto_tags': 1,
-            \'auto_diary_index': 0,
-            \'auto_generate_links': 1,
-            \'auto_generate_tags': 1,
-            \'exclude_files': ['**/README.md'],
-            \})
-            " \'nested_syntaxes': {'c++': 'cpp', 'cpp': 'c++'}
-            " \'template_path': '~/vimwiki/templates/',
-            " template_default    default
-let g:vimwiki_diary_months = {
-      \ 1: '一月 January', 2: '二月 February', 3: '三月 March',
-      \ 4: '四月 April', 5: '五月 May', 6: '六月 June',
-      \ 7: '七月 July', 8: '八月 August', 9: '九月 September',
-      \ 10: '十月 October', 11: '十一月 November', 12: '十二月December'
-      \ }
-let g:vimwiki_hl_headers = 1
-let g:vimwiki_hl_cb_checked = 2
-let g:vimwiki_folding = 'expr'
-let g:vimwiki_markdown_link_ext = 1  "将 g:vimwiki_list 中的 ext 添加到 "Link" 的末尾
-""Recommend to set when 'wrap' is seted.
-let g:vimwiki_table_reduce_last_col = 0
-let g:vimwiki_dir_link = 'main'
-let g:vimwiki_toc_header = 'Table of Contents'
-let g:vimwiki_toc_header_level = 2
-let g:vimwiki_html_header_numbering = 2
-let g:vimwiki_links_header = 'Generated Links'
-let g:vimwiki_links_header_level = 2
-let g:vimwiki_tags_header = 'Generated Tags'
-let g:vimwiki_tags_header_level = 2
-let g:vimwiki_auto_header = 1
-let g:vimwiki_markdown_header_style = 1
-"Use table-mode instead
-let g:vimwiki_table_auto_fmt = 1
-let g:vimwiki_key_mappings = {
-            \'table_format': 1,
-            \'table_mappings': 1,
-            \}
-"Prevent any link shortening
-let g:vimwiki_url_maxsave = 0
-""Toggle creation of temporary wikis.
-let g:vimwiki_global_ext = 1
-let g:vimwiki_ext2syntax = {
-            \'.md': 'markdown', '.mkdn': 'markdown',
-            \'.mdwn': 'markdown', '.mdown': 'markdown',
-            \'.markdown': 'markdown', '.mw': 'media'
-            \}
+" ""Mappings: home/aloha/.config/nvim/ftplugin/vimwiki.vim
+" " let g:vimwiki_key_mappings = { 'all_maps': 0, }
+" let g:vimwiki_list = []
+" let g:vimwiki_conceal_pre = 1
+" let g:vimwiki_use_calendar = 1
+" call add(g:vimwiki_list, {
+"             \'path': '~/Shared/vimwiki/',
+"             \'diary_index': 'diary',
+"             \'diary_header': 'Diary',
+"             \'diary_rel_path': 'diary/',
+"             \'syntax': 'markdown',
+"             \'ext': '.md',
+"             \'links_space_char': ' ',
+"             \'makhi': 1,
+"             \'auto_tags': 1,
+"             \'auto_diary_index': 0,
+"             \'auto_generate_links': 1,
+"             \'auto_generate_tags': 1,
+"             \'exclude_files': ['**/README.md'],
+"             \})
+" "auto_tags:          automatically update the tags metadata when current wiki page is saved
+" "auto_diary_index:   automatically update the diary index when opened.
+" "auto_genrate_links: automatically update generated links when the current wiki page is saved.
+" "auto_genrate_tags:  automatically update generated tags when the current wiki page is saved.
+" " augroup indexautoupdate
+" "     au!
+" "     au bufenter index.md,index.wiki write
+" "     " au bufenter index.md,index.wiki vimwikigeneratelinks
+" "     " au bufenter index.md,index.wiki vimwikigeneratetaglinks
+" " augroup END
+" " augroup DiaryAutoUpdate
+" "     au!
+" "     " au BufEnter diary.md,diary.wiki VimwikiGenerateTagLinks
+" "     "Delete old, insert new diary section into diary index file.
+" "     au BufEnter diary.md,diary.wiki VimwikiDiaryGenerateLinks
+" "     au BufEnter diary.md,diary.wiki write
+" " augroup END
+" " Exporting to html is only supported for original syntax
+" call add(g:vimwiki_list, {
+"             \'path': '~/vimwiki_origin/',
+"             \'path_html': '~/vimwiki_origin/export/',
+"             \'syntax': 'default',
+"             \'ext': '.wiki',
+"             \'links_space_char': ' ',
+"             \'auto_toc': 1,
+"             \'auto_tags': 1,
+"             \'auto_diary_index': 0,
+"             \'auto_generate_links': 1,
+"             \'auto_generate_tags': 1,
+"             \'exclude_files': ['**/README.md'],
+"             \})
+"             " \'nested_syntaxes': {'c++': 'cpp', 'cpp': 'c++'}
+"             " \'template_path': '~/vimwiki/templates/',
+"             " template_default    default
+" let g:vimwiki_diary_months = {
+"       \ 1: '一月 January', 2: '二月 February', 3: '三月 March',
+"       \ 4: '四月 April', 5: '五月 May', 6: '六月 June',
+"       \ 7: '七月 July', 8: '八月 August', 9: '九月 September',
+"       \ 10: '十月 October', 11: '十一月 November', 12: '十二月December'
+"       \ }
+" let g:vimwiki_hl_headers = 1
+" let g:vimwiki_hl_cb_checked = 2
+" let g:vimwiki_folding = 'expr'
+" let g:vimwiki_markdown_link_ext = 1  "将 g:vimwiki_list 中的 ext 添加到 "Link" 的末尾
+" ""Recommend to set when 'wrap' is seted.
+" let g:vimwiki_table_reduce_last_col = 0
+" let g:vimwiki_dir_link = 'main'
+" let g:vimwiki_toc_header = 'Table of Contents'
+" let g:vimwiki_toc_header_level = 2
+" let g:vimwiki_html_header_numbering = 2
+" let g:vimwiki_links_header = 'Generated Links'
+" let g:vimwiki_links_header_level = 2
+" let g:vimwiki_tags_header = 'Generated Tags'
+" let g:vimwiki_tags_header_level = 2
+" let g:vimwiki_auto_header = 1
+" let g:vimwiki_markdown_header_style = 1
+" "Use table-mode instead
+" let g:vimwiki_table_auto_fmt = 1
+" let g:vimwiki_key_mappings = {
+"             \'table_format': 1,
+"             \'table_mappings': 1,
+"             \}
+" "Prevent any link shortening
+" let g:vimwiki_url_maxsave = 0
+" ""Toggle creation of temporary wikis.
+" let g:vimwiki_global_ext = 1
+" let g:vimwiki_ext2syntax = {
+"             \'.md': 'markdown', '.mkdn': 'markdown',
+"             \'.mdwn': 'markdown', '.mdown': 'markdown',
+"             \'.markdown': 'markdown', '.mw': 'media'
+"             \}
 
 
 
