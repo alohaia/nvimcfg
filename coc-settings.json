@@ -194,6 +194,10 @@
     "todolist.floatwin.background": "",
     "todolist.dateFormat": "YYYY-MM-DD HH:mm",
 
+    "clangd.arguments": [
+        "--enable-config"
+    ],
+
     "languageserver": {
         "python": {
             "command": "python",

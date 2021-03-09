@@ -41,6 +41,8 @@ _G.aloha.wim.map.list = {
     {'n', '<c-b><c-p>', '<Cmd>bprevious<cr>'},
     {'x', '-', '<Cmd>bp<cr>'},
     {'x', '=', '<Cmd>bn<cr>'},
+    {'n', '_', '<Cmd>tabprevious<cr>'},
+    {'n', '+', '<Cmd>tabnext<cr>'},
     {'x', '_', '<Cmd>tabprevious<cr>'},
     {'x', '+', '<Cmd>tabnext<cr>'},
     {'n', '<leader>ba', '<Cmd>bufdo bd<cr>'},
@@ -99,10 +101,19 @@ _G.aloha.wim.map.list = {
     {'n', '<C-c>', [["+yW""yW]]},
     {'v', '<C-c>', [["+ygv""y]]},
 
-    {'i', '<M-m>', [[<esc>vB<Cr>h"_xf)a]], {noremap = false}},
-    {'i', '<M-n>', [[<esc>vB<Cr>f)a]], {noremap = false}},
+    {'i', '<M-m>', [[<esc>vB<Cr>h"_x2f]a]], {noremap = false}},
+    {'i', '<M-n>', [[<esc>vB<Cr>2f]a]], {noremap = false}},
 
     {'i', '<M-i>', '<C-r>=Ocr()<cr>'},
 
     {'t', '<M-q>', '<C-\\><C-n>'},
+
+    {'n', '<F5>', '<cmd>AsyncTask run<cr>'},
+    {'n', '<F6>', '<cmd>AsyncTask make<cr>'},
+
+    -- Mouse support
+    -- {'n', '<ScrollWhellUp>', '<C-y>'},
+    -- {'n', '<S-ScrollWhellUp>', '<C-u>'},
+    -- {'n', '<ScrollWhellDown>', '<C-e>'},
+    -- {'n', '<S-ScrollWhellDown>', '<C-d>'},
 }

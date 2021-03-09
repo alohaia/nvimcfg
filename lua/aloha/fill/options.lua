@@ -67,8 +67,8 @@ option.w_options = {
     cursorline     = true,
     colorcolumn    = '88',
     signcolumn     = 'yes',
-    foldmethod     = 'expr',
-    foldexpr       = 'nvim_treesitter#foldexpr()',
+    foldmethod     = 'syntax',
+    -- foldexpr       = 'nvim_treesitter#foldexpr()',
     foldcolumn     = '0',
 }
 

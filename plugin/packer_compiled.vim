@@ -23,11 +23,12 @@ if not string.find(package.cpath, install_cpath_pattern, 1, true) then
 end
 
 local function try_loadstring(s, component, name)
-  local success, err = pcall(loadstring(s))
+  local success, result = pcall(loadstring(s))
   if not success then
     print('Error running ' .. component .. ' for ' .. name)
-    error(err)
+    error(result)
   end
+  return result
 end
 
 _G.packer_plugins = {
@@ -88,11 +89,14 @@ _G.packer_plugins = {
     path = "/home/aloha/.config/nvim/pack/packer/start/fzf.vim"
   },
   indentLine = {
+    after_files = { "/home/aloha/.config/nvim/pack/packer/opt/indentLine/after/plugin/indentLine.vim" },
     loaded = false,
+    needs_bufread = false,
     path = "/home/aloha/.config/nvim/pack/packer/opt/indentLine"
   },
   ["markdown-preview.nvim"] = {
     loaded = false,
+    needs_bufread = false,
     path = "/home/aloha/.config/nvim/pack/packer/opt/markdown-preview.nvim"
   },
   nerdcommenter = {
@@ -103,20 +107,18 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/nvim-treesitter"
   },
-  ["nvim-web-devicons"] = {
-    loaded = true,
-    path = "/home/aloha/.config/nvim/pack/packer/start/nvim-web-devicons"
-  },
   ["onedark.vim"] = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/onedark.vim"
   },
   ["opengl.vim"] = {
     loaded = false,
+    needs_bufread = false,
     path = "/home/aloha/.config/nvim/pack/packer/opt/opengl.vim"
   },
   ["packer.nvim"] = {
     loaded = false,
+    needs_bufread = false,
     path = "/home/aloha/.config/nvim/pack/packer/opt/packer.nvim"
   },
   rainbow = {
@@ -125,6 +127,7 @@ _G.packer_plugins = {
   },
   ["thesaurus_query.vim"] = {
     loaded = false,
+    needs_bufread = false,
     path = "/home/aloha/.config/nvim/pack/packer/opt/thesaurus_query.vim"
   },
   ultisnips = {
@@ -189,6 +192,7 @@ _G.packer_plugins = {
   },
   ["vim-markdown-toc"] = {
     loaded = false,
+    needs_bufread = true,
     path = "/home/aloha/.config/nvim/pack/packer/opt/vim-markdown-toc"
   },
   ["vim-repeat"] = {
@@ -240,12 +244,15 @@ _G.packer_plugins = {
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
-vim.cmd [[au FileType c ++once lua require("packer.load")({'opengl.vim'}, { ft = "c" }, _G.packer_plugins)]]
-vim.cmd [[au FileType python ++once lua require("packer.load")({'indentLine'}, { ft = "python" }, _G.packer_plugins)]]
-vim.cmd [[au FileType wiki ++once lua require("packer.load")({'vim-markdown-toc', 'thesaurus_query.vim', 'markdown-preview.nvim'}, { ft = "wiki" }, _G.packer_plugins)]]
+vim.cmd [[au FileType wiki ++once lua require("packer.load")({'thesaurus_query.vim', 'markdown-preview.nvim', 'vim-markdown-toc'}, { ft = "wiki" }, _G.packer_plugins)]]
 vim.cmd [[au FileType text ++once lua require("packer.load")({'thesaurus_query.vim', 'markdown-preview.nvim'}, { ft = "text" }, _G.packer_plugins)]]
-vim.cmd [[au FileType markdown ++once lua require("packer.load")({'vim-markdown-toc', 'thesaurus_query.vim', 'markdown-preview.nvim'}, { ft = "markdown" }, _G.packer_plugins)]]
 vim.cmd [[au FileType cpp ++once lua require("packer.load")({'opengl.vim'}, { ft = "cpp" }, _G.packer_plugins)]]
+vim.cmd [[au FileType python ++once lua require("packer.load")({'indentLine'}, { ft = "python" }, _G.packer_plugins)]]
+vim.cmd [[au FileType c ++once lua require("packer.load")({'opengl.vim'}, { ft = "c" }, _G.packer_plugins)]]
+vim.cmd [[au FileType markdown ++once lua require("packer.load")({'thesaurus_query.vim', 'markdown-preview.nvim', 'vim-markdown-toc'}, { ft = "markdown" }, _G.packer_plugins)]]
+vim.cmd("augroup END")
+vim.cmd [[augroup filetypedetect]]
+vim.cmd [[source /home/aloha/.config/nvim/pack/packer/opt/vim-markdown-toc/ftdetect/markdown.vim]]
 vim.cmd("augroup END")
 END
 

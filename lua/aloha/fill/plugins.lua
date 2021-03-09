@@ -32,10 +32,7 @@ _G.aloha.plugin.list = {
     -- Git
     {'tpope/vim-fugitive'},
     {'cohama/agit.vim'},
-    {'mhinz/vim-startify'},
-    {'ron89/thesaurus_query.vim',
-        ft = { 'text', 'markdown', 'wiki' }
-    },
+    {'mhinz/vim-signify'},
 
     -- Text Editing
     -- {'tpope/vim-abolish'},
@@ -50,17 +47,29 @@ _G.aloha.plugin.list = {
     {'junegunn/vim-after-object'},
     -- {'chrisbra/NrrwRgn'},
     {'svermeulen/vim-subversive'},
+    {'ron89/thesaurus_query.vim',
+        -- ft = { 'text', 'markdown', 'wiki' }
+    },
 
     -- Visual Improvements
+    -- show colors
     {'RRethy/vim-hexokinase', run = 'make hexokinase' },
     {'vim-airline/vim-airline'},
+    -- {
+    --     'glepnir/galaxyline.nvim',
+    --     branch = 'main',
+    --     -- your statusline
+    --     -- config = function() require'my_statusline' end,
+    --     -- some optional icons
+    --     requires = {'kyazdani42/nvim-web-devicons', opt = true}
+    -- },
     {'Yggdroot/indentLine', ft = { 'python' }},
+    -- highlight other use of current word under the cursor
     {'RRethy/vim-illuminate'},
     {'luochen1990/rainbow'},
     {'joshdick/onedark.vim'},
     {'altercation/vim-colors-solarized'},
 
-    {'kyazdani42/nvim-web-devicons'},   -- need to add manually
     {'ryanoasis/vim-devicons'},
 
     -- Syntax and Highlighting
@@ -99,6 +108,8 @@ _G.aloha.plugin.list = {
     {'mg979/vim-visual-multi'},
     -- Undotree
     {'mbbill/undotree'},
+    -- Starting interface
+    {'mhinz/vim-startify'},
 
     -- Disabled Plugins ( Need :PackerCompile to make this work )
     {'dhruvasagar/vim-table-mode',       disable = true, ft = { 'text', 'markdown', 'wiki' }},

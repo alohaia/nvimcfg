@@ -145,3 +145,7 @@ documentclass
 #TF8
 OpenGL
 GLSL
+VBO
+VAO
+#EO
+EBO
