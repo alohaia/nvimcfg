@@ -729,21 +729,6 @@ let g:rainbow_conf = {
 let g:vimwiki_list = []
 let g:vimwiki_conceal_pre = 1
 let g:vimwiki_use_calendar = 1
-call add(g:vimwiki_list, {
-            \'path': '~/Shared/vimwiki/',
-            \'diary_index': 'diary',
-            \'diary_header': 'Diary',
-            \'diary_rel_path': 'diary/',
-            \'syntax': 'markdown',
-            \'ext': '.md',
-            \'links_space_char': ' ',
-            \'makhi': 1,
-            \'auto_tags': 1,
-            \'auto_diary_index': 0,
-            \'auto_generate_links': 1,
-            \'auto_generate_tags': 1,
-            \'exclude_files': ['**/README.md'],
-            \})
 "auto_tags:          automatically update the tags metadata when current wiki page is saved
 "auto_diary_index:   automatically update the diary index when opened.
 "auto_genrate_links: automatically update generated links when the current wiki page is saved.
@@ -763,21 +748,41 @@ call add(g:vimwiki_list, {
 " augroup END
 " Exporting to html is only supported for original syntax
 call add(g:vimwiki_list, {
-            \'path': '~/vimwiki_origin/',
-            \'path_html': '~/vimwiki_origin/export/',
-            \'syntax': 'default',
-            \'ext': '.wiki',
-            \'links_space_char': ' ',
-            \'auto_toc': 1,
-            \'auto_tags': 1,
-            \'auto_diary_index': 0,
-            \'auto_generate_links': 1,
-            \'auto_generate_tags': 1,
-            \'exclude_files': ['**/README.md'],
+            \ 'path': '~/vimwiki_origin/',
+            \ 'path_html': '~/vimwiki_origin/export/',
+            \ 'syntax': 'default',
+            \ 'ext': '.wiki',
+            \ 'links_space_char': ' ',
+            \ 'auto_toc': 1,
+            \ 'auto_tags': 1,
+            \ 'auto_diary_index': 0,
+            \ 'auto_generate_links': 1,
+            \ 'auto_generate_tags': 1,
+            \ 'exclude_files': ['**/README.md'],
+            \ 'template_path': '~/vimwiki_origin/templates/',
+            \ 'template_default': 'default',
+            \ 'template_ext': '.html',
+            \ 'css_name': 'css/style.css',
+            \ 'maxhi': 1,
+            \'nested_syntaxes': {'c++': 'cpp'}
             \})
-            " \'nested_syntaxes': {'c++': 'cpp', 'cpp': 'c++'}
             " \'template_path': '~/vimwiki/templates/',
             " template_default    default
+call add(g:vimwiki_list, {
+            \ 'path': '~/vimwiki/',
+            \ 'diary_index': 'diary',
+            \ 'diary_header': 'Diary',
+            \ 'diary_rel_path': 'diary/',
+            \ 'syntax': 'markdown',
+            \ 'ext': '.md',
+            \ 'links_space_char': ' ',
+            \ 'makhi': 1,
+            \ 'auto_tags': 1,
+            \ 'auto_diary_index': 0,
+            \ 'auto_generate_links': 1,
+            \ 'auto_generate_tags': 1,
+            \ 'exclude_files': ['**/README.md']
+            \})
 let g:vimwiki_diary_months = {
       \ 1: '一月 January', 2: '二月 February', 3: '三月 March',
       \ 4: '四月 April', 5: '五月 May', 6: '六月 June',
@@ -786,6 +791,7 @@ let g:vimwiki_diary_months = {
       \ }
 let g:vimwiki_hl_headers = 1
 let g:vimwiki_hl_cb_checked = 2
+let g:vimwiki_option_maxhi = 1
 let g:vimwiki_folding = 'expr'
 let g:vimwiki_markdown_link_ext = 1  "将 g:vimwiki_list 中的 ext 添加到 "Link" 的末尾
 ""Recommend to set when 'wrap' is seted.
