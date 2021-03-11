@@ -752,7 +752,7 @@ call add(g:vimwiki_list, {
             \ 'path_html': '~/vimwiki_origin/export/',
             \ 'syntax': 'default',
             \ 'ext': '.wiki',
-            \ 'links_space_char': ' ',
+            \ 'links_space_char': '_',
             \ 'auto_toc': 1,
             \ 'auto_tags': 1,
             \ 'auto_diary_index': 0,

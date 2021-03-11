@@ -109,7 +109,7 @@ _G.aloha.wim.map.list = {
     {'t', '<M-q>', '<C-\\><C-n>'},
 
     {'n', '<F5>', '<cmd>AsyncTask run<cr>'},
-    {'n', '<F6>', '<cmd>AsyncTask make<cr>'},
+    {'n', '<F6>', '<cmd>AsyncTask build<cr>'},
 
     -- Mouse support
     -- {'n', '<ScrollWhellUp>', '<C-y>'},
