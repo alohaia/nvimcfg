@@ -56,6 +56,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/auto-pairs"
   },
+  ["bullets.vim"] = {
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/aloha/.config/nvim/pack/packer/opt/bullets.vim"
+  },
   ["clever-f.vim"] = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/clever-f.vim"
@@ -126,9 +131,8 @@ _G.packer_plugins = {
     path = "/home/aloha/.config/nvim/pack/packer/start/rainbow"
   },
   ["thesaurus_query.vim"] = {
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/aloha/.config/nvim/pack/packer/opt/thesaurus_query.vim"
+    loaded = true,
+    path = "/home/aloha/.config/nvim/pack/packer/start/thesaurus_query.vim"
   },
   ultisnips = {
     loaded = true,
@@ -186,6 +190,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/vim-hexokinase"
   },
+  ["vim-hexowiki"] = {
+    loaded = true,
+    path = "/home/aloha/.config/nvim/pack/packer/start/vim-hexowiki"
+  },
   ["vim-illuminate"] = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/vim-illuminate"
@@ -199,6 +207,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/vim-repeat"
   },
+  ["vim-signify"] = {
+    loaded = true,
+    path = "/home/aloha/.config/nvim/pack/packer/start/vim-signify"
+  },
   ["vim-startify"] = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/vim-startify"
@@ -210,6 +222,11 @@ _G.packer_plugins = {
   ["vim-surround"] = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/vim-surround"
+  },
+  ["vim-table-mode"] = {
+    loaded = false,
+    needs_bufread = true,
+    path = "/home/aloha/.config/nvim/pack/packer/opt/vim-table-mode"
   },
   ["vim-translator"] = {
     loaded = true,
@@ -227,10 +244,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/vimtex"
   },
-  vimwiki = {
-    loaded = true,
-    path = "/home/aloha/.config/nvim/pack/packer/start/vimwiki"
-  },
   ["vista.vim"] = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/vista.vim"
@@ -244,12 +257,12 @@ _G.packer_plugins = {
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
-vim.cmd [[au FileType wiki ++once lua require("packer.load")({'thesaurus_query.vim', 'markdown-preview.nvim', 'vim-markdown-toc'}, { ft = "wiki" }, _G.packer_plugins)]]
-vim.cmd [[au FileType text ++once lua require("packer.load")({'thesaurus_query.vim', 'markdown-preview.nvim'}, { ft = "text" }, _G.packer_plugins)]]
-vim.cmd [[au FileType cpp ++once lua require("packer.load")({'opengl.vim'}, { ft = "cpp" }, _G.packer_plugins)]]
+vim.cmd [[au FileType markdown ++once lua require("packer.load")({'vim-table-mode', 'vim-markdown-toc', 'markdown-preview.nvim', 'bullets.vim'}, { ft = "markdown" }, _G.packer_plugins)]]
 vim.cmd [[au FileType python ++once lua require("packer.load")({'indentLine'}, { ft = "python" }, _G.packer_plugins)]]
 vim.cmd [[au FileType c ++once lua require("packer.load")({'opengl.vim'}, { ft = "c" }, _G.packer_plugins)]]
-vim.cmd [[au FileType markdown ++once lua require("packer.load")({'thesaurus_query.vim', 'markdown-preview.nvim', 'vim-markdown-toc'}, { ft = "markdown" }, _G.packer_plugins)]]
+vim.cmd [[au FileType cpp ++once lua require("packer.load")({'opengl.vim'}, { ft = "cpp" }, _G.packer_plugins)]]
+vim.cmd [[au FileType wiki ++once lua require("packer.load")({'vim-markdown-toc', 'markdown-preview.nvim'}, { ft = "wiki" }, _G.packer_plugins)]]
+vim.cmd [[au FileType text ++once lua require("packer.load")({'vim-table-mode', 'markdown-preview.nvim', 'bullets.vim'}, { ft = "text" }, _G.packer_plugins)]]
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]
 vim.cmd [[source /home/aloha/.config/nvim/pack/packer/opt/vim-markdown-toc/ftdetect/markdown.vim]]

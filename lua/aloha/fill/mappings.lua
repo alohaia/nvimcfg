@@ -64,8 +64,8 @@ _G.aloha.wim.map.list = {
     {'i', '<M-l>',   '<Right>'},
     {'i', '<M-k>',   '<Up>'},
     {'i', '<M-j>',   '<Down>'},
-    {'i', '<C-a>',   '<Home>'},
-    {'i', '<C-d>',   '<End>'},
+    -- {'i', '<C-a>',   '<Home>'},
+    -- {'i', '<C-d>',   '<End>'},
 
     {'n', '<UP>',    '<Cmd>res +1<CR>'},
     {'n', '<DOWN>',  '<Cmd>res -1<CR>'},
@@ -100,9 +100,6 @@ _G.aloha.wim.map.list = {
 
     {'n', '<C-c>', [["+yW""yW]]},
     {'v', '<C-c>', [["+ygv""y]]},
-
-    {'i', '<M-m>', [[<esc>vB<Cr>h"_x2f]a]], {noremap = false}},
-    {'i', '<M-n>', [[<esc>vB<Cr>2f]a]], {noremap = false}},
 
     {'i', '<M-i>', '<C-r>=Ocr()<cr>'},
 

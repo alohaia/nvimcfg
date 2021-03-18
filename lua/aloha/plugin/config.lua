@@ -329,7 +329,7 @@ end
 
 -------------------------------------\ auto-pairs /-------------------------------------
 function config.auto_pairs()
-    vim.g.AutoPairsShortcutToggle   = 'M-o'
+    vim.g.AutoPairsShortcutToggle   = '<M-o>'
     vim.g.AutoPairsShortcutFastWrap = '<M-e>'
     vim.g.AutoPairsShortcutJump     = ''
     vim.g.AutoPairsMapBs            = 1
@@ -686,6 +686,27 @@ end
 -- auto_diary_index:   automatically update the diary index when opened.
 -- auto_genrate_links: automatically update generated links when the current wiki page is saved.
 -- auto_genrate_tags:  automatically update generated tags when the current wiki page is saved.
+
+--------------------------------------\ bullets /---------------------------------------
+function config.bullets()
+    vim.g.bullets_enabled_file_types = { "markdown", "text" }
+    vim.g.bullets_enable_in_empty_buffers = 1
+    vim.g.bullets_checkbox_markers = " X"
+    vim.g.bullets_mapping_leader = ""
+    vim.g.bullets_delete_last_bullet_if_empty = 1
+    aloha.wim.map.add_maps(
+        {"i", "<C-a>", "<Cmd>ToggleCheckbox<CR>"}
+    )
+end
+
+-------------------------------------\ table_mode /-------------------------------------
+function config.table_mode()
+    aloha.wim.map.add_map("n", "<leader>tm", "<cmd>TableModeToggle<cr>")
+    vim.g.table_mode_corner_corner="|"
+    vim.g.table_mode_header_fillchar="-"
+    vim.g.table_mode_align_char=":"
+    vim.g.table_mode_delimiter = ','
+end
 
 ---------------------------------------\ zeavim /---------------------------------------
 function config.zeavim()
@@ -1053,6 +1074,13 @@ end
 --     }
 -- end
 
+--------------------------------------\ vimwiki /---------------------------------------
+config.vimwiki = function()
+    aloha.wim.map.add_maps(
+        {'i', '<M-m>', [[<esc>vB<Cr>h"_x2f]a]], {noremap = false}},
+        {'i', '<M-n>', [[<esc>vB<Cr>2f]a]], {noremap = false}}
+    )
+end
 
 ----------------------------------------------------------------------------------------
 --               \ Append Configurations to Each Items in Plugin List /               --

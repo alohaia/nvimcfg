@@ -47,8 +47,8 @@ endfun
 "================================ 移动模式 ===============================
 function! g:SwitchMotionMod()
     if !exists("g:motionMod") || g:motionMod == 1
-        noremap <S-M-j> 5<C-e>
-        noremap <S-M-k> 5<C-y>
+        noremap <S-M-j> 5<C-y>
+        noremap <S-M-k> 5<C-e>
         if exists('g:motionMod')
             echo 'Changed to Free mod.'
         endif
@@ -980,4 +980,20 @@ function! Ocr()
     return l:str
 endfunction
 
-autocmd FileType cpp,c set path+=./include
+autocmd FileType cpp,c setlocal path+=./include
+autocmd FileType vimwiki setlocal wrap
+
+"-----------------------------------\ vim-table-mode /----------------------------------
+function! s:isAtStartOfLine(mapping)
+  let text_before_cursor = getline('.')[0 : col('.')-1]
+  let mapping_pattern = '\V' . escape(a:mapping, '\')
+  let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', '', ''), '\')
+  return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
+endfunction
+
+inoreabbrev <expr> <bar><bar>
+          \ <SID>isAtStartOfLine('\|\|') ?
+          \ '<c-o>:TableModeEnable<cr><bar><space><left>' : '<bar><bar>'
+inoreabbrev <expr> __
+          \ <SID>isAtStartOfLine('__') ?
+          \ '<c-o>:silent! TableModeDisable<cr>' : '__'

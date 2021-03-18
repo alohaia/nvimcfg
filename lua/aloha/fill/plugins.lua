@@ -84,7 +84,9 @@ _G.aloha.plugin.list = {
     -- {'nvim-lua/lsp-status.nvim'},
 
     -- Note Taking
-    {'vimwiki/vimwiki'},
+    {'alohaia/vim-hexowiki'},
+    {'dkarter/bullets.vim', ft = { 'text', 'markdown'}},
+    {'dhruvasagar/vim-table-mode', ft = { 'text', 'markdown'}},
 
     -- Useful Functionalities
     {'voldikss/vim-floaterm'},
@@ -112,8 +114,6 @@ _G.aloha.plugin.list = {
     {'mhinz/vim-startify'},
 
     -- Disabled Plugins ( Need :PackerCompile to make this work )
-    {'dhruvasagar/vim-table-mode',       disable = true, ft = { 'text', 'markdown', 'wiki' }},
-    {'dkarter/bullets.vim',              disable = true, ft = { 'text', 'markdown', 'wiki' }},
     {'airblade/vim-rooter',              disable = true},
     {'wincent/terminus',                 disable = true},
     {'puremourning/vimspector',          disable = true, ft = { 'c', 'cpp', 'python', 'rust', 'ruby', 'go' }},
