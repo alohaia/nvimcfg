@@ -570,7 +570,7 @@ function config.vimtex()
     vim.g.vimtex_quickfix_mode = 0
     vim.g.vimtex_compiler_progname = 'nvr'
     vim.g.vimtex_complete_close_braces = 1
-    vim.g.vimtex_cache_root = '~/.config/nvim/.cache/vimtex'
+    vim.g.vimtex_cache_root = aloha.utils.join_paths(aloha.global.paths.home, '.config/nvim/.cache/vimtex')
     vim.g.vimtex_mappings_enabled = 1
     vim.g.tex_conceal='abdmg'
     vim.g.vimtex_compiler_method = 'latexmk'

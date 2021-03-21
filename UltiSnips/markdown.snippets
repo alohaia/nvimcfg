@@ -121,11 +121,11 @@ endsnippet
 ############# Hexo Tags ##############
 # See: https://hexo.io/zh-cn/docs/tag-plugins
 snippet href "Hexo reference" i
-{% post_link ${1:name} "${2:text}" false %}$0
+{% post_link ${1:${VISUAL}} "${2:$1}" false %}$0
 endsnippet
 
 snippet hinc "Hexo include code" i
-{% include_code ${1:title} lang:$2 ${3:from:${4:1} to:$5 }${6:filename} %}
+{% include_code ${6:$1} lang:$2 ${3:from:${4:1} to:$5 }${1:${VISUAL}} %}
 $0
 endsnippet
 
@@ -144,7 +144,7 @@ snippet hasp "Hexo asset resources" i
 endsnippet
 
 snippet hasi "Hexo asset resources" i
-{% assert_img ${1:htmlclass }${2:filename} ${3:${4:width} ${5:height} }${6:"${7:title'${8:alt}'}"} %}
+{% assert_img ${1:htmlclass }${2:${VISUAL}} ${3:${4:width} ${5:height} }${6:"${7:$2'${8:$2}'}"} %}
 endsnippet
 
 snippet hasl "Hexo asset resources" i
