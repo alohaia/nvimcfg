@@ -113,6 +113,9 @@ _G.aloha.plugin.list = {
     -- Starting interface
     {'mhinz/vim-startify'},
 
+    -- Vim Documentation
+    {'wsdjeg/vimdoc-cn'},
+
     -- Disabled Plugins ( Need :PackerCompile to make this work )
     {'airblade/vim-rooter',              disable = true},
     {'wincent/terminus',                 disable = true},

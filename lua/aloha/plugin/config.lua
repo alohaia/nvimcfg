@@ -321,6 +321,7 @@ end
 function config.visual_multi()
     vim.g.VM_leader = { default = ',', visual = ',', buffer = ',' }
     vim.g.VM_default_mappings = 1
+    vim.g.VM_theme = 'spacegray'
 end
 
 ------------------------------------\ vim-surround /------------------------------------
