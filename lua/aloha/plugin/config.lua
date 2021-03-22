@@ -37,12 +37,12 @@ config.startify = function()
     vim.g.startify_session_persistence = 0
     vim.g.startify_session_autoload    = 1
     vim.g.startify_skiplist            = {
-        [[\.git]],
+        [[pack/packer/start/vimdoc-cn/doc/.*\.cnx]]
     }
     vim.g.startify_files_number = 10
     vim.g.startify_bookmarks = {
-        '~/.config/nvim/plugins/vimspector/docs/schema/vimspector.schema.json',
-        '~/.config/nvim/plugins/vimspector/docs/schema/gadgets.schema.json',
+        -- '~/.config/nvim/plugins/vimspector/docs/schema/vimspector.schema.json',
+        -- '~/.config/nvim/plugins/vimspector/docs/schema/gadgets.schema.json',
     }
     vim.g.startify_commands = {
         { t = {'Press t to open coc-explorer.',      'CocCommand explorer'}},
@@ -353,7 +353,7 @@ function config.floaterm()
     vim.g.floaterm_title         = 'floaterm: $1/$2'
     vim.g.floaterm_wintype       = 'popup'
     vim.g.floaterm_position      = 'bottomright'
-    vim.cmd('hi link FloatermBorder Normal')
+    vim.cmd('au ColorScheme * hi link FloatermBorder Floaterm')
 end
 
 ----------------------------------------\ agit /----------------------------------------

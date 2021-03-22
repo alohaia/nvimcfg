@@ -240,6 +240,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/vim-yoink"
   },
+  ["vimdoc-cn"] = {
+    loaded = true,
+    path = "/home/aloha/.config/nvim/pack/packer/start/vimdoc-cn"
+  },
   vimtex = {
     loaded = true,
     path = "/home/aloha/.config/nvim/pack/packer/start/vimtex"
@@ -257,12 +261,12 @@ _G.packer_plugins = {
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
-vim.cmd [[au FileType text ++once lua require("packer.load")({'markdown-preview.nvim', 'vim-table-mode', 'bullets.vim'}, { ft = "text" }, _G.packer_plugins)]]
-vim.cmd [[au FileType wiki ++once lua require("packer.load")({'markdown-preview.nvim', 'vim-markdown-toc'}, { ft = "wiki" }, _G.packer_plugins)]]
-vim.cmd [[au FileType cpp ++once lua require("packer.load")({'opengl.vim'}, { ft = "cpp" }, _G.packer_plugins)]]
-vim.cmd [[au FileType c ++once lua require("packer.load")({'opengl.vim'}, { ft = "c" }, _G.packer_plugins)]]
-vim.cmd [[au FileType markdown ++once lua require("packer.load")({'markdown-preview.nvim', 'vim-markdown-toc', 'vim-table-mode', 'bullets.vim'}, { ft = "markdown" }, _G.packer_plugins)]]
+vim.cmd [[au FileType markdown ++once lua require("packer.load")({'bullets.vim', 'markdown-preview.nvim', 'vim-markdown-toc', 'vim-table-mode'}, { ft = "markdown" }, _G.packer_plugins)]]
 vim.cmd [[au FileType python ++once lua require("packer.load")({'indentLine'}, { ft = "python" }, _G.packer_plugins)]]
+vim.cmd [[au FileType c ++once lua require("packer.load")({'opengl.vim'}, { ft = "c" }, _G.packer_plugins)]]
+vim.cmd [[au FileType cpp ++once lua require("packer.load")({'opengl.vim'}, { ft = "cpp" }, _G.packer_plugins)]]
+vim.cmd [[au FileType text ++once lua require("packer.load")({'bullets.vim', 'markdown-preview.nvim', 'vim-table-mode'}, { ft = "text" }, _G.packer_plugins)]]
+vim.cmd [[au FileType wiki ++once lua require("packer.load")({'markdown-preview.nvim', 'vim-markdown-toc'}, { ft = "wiki" }, _G.packer_plugins)]]
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]
 vim.cmd [[source /home/aloha/.config/nvim/pack/packer/opt/vim-markdown-toc/ftdetect/markdown.vim]]

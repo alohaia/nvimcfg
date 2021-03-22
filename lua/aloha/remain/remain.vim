@@ -860,6 +860,8 @@ au ColorScheme molokai call s:hi_adjust_codedark()
 colorscheme onedark
 " colorscheme molokai
 
+hi link ColorColumn CursorLine
+
 "============================ Moving around ==============================
 au VimEnter * call SwitchMotionMod()
 nnoremap <silent> \\ :call SwitchMotionMod()<CR>
