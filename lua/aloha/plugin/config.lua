@@ -353,7 +353,7 @@ function config.floaterm()
     vim.g.floaterm_title         = 'floaterm: $1/$2'
     vim.g.floaterm_wintype       = 'popup'
     vim.g.floaterm_position      = 'bottomright'
-    vim.cmd('au ColorScheme * hi link FloatermBorder Floaterm')
+    vim.cmd('au Colorscheme * hi link FloatermBorder Floaterm')
 end
 
 ----------------------------------------\ agit /----------------------------------------
@@ -698,6 +698,7 @@ function config.bullets()
     aloha.wim.map.add_maps(
         {"i", "<C-a>", "<Cmd>ToggleCheckbox<CR>"}
     )
+    vim.g.bullets_outline_levels = {'ROM'}
 end
 
 -------------------------------------\ table_mode /-------------------------------------

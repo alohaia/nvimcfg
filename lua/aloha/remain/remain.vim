@@ -983,7 +983,7 @@ function! Ocr()
 endfunction
 
 autocmd FileType cpp,c setlocal path+=./include
-autocmd FileType vimwiki setlocal wrap
+autocmd FileType markdown setlocal wrap
 
 "-----------------------------------\ vim-table-mode /----------------------------------
 function! s:isAtStartOfLine(mapping)

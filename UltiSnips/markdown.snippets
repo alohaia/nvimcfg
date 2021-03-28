@@ -54,6 +54,11 @@
 #
 # endglobal
 
+global !p
+def anchor_format(str):
+	return re.sub('\s+', '-', str, 0).lower()
+endglobal
+
 snippet "(# )?H1" "First heading" rbA
 # ${1:`!v expand('%:t:r')`}$0
 endsnippet
@@ -119,9 +124,12 @@ snippet hl "highlight" i
 endsnippet
 
 snippet more "more" bw
-<!-- more -->
+<!-- more -->$0
 endsnippet
 
+snippet anc "anchor" i
+[${1:${VISUAL}}](#`!p snip.rv=anchor_format(t[1])`)$0
+endsnippet
 
 ############# Hexo Tags ##############
 # See: https://hexo.io/zh-cn/docs/tag-plugins
@@ -129,31 +137,35 @@ snippet href "Hexo reference" i
 {% post_link ${1:${VISUAL}} "${2:$1}" false %}$0
 endsnippet
 
+snippet hpp "Hexo post link to specified anchor" i
+<a href="{% post_path ${1}%}#${3:`!p snip.rv=anchor_format(t[2])`}">${2:${VISUAL}}</a>$0
+endsnippet
+
 snippet hinc "Hexo include code" i
 {% include_code ${6:$1} lang:$2 ${3:from:${4:1} to:$5 }${1:${VISUAL}} %}
 $0
 endsnippet
 
-snippet hifrm "Hexo iframe" i
+snippet hifm "Hexo iframe" i
 {% iframe ${1:url}${2: ${3:width} ${4:height} }%}
 $0
 endsnippet
 
 snippet himg "Hexo image" i
-{% img ${1:htmlclass }${2:filepath} ${3:${4:width} ${5:height} }${6:'"${7:title}" "${8:alt}"'} %}
+{% img ${1:htmlclass }${2:${VISUAL}} ${3:${4:width} ${5:height} }${6:'"${7:${VISUAL:title}}" "${8:${VISUAL:alt}}"'} %}
 $0
 endsnippet
 
 snippet hasp "Hexo asset resources" i
-{% assert_path filename %}
+{% asset_path filename %}
 endsnippet
 
 snippet hasi "Hexo asset resources" i
-{% assert_img ${1:htmlclass }${2:${VISUAL}} ${3:${4:width} ${5:height} }${6:"${7:$2'${8:$2}'}"} %}
+{% asset_img ${1:htmlclass }${2:${VISUAL}} ${3:${4:width} ${5:height} }${6:"${7:$2'${8:$2}'}"} %}
 endsnippet
 
 snippet hasl "Hexo asset resources" i
-{% assert_link filename %}
+{% asset_link filename %}
 endsnippet
 
 # snippet udl "underline" iwA
