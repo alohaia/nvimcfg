@@ -999,3 +999,6 @@ inoreabbrev <expr> <bar><bar>
 inoreabbrev <expr> __
           \ <SID>isAtStartOfLine('__') ?
           \ '<c-o>:silent! TableModeDisable<cr>' : '__'
+
+"-------------------------------------\ neovim_gdb /------------------------------------
+source ~/.config/nvim/lua/aloha/remain/neovim_gdb.vim

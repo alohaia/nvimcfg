@@ -256,24 +256,24 @@
                     }
                 }
             }
-        },
-        // lua-emmy-language-server-bin
-        "lua": {
-            "command": "java",
-            "args": ["-cp", "/usr/lib/lua-emmy-language-server/EmmyLua-LS-all.jar", "com.tang.vscode.MainKt"],
-            "filetypes": ["lua"],
-            "rootPatterns": [".git/"]
-        },
-        "golang": {
-            "command": "gopls",
-            "rootPatterns": ["go.mod"],
-            "filetypes": ["go"],
-            "initializationOptions": {
-                "gocodeCompletionEnabled": true,
-                "diagnosticsEnabled": true,
-                "lintTool": "golint"
-            }
         }
+        // lua-emmy-language-server-bin
+        // "lua": {
+        //     "command": "java",
+        //     "args": ["-cp", "/usr/lib/lua-emmy-language-server/EmmyLua-LS-all.jar", "com.tang.vscode.MainKt"],
+        //     "filetypes": ["lua"],
+        //     "rootPatterns": [".git/"]
+        // }
+        // "golang": {
+        //     "command": "gopls",
+        //     "rootPatterns": ["go.mod"],
+        //     "filetypes": ["go"],
+        //     "initializationOptions": {
+        //         "gocodeCompletionEnabled": true,
+        //         "diagnosticsEnabled": true,
+        //         "lintTool": "golint"
+        //     }
+        // }
         // https://github.com/MaskRay/ccls/wiki/Customization
         // "ccls": {
         //     "command": "ccls",

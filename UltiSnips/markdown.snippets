@@ -86,8 +86,8 @@ snippet icd "inline code" iwA
 endsnippet
 
 snippet mcd "Code block" bA
-\`\`\`${1:xxx} ${2:${3:title} ${4:url} ${5:link_text}}
-${2:${VISUAL}}
+\`\`\`${1:xxx}${2: ${3:title} ${4:url} ${5:link_text}}
+${6:${VISUAL}}
 \`\`\`$0
 endsnippet
 
@@ -138,21 +138,21 @@ snippet href "Hexo reference" i
 endsnippet
 
 snippet hpp "Hexo post link to specified anchor" i
-<a href="{% post_path ${1}%}#${3:`!p snip.rv=anchor_format(t[2])`}">${2:${VISUAL}}</a>$0
+<a href="{% post_path ${1} %}#${3:`!p snip.rv=anchor_format(t[2])`}">${2:${VISUAL}}</a>$0
 endsnippet
 
-snippet hinc "Hexo include code" i
+snippet hinc "Hexo include code" bwA
 {% include_code ${6:$1} lang:$2 ${3:from:${4:1} to:$5 }${1:${VISUAL}} %}
 $0
 endsnippet
 
-snippet hifm "Hexo iframe" i
+snippet hifm "Hexo iframe" bwA
 {% iframe ${1:url}${2: ${3:width} ${4:height} }%}
 $0
 endsnippet
 
-snippet himg "Hexo image" i
-{% img ${1:htmlclass }${2:${VISUAL}} ${3:${4:width} ${5:height} }${6:'"${7:${VISUAL:title}}" "${8:${VISUAL:alt}}"'} %}
+snippet himg "Hexo image" bwA
+{% img /resources/`!v expand('%:t:r')`/${6:${1/\s+/-/g}}.png ${2:${3:width} ${4:height} }${5:'"${1:${VISUAL}}" "$1"'} %}
 $0
 endsnippet
 
@@ -160,8 +160,8 @@ snippet hasp "Hexo asset resources" i
 {% asset_path filename %}
 endsnippet
 
-snippet hasi "Hexo asset resources" i
-{% asset_img ${1:htmlclass }${2:${VISUAL}} ${3:${4:width} ${5:height} }${6:"${7:$2'${8:$2}'}"} %}
+snippet hasi "Hexo asset resources" bwA
+{% asset_img ${1:${VISUAL}}.png ${2:${3:width} ${4:height} }${5:"${6:$1'${7:$1}'}"} %}
 endsnippet
 
 snippet hasl "Hexo asset resources" i
@@ -221,3 +221,31 @@ endsnippet
 # snippet tag "Html tags" iw
 # <${1:tag}>${2:${VISUAL}}</$1>$0
 # endsnippet
+
+####################################\ Note Taking /#####################################
+snippet bac "bacteria" bw
+## ${1:name}
+
+$1$2
+: $3
+
+### 生物学特性
+
+- 形态与染色
+- 抗原结构和分类
+- 抵抗力
+- 培养特性和生化反应
+
+### 致病性与免疫性
+
+#### 致病物质
+
+#### 所致疾病
+
+#### 免疫性
+
+### 微生物学检查
+
+### 治疗
+
+endsnippet

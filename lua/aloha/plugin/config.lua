@@ -309,7 +309,7 @@ end
 ------------------------------------\ clever-f.vim /------------------------------------
 function config.clever_f()
     vim.g.clever_f_smart_case              = 1
-    vim.g.clever_f_use_migemo              = 1
+    vim.g.clever_f_use_migemo              = 0
     vim.g.clever_f_fix_key_direction       = 1
     vim.g.clever_f_chars_match_any_signs   = ''
     vim.g.clever_f_repeat_last_char_inputs = { [[\<CR>]], [[\<Tab>]] }
@@ -507,10 +507,12 @@ function config.airline()
         branch     = '',    -- 
         dirty      = '[+]',  -- ⚡
         paste      = 'Þ',
-        spell      = 'Ꞩ',
+        -- spell      = 'Ꞩ',
+        spell      = '﯑',
         notexists  = 'Ɇ',
         whitespace = 'Ξ'
     }
+    -- ﯑韛 
     vim.g.airline_powerline_fonts                      = 1
     vim.g['airline#extensions#tabline#enabled']        = 1
     vim.g['airline#extensions#tabline#buffer_nr_show'] = 1

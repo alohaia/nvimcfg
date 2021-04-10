@@ -53,6 +53,8 @@ option.g_options = {
     showtabline=2,
 
     shortmess="atAF",
+
+    mouse='a',
 }
 
 option.w_options = {
