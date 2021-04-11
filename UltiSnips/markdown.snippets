@@ -65,13 +65,19 @@ endsnippet
 
 # snippet line "A line or heading2" bA
 # ${1:${VISUAL}}
-# ----------------------------------------------------
+# ----------------------------------------------------------------
 #
 # $0
 # endsnippet
 
-snippet ll "A simple line" bA
-----------------------------------------------------
+snippet ll "A simple line" bw
+----------------------------------------------------------------
+
+$0
+endsnippet
+
+snippet "^----" "Line" brA
+----------------------------------------------------------------
 
 $0
 endsnippet
@@ -80,6 +86,7 @@ snippet "(\# )?h([1-6])" "Headings" rbA
 `!p snip.rv = '#' * int(match.group(2)) ` ${1:${VISUAL}}$0
 endsnippet
 # `${1:`!p remove_sharp(snip.visual_text())`}$0
+
 
 snippet icd "inline code" iwA
 \`${1:${VISUAL}}\`$0
@@ -161,7 +168,7 @@ snippet hasp "Hexo asset resources" i
 endsnippet
 
 snippet hasi "Hexo asset resources" bwA
-{% asset_img ${1:${VISUAL}}.png ${2:${3:width} ${4:height} }${5:"${6:$1'${7:$1}'}"} %}
+{% asset_img ${1:${VISUAL}}.png ${2:${3:width} ${4:height} }${5:"${6:$1'${7:$6}'}"} %}
 endsnippet
 
 snippet hasl "Hexo asset resources" i
