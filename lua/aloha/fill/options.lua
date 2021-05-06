@@ -37,7 +37,7 @@ option.g_options = {
     undodir     = utils.join_paths(cache_base, caches.undo),
     backupdir   = utils.join_paths(cache_base, caches.backup),
 
-    completeopt = 'noinsert,menuone,noselect,preview',
+    completeopt = 'noinsert,menuone,noselect',
 
     backspace = 'start,eol,indent', whichwrap='b,s,<,>,h,l',
     sidescroll = 1, sidescrolloff = 5, scrolloff = 3,
@@ -91,7 +91,7 @@ option.b_options = {
     -- cinwords = 'if,else,while,do,for,switch', -- smartindent | cindent
     -- cinkeys = '0{,0},0),0],:,0#,!^F,o,O,e', -- cindent & !indentexpr
     -- 4.
-    indentkeys = '0{,0},0),0],:,0#,!^F,o,O,e', -- indentexpr
+    indentkeys = ':,0#,!^F,o,O,e', -- indentexpr
     -- set indentexpr = Get{Vim|Lua|Cpp}Indent -- Xcindent Xsmartindent !lisp
 
     spelllang = 'en_us,cjk',

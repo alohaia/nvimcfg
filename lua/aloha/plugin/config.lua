@@ -363,10 +363,14 @@ end
 
 ------------------------------------\ vim-signify /-------------------------------------
 function config.signify()
-    vim.g.signify_sign_add               = '▐'
-    vim.g.signify_sign_delete_first_line = '▔'
-    vim.g.signify_sign_delete            = '▎'
-    vim.g.signify_sign_change            = '░'
+    -- vim.g.signify_sign_add               = '▐'
+    -- vim.g.signify_sign_delete_first_line = '▔'
+    -- vim.g.signify_sign_delete            = '▎'
+    -- vim.g.signify_sign_change            = '░'
+    vim.g.signify_sign_add               = '▊'
+    vim.g.signify_sign_delete_first_line = '▊'
+    vim.g.signify_sign_delete            = '▊'
+    vim.g.signify_sign_change            = '▊'
 end
 
 -------------------------------------\ indentLine /-------------------------------------
@@ -430,33 +434,71 @@ end
 
 -------------------------------------\ lspconfig /--------------------------------------
 function config.lspconfig()
-    local nvim_lsp = require('lspconfig')
-    nvim_lsp.clangd.setup{on_attach=require'completion'.on_attach}
-    nvim_lsp.pyright.setup{on_attach=require'completion'.on_attach}
-    nvim_lsp.sumneko_lua.setup{on_attach=require'completion'.on_attach}
+    local lspconfig = require('lspconfig')
+    --nvim_lsp.clangd.setup{on_attach=require'completion'.on_attach}
+    --nvim_lsp.pyright.setup{on_attach=require'completion'.on_attach}
+    --nvim_lsp.sumneko_lua.setup{on_attach=require'completion'.on_attach}
 
-    vim.g.completion_enable_snippet = "UltiSnips"
+    --vim.g.completion_enable_snippet = "UltiSnips"
 
-    aloha.wim.map.add_maps(
-        {'i', '<Cr>',      '<Plug>(completion_trigger)', {silent = false, noremap = false}},
-        {'i', '<tab>',     '<Plug>(completion_smart_tab)', {silent = false, noremap = false}},
-        {'i', '<S-tab>',   '<Plug>(completion_smart_s_tab)', {silent = false, noremap = false}},
-        {'n', 'gD',        '<Cmd>lua vim.lsp.buf.declaration()<CR>'},
-        {'n', 'gd',        '<Cmd>lua vim.lsp.buf.definition()<CR>'},
-        -- {'n', 'K',         '<Cmd>lua vim.lsp.buf.hover()<CR>'},
-        {'n', 'gi',        '<cmd>lua vim.lsp.buf.implementation()<CR>'},
-        -- {'n', '<C-k>',     '<cmd>lua vim.lsp.buf.signature_help()<CR>'},
-        {'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>'},
-        {'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>'},
-        {'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>'},
-        {'n', '<leader>D',  '<cmd>lua vim.lsp.buf.type_definition()<CR>'},
-        {'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>'},
-        {'n', 'gr',        '<cmd>lua vim.lsp.buf.references()<CR>'},
-        {'n', '<leader>e',  '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>'},
-        {'n', '[d',        '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>'},
-        {'n', ']d',        '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>'},
-        {'n', '<leader>q',  '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>'}
-    )
+    local on_attach = function(client, bufnr)
+        local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+        local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+        buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+        -- Mappings.
+        local opts = { noremap=true, silent=true }
+        buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+        buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+        buf_set_keymap('n', 'H', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+        buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+        buf_set_keymap('n', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+        buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+        buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+        buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+        buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+        buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+        buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+        buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+        buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+        buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+        buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+        buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+
+        -- Set some keybinds conditional on server capabilities
+        if client.resolved_capabilities.document_formatting then
+            buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+        end
+        if client.resolved_capabilities.document_range_formatting then
+            buf_set_keymap("v", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+        end
+
+        -- Set autocommands conditional on server_capabilities
+        if client.resolved_capabilities.document_highlight then
+            vim.api.nvim_exec([[
+                hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
+                hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+                hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
+                augroup lsp_document_highlight
+                    autocmd! * <buffer>
+                    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+                    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+                augroup END
+            ]], false)
+        end
+    end
+
+    -- setup lsp clients
+    lspconfig.ccls.setup{
+        on_attach = on_attach,
+        commands_created = true,
+    }
+
+    lspconfig.pyright.setup{
+        on_attach = on_attach,
+        commands_created = true,
+    }
 end
 
 -- nvim_lsp.ccls.setup {
@@ -698,7 +740,9 @@ function config.bullets()
     vim.g.bullets_mapping_leader = ""
     vim.g.bullets_delete_last_bullet_if_empty = 1
     aloha.wim.map.add_maps(
-        {"i", "<C-a>", "<Cmd>ToggleCheckbox<CR>"}
+        {"i", "<C-a>", "<Cmd>ToggleCheckbox<CR>"},
+        {"n", "<leader>sn", "<Cmd>RenumberList<CR>"},
+        {"x", "<leader>sn", "<Cmd>RenumberSelection<CR>"}
     )
     vim.g.bullets_outline_levels = {'ROM'}
 end

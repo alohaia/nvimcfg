@@ -401,7 +401,6 @@ let g:far#mapping = {
 let g:coc_global_extensions = [
             \ 'coc-diagnostic',
             \ 'coc-clangd',
-            \ 'coc-tabnine',
             \ 'coc-sh',
             \ 'coc-css',
             \ 'coc-html',
@@ -417,6 +416,7 @@ let g:coc_global_extensions = [
             \ 'coc-lists',
             \ 'coc-explorer'
             \ ]
+            " \ 'coc-tabnine',
 function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'
@@ -984,6 +984,7 @@ endfunction
 
 autocmd FileType cpp,c setlocal path+=./include
 autocmd FileType markdown setlocal wrap
+autocmd FileType html,javascript,vue setlocal tabstop=2 shiftwidth=2
 
 "-----------------------------------\ vim-table-mode /----------------------------------
 function! s:isAtStartOfLine(mapping)
@@ -1001,4 +1002,9 @@ inoreabbrev <expr> __
           \ '<c-o>:silent! TableModeDisable<cr>' : '__'
 
 "-------------------------------------\ neovim_gdb /------------------------------------
-source ~/.config/nvim/lua/aloha/remain/neovim_gdb.vim
+" source ~/.config/nvim/lua/aloha/remain/neovim_gdb.vim
+
+"----------------------------------------\ Tab /----------------------------------------
+" inoremap <expr><silent> <Tab> strpart(getline('.'), 0, col('.')-1) =~ '^\s*$' ? "\<Tab>"
+"             \ : (pumvisible() ? "\<C-N>" : "\<C-X>\<C-O>")
+

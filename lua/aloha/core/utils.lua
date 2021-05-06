@@ -6,26 +6,27 @@ local utils = _G.aloha.utils
 
 local global = aloha.global
 
--------------------------\ merge without change original tabs /-------------------------
-function utils.merge(...)
-    local tabs = {...}
-    if not tabs then
-        return {}
-    end
-    local sum = {}
-    for i = 1,#tabs do
-        if tabs[i] then
-            for k,v in pairs(tabs[i]) do
-                if type(k) == 'number' then
-                    table.insert(sum, v)
-                else
-                    sum[k] = v
-                end
-            end
-        end
-    end
-    return sum
-end
+-------------------------\ merge without change original tbls /-------------------------
+-- `vim.tbl_extend` override number-indexed elements
+-- function utils.merge(...)
+--     local tbls = {...}
+--     if not tbls then
+--         return {}
+--     end
+--     local sum = {}
+--     for i = 1,#tbls do
+--         if tbls[i] then
+--             for k,v in pairs(tbls[i]) do
+--                 if type(k) == 'number' then
+--                     table.insert(sum, v)
+--                 else
+--                     sum[k] = v
+--                 end
+--             end
+--         end
+--     end
+--     return sum
+-- end
 
 ------------------------------------\ len of table /------------------------------------
 -- see :h vim.tbl_count

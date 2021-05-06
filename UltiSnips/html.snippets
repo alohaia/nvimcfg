@@ -1,0 +1,24 @@
+snippet html:5 "Basic html content" bwA
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=divice-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  $0
+</body>
+</html>
+endsnippet
+
+snippet "[\w-]+" "html tags" riw
+<`!p snip.rv=match.group(0)`${1}>${2:${VISUAL}}</`!p snip.rv=match.group(0)`>$0
+endsnippet
+
+snippet "([\w-]+) " "multiline html tags" riw
+<`!p snip.rv=match.group(1)`${1}>
+  ${2:${VISUAL}}
+</`!p snip.rv=match.group(1)`>$0
+endsnippet
+

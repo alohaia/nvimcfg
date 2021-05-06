@@ -117,6 +117,8 @@
 
     "prettier.printWidth": 100,
 
+    "eslint.run": "onSave",
+
     "coc-actions.useCursorLine": false,
     "coc-actions.hideCursor": false,
     "coc-actions.showActionKind": true,
@@ -256,14 +258,14 @@
                     }
                 }
             }
-        }
+        },
         // lua-emmy-language-server-bin
-        // "lua": {
-        //     "command": "java",
-        //     "args": ["-cp", "/usr/lib/lua-emmy-language-server/EmmyLua-LS-all.jar", "com.tang.vscode.MainKt"],
-        //     "filetypes": ["lua"],
-        //     "rootPatterns": [".git/"]
-        // }
+        "lua": {
+            "command": "java",
+            "args": ["-cp", "/usr/lib/lua-emmy-language-server/EmmyLua-LS-all.jar", "com.tang.vscode.MainKt"],
+            "filetypes": ["lua"],
+            "rootPatterns": [".git/"]
+        }
         // "golang": {
         //     "command": "gopls",
         //     "rootPatterns": ["go.mod"],

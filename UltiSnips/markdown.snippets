@@ -140,6 +140,18 @@ endsnippet
 
 ############# Hexo Tags ##############
 # See: https://hexo.io/zh-cn/docs/tag-plugins
+
+snippet tag "primary tag" iw
+{% ${1:tag} %}$0
+endsnippet
+
+snippet hnt "Hexo note tag(next)" bwA
+{% note ${1:default}${2: title} %}
+${3:${VISUAL}}
+{% endnote %}
+$0
+endsnippet
+
 snippet href "Hexo reference" i
 {% post_link ${1:${VISUAL}} "${2:$1}" false %}$0
 endsnippet
@@ -168,7 +180,7 @@ snippet hasp "Hexo asset resources" i
 endsnippet
 
 snippet hasi "Hexo asset resources" bwA
-{% asset_img ${1:${VISUAL}}.png ${2:${3:width} ${4:height} }${5:"${6:$1'${7:$6}'}"} %}
+{% asset_img "${1:${VISUAL}}.png" ${2:${3:width} ${4:height} }${5:"${6:$1}'${7:$6}'"} %}
 endsnippet
 
 snippet hasl "Hexo asset resources" i
@@ -253,6 +265,11 @@ $1$2
 
 ### 微生物学检查
 
-### 治疗
+### 防治原则
 
 endsnippet
+
+snippet cate "Category" iw
+[${1:uncategorized}, ${2:uncategorized}, ${3:uncategorized}]$0
+endsnippet
+

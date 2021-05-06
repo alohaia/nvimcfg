@@ -6,7 +6,7 @@ _G.aloha = {}
 function aloha:init()
     -- test mode
     self.test_mode = false
-    require'aloha/test'
+    require('aloha/test')
 
     --------------
     -- mounting --

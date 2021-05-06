@@ -79,7 +79,7 @@ _G.aloha.plugin.list = {
 
     -- Linting and Grammar Checking
     {'neoclide/coc.nvim'},
-    -- {'neovim/nvim-lspconfig'},
+    {'neovim/nvim-lspconfig'},
     -- {'nvim-lua/completion-nvim'},
     -- {'nvim-lua/lsp-status.nvim'},
 
