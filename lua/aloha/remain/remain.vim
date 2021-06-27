@@ -893,14 +893,7 @@ command! Showhi echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
 
-"================================ Viminal ================================
-function! OpenAsTerminal()
-    terminal
-    setlocal nonumber
-endfunction
-
-au TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=false}
-
+au TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=true}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -958,7 +951,6 @@ autocmd InsertEnter * call s:fcitx_enter_insert_mode()
 
 autocmd FileType tex,markdown,vimwiki setlocal spell
 
-
 " auto save
 
 augroup autosave
@@ -984,7 +976,7 @@ endfunction
 
 autocmd FileType cpp,c setlocal path+=./include
 autocmd FileType markdown setlocal wrap
-autocmd FileType html,javascript,vue setlocal tabstop=2 shiftwidth=2
+autocmd FileType markdown,html,yaml,javascript,vue setlocal tabstop=2 shiftwidth=2
 
 "-----------------------------------\ vim-table-mode /----------------------------------
 function! s:isAtStartOfLine(mapping)

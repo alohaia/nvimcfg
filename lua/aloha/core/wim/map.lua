@@ -11,15 +11,16 @@ map.default_args = setmetatable({
     noremap = true
 }, {
     __add = function(tbl_o, tbl_n)
+        local new_table = vim.deepcopy(tbl_o)
         if tbl_n ~= nil then
             vim.validate{
                 tbl_n = {tbl_n, 't'}
             }
             for k,v in pairs(tbl_n) do
-                tbl_o[k] = v
+                new_table[k] = v
             end
         end
-        return tbl_o
+        return new_table
     end
 }
 

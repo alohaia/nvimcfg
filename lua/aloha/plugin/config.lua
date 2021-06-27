@@ -46,8 +46,8 @@ config.startify = function()
     }
     vim.g.startify_commands = {
         { t = {'Press t to open coc-explorer.',      'CocCommand explorer'}},
-        { w = {"Open Index page for Vimwiki.",       'VimwikiIndex'}},
-        { d = {"Open Index page for Vimwiki Diary.", 'VimwikiDiaryIndex'}},
+        -- { w = {"Open Index page for Vimwiki.",       'VimwikiIndex'}},
+        -- { d = {"Open Index page for Vimwiki Diary.", 'VimwikiDiaryIndex'}},
     }
     vim.g.startify_lists = {
         { type = 'commands',  header = {'   Commands'}              },
@@ -186,7 +186,7 @@ function config.vista()
     vim.g.vista_echo_cursor_strategy         = 'scroll'
     vim.g.vista_update_on_text_changed       = 1
     vim.g.vista_update_on_text_changed_delay = 2000
-    vim.g.vista_close_on_jump                = 0
+    vim.g.vista_close_on_jump                = 1
     vim.g.vista_stay_on_open                 = 1
     vim.g.vista_blink                        = {0, 0}
     vim.g.vista_top_level_blink              = {0, 0}
@@ -205,7 +205,7 @@ function config.devicons()
 end
 
 ----------------------------------\ nvim-treesitter /-----------------------------------
-function config.treesitter()
+function config.treesitter_old()
     require'nvim-treesitter.configs'.setup {
         ensure_installed = 'maintained',
         highlight = {
@@ -233,6 +233,7 @@ function config.yoink()
     -- :wshada :rshada
     vim.g.yoinkSavePersistently = 1
     vim.g.yoinkSwapClampAtEnds  = 0
+    vim.g.yoinkSyncNumberedRegisters = 0
     aloha.wim.map.add_maps(
         {'n', '<c-n>', '<plug>(YoinkPostPasteSwapBack)',          { silent = false, noremap = false }},
         {'n', '<c-p>', '<plug>(YoinkPostPasteSwapForward)',       { silent = false, noremap = false }},
@@ -245,44 +246,44 @@ function config.yoink()
 end
 
 -----------------------------------\ vim-easymotiom /-----------------------------------
-function config.easymotiom()
+function config.easymotion()
     vim.g.EasyMotion_do_mapping = 0
     vim.g.EasyMotion_do_shade   = 1
     vim.g.EasyMotion_smartcase  = 1
     aloha.wim.map.add_maps(
-        {'n', [['']], ' <Plug>(easymotion-prefix)',       { noremap = false }},
-        {'n', [['.]], ' <Plug>(easymotion-repeat)',       { noremap = false }},
-        {'n', [['f]], ' <Plug>(easymotion-f)',            { noremap = false }},
-        {'n', [['F]], ' <Plug>(easymotion-F)',            { noremap = false }},
-        {'n', [['t]], ' <Plug>(easymotion-t)',            { noremap = false }},
-        {'n', [['T]], ' <Plug>(easymotion-T)',            { noremap = false }},
-        {'n', [['w]], ' <Plug>(easymotion-w)',            { noremap = false }},
-        {'n', [['W]], ' <Plug>(easymotion-W)',            { noremap = false }},
-        {'n', [['b]], ' <Plug>(easymotion-b)',            { noremap = false }},
-        {'n', [['B]], ' <Plug>(easymotion-B)',            { noremap = false }},
-        {'n', [['e]], ' <Plug>(easymotion-e)',            { noremap = false }},
-        {'n', [['E]], ' <Plug>(easymotion-E)',            { noremap = false }},
-        {'n', [['g]], ' <Plug>(easymotion-ge)',           { noremap = false }},
-        {'n', [['g]], ' <Plug>(easymotion-gE)',           { noremap = false }},
-        {'n', [['j]], ' <Plug>(easymotion-j)',            { noremap = false }},
-        {'n', [['k]], ' <Plug>(easymotion-k)',            { noremap = false }},
-        {'n', [['n]], ' <Plug>(easymotion-n)',            { noremap = false }},
-        {'n', [['N]], ' <Plug>(easymotion-N)',            { noremap = false }},
-        {'n', [['s]], ' <Plug>(easymotion-s)',            { noremap = false }},
-        {'n', [['2s]], '<Plug>(easymotion-s2)',           { noremap = false }},
-        {'n', [['2f]], '<Plug>(easymotion-f2)',           { noremap = false }},
-        {'n', [['2F]], '<Plug>(easymotion-F2)',           { noremap = false }},
-        {'n', [['2t]], '<Plug>(easymotion-t2)',           { noremap = false }},
-        {'n', [['2T]], '<Plug>(easymotion-T2)',           { noremap = false }},
-        {'n', [['ns]], '<Plug>(easymotion-sn)',           { noremap = false }},
-        {'n', [['nf]], '<Plug>(easymotion-fn)',           { noremap = false }},
-        {'n', [['nF]], '<Plug>(easymotion-Fn)',           { noremap = false }},
-        {'n', [['nt]], '<Plug>(easymotion-tn)',           { noremap = false }},
-        {'n', [['nT]], '<Plug>(easymotion-Tn)',           { noremap = false }},
-        {'n', [['wf]], '<Plug>(easymotion-overwin-f)',    { noremap = false }},
-        {'n', [['wF]], '<Plug>(easymotion-overwin-f2)',   { noremap = false }},
-        {'n', [['wl]], '<Plug>(easymotion-overwin-line)', { noremap = false }},
-        {'n', [['ww]], '<Plug>(easymotion-overwin-w)',    { noremap = false }})
+        {'n', [[,]], ' <Plug>(easymotion-prefix)',       { noremap = false }},
+        {'n', [[,.]], ' <Plug>(easymotion-repeat)',       { noremap = false }},
+        {'n', [[,f]], ' <Plug>(easymotion-f)',            { noremap = false }},
+        {'n', [[,F]], ' <Plug>(easymotion-F)',            { noremap = false }},
+        {'n', [[,t]], ' <Plug>(easymotion-t)',            { noremap = false }},
+        {'n', [[,T]], ' <Plug>(easymotion-T)',            { noremap = false }},
+        {'n', [[,w]], ' <Plug>(easymotion-w)',            { noremap = false }},
+        {'n', [[,W]], ' <Plug>(easymotion-W)',            { noremap = false }},
+        {'n', [[,b]], ' <Plug>(easymotion-b)',            { noremap = false }},
+        {'n', [[,B]], ' <Plug>(easymotion-B)',            { noremap = false }},
+        {'n', [[,e]], ' <Plug>(easymotion-e)',            { noremap = false }},
+        {'n', [[,E]], ' <Plug>(easymotion-E)',            { noremap = false }},
+        {'n', [[,g]], ' <Plug>(easymotion-ge)',           { noremap = false }},
+        {'n', [[,g]], ' <Plug>(easymotion-gE)',           { noremap = false }},
+        {'n', [[,j]], ' <Plug>(easymotion-j)',            { noremap = false }},
+        {'n', [[,k]], ' <Plug>(easymotion-k)',            { noremap = false }},
+        {'n', [[,n]], ' <Plug>(easymotion-n)',            { noremap = false }},
+        {'n', [[,N]], ' <Plug>(easymotion-N)',            { noremap = false }},
+        {'n', [[,s]], ' <Plug>(easymotion-s)',            { noremap = false }},
+        {'n', [[,2s]], '<Plug>(easymotion-s2)',           { noremap = false }},
+        {'n', [[,2f]], '<Plug>(easymotion-f2)',           { noremap = false }},
+        {'n', [[,2F]], '<Plug>(easymotion-F2)',           { noremap = false }},
+        {'n', [[,2t]], '<Plug>(easymotion-t2)',           { noremap = false }},
+        {'n', [[,2T]], '<Plug>(easymotion-T2)',           { noremap = false }},
+        {'n', [[,ns]], '<Plug>(easymotion-sn)',           { noremap = false }},
+        {'n', [[,nf]], '<Plug>(easymotion-fn)',           { noremap = false }},
+        {'n', [[,nF]], '<Plug>(easymotion-Fn)',           { noremap = false }},
+        {'n', [[,nt]], '<Plug>(easymotion-tn)',           { noremap = false }},
+        {'n', [[,nT]], '<Plug>(easymotion-Tn)',           { noremap = false }},
+        {'n', [[,wf]], '<Plug>(easymotion-overwin-f)',    { noremap = false }},
+        {'n', [[,wF]], '<Plug>(easymotion-overwin-f2)',   { noremap = false }},
+        {'n', [[,wl]], '<Plug>(easymotion-overwin-line)', { noremap = false }},
+        {'n', [[,ww]], '<Plug>(easymotion-overwin-w)',    { noremap = false }})
 end
 
 -----------------------------------\ vim-subversive /-----------------------------------
@@ -433,7 +434,8 @@ function config.nerdcommenter()
 end
 
 -------------------------------------\ lspconfig /--------------------------------------
-function config.lspconfig()
+-- function config.lspconfig()
+function config.lspconfig_silent()
     local lspconfig = require('lspconfig')
     --nvim_lsp.clangd.setup{on_attach=require'completion'.on_attach}
     --nvim_lsp.pyright.setup{on_attach=require'completion'.on_attach}
@@ -556,8 +558,8 @@ function config.airline()
     }
     -- ﯑韛 
     vim.g.airline_powerline_fonts                      = 1
-    vim.g['airline#extensions#tabline#enabled']        = 1
-    vim.g['airline#extensions#tabline#buffer_nr_show'] = 1
+    vim.g['airline#extensions#tabline#enabled']        = 0
+    vim.g['airline#extensions#tabline#buffer_nr_show'] = 0
     vim.g['airline#extensions#tabline#formatter']      = 'default'
     vim.g['airline#extensions#tabline#left_sep']       = '┆'
     vim.g['airline#extensions#tabline#left_alt_sep']   = '┆'

@@ -16,9 +16,6 @@ _G.aloha.plugin.list = {
     -- },
     -- Search and Replace
     {'junegunn/fzf.vim'},
-    {'pechorin/any-jump.vim'},
-    {'rhysd/clever-f.vim'},
-    {'brooth/far.vim'},
 
     -- taglist
     {'liuchengxu/vista.vim'},
@@ -42,8 +39,7 @@ _G.aloha.plugin.list = {
     {'tpope/vim-surround'},
     {'tpope/vim-repeat'},
     {'easymotion/vim-easymotion'},
-    {'svermeulen/vim-yoink'},
-    {'jiangmiao/auto-pairs'},
+    -- {'svermeulen/vim-yoink'},
     {'junegunn/vim-after-object'},
     -- {'chrisbra/NrrwRgn'},
     {'svermeulen/vim-subversive'},
@@ -68,7 +64,6 @@ _G.aloha.plugin.list = {
     {'RRethy/vim-illuminate'},
     {'luochen1990/rainbow'},
     {'joshdick/onedark.vim'},
-    {'altercation/vim-colors-solarized'},
 
     {'ryanoasis/vim-devicons'},
 
@@ -94,17 +89,10 @@ _G.aloha.plugin.list = {
     {'t9md/vim-choosewin'},
     -- Tasks
     {'skywind3000/asyncrun.vim'},
-    {'skywind3000/asyncrun.extra'},
+    -- {'skywind3000/asyncrun.extra'},
     {'skywind3000/asynctasks.vim'},
     -- Helper
-    -- {'liuchengxu/vim-which-key', cmd = {'WhichKey', 'WhichKeyVisual'}},
     {'voldikss/vim-translator'},
-    {'KabbAmine/zeavim.vim'},
-    -- Beyond of Programming
-    {'iamcco/markdown-preview.nvim',
-        ft = { 'text', 'markdown', 'wiki' },
-        run = 'sh -c "cd app && yarn install"' },
-    {'mzlogin/vim-markdown-toc', ft = { 'markdown', 'wiki' }},
     {'lervag/vimtex'},
     -- Multi cursor
     {'mg979/vim-visual-multi'},
@@ -117,6 +105,16 @@ _G.aloha.plugin.list = {
     {'wsdjeg/vimdoc-cn'},
 
     -- Disabled Plugins ( Need :PackerCompile to make this work )
+    {'pechorin/any-jump.vim', disable = true},
+    {'rhysd/clever-f.vim', disable = true},
+    {'brooth/far.vim', disable = true},
+    {'iamcco/markdown-preview.nvim',
+        ft = { 'text', 'markdown', 'wiki' },
+        run = 'sh -c "cd app && yarn install"',
+        disable = true},
+    {'jiangmiao/auto-pairs', disable = true},
+    {'mzlogin/vim-markdown-toc', disable = true, ft = { 'markdown', 'wiki' }},
+    {'KabbAmine/zeavim.vim', disable = true},
     {'airblade/vim-rooter',              disable = true},
     {'wincent/terminus',                 disable = true},
     {'puremourning/vimspector',          disable = true, ft = { 'c', 'cpp', 'python', 'rust', 'ruby', 'go' }},
@@ -140,3 +138,23 @@ _G.aloha.plugin.list = {
     {'rafalbromirski/vim-airlineish',    disable = true},
     {'sheerun/vim-polyglot',             disable = true},
 }
+
+--_G.aloha.plugin.list = {
+    --{'SirVer/ultisnips'},
+    --{'alohaia/vim-hexowiki'},
+    --{'wsdjeg/vimdoc-cn'},
+    --{'junegunn/fzf.vim'},
+    --{'preservim/nerdcommenter'},
+    --{'tpope/vim-surround'},
+    ---- {'jiangmiao/auto-pairs'},
+    --{'luochen1990/rainbow'},
+    --{'joshdick/onedark.vim'},
+    --{'dkarter/bullets.vim', ft = { 'text', 'markdown'}},
+    --{'dhruvasagar/vim-table-mode', ft = { 'text', 'markdown'}},
+    --{'voldikss/vim-floaterm'},
+    --{'skywind3000/asyncrun.vim'},
+    --{'skywind3000/asyncrun.extra'},
+    --{'skywind3000/asynctasks.vim'},
+    --{'vim-airline/vim-airline'},
+    --{'mhinz/vim-startify'},
+--}

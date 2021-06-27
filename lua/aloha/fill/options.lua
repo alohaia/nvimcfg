@@ -41,7 +41,7 @@ option.g_options = {
 
     backspace = 'start,eol,indent', whichwrap='b,s,<,>,h,l',
     sidescroll = 1, sidescrolloff = 5, scrolloff = 3,
-    listchars = 'trail:˽,tab:>-', fillchars = 'vert:▏',
+    listchars = 'trail:˽,tab:>-', fillchars = 'vert:▏', -- ┆
 
     fileencodings = 'utf-8,ucs-bom,gb18030,gbk,gb2312,cp936',
     emoji = true,

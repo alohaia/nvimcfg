@@ -99,14 +99,6 @@
 
     "tslint.autoFixOnSave": false,
 
-    // "python.autoComplete.addBrackets": true,
-    // "python.jediEnabled": false,
-    // "python.formatting.provider": "yapf",
-    // "python.formatting.yapfArgs": [
-    //     "--style",
-    //     "{SPACES_AROUND_POWER_OPERATOR: True, SPACES_BEFORE_COMMENT: 1}"
-    // ],
-
     "html.format.enable": true,
 
     "javascript.referencesCodeLens.enable": true,
@@ -122,6 +114,19 @@
     "coc-actions.useCursorLine": false,
     "coc-actions.hideCursor": false,
     "coc-actions.showActionKind": true,
+
+    //"pyright.enable": true,
+    //"pyright.completion.snippetSupport": true,
+    //"pyright.trace.server": "verbose",
+    //"pyright.disableDiagnostics": false,
+    // "pyright.organizeimports.provider": "pyright",
+    // "python.analysis.diagnosticMode": "workspace",
+    // "python.linting.enabled": true,
+    // "python.venvPath": "",
+    // "python.analysis.stubPath": "typings",
+    // "python.analysis.typeCheckingMode": "basic",
+    // "python.pythonPath": "python",
+    "python.analysis.reportGeneralTypeIssues": "none",
 
     // "explorer.position": "left",
     // "explorer.floating.border.enable": true,
@@ -201,64 +206,64 @@
     ],
 
     "languageserver": {
-        "python": {
-            "command": "python",
-            "args": ["-mpyls", "-vv", "--log-file", "/tmp/lsp_python.log"],
-            "trace.server": "verbose",
-            "filetypes": ["python"],
-            "settings": {
-                "pyls": {
-                    "enable": true,
-                    "trace": {
-                        "server": "verbose"
-                    },
-                    "commandPath": "",
-                    "configurationSources": ["pycodestyle"],
-                    "plugins": {
-                        "jedi_completion": {
-                            "enabled": true
-                        },
-                        "jedi_hover": {
-                            "enabled": true
-                        },
-                        "jedi_references": {
-                            "enabled": true
-                        },
-                        "jedi_signature_help": {
-                            "enabled": true
-                        },
-                        "jedi_symbols": {
-                            "enabled": true,
-                            "all_scopes": true
-                        },
-                        "mccabe": {
-                            "enabled": true,
-                            "threshold": 15
-                        },
-                        "preload": {
-                            "enabled": true
-                        },
-                        "pycodestyle": {
-                            "enabled": true
-                        },
-                        "pydocstyle": {
-                            "enabled": false,
-                            "match": "(?!test_).*\\.py",
-                            "matchDir": "[^\\.].*"
-                        },
-                        "pyflakes": {
-                            "enabled": true
-                        },
-                        "rope_completion": {
-                            "enabled": true
-                        },
-                        "yapf": {
-                            "enabled": true
-                        }
-                    }
-                }
-            }
-        },
+        //"python": {
+        //    "command": "python",
+        //    "args": ["-mpyls", "-vv", "--log-file", "/tmp/lsp_python.log"],
+        //    "trace.server": "verbose",
+        //    "filetypes": ["python"],
+        //    "settings": {
+        //        "pyls": {
+        //            "enable": true,
+        //            "trace": {
+        //                "server": "verbose"
+        //            },
+        //            "commandPath": "",
+        //            "configurationSources": ["pycodestyle"],
+        //            "plugins": {
+        //                "jedi_completion": {
+        //                    "enabled": true
+        //                },
+        //                "jedi_hover": {
+        //                    "enabled": true
+        //                },
+        //                "jedi_references": {
+        //                    "enabled": true
+        //                },
+        //                "jedi_signature_help": {
+        //                    "enabled": true
+        //                },
+        //                "jedi_symbols": {
+        //                    "enabled": true,
+        //                    "all_scopes": true
+        //                },
+        //                "mccabe": {
+        //                    "enabled": true,
+        //                    "threshold": 15
+        //                },
+        //                "preload": {
+        //                    "enabled": true
+        //                },
+        //                "pycodestyle": {
+        //                    "enabled": true
+        //                },
+        //                "pydocstyle": {
+        //                    "enabled": false,
+        //                    "match": "(?!test_).*\\.py",
+        //                    "matchDir": "[^\\.].*"
+        //                },
+        //                "pyflakes": {
+        //                    "enabled": true
+        //                },
+        //                "rope_completion": {
+        //                    "enabled": true
+        //                },
+        //                "yapf": {
+        //                    "enabled": true
+        //                }
+        //            }
+        //        }
+        //    }
+        //},
         // lua-emmy-language-server-bin
         "lua": {
             "command": "java",

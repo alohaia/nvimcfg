@@ -24,21 +24,21 @@ _G.aloha.wim.map.list = {
 
     {'i', '<M-BS>', '<Del>'},
 
-    {'n', '<C-h>', '<C-w><C-h>'},
-    {'n', '<C-j>', '<C-w><C-j>'},
-    {'n', '<C-k>', '<C-w><C-k>'},
-    {'n', '<C-l>', '<C-w><C-l>'},
-    {'x', '<C-h>', '<C-w><C-h>'},
-    {'x', '<C-j>', '<C-w><C-j>'},
-    {'x', '<C-k>', '<C-w><C-k>'},
-    {'x', '<C-l>', '<C-w><C-l>'},
+    -- {'n', '<C-h>', '<C-w><C-h>'},
+    -- {'n', '<C-j>', '<C-w><C-j>'},
+    -- {'n', '<C-k>', '<C-w><C-k>'},
+    -- {'n', '<C-l>', '<C-w><C-l>'},
+    -- {'x', '<C-h>', '<C-w><C-h>'},
+    -- {'x', '<C-j>', '<C-w><C-j>'},
+    -- {'x', '<C-k>', '<C-w><C-k>'},
+    -- {'x', '<C-l>', '<C-w><C-l>'},
 
     {'n', '-', '<Cmd>bp<cr>'},
     {'n', '=', '<Cmd>bn<cr>'},
-    {'n', '<c-b>n',     '<Cmd>bnext<cr>'},
-    {'n', '<c-b><c-n>', '<Cmd>bnext<cr>'},
-    {'n', '<c-b>p',     '<Cmd>bprevious<cr>'},
-    {'n', '<c-b><c-p>', '<Cmd>bprevious<cr>'},
+    -- {'n', '<c-b>n',     '<Cmd>bnext<cr>'},
+    -- {'n', '<c-b><c-n>', '<Cmd>bnext<cr>'},
+    -- {'n', '<c-b>p',     '<Cmd>bprevious<cr>'},
+    -- {'n', '<c-b><c-p>', '<Cmd>bprevious<cr>'},
     {'x', '-', '<Cmd>bp<cr>'},
     {'x', '=', '<Cmd>bn<cr>'},
     {'n', '_', '<Cmd>tabprevious<cr>'},
@@ -68,8 +68,8 @@ _G.aloha.wim.map.list = {
     -- {'i', '<C-d>',   '<End>'},
 
     {'n', '<UP>',    '<Cmd>res +1<CR>'},
-    {'n', '<DOWN>',  '<Cmd>res -1<CR>'},
     {'n', '<Left>',  '<Cmd>vert res +1<CR>'},
+    {'n', '<DOWN>',  '<Cmd>res -1<CR>'},
     {'n', '<Right>', '<Cmd>vert res -1<CR>'},
 
     {'n', '<M-k>', [[mz:m-2<cr>`z]]},
@@ -78,8 +78,8 @@ _G.aloha.wim.map.list = {
     {'x', '<M-k>', [[:m'<-2<cr>`>my`<mzgv`yo`z]]},
     {'n', '<M-l>', [["zxl"zP]]},
     {'n', '<M-h>', [["zxh"zP]]},
-    {'x', '<M-l>', [["zxl"z`<v`>P]]},
-    {'x', '<M-h>', [["zxh"zP`<v`>]]},
+    -- {'x', '<M-l>', [["zxl"z`<v`>P]]},
+    -- {'x', '<M-h>', [["zxh"zP`<v`>]]},
 
     -- c_Ctrl-A is built-in to "Get all"
     -- Use <C-q> instead
@@ -113,4 +113,7 @@ _G.aloha.wim.map.list = {
     -- {'n', '<S-ScrollWhellUp>', '<C-u>'},
     -- {'n', '<ScrollWhellDown>', '<C-e>'},
     -- {'n', '<S-ScrollWhellDown>', '<C-d>'},
+
+    {'i', '<M-a>', '<ESC>^i'},
+    {'i', '<M-e>', '<END>'},
 }
