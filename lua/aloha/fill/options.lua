@@ -41,6 +41,8 @@ option.g_options = {
 
     backspace = 'start,eol,indent', whichwrap='b,s,<,>,h,l',
     sidescroll = 1, sidescrolloff = 5, scrolloff = 3,
+    linebreak = false, breakindent = false,
+
     listchars = 'trail:˽,tab:>-', fillchars = 'vert:▏', -- ┆
 
     fileencodings = 'utf-8,ucs-bom,gb18030,gbk,gb2312,cp936',
@@ -55,6 +57,8 @@ option.g_options = {
     shortmess="atAF",
 
     mouse='a',
+
+    grepprg='rg -n',
 }
 
 option.w_options = {
@@ -69,9 +73,11 @@ option.w_options = {
     cursorline     = true,
     colorcolumn    = '88',
     signcolumn     = 'yes',
-    foldmethod     = 'syntax',
+    foldmethod     = 'marker',
     -- foldexpr       = 'nvim_treesitter#foldexpr()',
     foldcolumn     = '0',
+    linebreak      = false,
+    breakindent    = false,
 }
 
 option.b_options = {

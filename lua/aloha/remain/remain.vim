@@ -777,8 +777,8 @@ call add(g:vimwiki_list, {
             \ 'ext': '.md',
             \ 'links_space_char': ' ',
             \ 'makhi': 1,
-            \ 'auto_tags': 1,
             \ 'auto_diary_index': 0,
+            \ 'auto_tags': 1,
             \ 'auto_generate_links': 1,
             \ 'auto_generate_tags': 1,
             \ 'exclude_files': ['**/README.md']
@@ -976,7 +976,7 @@ endfunction
 
 autocmd FileType cpp,c setlocal path+=./include
 autocmd FileType markdown setlocal wrap
-autocmd FileType markdown,html,yaml,javascript,vue setlocal tabstop=2 shiftwidth=2
+autocmd FileType html,yaml,javascript,vue setlocal tabstop=2 shiftwidth=2
 
 "-----------------------------------\ vim-table-mode /----------------------------------
 function! s:isAtStartOfLine(mapping)

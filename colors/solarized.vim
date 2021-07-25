@@ -1,1 +1,0 @@
-/home/aloha/.config/nvim/pack/packer/start/vim-colors-solarized/colors/solarized.vim
