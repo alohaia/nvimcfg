@@ -1,9 +1,4 @@
-----------------------------------------------------------------------------------------
---                                    \ Mappings /                                    --
-----------------------------------------------------------------------------------------
-local global = _G.aloha.global
-
-_G.aloha.wim.map.list = {
+return {
     -- mode keys content extra
     {'n', ';', ':', {silent = false, nowait = true }},
     {'n', ':', ';'},
@@ -24,21 +19,17 @@ _G.aloha.wim.map.list = {
 
     {'i', '<M-BS>', '<Del>'},
 
-    -- {'n', '<C-h>', '<C-w><C-h>'},
-    -- {'n', '<C-j>', '<C-w><C-j>'},
-    -- {'n', '<C-k>', '<C-w><C-k>'},
-    -- {'n', '<C-l>', '<C-w><C-l>'},
-    -- {'x', '<C-h>', '<C-w><C-h>'},
-    -- {'x', '<C-j>', '<C-w><C-j>'},
-    -- {'x', '<C-k>', '<C-w><C-k>'},
-    -- {'x', '<C-l>', '<C-w><C-l>'},
+    {'n', '<C-h>', '<C-w><C-h>'},
+    {'n', '<C-j>', '<C-w><C-j>'},
+    {'n', '<C-k>', '<C-w><C-k>'},
+    {'n', '<C-l>', '<C-w><C-l>'},
+    {'x', '<C-h>', '<C-w><C-h>'},
+    {'x', '<C-j>', '<C-w><C-j>'},
+    {'x', '<C-k>', '<C-w><C-k>'},
+    {'x', '<C-l>', '<C-w><C-l>'},
 
     {'n', '-', '<Cmd>bp<cr>'},
     {'n', '=', '<Cmd>bn<cr>'},
-    -- {'n', '<c-b>n',     '<Cmd>bnext<cr>'},
-    -- {'n', '<c-b><c-n>', '<Cmd>bnext<cr>'},
-    -- {'n', '<c-b>p',     '<Cmd>bprevious<cr>'},
-    -- {'n', '<c-b><c-p>', '<Cmd>bprevious<cr>'},
     {'x', '-', '<Cmd>bp<cr>'},
     {'x', '=', '<Cmd>bn<cr>'},
     {'n', '_', '<Cmd>tabprevious<cr>'},
@@ -93,7 +84,7 @@ _G.aloha.wim.map.list = {
     {'n', '<leader>o', 'mzo<esc>`z'},
     {'n', '<leader>O', 'mzO<esc>`z'},
 
-    {'n', '<leader>e', ':e '..global.paths.config..'/lua/aloha/<C-z>', {silent = false}},
+    {'n', '<leader>e', ':e $HOME/.config/nvim/lua/aloha/<C-z>', {silent = false}},
 
     {'c', '<M-e>', "getcmdtype()==':' ? expand('%:p:h').'/' : '%%'", {silent = false, expr = true}},
     {'i', '<C-s>', "<c-g>u<Esc>[s1z=`^a<c-g>u"},

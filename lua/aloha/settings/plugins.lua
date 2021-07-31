@@ -1,55 +1,8 @@
-----------------------------------------------------------------------------------------
---                            \ Plugin List and Config /                              --
-----------------------------------------------------------------------------------------
-_G.aloha.plugin.list = {
-    {'wbthomason/packer.nvim', opt = true},
-
-    -- Snippet
-    {'SirVer/ultisnips'},
-    -- {
-    --     'zgpio/tree.nvim',
-    --     run = [[
-    --         cmake -DCMAKE_INSTALL_PREFIX=./INSTALL -DBoost_USE_STATIC_LIBS=ON -DCMAKE_BUILD_TYPE=Release -S tree.nvim/ -B tree.nvim/build
-    --         make -C tree.nvim/build/ install
-    --     ]],
-    --     config = configs.tree
-    -- },
-    -- Search and Replace
-    {'junegunn/fzf.vim'},
-
-    -- taglist
-    {'liuchengxu/vista.vim'},
-
-    -- File Operation
-    {'Shougo/defx.nvim'},
-    {'kristijanhusak/defx-git'},
-    {'kristijanhusak/defx-icons'},
-    -- {'kevinhwang91/rnvimr'},
-
-    -- Git
-    {'tpope/vim-fugitive'},
-    {'cohama/agit.vim'},
-    {'mhinz/vim-signify'},
-
+_ = {
     -- Text Editing
-    -- {'tpope/vim-abolish'},
-    {'preservim/nerdcommenter'},
-    {'tpope/vim-capslock'},
-    {'tpope/vim-endwise'},
-    {'tpope/vim-surround'},
-    {'tpope/vim-repeat'},
-    {'easymotion/vim-easymotion'},
-    -- {'svermeulen/vim-yoink'},
-    {'junegunn/vim-after-object'},
-    -- {'chrisbra/NrrwRgn'},
-    {'svermeulen/vim-subversive'},
-    {'ron89/thesaurus_query.vim',
-        -- ft = { 'text', 'markdown', 'wiki' }
-    },
 
     -- Visual Improvements
     -- show colors
-    {'RRethy/vim-hexokinase', run = 'make hexokinase' },
     {'vim-airline/vim-airline'},
     -- {
     --     'glepnir/galaxyline.nvim',
@@ -62,7 +15,6 @@ _G.aloha.plugin.list = {
     {'Yggdroot/indentLine', ft = { 'python' }},
     -- highlight other use of current word under the cursor
     {'RRethy/vim-illuminate'},
-    {'luochen1990/rainbow'},
     {'joshdick/onedark.vim'},
 
     {'ryanoasis/vim-devicons'},
@@ -74,26 +26,18 @@ _G.aloha.plugin.list = {
 
     -- Linting and Grammar Checking
     {'neoclide/coc.nvim'},
-    {'neovim/nvim-lspconfig'},
     -- {'nvim-lua/completion-nvim'},
     -- {'nvim-lua/lsp-status.nvim'},
 
     -- Note Taking
     {'alohaia/vim-hexowiki'},
-    {'dkarter/bullets.vim', ft = { 'text', 'markdown'}},
-    {'dhruvasagar/vim-table-mode', ft = { 'text', 'markdown'}},
 
     -- Useful Functionalities
-    {'voldikss/vim-floaterm'},
-    {'voldikss/fzf-floaterm'},
-    {'t9md/vim-choosewin'},
     -- Tasks
     {'skywind3000/asyncrun.vim'},
     -- {'skywind3000/asyncrun.extra'},
     {'skywind3000/asynctasks.vim'},
     -- Helper
-    {'voldikss/vim-translator'},
-    {'lervag/vimtex'},
     -- Multi cursor
     {'mg979/vim-visual-multi'},
     -- Undotree
@@ -112,9 +56,7 @@ _G.aloha.plugin.list = {
         ft = { 'text', 'markdown', 'wiki' },
         run = 'sh -c "cd app && yarn install"',
         disable = true},
-    {'jiangmiao/auto-pairs', disable = true},
     {'mzlogin/vim-markdown-toc', disable = true, ft = { 'markdown', 'wiki' }},
-    {'KabbAmine/zeavim.vim', disable = true},
     {'airblade/vim-rooter',              disable = true},
     {'wincent/terminus',                 disable = true},
     {'puremourning/vimspector',          disable = true, ft = { 'c', 'cpp', 'python', 'rust', 'ruby', 'go' }},
@@ -139,22 +81,66 @@ _G.aloha.plugin.list = {
     {'sheerun/vim-polyglot',             disable = true},
 }
 
---_G.aloha.plugin.list = {
-    --{'SirVer/ultisnips'},
-    --{'alohaia/vim-hexowiki'},
-    --{'wsdjeg/vimdoc-cn'},
-    --{'junegunn/fzf.vim'},
-    --{'preservim/nerdcommenter'},
-    --{'tpope/vim-surround'},
-    ---- {'jiangmiao/auto-pairs'},
-    --{'luochen1990/rainbow'},
-    --{'joshdick/onedark.vim'},
-    --{'dkarter/bullets.vim', ft = { 'text', 'markdown'}},
-    --{'dhruvasagar/vim-table-mode', ft = { 'text', 'markdown'}},
-    --{'voldikss/vim-floaterm'},
-    --{'skywind3000/asyncrun.vim'},
-    --{'skywind3000/asyncrun.extra'},
-    --{'skywind3000/asynctasks.vim'},
-    --{'vim-airline/vim-airline'},
-    --{'mhinz/vim-startify'},
---}
+return {
+    ['mhinz/vim-startify'] = {},
+    ['joshdick/onedark.vim'] = {},
+    ['Yggdroot/indentLine'] = {},
+    ['SirVer/ultisnips'] = {},
+    ['junegunn/fzf.vim'] = {},
+    ['vim-airline/vim-airline'] = {config=[[:let g:airline_theme = 'airlineish']]},
+    ['preservim/nerdcommenter'] = {},
+    ['tpope/vim-capslock'] = {},
+    ['tpope/vim-surround'] = {},
+    ['tpope/vim-endwise'] = {},
+    ['tpope/vim-repeat'] = {},
+    ['mbbill/undotree'] = {},
+    ['alohaia/vim-hexowiki'] = {ft='md,markdown,txt'},
+    ['dkarter/bullets.vim'] = {ft = 'txt,md,markdown'},
+    ['dhruvasagar/vim-table-mode'] = {ft='md,markdown,txt'},
+    ['rafalbromirski/vim-airlineish'] = {},
+    ['ryanoasis/vim-devicons'] = {},
+    ['t9md/vim-choosewin'] = {},
+    ['liuchengxu/vista.vim'] = {},
+    ['svermeulen/vim-yoink'] = {},
+    ['easymotion/vim-easymotion'] = {},
+    ['svermeulen/vim-subversive'] = {},
+    ['rhysd/clever-f.vim'] = {},
+    ['mg979/vim-visual-multi'] = {},
+    ['jiangmiao/auto-pairs'] = {},
+    ['voldikss/vim-floaterm'] = {},
+    ['voldikss/fzf-floaterm'] = {},
+    ['mhinz/vim-signify'] = {},
+    ['luochen1990/rainbow'] = {config = 'vim.g.rainbow_active = 1'},
+    ['ron89/thesaurus_query.vim'] = {},
+    ['voldikss/vim-translator'] = {},
+    ['lervag/vimtex'] = {ft = 'tex'},
+
+    -- git
+    ['tpope/vim-fugitive'] = {},
+    ['cohama/agit.vim'] = {config = ':let g:agit_no_default_mappings = 0'},
+
+    -- lua plugins
+    ['nvim-treesitter/nvim-treesitter'] = {run = ':au VimEnter * TSUpdate'},
+    ['neovim/nvim-lspconfig'] = {},
+
+    ['kevinhwang91/rnvimr'] = {disable = true},
+    ['Shougo/defx.nvim'] = {disable = true},
+    ['kristijanhusak/defx-git'] = {disable = true},
+    ['kristijanhusak/defx-icons'] = {disable = true},
+    ['junegunn/vim-after-object'] = {disable = true},
+    -- {'RRethy/vim-hexokinase', run = 'make hexokinase'},
+    ['iamcco/markdown-preview.nvim'] = {
+        disable = true,
+        ft = { 'text', 'markdown', 'wiki' },
+        run = 'sh -c "cd app && yarn install"',
+    },
+    ['KabbAmine/zeavim.vim'] = {
+        disable = true,
+        config = function()
+            vim.g.zv_file_types = {
+                cpp = "c,cpp,qt,glib,opencv",
+                python = "python,pandas,numpy",
+            }
+        end,
+    },
+}
