@@ -133,9 +133,7 @@ function packer:loadConfig()
             if cmd ~= '' then
                 -- TODO auto load config before loading through :packadd
                 vim.cmd('au SourcePre ' .. pack_path .. '/**/* ' .. cmd)
-                print('au SourcePre ' .. pack_path .. '/**/* ' .. cmd)
-                -- SourcePre events are only triggered by :source commamd
-                -- vim.cmd('au VimEnter * ' .. cmd)
+                -- print('au SourcePre ' .. pack_path .. '/**/* ' .. cmd)
             end
         -- start packs
         elseif vim.fn.glob(base_path .. '/start/' .. string.match(name, '[^/]*$')) ~= '' then
@@ -210,7 +208,7 @@ function packer:prepareOptPlugins()
 
         if filetypes then
             vim.cmd('au FileType ' .. filetypes .. ' packadd ' .. string.match(name, '([^/]*)$'))
-            print('au FileType ' .. filetypes .. ' packadd ' .. string.match(name, '([^/]*)$'))
+            -- print('au FileType ' .. filetypes .. ' packadd ' .. string.match(name, '([^/]*)$'))
         end
     end
 end
