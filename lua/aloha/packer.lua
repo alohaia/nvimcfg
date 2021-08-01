@@ -42,21 +42,23 @@ function packer:download(behaviour)
             -- downad and/or update
             if vim.fn.glob(plugin_dir) ~= '' then
                 if behaviour == 'update' then
-                    if not os.execute(cmd_silent(self.packer_config.git .. ' --git-dir=' .. plugin_dir .. '/.git --work-tree=' .. plugin_dir)) then
-                        print('failed to update ' .. name)
-                    else
+                    local result = os.execute(cmd_silent(self.packer_config.git .. ' --git-dir=' .. plugin_dir .. '/.git --work-tree=' .. plugin_dir .. ' pull'))
+                    if result then
                         print(name .. ' updated')
+                    else
+                        print('failed to update ' .. name)
                     end
                 end
                 goto continue
             else
-                if not os.execute(cmd_silent(self.packer_config.git .. ' clone https://github.com/' .. name .. ' ' .. plugin_dir .. ' >/dev/null 2>&1')) then
-                    print('failed to install ' .. name)
-                else
+                local result = os.execute(cmd_silent(self.packer_config.git .. ' clone https://github.com/' .. name .. ' ' .. plugin_dir))
+                if result then
                     print(name .. ' installed')
                     if settings.run then
                         self:exec(run)
                     end
+                else
+                    print('failed to install ' .. name)
                 end
             end
         end

@@ -311,12 +311,22 @@ return {
                     augroup END
                 ]], false)
             end
+
+            -- for 'RRethy/vim-illuminate'
+            require 'illuminate'.on_attach(client)
         end
 
         -- setup lsp clients
         lspconfig.ccls.setup{
             on_attach = on_attach,
             commands_created = true,
+            init_options = {
+                clang = {
+                    extraArgs = {
+                        "-std=c++17"
+                    }
+                }
+            }
         }
         -- lspconfig.ccls.setup {
         --     on_attach = on_attach,
@@ -479,7 +489,7 @@ return {
         vim.g.signify_sign_change            = '▊'
     end,
     ['ron89/thesaurus_query.vim'] = function()
-        vim.api.nvim_set_keymap('n', '<Leader>cw', '<Cmd>ThesaurusQueryReplaceCurrentWord<CR>')
+        vim.api.nvim_set_keymap('n', '<Leader>cw', '<Cmd>ThesaurusQueryReplaceCurrentWord<CR>', {noremap = true})
         vim.g.tq_map_keys           = 0
         vim.g.tq_openoffice_en_file = "~/.config/nvim/thesaurus/th_en_US_new"
         vim.g.tq_mthesaur_file      = "~/.config/nvim/thesaurus/mthesaur.txt"
