@@ -132,9 +132,10 @@ function packer:loadConfig()
             local pack_path = base_path .. '/opt/' .. string.match(name, '[^/]*$')
             if cmd ~= '' then
                 -- TODO auto load config before loading through :packadd
-                -- vim.cmd('au SourcePre ' .. pack_path .. '/**/* ' .. cmd)
+                vim.cmd('au SourcePre ' .. pack_path .. '/**/* ' .. cmd)
+                print('au SourcePre ' .. pack_path .. '/**/* ' .. cmd)
                 -- SourcePre events are only triggered by :source commamd
-                vim.cmd('au VimEnter * ' .. cmd)
+                -- vim.cmd('au VimEnter * ' .. cmd)
             end
         -- start packs
         elseif vim.fn.glob(base_path .. '/start/' .. string.match(name, '[^/]*$')) ~= '' then
@@ -198,17 +199,18 @@ function packer:prepareOptPlugins()
     for name,settings in pairs(self.plugins) do
         local filetypes
         if type(settings.ft) == 'table' and #settings.ft > 0 then
-            filetypes = '*.' .. settings.ft[1]
+            filetypes = settings.ft[1]
             for i = 2,#settings.ft do -- skip if #settings = 1
                 -- filetypes
-                filetypes = filetypes .. ',*.' .. settings.ft[i]
+                filetypes = filetypes .. ',' .. settings.ft[i]
             end
         elseif type(settings.ft) == 'string' then
-            filetypes = string.gsub(settings.ft, '%w+', '*.%0')
+            filetypes = settings.ft
         end
 
         if filetypes then
-            vim.cmd('au BufReadPre ' .. filetypes .. ' packadd ' .. string.match(name, '([^/]*)$'))
+            vim.cmd('au FileType ' .. filetypes .. ' packadd ' .. string.match(name, '([^/]*)$'))
+            print('au FileType ' .. filetypes .. ' packadd ' .. string.match(name, '([^/]*)$'))
         end
     end
 end

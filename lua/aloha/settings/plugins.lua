@@ -16,9 +16,9 @@ return {
     ['tpope/vim-endwise'] = {},
     ['tpope/vim-repeat'] = {},
     ['mbbill/undotree'] = {},
-    ['alohaia/vim-hexowiki'] = {ft='md,markdown,txt'},
-    ['dkarter/bullets.vim'] = {ft = 'txt,md,markdown'},
-    ['dhruvasagar/vim-table-mode'] = {ft='md,markdown,txt'},
+    ['alohaia/vim-hexowiki'] = {ft='markdown,text'},
+    ['dkarter/bullets.vim'] = {ft = 'markdown,text'},
+    ['dhruvasagar/vim-table-mode'] = {ft='markdown,text'},
     ['rafalbromirski/vim-airlineish'] = {},
     ['ryanoasis/vim-devicons'] = {},
     ['t9md/vim-choosewin'] = {},
@@ -35,7 +35,7 @@ return {
     ['luochen1990/rainbow'] = {config = 'vim.g.rainbow_active = 1'},
     ['ron89/thesaurus_query.vim'] = {},
     ['voldikss/vim-translator'] = {},
-    ['lervag/vimtex'] = {ft = 'tex'},
+    ['lervag/vimtex'] = {ft = 'plaintex'},
     ['wsdjeg/vimdoc-cn'] = {},
     ['godlygeek/tabular'] = {
         config = function()
@@ -63,7 +63,7 @@ return {
     -- {'RRethy/vim-hexokinase', run = 'make hexokinase'},
     ['iamcco/markdown-preview.nvim'] = {
         disable = true,
-        ft = { 'text', 'markdown', 'wiki' },
+        ft = {'text', 'markdown'},
         run = 'sh -c "cd app && yarn install"',
     },
     ['KabbAmine/zeavim.vim'] = {

@@ -101,6 +101,9 @@ return {
         vim.g.undotree_RelativeTimestamp  = 0
         vim.g.undotree_HelpLine           = 0
     end,
+    ['alohaia/vim-hexowiki'] = function()
+        vim.g.hexoLoaded = 1
+    end,
     ['dkarter/bullets.vim'] = function()
         vim.g.bullets_enabled_file_types = { "markdown", "text" }
         vim.g.bullets_enable_in_empty_buffers = 1
