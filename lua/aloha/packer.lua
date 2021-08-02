@@ -207,7 +207,7 @@ function packer:prepareOptPlugins()
         end
 
         if filetypes then
-            vim.cmd('au FileType ' .. filetypes .. ' packadd ' .. string.match(name, '([^/]*)$'))
+            vim.cmd('au FileType ' .. filetypes .. ' nested packadd ' .. string.match(name, '([^/]*)$'))
             -- print('au FileType ' .. filetypes .. ' packadd ' .. string.match(name, '([^/]*)$'))
         end
     end
