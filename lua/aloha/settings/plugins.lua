@@ -1,8 +1,3 @@
-_ = {
-
-    {'skywind3000/asynctasks.vim'},
-}
-
 return {
     ['mhinz/vim-startify'] = {},
     ['joshdick/onedark.vim'] = {},
@@ -43,8 +38,9 @@ return {
         end
     },
     ['beyondmarc/opengl.vim'] = {ft = { 'c', 'cpp' }},
-    ['tikhomirov/vim-glsl'] = {},
+    ['tikhomirov/vim-glsl'] = {config=[[!echo 'hello']]},
     ['skywind3000/asyncrun.vim'] = {},
+    ['skywind3000/asynctasks.vim'] = {},
 
     -- git
     ['tpope/vim-fugitive'] = {},
@@ -54,13 +50,14 @@ return {
     ['nvim-treesitter/nvim-treesitter'] = {run = ':au VimEnter * TSUpdate'},
     ['neovim/nvim-lspconfig'] = {},
     ['RRethy/vim-illuminate'] = {},
+    ['RRethy/vim-hexokinase'] =  {run = '!make hexokinase'},
 
+    -- disabled plugins
     ['kevinhwang91/rnvimr'] = {disable = true},
     ['Shougo/defx.nvim'] = {disable = true},
     ['kristijanhusak/defx-git'] = {disable = true},
     ['kristijanhusak/defx-icons'] = {disable = true},
     ['junegunn/vim-after-object'] = {disable = true},
-    -- {'RRethy/vim-hexokinase', run = 'make hexokinase'},
     ['iamcco/markdown-preview.nvim'] = {
         disable = true,
         ft = {'text', 'markdown'},

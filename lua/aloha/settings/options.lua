@@ -24,9 +24,9 @@ return {
         magic       = true,
 
         backup      = true,
-        undodir     = vim.fn.stdpath('cache')..'/swap',
-        backupdir   = vim.fn.stdpath('cache')..'/undo',
-        directory   = vim.fn.stdpath('cache')..'/backup',
+        undodir     = vim.fn.stdpath('data')..'/swap',
+        backupdir   = vim.fn.stdpath('data')..'/undo',
+        directory   = vim.fn.stdpath('data')..'/backup',
 
         completeopt = 'noinsert,menuone,noselect',
 
