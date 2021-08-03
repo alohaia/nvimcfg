@@ -38,7 +38,7 @@ return {
         end
     },
     ['beyondmarc/opengl.vim'] = {ft = { 'c', 'cpp' }},
-    ['tikhomirov/vim-glsl'] = {config=[[!echo 'hello']]},
+    ['tikhomirov/vim-glsl'] = {},
     ['skywind3000/asyncrun.vim'] = {},
     ['skywind3000/asynctasks.vim'] = {},
 

@@ -141,7 +141,6 @@ function packer:download(behaviour)
                 },
                 vim.schedule_wrap(function(code, signal)
                     if code == 0 then
-                        print('['..i..'/'..total..'] downloading', plugins[i], 'completed')
                         local run = self.plugins[plugins[i]].run
                         if run then
                             exec(run, plugin_path(plugins[i]))
@@ -170,7 +169,10 @@ function packer:download(behaviour)
                     },
                     vim.schedule_wrap(function(code, signal)
                         if code == 0 then
-                            print('['..i..'/'..total..'] downloading', plugins[i], 'completed')
+                            local run = self.plugins[plugins[i]].run
+                            if run then
+                                exec(run, plugin_path(plugins[i]))
+                            end
                         else
                             print('['..i..'/'..total..'] failed to download', plugins[i])
                         end
@@ -189,9 +191,7 @@ function packer:download(behaviour)
                         args = vim.list_extend(vim.deepcopy(git_cmd.args), {'pull', 'https://github.com/'..plugins[i]}),
                     },
                     vim.schedule_wrap(function(code, signal)
-                        if code == 0 then
-                            print('['..i..'/'..total..'] updateing', plugins[i], 'completed')
-                        else
+                        if code ~= 0 then
                             print('['..i..'/'..total..'] failed to update', plugins[i])
                         end
                         handle:close()
