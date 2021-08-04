@@ -2,8 +2,44 @@ local packer = {}
 
 local base_path = '' -- initialized in packer:init()
 
-local function exec(cmd, cwd)
+local function exec(cmd, cwd, cmd_type)
     local rt = true -- return value
+
+    -- if 'cmd_type' is provided, use it to determine type of 'cmd'
+    if cmd_type then goto direct else goto check end
+
+    ::direct::
+    if cmd_type == 'function' then
+        cmd()
+    elseif cmd_type == 'vim' then
+        vim.cmd(cmd)
+    elseif cmd_type == 'cmd' then
+        local cmd_splits = vim.split(cmd, ' ')
+        local handle = 0
+        handle = vim.loop.spawn(cmd_splits[1], {
+                cwd = cwd,
+                args = vim.list_slice(cmd_splits, 2, #cmd_splits),
+            },
+            vim.schedule_wrap(function(code, signal)
+                if code ~= 0 then
+                    print(cmd .. ' failed with code ' .. code)
+                    rt = nil
+                end
+                handle:close()
+            end)
+        )
+    elseif cmd_type == 'lua' then
+        local func,err = load(cmd)
+        if func then
+            func()
+        else
+            rt = nil
+            vim.notify(cmd .. ' failed: ' .. err, 'error')
+        end
+    end
+    goto finish
+
+    ::check::
     if type(cmd) == 'function' then
         cmd()
     elseif type(cmd) == 'string' then
@@ -35,6 +71,9 @@ local function exec(cmd, cwd)
             end
         end
     end
+    -- goto finish
+
+    ::finish::
     -- for function and vim.cmd, rt is always true
     return rt
 end
@@ -147,6 +186,10 @@ function packer:download(behaviour)
                         end
                     else
                         print('['..i..'/'..total..'] failed to download', plugins[i])
+                        -- remove incompleted plugins
+                        if is_installed(plugins[i]) then
+                            exec(self.packer_config.rm .. ' ', plugin_path(plugins[i]))
+                        end
                     end
                     handle:close()
                     if i < total then
@@ -242,7 +285,7 @@ function packer:loadConfig()
             end
             local pack_path = base_path .. '/opt/' .. vim.split(name, '/')[2]
             if cmd ~= '' then
-                vim.cmd('au SourcePre ' .. pack_path .. '/**/* ' .. cmd)
+                vim.cmd('au SourcePre ' .. pack_path .. '/*' .. cmd)
             end
         -- start plugins
         elseif vim.fn.glob(base_path .. '/start/' .. vim.split(name, '/')[2]) ~= '' then
@@ -300,6 +343,8 @@ end
 
 function packer:prepareOptPlugins()
     for name,settings in pairs(self.plugins) do
+        if settings.disable then goto continue end
+
         local filetypes
         if type(settings.ft) == 'table' and #settings.ft > 0 then
             filetypes = settings.ft[1]
@@ -314,6 +359,8 @@ function packer:prepareOptPlugins()
         if filetypes then
             vim.cmd('au FileType ' .. filetypes .. ' nested packadd ' .. vim.split(name, '/')[2])
         end
+
+        ::continue::
     end
 end
 

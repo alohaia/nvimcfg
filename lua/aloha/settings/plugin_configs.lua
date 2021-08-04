@@ -102,7 +102,8 @@ return {
         vim.g.undotree_HelpLine           = 0
     end,
     ['alohaia/vim-hexowiki'] = function()
-        vim.g.hexoLoaded = 1
+        vim.g.hexowiki_home = '~/blog/source/_posts/'
+        vim.g.hexowiki_follow_after_create = 0
     end,
     ['dkarter/bullets.vim'] = function()
         vim.g.bullets_enabled_file_types = { "markdown", "text" }
@@ -118,8 +119,8 @@ return {
     ['dhruvasagar/vim-table-mode'] = function()
         vim.api.nvim_set_keymap("n", "<leader>tm", "<cmd>TableModeToggle<cr>", {noremap = true})
         vim.g.table_mode_corner_corner="|"
-        vim.g.table_mode_header_fillchar="-"
         vim.g.table_mode_align_char=":"
+        vim.g.table_mode_header_fillchar="-"
         vim.g.table_mode_delimiter = ','
     end,
     ['kevinhwang91/rnvimr'] = function()
