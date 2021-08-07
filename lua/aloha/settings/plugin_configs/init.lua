@@ -297,37 +297,38 @@ configs['brooth/far.vim'] = function()
 end
 
 configs['liuchengxu/vista.vim'] = function()
-        vim.api.nvim_set_keymap('n', '<leader>vt', '<Cmd>Vista<Cr>', {noremap = true})
-        vim.api.nvim_set_keymap('n', ',T', '<Cmd>Vista finder<Cr>', {noremap = true})
-        vim.g.vista_default_executive = 'ctags'
-        vim.g.vista_ctags_executable = 'ctags'
-        vim.g.vista_ctags_project_opts = '--sort=no -R -o tags'
-        vim.g.vista_executive_for = {
-            vimwiki  = 'markdown',
-            pandoc   = 'markdown',
-            markdown = 'toc',
-        }
-        vim.g.vista_enable_markdown_extension    = 1
-        vim.g['airline#extensions#fzf#enabled']  = 1
-        vim.g.vista_enable_markdown_extension    = 1
-        vim.g.vista_fzf_preview                  = {'right:50%'}
-        vim.g.vista_sidebar_width                = 50
-        vim.g.vista_fold_toggle_icons            = {'▾', '▸'}
-        vim.g.vista_icon_indent                  = {"└─▸ ", "├─▸ "}
-        vim.g.vista_echo_cursor                  = 1
-        vim.g.vista_cursor_delay                 = 0
-        vim.g.vista_echo_cursor_strategy         = 'scroll'
-        vim.g.vista_update_on_text_changed       = 1
-        vim.g.vista_update_on_text_changed_delay = 2000
-        vim.g.vista_close_on_jump                = 1
-        vim.g.vista_stay_on_open                 = 1
-        vim.g.vista_blink                        = {0, 0}
-        vim.g.vista_top_level_blink              = {0, 0}
-        vim.g.vista_highlight_whole_line         = 1
-        -- g['vista#renderer#icons'] = {
-        --     function = "",
-        --     variable = "",
-        -- }
+    vim.cmd[[autocmd FileType vista,vista_kind nnoremap <buffer> <silent> f <Cmd>call vista#finder#fzf#Run()<CR>]]
+    vim.api.nvim_set_keymap('n', '<leader>vt', '<Cmd>Vista<Cr>', {noremap = true})
+    vim.api.nvim_set_keymap('n', ',T', '<Cmd>Vista finder<Cr>', {noremap = true})
+    vim.g.vista_default_executive = 'ctags'
+    vim.g.vista_ctags_executable = 'ctags'
+    vim.g.vista_ctags_project_opts = '--sort=no -R -o tags'
+    vim.g.vista_executive_for = {
+        vimwiki  = 'markdown',
+        pandoc   = 'markdown',
+        markdown = 'toc',
+    }
+    vim.g.vista_enable_markdown_extension    = 1
+    vim.g['airline#extensions#fzf#enabled']  = 1
+    vim.g.vista_enable_markdown_extension    = 1
+    vim.g.vista_fzf_preview                  = {'right:50%'}
+    vim.g.vista_sidebar_width                = 50
+    vim.g.vista_fold_toggle_icons            = {'▾', '▸'}
+    vim.g.vista_icon_indent                  = {"└─▸ ", "├─▸ "}
+    vim.g.vista_echo_cursor                  = 1
+    vim.g.vista_cursor_delay                 = 0
+    vim.g.vista_echo_cursor_strategy         = 'scroll'
+    vim.g.vista_update_on_text_changed       = 1
+    vim.g.vista_update_on_text_changed_delay = 2000
+    vim.g.vista_close_on_jump                = 1
+    vim.g.vista_stay_on_open                 = 1
+    vim.g.vista_blink                        = {0, 0}
+    vim.g.vista_top_level_blink              = {0, 0}
+    vim.g.vista_highlight_whole_line         = 1
+    -- g['vista#renderer#icons'] = {
+    --     function = "",
+    --     variable = "",
+    -- }
 end
 
 configs['mhinz/vim-startify'] = function()
