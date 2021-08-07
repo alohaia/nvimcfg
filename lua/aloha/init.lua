@@ -75,7 +75,7 @@ return function(options)
 
     aloha.packer = require('aloha.packer'):init(
         aloha.plugins,                  -- plugin list
-        require('aloha/settings/plugin_configs'), -- plugin config
+        require('aloha.settings.plugin_configs'), -- plugin config
         {                             -- packer config
             git = 'proxychains -q git',
             rm = 'gio trash',
@@ -106,6 +106,5 @@ return function(options)
     end
 
     -- other
-    vim.cmd[[au TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=150}]]
+    vim.cmd[[au TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=true}]]
 end
-

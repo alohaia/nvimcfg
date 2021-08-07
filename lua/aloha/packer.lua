@@ -22,7 +22,7 @@ local function exec(cmd, cwd, cmd_type)
             },
             vim.schedule_wrap(function(code, signal)
                 if code ~= 0 then
-                    print(cmd .. ' failed with code ' .. code)
+                    print(cmd .. ' failed with code', code, ', signal', signal)
                     rt = nil
                 end
                 handle:close()
@@ -43,11 +43,11 @@ local function exec(cmd, cwd, cmd_type)
     if type(cmd) == 'function' then
         cmd()
     elseif type(cmd) == 'string' then
-        local first = string.sub(cmd, 1, 1)
+        local first = cmd:sub(1, 1)
         if first == ':' then
-            vim.cmd(string.sub(cmd, 2))
+            vim.cmd(cmd:sub(2))
         elseif first == '!' then
-            local cmd_splits = vim.split(string.sub(cmd, 2), ' ')
+            local cmd_splits = vim.split(cmd:sub(2), ' ')
             local handle = 0
             handle = vim.loop.spawn(cmd_splits[1], {
                     cwd = cwd,
@@ -55,7 +55,7 @@ local function exec(cmd, cwd, cmd_type)
                 },
                 vim.schedule_wrap(function(code, signal)
                     if code ~= 0 then
-                        print(cmd .. ' failed with code ' .. code)
+                        print(cmd .. ' failed with code', code, ', signal', signal)
                         rt = nil
                     end
                     handle:close()
@@ -106,19 +106,14 @@ end
 function packer:init(plugins, plugin_configs, packer_config)
     --{{1 initialization
     -- default arguments
-    self.plugins = plugins or {}
-    self.plugin_configs = plugin_configs or {}
+    self.plugins = type(plugins) == 'table' and plugins or {}
+    self.plugin_configs = type(plugin_configs) == 'table' and plugin_configs or {}
     self.packer_config = vim.tbl_extend('keep', packer_config, {
         pack_root = vim.fn.stdpath('data') .. '/site/pack',
         pack_name = 'packer',
         git = 'git',
         rm = 'rm -rf',
     })
-
-    -- initialize members
-    local plugins = self.plugins
-    local plugin_configs = self.plugin_configs
-    local packer_config = self.packer_config
 
     -- others vars
     base_path = self.packer_config.pack_root .. '/' .. self.packer_config.pack_name
@@ -130,6 +125,133 @@ function packer:init(plugins, plugin_configs, packer_config)
     return self
 end
 
+local handle, handle1
+local failed_count = 0
+local function _download(i, total, git_cmd, plugins)
+    i = i or 1
+    print('['..i..'/'..total..'] downloading', plugins[i], '...')
+    local branch = packer.plugins[plugins[i]].branch
+    local _args = {}
+    if branch then
+        _args = {'clone', '--recurse-submodules', '-b', branch, 'https://github.com/'..plugins[i], plugin_path(plugins[i])}
+    else
+        _args = {'clone', '--recurse-submodules', 'https://github.com/'..plugins[i], plugin_path(plugins[i])}
+    end
+    handle = vim.loop.spawn(git_cmd.path, {
+            args = vim.list_extend(vim.deepcopy(git_cmd.args), _args),
+        },
+        vim.schedule_wrap(function(code, signal)
+            if code == 0 then
+                local run = packer.plugins[plugins[i]].run
+                if run then
+                    exec(run, plugin_path(plugins[i]))
+                end
+            else
+                print('['..i..'/'..total..'] failed to download', plugins[i], 'with code', code, 'and signal', signal)
+                failed_count = failed_count + 1
+                -- remove incompleted plugins
+                if is_installed(plugins[i]) then
+                    exec(packer.packer_config.rm .. ' ', plugin_path(plugins[i]))
+                end
+            end
+            handle:close()
+            if i < total then
+                _download(i+1, total, git_cmd, plugins)
+            else
+                if failed_count == 0 then
+                    print('['..i..'/'..total..'] downloading completed')
+                else
+                    print('['..i..'/'..total..'] downloading completed,', failed_count, 'failed')
+                    failed_count = 0
+                end
+            end
+        end)
+    )
+end
+local function _update(i, total, git_cmd, plugins)
+    i = i or 1
+    if not is_installed(plugins[i]) then
+        print('['..i..'/'..total..'] downloading', plugins[i], '...')
+        local branch = packer.plugins[plugins[i]].branch
+        local _args = {}
+        if branch then
+            _args = {'clone', '--recurse-submodules', '-b', branch, 'https://github.com/'..plugins[i], plugin_path(plugins[i])}
+        else
+            _args = {'clone', '--recurse-submodules', 'https://github.com/'..plugins[i], plugin_path(plugins[i])}
+        end
+        handle = vim.loop.spawn(git_cmd.path, {
+                args = vim.list_extend(vim.deepcopy(git_cmd.args), _args),
+            },
+            vim.schedule_wrap(function(code, signal)
+                if code == 0 then
+                    local run = packer.plugins[plugins[i]].run
+                    if run then
+                        exec(run, plugin_path(plugins[i]))
+                    end
+                else
+                    print('['..i..'/'..total..'] failed to download', plugins[i], 'with code', code, 'and signal', signal)
+                    failed_count = failed_count + 1
+                    -- remove incompleted plugins
+                    if is_installed(plugins[i]) then
+                        exec(packer.packer_config.rm .. ' ', plugin_path(plugins[i]))
+                    end
+                end
+                handle:close()
+                if i < total then
+                    _update(i+1, total, git_cmd, plugins)
+                else
+                    if failed_count == 0 then
+                        print('['..i..'/'..total..'] updating completed')
+                    else
+                        print('['..i..'/'..total..'] updating completed,', failed_count, 'failed')
+                        failed_count = 0
+                    end
+                end
+            end)
+        )
+    else
+        print('['..i..'/'..total..'] updating', plugins[i], '...')
+        local update_submodules_failed = false
+        handle = vim.loop.spawn(git_cmd.path, {
+                cwd = plugin_path(plugins[i]),
+                args = vim.list_extend(vim.deepcopy(git_cmd.args), {'pull', 'https://github.com/'..plugins[i]}),
+            },
+            vim.schedule_wrap(function(code, signal)
+                if code ~= 0 then
+                    print('['..i..'/'..total..'] failed to update', plugins[i], 'with code', code, 'and signal', signal)
+                end
+                -- update submodules
+                handle1 = vim.loop.spawn(git_cmd.path, {
+                        cwd = plugin_path(plugins[i]),
+                        args = vim.list_extend(vim.deepcopy(git_cmd.args), {'submodule', 'update', '--init', '--recursive'}),
+                    },
+                    vim.schedule_wrap(function(_code, _signal)
+                        if _code ~= 0 then
+                            print('['..i..'/'..total..'] failed to update submodules of', plugins[i], 'with code', _code, 'and signal', _signal)
+                            update_submodules_failed = true
+                        end
+                        handle1:close()
+
+                        handle:close()
+                        if update_submodules_failed or code ~= 0 then
+                            failed_count = failed_count + 1
+                        end
+                        if i < total then
+                            _update(i+1, total, git_cmd, plugins)
+                        else
+                            if failed_count == 0 then
+                                print('['..i..'/'..total..'] updating completed')
+                            else
+                                print('['..i..'/'..total..'] updating completed,', failed_count, 'failed')
+                                failed_count = 0
+                            end
+                        end
+                    end)
+                )
+            end)
+        )
+    end
+end
 -- behaviour(string):
 --      - 'install': install plugins
 --      - 'update': install and update installed plugins
@@ -165,89 +287,18 @@ function packer:download(behaviour)
                 table.insert(plugins, name)
             end
         end
+        if plugins[1] == nil then
+            print('All plugins have been installed')
+            return
+        end
     end
 
     -- install and/or update
-    local handle = 0
     local total = #plugins
     if behaviour == 'install' then
-        local function _download(i)
-            i = i or 1
-            print('['..i..'/'..total..'] downloading', plugins[i], '...')
-            handle = vim.loop.spawn(git_cmd.path, {
-                    args = vim.list_extend(vim.deepcopy(git_cmd.args),
-                        {'clone', 'https://github.com/'..plugins[i], plugin_path(plugins[i])}),
-                },
-                vim.schedule_wrap(function(code, signal)
-                    if code == 0 then
-                        local run = self.plugins[plugins[i]].run
-                        if run then
-                            exec(run, plugin_path(plugins[i]))
-                        end
-                    else
-                        print('['..i..'/'..total..'] failed to download', plugins[i])
-                        -- remove incompleted plugins
-                        if is_installed(plugins[i]) then
-                            exec(self.packer_config.rm .. ' ', plugin_path(plugins[i]))
-                        end
-                    end
-                    handle:close()
-                    if i < total then
-                        _download(i+1)
-                    else
-                        print('['..i..'/'..total..'] downloading completed')
-                    end
-                end)
-            )
-        end
-        _download()
+        _download(1, total, git_cmd, plugins)
     elseif behaviour == 'update' then
-        local function _update(i)
-            i = i or 1
-            if not is_installed(plugins[i]) then
-                print('['..i..'/'..total..'] downloading', plugins[i], '...')
-                handle = vim.loop.spawn(git_cmd.path, {
-                        args = vim.list_extend(vim.deepcopy(git_cmd.args),
-                            {'clone', 'https://github.com/'..plugins[i], plugin_path(plugins[i])}),
-                    },
-                    vim.schedule_wrap(function(code, signal)
-                        if code == 0 then
-                            local run = self.plugins[plugins[i]].run
-                            if run then
-                                exec(run, plugin_path(plugins[i]))
-                            end
-                        else
-                            print('['..i..'/'..total..'] failed to download', plugins[i])
-                        end
-                        handle:close()
-                        if i < total then
-                            _update(i+1)
-                        else
-                            print('['..i..'/'..total..'] updating completed')
-                        end
-                    end)
-                )
-            else
-                print('['..i..'/'..total..'] updating', plugins[i], '...')
-                handle = vim.loop.spawn(git_cmd.path, {
-                        cwd = plugin_path(plugins[i]),
-                        args = vim.list_extend(vim.deepcopy(git_cmd.args), {'pull', 'https://github.com/'..plugins[i]}),
-                    },
-                    vim.schedule_wrap(function(code, signal)
-                        if code ~= 0 then
-                            print('['..i..'/'..total..'] failed to update', plugins[i])
-                        end
-                        handle:close()
-                        if i < total then
-                            _update(i+1)
-                        else
-                            print('['..i..'/'..total..'] updating completed')
-                        end
-                    end)
-                )
-            end
-        end
-        _update()
+        _update(1, total, git_cmd, plugins)
     end
 end
 
@@ -268,7 +319,7 @@ function packer:loadConfig()
                 end
                 if type(settings.config) == 'string' then
                     if settings.config[1] == ':' then
-                        cmd = string.sub(settings.config, 2)
+                        cmd = settings.config:sub(2)
                     elseif settings.config[1] == '!' then
                         cmd = settings.config
                     else
@@ -292,10 +343,7 @@ function packer:loadConfig()
             if self.plugin_configs[name] then
                 exec(self.plugin_configs[name])
             end
-            if type(settings.config) == 'function' then
-                settings.config()
-            end
-            if type(settings.config) == 'string' then
+            if type(settings.config) then
                 exec(settings.config)
             end
         end
@@ -329,7 +377,7 @@ function packer:clean()
 
     -- remove undesired plugins from installed plugins
     for _,plugin in ipairs(installed_plugins) do
-        cate,name = string.match(plugin, '([^/]*)/([^/]*)$')
+        cate,name = plugin:match('([^/]*)/([^/]*)$')
         if (not plugins[name]) or plugins[name].cate ~= cate then
             -- if not os.execute(cmd_silent(self.packer_config.rm .. ' ' .. plugin)) then
             if exec('!' .. self.packer_config.rm .. ' ' .. plugin) then
@@ -348,7 +396,7 @@ function packer:prepareOptPlugins()
         local filetypes
         if type(settings.ft) == 'table' and #settings.ft > 0 then
             filetypes = settings.ft[1]
-            for i = 2,#settings.ft do -- skip if #settings = 1
+            for i = 2,#settings.ft do -- skip if #settings == 1
                 -- filetypes
                 filetypes = filetypes .. ',' .. settings.ft[i]
             end
