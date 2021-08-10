@@ -1,5 +1,5 @@
-return function(options)
-    local options = vim.tbl_extend('keep', options, {
+return function(_options)
+    local options = vim.tbl_extend('keep', _options, {
         -- disable unnecessary operations
         minimal = true,
         -- minimal is overrided by the options below
@@ -40,38 +40,20 @@ return function(options)
                 end
             }),
         },
-        options = settings.options or {g={}, w={}, b={}},
+        options = settings.options or {},
         plugins = settings.plugins or {}
     }
 
-    function aloha.map:add_map(...)
-        vim.list_extend(self.list, {...})
-    end
-    function aloha.map:add_maps(...)
-        vim.list_extend(self.list, {...})
-    end
-    function aloha.map:setup()
-        vim.g.mapleader = self.leader
-        for _,map in pairs(self.list) do
-            vim.api.nvim_set_keymap(map[1], map[2], map[3], self.default_args + map[4])
-        end
+    -- set up mappings
+    vim.g.mapleader = aloha.map.leader
+    for _,map in pairs(aloha.map.list) do
+        vim.api.nvim_set_keymap(map[1], map[2], map[3], aloha.map.default_args + map[4])
     end
 
-    function aloha.options:setup()
-        for o,v in pairs(self.g) do
-            vim.o[o] = v
-        end
-        for o,v in pairs(self.w) do
-            vim.wo[o] = v
-        end
-        for o,v in pairs(self.b) do
-            vim.bo[o] = v
-            vim.o[o] = v
-        end
+    -- set up options
+    for o,v in pairs(aloha.options) do
+        vim.opt[o] = v
     end
-
-    aloha.map:setup()
-    aloha.options:setup()
 
     aloha.packer = require('aloha.packer'):init(
         aloha.plugins,                  -- plugin list
@@ -95,16 +77,14 @@ return function(options)
             end
         end
     end
+
     -- install plugins
-    if not options.minimal or options.install_plugins then
+    if not options.minimal and options.install_plugins and not options.sync_plugins then
         aloha.packer:download()
     end
     -- clean and update/install plugins
-    if not options.minimal or options.sync_plugins then
+    if not options.minimal and options.sync_plugins then
         aloha.packer:clean()
         aloha.packer:download('update')
     end
-
-    -- other
-    vim.cmd[[au TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=true}]]
 end

@@ -1,3 +1,53 @@
+_ = {
+    ['Yggdroot/indentLine'] = {},
+    ['junegunn/fzf.vim'] = {},
+    ['tpope/vim-endwise'] = {},
+    ['ryanoasis/vim-devicons'] = {},
+    ['t9md/vim-choosewin'] = {},
+    ['svermeulen/vim-yoink'] = {},
+    ['easymotion/vim-easymotion'] = {},
+    ['mhinz/vim-signify'] = {},
+    ['ron89/thesaurus_query.vim'] = {},
+    ['voldikss/vim-translator'] = {},
+    ['lervag/vimtex'] = {ft = 'plaintex'},
+    ['wsdjeg/vimdoc-cn'] = {},
+    ['beyondmarc/opengl.vim'] = {ft = { 'c', 'cpp' }},
+    ['tikhomirov/vim-glsl'] = {},
+    ['skywind3000/asyncrun.vim'] = {},
+    ['skywind3000/asyncrun.extra'] = {},
+    ['skywind3000/asynctasks.vim'] = {},
+
+    -- git
+    ['tpope/vim-fugitive'] = {},
+    ['cohama/agit.vim'] = {config = ':let g:agit_no_default_mappings = 0'},
+
+    -- lua plugins
+    ['nvim-treesitter/nvim-treesitter'] = {run = ':au VimEnter * TSUpdate'},
+    ['neovim/nvim-lspconfig'] = {},
+    ['RRethy/vim-hexokinase'] =  {run = '!make hexokinase'},
+
+    -- disabled plugins
+    ['kevinhwang91/rnvimr'] = {disable = true},
+    ['Shougo/defx.nvim'] = {disable = true},
+    ['kristijanhusak/defx-git'] = {disable = true},
+    ['kristijanhusak/defx-icons'] = {disable = true},
+    ['junegunn/vim-after-object'] = {disable = true},
+    ['iamcco/markdown-preview.nvim'] = {
+        disable = true,
+        ft = {'text', 'markdown'},
+        run = 'sh -c "cd app && yarn install"',
+    },
+    ['KabbAmine/zeavim.vim'] = {
+        disable = true,
+        config = function()
+            vim.g.zv_file_types = {
+                cpp = "c,cpp,qt,glib,opencv",
+                python = "python,pandas,numpy",
+            }
+        end,
+    },
+}
+
 return {
     -- completion
     ['neovim/nvim-lspconfig'] = {},
@@ -9,21 +59,25 @@ return {
     ['glepnir/smartinput.nvim'] = {},
     ['mattn/vim-sonictemplate'] = {},
     ['mattn/emmet-vim'] = {},
-    ['mbbill/undotree'] = {},
-    ['voldikss/vim-floaterm'] = {},
 
     -- ui
-    ['joshdick/onedark.vim'] = {config = [[:colorscheme onedark]]},
-    ['glepnir/zephyr-nvim'] = {disable = true, config = [[:colorscheme zephyr]]},
-    ['glepnir/dashboard-nvim'] = {disable = true},
     ['mhinz/vim-startify'] = {},
-    ['glepnir/galaxyline.nvim'] = {branch = 'main'},
+    ['joshdick/onedark.vim'] = {config = [[:colorscheme onedark]]},
+    ['rafalbromirski/vim-airlineish'] = {disable = true},
+    ['vim-airline/vim-airline'] = {
+        config=[[:let g:airline_theme = 'onedark']]
+    },
     ['kyazdani42/nvim-web-devicons'] = {},
     ['lukas-reineke/indent-blankline.nvim'] = {},
     ['akinsho/nvim-bufferline.lua'] = {},
     ['kyazdani42/nvim-tree.lua'] = {},
     ['lewis6991/gitsigns.nvim'] = {},
     ['liuchengxu/vista.vim'] = {},
+    ['mbbill/undotree'] = {},
+    ['voldikss/vim-floaterm'] = {},
+    ['glepnir/zephyr-nvim'] = {disable = true, config = [[:colorscheme zephyr]]},
+    ['glepnir/dashboard-nvim'] = {disable = true},
+    ['glepnir/galaxyline.nvim'] = {disable = true, branch = 'main'},
 
     -- editor
     ['RRethy/vim-illuminate'] = {},

@@ -309,7 +309,6 @@ configs['liuchengxu/vista.vim'] = function()
         markdown = 'toc',
     }
     vim.g.vista_enable_markdown_extension    = 1
-    vim.g['airline#extensions#fzf#enabled']  = 1
     vim.g.vista_enable_markdown_extension    = 1
     vim.g.vista_fzf_preview                  = {'right:50%'}
     vim.g.vista_sidebar_width                = 50
@@ -403,8 +402,9 @@ configs['SirVer/ultisnips'] = function()
 end
 
 configs['alohaia/vim-hexowiki'] = function()
-    vim.g.hexowiki_home = '~/blog/source/_posts/'
+    vim.g.hexowiki_home = '~/blog/source/_posts'
     vim.g.hexowiki_follow_after_create = 0
+    vim.g.hexowiki_use_imaps = 1
 end
 
 configs['dkarter/bullets.vim'] = function()
@@ -491,6 +491,28 @@ configs['joshdick/onedark.vim'] = function()
         "au ColorScheme onedark hi Normal guibg=NONE
         "au ColorScheme onedark hi ColorColumn guibg=NONE
     ]]
+end
+
+configs['vim-airline/vim-airline'] = function()
+    vim.g.airline_symbols = {
+        crypt      = '',
+        linenr     = '㏑',
+        maxlinenr  = '¶',
+        branch     = '',    -- 
+        dirty      = '[+]',  -- ⚡
+        paste      = 'Þ',
+        -- spell      = 'Ꞩ',
+        spell      = '﯑',
+        -- notexists  = 'Ɇ',
+        whitespace = 'Ξ'
+    }
+    -- ﯑韛 
+    vim.g.airline_powerline_fonts                      = 1
+    vim.g['airline#extensions#tabline#enabled']        = 0
+    vim.g['airline_left_sep']                          = '┆'
+    vim.g['airline_left_alt_sep']                      = '┆'
+    vim.g['airline_right_sep']                         = '┆'
+    vim.g['airline_right_alt_sep']                     = '┆'
 end
 
 return configs
