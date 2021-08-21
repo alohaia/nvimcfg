@@ -1,0 +1,7 @@
+# reference: https://clangd.llvm.org/config.html
+CompileFlags:
+  Add: [
+    -I./include,
+  ]
+
+# vim: set ft=yaml:

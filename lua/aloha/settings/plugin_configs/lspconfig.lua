@@ -2,15 +2,16 @@ local api = vim.api
 local lspconfig = require 'lspconfig'
 local format = require('aloha.settings.plugin_configs.format')
 
+-- lspsaga.nvim
 if not vim.g.pack_lspsaga_loaded then
     vim.cmd [[packadd lspsaga.nvim]]
     vim.g.packer_plugins_loaded = true
-end
 
-local saga = require 'lspsaga'
-saga.init_lsp_saga({
-    code_action_icon = '💡'
-})
+    local saga = require 'lspsaga'
+    saga.init_lsp_saga({
+        code_action_icon = '💡'
+    })
+end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -63,6 +64,8 @@ local enhance_attach = function(client,bufnr)
     api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
     -- for 'RRethy/vim-illuminate'
     require 'illuminate'.on_attach(client)
+    -- for 'nvim-lua/completion-nvim'
+    require('completion').on_attach(client, bufnr)
 end
 
 lspconfig.gopls.setup {
@@ -76,6 +79,7 @@ lspconfig.gopls.setup {
 }
 
 lspconfig.sumneko_lua.setup {
+    on_attach = require('completion').on_attach,
     cmd = {
         "lua-language-server",
         "-E",
@@ -96,13 +100,15 @@ lspconfig.sumneko_lua.setup {
 }
 
 lspconfig.tsserver.setup {
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         enhance_attach(client)
+        require('completion').on_attach(client, bufnr)
     end
 }
 
 lspconfig.clangd.setup {
+    on_attach = require('completion').on_attach,
     cmd = {
         "clangd",
         "--background-index",
@@ -113,6 +119,7 @@ lspconfig.clangd.setup {
 }
 
 lspconfig.rust_analyzer.setup {
+    on_attach = require('completion').on_attach,
     capabilities = capabilities,
 }
 

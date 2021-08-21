@@ -7,4 +7,4 @@ require("aloha")({
     sync_plugins = false,
 })
 
-vim.cmd("source " .. "/home/aloha/.config/nvim" .. "/remain.vim")
+vim.cmd("source " .. vim.env.HOME .. "/.config/nvim/remain.vim")

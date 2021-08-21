@@ -14,11 +14,6 @@ return function(_options)
     end
 
     _G.aloha = {
-        au = {
-            add = function(event, file, command)
-                vim.cmd('autocmd'..event..' '..file..' '..command)
-            end
-        },
         map = {
             list = settings.mappings or {},
             leader = ' ',

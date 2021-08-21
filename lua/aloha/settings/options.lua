@@ -1,5 +1,6 @@
 return {
-    termguicolors  = true;
+    termguicolors = true;
+    formatoptions = "1jcroql";
     cpoptions   = 'aABceFsI';
     lazyredraw  = true,
     timeout     = true,
@@ -9,50 +10,37 @@ return {
     hidden      = true,
     tags        = './tags;,tags,./.tags',
     smarttab    = true,
-    -- wildchar for cmap, <c-z>
-    -- set wildcharm = <C-z> | echo &wildcharm
-    wildcharm   = 26,
+    wildcharm   = 26,  -- wildchar for cmap, <c-z>, `set wildcharm=<C-z> | echo &wildcharm`
     wildmode    = 'longest:full,full',
     wildignore  = '*.o,*~,*.pyc',
-
     fileformats = 'unix,dos,mac',
     ignorecase  = true,
     smartcase   = true,
     hlsearch    = true,
     incsearch   = true,
     magic       = true,
-
     backup      = true,
     undodir     = vim.fn.stdpath('data')..'/swap',
     backupdir   = vim.fn.stdpath('data')..'/undo',
     directory   = vim.fn.stdpath('data')..'/backup',
-
     completeopt = 'noinsert,menuone,noselect',
-
     backspace = 'start,eol,indent', whichwrap='b,s,<,>,h,l',
     sidescroll = 1, sidescrolloff = 5, scrolloff = 3,
     linebreak = false, breakindent = false,
-
-    listchars = 'trail:˽,tab:>-', fillchars = 'vert:▏', -- ┆
-
+    listchars = "tab:«·»,nbsp:+,trail:·,extends:→,precedes:←"; -- trail:˽
+    fillchars = 'vert:▏', -- ┆
     fileencodings = 'utf-8,ucs-bom,gb18030,gbk,gb2312,cp936',
     emoji = true,
-
     equalalways = false,
-
     switchbuf='useopen,usetab,newtab',
-
     showtabline=2,
-
     shortmess="atAF",
-
     mouse='a',
-
     grepprg='rg -n',
-
     foldlevel      = 999,
     conceallevel   = 2,
     wrap           = false,
+    showbreak      = "↳ ";
     list           = true,
     number         = true,
     relativenumber = true,
@@ -81,8 +69,8 @@ return {
     -- 4.
     indentkeys = ':,0#,!^F,o,O,e', -- indentexpr
     -- set indentexpr = Get{Vim|Lua|Cpp}Indent -- Xcindent Xsmartindent !lisp
-
     spelllang = 'en_us,cjk',
     spellfile = '~/.config/nvim/spell/en.utf-8.add',
     spelloptions = 'camel',
+    inccommand = 'split',
 }

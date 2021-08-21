@@ -52,8 +52,9 @@ return {
     -- completion
     ['neovim/nvim-lspconfig'] = {},
     ['glepnir/lspsaga.nvim'] = {},
-    ['hrsh7th/nvim-compe'] = {},
+    ['hrsh7th/nvim-compe'] = {disable = true},
     ['hrsh7th/vim-vsnip'] = {disable = true},
+    ['nvim-lua/completion-nvim'] = {},
     ['SirVer/ultisnips'] = {},
     ['nvim-telescope/telescope.nvim'] = {},
     ['glepnir/smartinput.nvim'] = {},
@@ -62,7 +63,7 @@ return {
 
     -- ui
     ['mhinz/vim-startify'] = {},
-    ['joshdick/onedark.vim'] = {config = [[:colorscheme onedark]]},
+    ['alohaia/onedark.vim'] = {},
     ['rafalbromirski/vim-airlineish'] = {disable = true},
     ['vim-airline/vim-airline'] = {
         config=[[:let g:airline_theme = 'onedark']]

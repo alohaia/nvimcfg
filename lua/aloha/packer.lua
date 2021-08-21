@@ -376,6 +376,7 @@ function packer:clean()
     end
 
     -- remove undesired plugins from installed plugins
+    local cate,name
     for _,plugin in ipairs(installed_plugins) do
         cate,name = plugin:match('([^/]*)/([^/]*)$')
         if (not plugins[name]) or plugins[name].cate ~= cate then
