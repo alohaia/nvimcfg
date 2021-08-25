@@ -50,7 +50,6 @@ configs['akinsho/nvim-bufferline.lua'] = function()
         options = {
             numbers = 'buffer_id', -- "none" | "ordinal" | "buffer_id" | "both",
             number_style = {'subscript', 'superscript'}, -- "superscript" | "" | { "none", "subscript" }, -- buffer_id at index 1, ordinal at index 2
-            mappings = true,
             close_command = "bdelete! %d",       -- can be a string | function, see "Mouse actions"
             right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
             left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
@@ -279,14 +278,14 @@ configs['nvim-telescope/telescope.nvim'] = function()
             selection_strategy = "reset",
             sorting_strategy = "descending",
             layout_strategy = "horizontal",
-            layout_config = {
-                horizontal = {
-                    mirror = false,
-                },
-                vertical = {
-                    mirror = false,
-                },
-            },
+            -- layout_config = {
+            --     horizontal = {
+            --         mirror = false,
+            --     },
+            --     vertical = {
+            --         mirror = true,
+            --     },
+            -- },
             file_sorter =  require'telescope.sorters'.get_fuzzy_file,
             file_ignore_patterns = {},
             generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
@@ -311,9 +310,15 @@ configs['nvim-telescope/telescope.nvim'] = function()
             }
         },
     }
+    vim.cmd('packadd telescope-fzy-native.nvim')
     require('telescope').load_extension('fzy_native')
     -- require'telescope'.load_extension('dotfiles')
     -- require'telescope'.load_extension('gosource')
+
+    -- keybindings
+    vim.api.nvim_set_keymap('n', '<Leader>f', '<Cmd>Telescope find_files<CR>', {noremap = true})
+    vim.api.nvim_set_keymap('n', '<Leader>F', '<Cmd>Telescope file_browser<CR>', {noremap = true})
+    vim.api.nvim_set_keymap('n', '<Leader>g', '<Cmd>Telescope live_grep<CR>', {noremap = true})
 end
 
 configs['RRethy/vim-illuminate'] = function()

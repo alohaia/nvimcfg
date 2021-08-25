@@ -124,7 +124,7 @@ lspconfig.rust_analyzer.setup {
 }
 
 local servers = {
-    'dockerls','bashls','pyright'
+    'dockerls','bashls','pyright', 'r_language_server'
 }
 
 for _,server in ipairs(servers) do

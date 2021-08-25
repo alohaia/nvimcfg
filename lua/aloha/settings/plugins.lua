@@ -57,9 +57,6 @@ return {
     ['nvim-lua/completion-nvim'] = {},
     ['SirVer/ultisnips'] = {},
     ['nvim-telescope/telescope.nvim'] = {},
-    ['glepnir/smartinput.nvim'] = {},
-    ['mattn/vim-sonictemplate'] = {},
-    ['mattn/emmet-vim'] = {},
 
     -- ui
     ['mhinz/vim-startify'] = {},
@@ -71,7 +68,7 @@ return {
     ['kyazdani42/nvim-web-devicons'] = {},
     ['lukas-reineke/indent-blankline.nvim'] = {},
     ['akinsho/nvim-bufferline.lua'] = {},
-    ['kyazdani42/nvim-tree.lua'] = {},
+    ['kyazdani42/nvim-tree.lua'] = {disable = true}, -- TODO: `on`
     ['lewis6991/gitsigns.nvim'] = {},
     ['liuchengxu/vista.vim'] = {},
     ['mbbill/undotree'] = {},
@@ -101,7 +98,7 @@ return {
             vim.cmd[[cnorea Tab Tabularize]]
         end
     },
-    ['jalvesaq/Nvim-R'] = {ft = 'r', branch = 'master'},
+    ['jalvesaq/Nvim-R'] = {disable = true, ft = 'r', branch = 'master'},
 
     -- dependences
     ['nvim-treesitter/nvim-treesitter'] = {},
