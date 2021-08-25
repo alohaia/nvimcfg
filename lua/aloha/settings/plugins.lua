@@ -91,7 +91,7 @@ return {
     ['tpope/vim-capslock'] = {},
     ['tpope/vim-surround'] = {},
     ['tpope/vim-repeat'] = {},
-    ['dkarter/bullets.vim'] = {ft = 'markdown,text'},
+    ['dkarter/bullets.vim'] = {},   -- use `vim.g.bullets_enabled_file_types`
     ['dhruvasagar/vim-table-mode'] = {ft='markdown,text'},
     ['svermeulen/vim-subversive'] = {},
     ['mg979/vim-visual-multi'] = {},
@@ -101,6 +101,7 @@ return {
             vim.cmd[[cnorea Tab Tabularize]]
         end
     },
+    ['jalvesaq/Nvim-R'] = {ft = 'r', branch = 'master'},
 
     -- dependences
     ['nvim-treesitter/nvim-treesitter'] = {},
