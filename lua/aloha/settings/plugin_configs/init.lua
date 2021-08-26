@@ -587,25 +587,24 @@ configs['alohaia/onedark.vim'] = function()
 end
 
 configs['vim-airline/vim-airline'] = function()
+    vim.g['airline#extensions#tabline#enabled'] = 0
+    -- ﯑韛 
+    vim.g['airline_left_sep']                   = '┆'
+    vim.g['airline_left_alt_sep']               = '┆'
+    vim.g['airline_right_sep']                  = '┆'
+    vim.g['airline_right_alt_sep']              = '┆'
     vim.g.airline_symbols = {
-        crypt      = '',
-        linenr     = '㏑',
-        maxlinenr  = '¶',
+        colnr      = ' ㏇:',
+        notexists  = 'Ɇ',
+        crypt      = '',    -- 🔒
+        linenr     = ' ㏑:', -- ☰
+        maxlinenr  = '',     -- ¶
         branch     = '',    -- 
         dirty      = '[+]',  -- ⚡
         paste      = 'Þ',
-        -- spell      = 'Ꞩ',
-        spell      = '﯑',
-        -- notexists  = 'Ɇ',
+        spell      = '﯑',    -- Ꞩ
         whitespace = 'Ξ'
     }
-    -- ﯑韛 
-    vim.g.airline_powerline_fonts                      = 1
-    vim.g['airline#extensions#tabline#enabled']        = 0
-    vim.g['airline_left_sep']                          = '┆'
-    vim.g['airline_left_alt_sep']                      = '┆'
-    vim.g['airline_right_sep']                         = '┆'
-    vim.g['airline_right_alt_sep']                     = '┆'
 end
 
 return configs

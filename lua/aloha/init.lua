@@ -54,7 +54,7 @@ return function(_options)
         aloha.plugins,                  -- plugin list
         require('aloha.settings.plugin_configs'), -- plugin config
         {                             -- packer config
-            git = 'proxychains -q git',
+            git = 'git',
             rm = 'gio trash',
         }
     )
