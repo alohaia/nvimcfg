@@ -306,10 +306,11 @@ function packer:loadConfig()
     for name,settings in pairs(self.plugins) do
         -- to load configuration here, a plugin must be enabled and installed
 
-        if settings.disable then
+        -- disabled or not installed
+        if settings.disable or not is_installed(name) then
             goto continue
         -- opt plugins
-        elseif vim.fn.glob(base_path .. '/opt/' .. vim.split(name, '/')[2]) ~= '' then
+        elseif is_opt(settings) then
             local cmd = ''
             if settings.config then
             -- config in settings
@@ -336,10 +337,10 @@ function packer:loadConfig()
             end
             local pack_path = base_path .. '/opt/' .. vim.split(name, '/')[2]
             if cmd ~= '' then
-                vim.cmd('au SourcePre ' .. pack_path .. '/*' .. cmd)
+                vim.cmd('au SourcePre ' .. pack_path .. '/* ++once ' .. cmd)
             end
         -- start plugins
-        elseif vim.fn.glob(base_path .. '/start/' .. vim.split(name, '/')[2]) ~= '' then
+        else
             if self.plugin_configs[name] then
                 exec(self.plugin_configs[name])
             end
@@ -406,7 +407,7 @@ function packer:prepareOptPlugins()
         end
 
         if filetypes then
-            vim.cmd('au FileType ' .. filetypes .. ' nested packadd ' .. vim.split(name, '/')[2])
+            vim.cmd('au FileType ' .. filetypes .. ' ++once ++nested packadd ' .. vim.split(name, '/')[2])
         end
 
         ::continue::
