@@ -96,9 +96,6 @@ return {
 
     {'t', '<M-q>', '<C-\\><C-n>'},
 
-    {'n', '<F5>', '<cmd>AsyncTask run<cr>'},
-    {'n', '<F6>', '<cmd>AsyncTask build<cr>'},
-
     -- Mouse support
     -- {'n', '<ScrollWhellUp>', '<C-y>'},
     -- {'n', '<S-ScrollWhellUp>', '<C-u>'},

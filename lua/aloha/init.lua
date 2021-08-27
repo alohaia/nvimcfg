@@ -18,25 +18,25 @@ return function(_options)
             list = settings.mappings or {},
             leader = ' ',
             default_args = setmetatable({
-                silent = true,
-                noremap = true
-            }, {
-                __add = function(tbl_o, tbl_n)
-                    local new_table = vim.deepcopy(tbl_o)
-                    if tbl_n ~= nil then
-                        vim.validate{
-                            tbl_n = {tbl_n, 't'}
-                        }
-                        for k,v in pairs(tbl_n) do
-                            new_table[k] = v
+                    silent = true,
+                    noremap = true
+                }, {
+                    __add = function(tbl_o, tbl_n)
+                        local new_table = vim.deepcopy(tbl_o)
+                        if tbl_n ~= nil then
+                            vim.validate{
+                                tbl_n = {tbl_n, 't'}
+                            }
+                            for k,v in pairs(tbl_n) do
+                                new_table[k] = v
+                            end
                         end
+                        return new_table
                     end
-                    return new_table
-                end
-            }),
+                }
+            ),
         },
         options = settings.options or {},
-        plugins = settings.plugins or {}
     }
 
     -- set up mappings
@@ -50,36 +50,6 @@ return function(_options)
         vim.opt[o] = v
     end
 
-    aloha.packer = require('aloha.packer'):init(
-        aloha.plugins,                  -- plugin list
-        require('aloha.settings.plugin_configs'), -- plugin config
-        {                             -- packer config
-            git = 'git',
-            rm = 'gio trash',
-        }
-    )
-
-    -- preparation
-    if not options.minimal or options.create_dirs then
-        -- check and create dirs
-        for _,path in ipairs({vim.o.backupdir, vim.o.directory, vim.o.undodir}) do
-            if path ~= nil and path ~= '' then
-                path = string.gsub(path, '^~', vim.env.HOME)
-                if vim.fn.glob(path) == '' then
-                    print('create dir: ' .. path)
-                    vim.fn.mkdir(path, 'p')
-                end
-            end
-        end
-    end
-
-    -- install plugins
-    if not options.minimal and options.install_plugins and not options.sync_plugins then
-        aloha.packer:download()
-    end
-    -- clean and update/install plugins
-    if not options.minimal and options.sync_plugins then
-        aloha.packer:clean()
-        aloha.packer:download('update')
-    end
+    -- plugins
+    aloha.packer = require('aloha.packer'):init(options.packer_settings)
 end

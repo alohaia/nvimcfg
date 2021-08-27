@@ -17,13 +17,8 @@ _ = {
     ['skywind3000/asyncrun.extra'] = {},
     ['skywind3000/asynctasks.vim'] = {},
 
-    -- git
-    ['tpope/vim-fugitive'] = {},
-    ['cohama/agit.vim'] = {config = ':let g:agit_no_default_mappings = 0'},
 
     -- lua plugins
-    ['nvim-treesitter/nvim-treesitter'] = {run = ':au VimEnter * TSUpdate'},
-    ['neovim/nvim-lspconfig'] = {},
     ['RRethy/vim-hexokinase'] =  {run = '!make hexokinase'},
 
     -- disabled plugins
@@ -99,6 +94,13 @@ return {
         end
     },
     ['jalvesaq/Nvim-R'] = {disable = true, ft = 'r', branch = 'master'},
+    ['skywind3000/asyncrun.vim'] = {disable = true},
+    ['skywind3000/asyncrun.extra'] = {disable = true},
+    ['skywind3000/asynctasks.vim'] = {disable = true},
+
+    -- git
+    ['tpope/vim-fugitive'] = {},
+    ['cohama/agit.vim'] = {config = ':let g:agit_no_default_mappings = 0'},
 
     -- dependences
     ['nvim-treesitter/nvim-treesitter'] = {},

@@ -1,7 +1,7 @@
 local configs = {}
 
 configs['glepnir/galaxyline.nvim'] = function()
-    require('aloha.settings.plugin_configs.galaxyline')
+    require('aloha.plugin_configs.galaxyline')
 end
 
 configs['lukas-reineke/indent-blankline.nvim'] = function()
@@ -221,7 +221,7 @@ configs['lewis6991/gitsigns.nvim'] = function()
 end
 
 configs['neovim/nvim-lspconfig'] = function()
-    require('aloha.settings.plugin_configs.lspconfig')
+    require('aloha.plugin_configs.lspconfig')
 end
 
 configs['hrsh7th/nvim-compe'] = function()
@@ -606,6 +606,20 @@ configs['vim-airline/vim-airline'] = function()
         spell      = '﯑',    -- Ꞩ
         whitespace = 'Ξ'
     }
+end
+
+configs['skywind3000/asyncrun.vim'] = function()
+    vim.g.asyncrun_rootmarks = {'.git', '.svn', '.root'}
+end
+
+configs['skywind3000/asyncrun.extra'] = function()
+    vim.g['asyncrun_extra#floaterm#title_style'] = 'asyncrun'
+    vim.g.asynctasks_term_pos = 'floaterm'
+end
+
+configs['skywind3000/asynctasks.vim'] = function()
+    vim.api.nvim_set_keymap('n', '<F5>', '<cmd>AsyncTask run<cr>', {})
+    vim.api.nvim_set_keymap('n', '<F6>', '<cmd>AsyncTask build<cr>', {})
 end
 
 return configs
