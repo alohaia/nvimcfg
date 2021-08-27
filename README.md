@@ -2,6 +2,11 @@
 
 <p align="center">My NeoVim Configuration Written in Lua.</p>
 
+![2021-08-27_12-36-07](https://user-images.githubusercontent.com/36324537/131072598-7969fcce-3e29-49f2-bdb1-9851ddfda637.png)
+
+![2021-08-27_12-33-04](https://user-images.githubusercontent.com/36324537/131072714-1db0ed6d-c6ef-421d-9641-0720342230da.png)
+
+
 ## Installation
 
 1. Move `~/.config/nvim` to another place
