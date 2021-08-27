@@ -6,7 +6,6 @@
 
 ![2021-08-27_12-33-04](https://user-images.githubusercontent.com/36324537/131072714-1db0ed6d-c6ef-421d-9641-0720342230da.png)
 
-
 ## Installation
 
 1. Move `~/.config/nvim` to another place
@@ -40,11 +39,10 @@ require("aloha")({
 
 - `packer_settings`
     - [`plugins`](#plugins): plugin list with basic configuration, see `~/.config/nvim/lua/aloha/plugins.lua` for example
-    - [`plugin_configs`](plugin_configs): configurations for plugins, see `~/.config/nvim/lua/aloha/plugin_configs/init.lua` for example
+    - [`plugin_configs`](plugin_configs): configuration for plugins, see `~/.config/nvim/lua/aloha/plugin_configs/init.lua` for example
     - `packer_config`: settings for built-in packer
 
 > **Tips** You can set `packer_config.rm` to `gio trash` on GNOME. You can also set `packer_config.git` to `proxychains -q git` to use proxy, but using `~/.gitconfig` is better. For example:
-> 
 > ```dosini
 > [http]
 > 	proxy = socks5://127.0.0.1:1089
@@ -65,12 +63,19 @@ A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexow
     - Begin with `!`: regarded as a system command
     - Other cases: regarded as a piece of Lua code
 
-> I recommend you write only simple configurations in `config` and use `plugin_configs` which I'll introduce later to config plugins.
+> I recommend you write only simple configuration in `config` and use `plugin_configs` which I'll introduce later to config plugins.
 
 #### `plugin_configs`
 
-A table of configurations for plugins. The key is a plugin's name, and the value is a function.
+A table of configuration for plugins. The key is a plugin's name, and the value is a function.
 
 ### `~/.config/nvim/remain.vim`
 
 Some VimL code, which will be sourced in `init.lua`. You can add your VimL code here.
+
+## Features
+
+- Built-in packer
+- Useful plugins with detailed configuration
+- Mostly written in Lua
+- Snippets for [UltiSnips](https://github.com/SirVer/ultisnips)
