@@ -312,8 +312,8 @@ function packer:loadConfig()
         -- opt plugins
         elseif is_opt(settings) then
             local cmd = ''
-            if settings.config then
             -- config in settings
+            if settings.config then
                 self.opt_configs = {}
                 if type(settings.config) == 'function' then
                     cmd = 'lua aloha.packer.plugin_configs[\'' .. name .. '\']()'
@@ -327,17 +327,17 @@ function packer:loadConfig()
                         cmd = 'lua ' .. settings.config
                     end
                 end
-            elseif self.plugin_configs[name] and type(self.plugin_configs[name]) == 'function' then
+            end
             -- config in plugin_configs
+            if self.plugin_configs[name] and type(self.plugin_configs[name]) == 'function' then
                 if cmd ~= '' then
                     cmd = cmd .. ' | ' .. 'lua aloha.packer.plugin_configs[\'' .. name .. '\']()'
                 else
                     cmd = 'lua aloha.packer.plugin_configs[\'' .. name .. '\']()'
                 end
             end
-            local pack_path = base_path .. '/opt/' .. vim.split(name, '/')[2]
             if cmd ~= '' then
-                vim.cmd('au SourcePre ' .. pack_path .. '/* ++once ' .. cmd)
+                vim.cmd('au SourcePre ' .. plugin_path(name) .. '/* ++once ' .. cmd)
             end
         -- start plugins
         else

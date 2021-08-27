@@ -501,7 +501,7 @@ configs['alohaia/vim-hexowiki'] = function()
     vim.g.hexowiki_home = '~/blog/source/_posts'
     vim.g.hexowiki_follow_after_create = 0
     vim.g.hexowiki_use_imaps = 1
-    vim.g.hexowiki_disable_fold = 0
+    vim.g.hexowiki_disable_fold = 1
 end
 
 configs['dkarter/bullets.vim'] = function()
