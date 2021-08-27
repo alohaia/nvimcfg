@@ -103,12 +103,12 @@ local function plugin_path(name)
     end
 end
 
-function packer:init(plugins, plugin_configs, packer_config)
+function packer:init(settings)
     --{{1 initialization
     -- default arguments
-    self.plugins = type(plugins) == 'table' and plugins or {}
-    self.plugin_configs = type(plugin_configs) == 'table' and plugin_configs or {}
-    self.packer_config = vim.tbl_extend('keep', packer_config, {
+    self.plugins = (type(settings.plugins) == 'table') and settings.plugins or {}
+    self.plugin_configs = type(settings.plugin_configs) == 'table' and settings.plugin_configs or {}
+    self.packer_config = vim.tbl_extend('keep', settings.packer_config, {
         pack_root = vim.fn.stdpath('data') .. '/site/pack',
         pack_name = 'packer',
         git = 'git',

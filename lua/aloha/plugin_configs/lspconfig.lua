@@ -1,6 +1,6 @@
 local api = vim.api
 local lspconfig = require 'lspconfig'
-local format = require('aloha.settings.plugin_configs.format')
+local format = require('aloha.plugin_configs.format')
 
 -- lspsaga.nvim
 if not vim.g.pack_lspsaga_loaded then
