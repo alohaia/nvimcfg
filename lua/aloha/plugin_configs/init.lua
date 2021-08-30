@@ -316,9 +316,9 @@ configs['nvim-telescope/telescope.nvim'] = function()
     -- require'telescope'.load_extension('gosource')
 
     -- keybindings
-    vim.api.nvim_set_keymap('n', '<Leader>f', '<Cmd>Telescope find_files<CR>', {noremap = true})
-    vim.api.nvim_set_keymap('n', '<Leader>F', '<Cmd>Telescope file_browser<CR>', {noremap = true})
-    vim.api.nvim_set_keymap('n', '<Leader>g', '<Cmd>Telescope live_grep<CR>', {noremap = true})
+    vim.api.nvim_set_keymap('n', ',f', '<Cmd>Telescope find_files<CR>', {noremap = true})
+    vim.api.nvim_set_keymap('n', ',F', '<Cmd>Telescope file_browser<CR>', {noremap = true})
+    vim.api.nvim_set_keymap('n', ',g', '<Cmd>Telescope live_grep<CR>', {noremap = true})
 end
 
 configs['RRethy/vim-illuminate'] = function()
@@ -499,9 +499,19 @@ end
 
 configs['alohaia/vim-hexowiki'] = function()
     vim.g.hexowiki_home = '~/blog/source/_posts'
+    vim.g.hexowiki_try_init_file = 1
     vim.g.hexowiki_follow_after_create = 0
     vim.g.hexowiki_use_imaps = 1
-    vim.g.hexowiki_disable_fold = 1
+    vim.g.hexowiki_disable_fold = 0
+    vim.g.hexowiki_header_items = {
+        'title', 'comments', 'mathjax', 'date', 'tags', 'categories',
+        'coauthor',
+        'password', 'abstract', 'message', 'theme', 'wrong_pass_message',
+    }
+    vim.g.hexowiki_multiline_tags_with_end = {
+        'note', 'tabs'
+    }
+    vim.g.hexowiki_r_result_header = {'', '## OUTPUT ##'}
 end
 
 configs['dkarter/bullets.vim'] = function()

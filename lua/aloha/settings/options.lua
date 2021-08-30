@@ -49,7 +49,7 @@ return {
     signcolumn     = 'yes',
     foldmethod     = 'marker',
     -- foldexpr       = 'nvim_treesitter#foldexpr()',
-    foldcolumn     = '0',
+    foldcolumn = 'auto:9',
 
     swapfile    = true,
     undofile    = true,
