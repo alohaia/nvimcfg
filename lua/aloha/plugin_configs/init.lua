@@ -497,6 +497,15 @@ configs['SirVer/ultisnips'] = function()
     vim.g.UltiSnipsJumpBackwardTrigger="<C-k>"
 end
 
+configs['luochen1990/rainbow'] = function()
+    vim.g.rainbow_conf = {}
+    vim.g.rainbow_conf.separately = {
+        ['*'] = {},
+        markdown = 0;
+        rmd = 0;
+    }
+end
+
 configs['alohaia/vim-hexowiki'] = function()
     vim.g.hexowiki_home = '~/blog/source/_posts'
     vim.g.hexowiki_try_init_file = 1
@@ -509,9 +518,12 @@ configs['alohaia/vim-hexowiki'] = function()
         'password', 'abstract', 'message', 'theme', 'wrong_pass_message',
     }
     vim.g.hexowiki_multiline_tags_with_end = {
-        'note', 'tabs'
+        'note', 'tabs', 'cq', 'centerquote'
     }
-    vim.g.hexowiki_r_result_header = {'', '## OUTPUT ##'}
+    vim.g.hexowiki_markdown_fenced_languages = {
+        'lua',  'c', 'cpp', 'r', 'javascript', 'yaml',
+        'sh', 'bash', 'zsh'
+    }
 end
 
 configs['dkarter/bullets.vim'] = function()

@@ -29,8 +29,8 @@ return {
 
     -- editor
     ['RRethy/vim-illuminate'] = {},
-    ['luochen1990/rainbow'] = {config = 'vim.g.rainbow_active = 1'},
-    ['alohaia/vim-hexowiki'] = {ft='markdown,text'},
+    ['luochen1990/rainbow'] = {},
+    ['alohaia/vim-hexowiki'] = {ft='markdown,rmd,text'},
     ['rhysd/clever-f.vim'] = {},
     ['norcalli/nvim-colorizer.lua'] = {},
     ['brooth/far.vim'] = {},

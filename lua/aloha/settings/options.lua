@@ -49,7 +49,7 @@ return {
     signcolumn     = 'yes',
     foldmethod     = 'marker',
     -- foldexpr       = 'nvim_treesitter#foldexpr()',
-    foldcolumn = 'auto:9',
+    foldcolumn = 'auto:1',
 
     swapfile    = true,
     undofile    = true,
@@ -70,7 +70,7 @@ return {
     indentkeys = ':,0#,!^F,o,O,e', -- indentexpr
     -- set indentexpr = Get{Vim|Lua|Cpp}Indent -- Xcindent Xsmartindent !lisp
     spelllang = 'en_us,cjk',
-    spellfile = '~/.config/nvim/spell/en.utf-8.add',
+    spellfile = vim.fn.expand('~/.config/nvim/spell/en.utf-8.add'),
     spelloptions = 'camel',
     inccommand = 'split',
 }
