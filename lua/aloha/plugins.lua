@@ -1,11 +1,14 @@
 return {
     -- completion
-    ['neovim/nvim-lspconfig'] = {},
-    ['glepnir/lspsaga.nvim'] = {},
-    ['hrsh7th/nvim-compe'] = {disable = true},
-    ['hrsh7th/vim-vsnip'] = {disable = true},
-    ['nvim-lua/completion-nvim'] = {},
-    ['SirVer/ultisnips'] = {},
+    ['neovim/nvim-lspconfig']         = {},
+    ['hrsh7th/nvim-cmp']              = {},
+    ['hrsh7th/cmp-nvim-lsp']          = {},
+    ['hrsh7th/cmp-buffer']            = {},
+    ['hrsh7th/cmp-path']              = {},
+    ['quangnguyen30192/cmp-nvim-ultisnips'] = {},
+    ['glepnir/lspsaga.nvim']          = {disable = true},
+    ['onsails/lspkind-nvim']          = {},
+    ['SirVer/ultisnips']              = {},
     ['nvim-telescope/telescope.nvim'] = {},
 
     -- ui
@@ -18,7 +21,7 @@ return {
     ['kyazdani42/nvim-web-devicons'] = {},
     ['lukas-reineke/indent-blankline.nvim'] = {},
     ['akinsho/nvim-bufferline.lua'] = {},
-    ['kyazdani42/nvim-tree.lua'] = {disable = true}, -- TODO: `on`
+    ['kyazdani42/nvim-tree.lua'] = {},
     ['lewis6991/gitsigns.nvim'] = {},
     ['liuchengxu/vista.vim'] = {},
     ['mbbill/undotree'] = {},
@@ -26,11 +29,12 @@ return {
     ['glepnir/zephyr-nvim'] = {disable = true, config = [[:colorscheme zephyr]]},
     ['glepnir/dashboard-nvim'] = {disable = true},
     ['glepnir/galaxyline.nvim'] = {disable = true, branch = 'main'},
+    ['fatih/vim-go'] = {},
 
     -- editor
     ['RRethy/vim-illuminate'] = {},
     ['luochen1990/rainbow'] = {},
-    ['alohaia/vim-hexowiki'] = {ft='markdown,rmd,text'},
+    ['alohaia/hugowiki.nvim'] = {ft='markdown,rmd,text'},
     ['rhysd/clever-f.vim'] = {},
     ['norcalli/nvim-colorizer.lua'] = {},
     ['brooth/far.vim'] = {},
@@ -39,7 +43,7 @@ return {
     ['tpope/vim-surround'] = {},
     ['tpope/vim-repeat'] = {},
     ['dkarter/bullets.vim'] = {},   -- use `vim.g.bullets_enabled_file_types`
-    ['dhruvasagar/vim-table-mode'] = {ft='markdown,text'},
+    ['dhruvasagar/vim-table-mode'] = {ft='rmd,markdown,text'},
     ['svermeulen/vim-subversive'] = {},
     ['mg979/vim-visual-multi'] = {},
     ['jiangmiao/auto-pairs'] = {},
@@ -52,6 +56,10 @@ return {
     ['skywind3000/asyncrun.vim'] = {disable = true},
     ['skywind3000/asyncrun.extra'] = {disable = true},
     ['skywind3000/asynctasks.vim'] = {disable = true},
+    ['lilydjwg/fcitx.vim'] = {
+        ft = 'rmd,markdown,text',
+        config = [[vim.g.fcitx5_remote = '/usr/bin/fcitx5-remote']]
+    },
 
     -- git
     ['tpope/vim-fugitive'] = {},
@@ -59,6 +67,7 @@ return {
 
     -- dependences
     ['nvim-treesitter/nvim-treesitter'] = {},
+    ['nvim-treesitter/nvim-treesitter-textobjects'] = {},
     ['nvim-lua/plenary.nvim'] = {opt=true},
     ['nvim-lua/popup.nvim'] = {opt=true},
     ['nvim-telescope/telescope-fzy-native.nvim'] = {opt=true},
