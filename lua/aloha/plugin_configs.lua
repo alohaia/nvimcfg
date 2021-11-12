@@ -153,7 +153,7 @@ configs['akinsho/nvim-bufferline.lua'] = function()
 end
 
 configs['kyazdani42/nvim-tree.lua'] = function()
-    vim.g.nvim_tree_quit_on_open = 1
+    vim.g.nvim_tree_quit_on_open = 0
     vim.g.nvim_tree_indent_markers = 0
     vim.g.nvim_tree_add_trailing = 0
     vim.g.nvim_tree_group_empty = 1
@@ -168,8 +168,8 @@ configs['kyazdani42/nvim-tree.lua'] = function()
         },
         auto_close = false,
         open_on_tab = false,
-        hijack_cursor = true,
-        update_cwd = true,
+        hijack_cursor = false,
+        update_cwd = false,
         diagnostics = {
             enable = true,
             icons = {
@@ -327,7 +327,10 @@ configs['neovim/nvim-lspconfig'] = function()
     -- }
     lspconfig.clangd.setup {
         capabilities = capabilities,
-        on_attach = enhance_attach,
+        on_attach = function (client, bufnr)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<Cmd>ClangdSwitchSourceHeader<cr>', {noremap=true})
+            enhance_attach(client, bufnr)
+        end,
         cmd = {
             "clangd",
             "--background-index",
@@ -335,6 +338,7 @@ configs['neovim/nvim-lspconfig'] = function()
             "--clang-tidy",
             "--header-insertion=iwyu",
         },
+        filetypes = { "c", "cpp", "objc", "objcpp" }
     }
     local servers = {
         'bashls', 'pyright', 'r_language_server'
@@ -374,7 +378,7 @@ configs['hrsh7th/nvim-cmp'] = function()
                 c = cmp.mapping.close(),
             }),
             ['<CR>'] = cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Replace,
+                behavior = cmp.ConfirmBehavior.Insert,
                 select = true,
             })
         },
@@ -577,7 +581,7 @@ configs['liuchengxu/vista.vim'] = function()
     vim.g.vista_enable_markdown_extension    = 1
     vim.g.vista_enable_markdown_extension    = 1
     vim.g.vista_fzf_preview                  = {'right:50%'}
-    vim.g.vista_sidebar_width                = 50
+    vim.g.vista_sidebar_width                = 30
     vim.g.vista_fold_toggle_icons            = {'▾', '▸'}
     vim.g.vista_icon_indent                  = {"└─▸ ", "├─▸ "}
     vim.g.vista_echo_cursor                  = 1
@@ -585,7 +589,7 @@ configs['liuchengxu/vista.vim'] = function()
     vim.g.vista_echo_cursor_strategy         = 'scroll'
     vim.g.vista_update_on_text_changed       = 1
     vim.g.vista_update_on_text_changed_delay = 2000
-    vim.g.vista_close_on_jump                = 1
+    vim.g.vista_close_on_jump                = 0
     vim.g.vista_stay_on_open                 = 1
     vim.g.vista_blink                        = {0, 0}
     vim.g.vista_top_level_blink              = {0, 0}
