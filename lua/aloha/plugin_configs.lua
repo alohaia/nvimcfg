@@ -700,6 +700,8 @@ configs['alohaia/hugowiki.nvim'] = function()
     }
     vim.g.hugowiki_wrap = 1
     vim.g.hugowiki_auto_save = 0
+    vim.g.hugowiki_auto_update_lastmod = 1
+    vim.g.hugowiki_lastmod_under_date = 1
     vim.g.hugowiki_rmd_auto_convert = {
         enable = true,
         cwd = vim.fn.expand('~') .. '/blog',
@@ -778,7 +780,7 @@ end
 configs['jiangmiao/auto-pairs'] = function()
     -- vim.g.AutoPairsFlyMode            = 1
     vim.g.AutoPairsShortcutToggle     = '<M-o>'
-    -- vim.g.AutoPairsShortcutFastWrap   = '<M-e>'
+    vim.g.AutoPairsShortcutFastWrap   = '<M-w>'
     -- vim.g.AutoPairsShortcutBackInsert = '<M-b>'
     -- vim.g.AutoPairsShortcutJump       = '<M-n>'
     -- vim.g.AutoPairsMapBs              = 1

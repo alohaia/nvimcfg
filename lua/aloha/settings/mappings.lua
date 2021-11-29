@@ -29,12 +29,12 @@ return {
     {'x', '<C-l>', '<C-w><C-l>'},
 
     {'n', '-', '<Cmd>bp<cr>'},
-    {'n', '=', '<Cmd>bn<cr>'},
     {'x', '-', '<Cmd>bp<cr>'},
+    {'n', '=', '<Cmd>bn<cr>'},
     {'x', '=', '<Cmd>bn<cr>'},
     {'n', '_', '<Cmd>tabprevious<cr>'},
-    {'n', '+', '<Cmd>tabnext<cr>'},
     {'x', '_', '<Cmd>tabprevious<cr>'},
+    {'n', '+', '<Cmd>tabnext<cr>'},
     {'x', '+', '<Cmd>tabnext<cr>'},
     {'n', '<leader>ba', '<Cmd>bufdo bd<cr>'},
 
@@ -55,8 +55,6 @@ return {
     {'i', '<M-l>',   '<Right>'},
     {'i', '<M-k>',   '<Up>'},
     {'i', '<M-j>',   '<Down>'},
-    -- {'i', '<C-a>',   '<Home>'},
-    -- {'i', '<C-d>',   '<End>'},
 
     {'n', '<UP>',    '<Cmd>res +1<CR>'},
     {'n', '<Left>',  '<Cmd>vert res +1<CR>'},
@@ -74,11 +72,11 @@ return {
 
     -- c_Ctrl-A is built-in to "Get all"
     -- Use <C-q> instead
-    {'c', '<C-v>', '<C-r>"', {silent = false}},
-    {'c', '<C-p>', '<Up>', {silent = false}},
-    {'c', '<C-h>', '<Left>', {silent = false}},
-    {'c', '<C-l>', '<Right>', {silent = false}},
-    {'c', '<C-n>', '<Down>', {silent = false}},
+    -- {'c', '<C-v>', '<C-r>"', {silent = false}},
+    -- {'c', '<C-p>', '<Up>', {silent = false}},
+    -- {'c', '<C-h>', '<Left>', {silent = false}},
+    -- {'c', '<C-l>', '<Right>', {silent = false}},
+    -- {'c', '<C-n>', '<Down>', {silent = false}},
 
     {'n', '<leader>H', ':vert h<space>', {silent = false}},
     {'n', '<leader>o', 'mzo<esc>`z'},
@@ -95,12 +93,6 @@ return {
     {'i', '<M-i>', '<C-r>=Ocr()<cr>'},
 
     {'t', '<M-q>', '<C-\\><C-n>'},
-
-    -- Mouse support
-    -- {'n', '<ScrollWhellUp>', '<C-y>'},
-    -- {'n', '<S-ScrollWhellUp>', '<C-u>'},
-    -- {'n', '<ScrollWhellDown>', '<C-e>'},
-    -- {'n', '<S-ScrollWhellDown>', '<C-d>'},
 
     {'i', '<M-a>', '<ESC>^i'},
     {'i', '<M-e>', '<END>'},
