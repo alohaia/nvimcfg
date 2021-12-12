@@ -52,6 +52,27 @@ require("aloha")({
 
 #### `plugins`
 
+> **Example** `~/.config/nvim/lua/aloha/plugins.lua`
+> ```lua
+> return {
+>     ['RRethy/vim-illuminate'] = {},
+>     ['luochen1990/rainbow'] = {},
+>     ['alohaia/hugowiki.nvim'] = {ft='markdown,rmd,text'},
+>     ['tpope/vim-surround'] = {},
+>     ['tpope/vim-repeat'] = {},
+>     ['dhruvasagar/vim-table-mode'] = {ft='rmd,markdown,text'},
+>     ['svermeulen/vim-subversive'] = {},
+>     ['mg979/vim-visual-multi'] = {},
+>     ['jiangmiao/auto-pairs'] = {},
+>     ['godlygeek/tabular'] = {
+>         config = function()
+>             vim.cmd[[cnorea Tab Tabularize]]
+>         end
+>     },
+>     ['jalvesaq/Nvim-R'] = {disable = true, ft = 'r', branch = 'master'},
+> }
+> ```
+
 A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexowiki`, and the value is a list of basic settings:
 
 - `opt`(`bool`): whether the plugin is installed as an opt pack
@@ -68,6 +89,32 @@ A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexow
 #### `plugin_configs`
 
 A table of configuration for plugins. The key is a plugin's name, and the value is a function.
+
+> **Example** `~/.config/nvim/lua/aloha/plugin_configs.lua`
+> ```lua
+> local configs = {}
+> 
+> configs['glepnir/galaxyline.nvim'] = function()
+>     require('aloha.plugin_configs.galaxyline')
+> end
+> 
+> configs['alohaia/hugowiki.nvim'] = function()
+>     vim.g.hugowiki_home = '~/blog.hugo/content/'
+>     vim.g.hugowiki_try_init_file = 1
+>     vim.g.hugowiki_follow_after_create = 0
+>     vim.g.hugowiki_use_imaps = 1
+>     vim.g.hugowiki_disable_fold = 0
+>     vim.g.markdown_fenced_languages = {
+>         'lua',  'c', 'cpp', 'r', 'javascript', 'python',
+>         'sh', 'bash', 'zsh', 'yaml', 'tex'
+>     }
+>     -- ...
+> end
+> 
+> -- ...
+> 
+> return configs
+> ```
 
 ### `~/.config/nvim/remain.vim`
 
