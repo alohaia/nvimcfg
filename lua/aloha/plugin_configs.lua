@@ -157,6 +157,12 @@ configs['kyazdani42/nvim-tree.lua'] = function()
     vim.g.nvim_tree_indent_markers = 0
     vim.g.nvim_tree_add_trailing = 0
     vim.g.nvim_tree_group_empty = 1
+    vim.g.nvim_tree_window_picker_exclude = {
+        -- filetype = {
+        --     'vista_markdown', 'vista'
+        -- },
+        buftype = { 'nofile', 'quickfix', 'terminal', 'prompt', 'help' }
+    }
     require'nvim-tree'.setup {
         disable_netrw = true,
         hijack_netrw = true,
@@ -166,7 +172,7 @@ configs['kyazdani42/nvim-tree.lua'] = function()
             enable = true,
             auto_open = true,
         },
-        auto_close = false,
+        auto_close = true,
         open_on_tab = false,
         hijack_cursor = false,
         update_cwd = false,
@@ -574,8 +580,9 @@ configs['liuchengxu/vista.vim'] = function()
     vim.g.vista_ctags_executable = 'ctags'
     vim.g.vista_ctags_project_opts = '--sort=no -R -o tags'
     vim.g.vista_executive_for = {
-        vimwiki  = 'markdown',
+        -- vimwiki  = 'markdown',
         pandoc   = 'markdown',
+        rmd      = 'markdown',
         markdown = 'toc',
     }
     vim.g.vista_enable_markdown_extension    = 1
@@ -795,6 +802,7 @@ end
 
 configs['alohaia/onedark.vim'] = function()
     vim.cmd[[colorscheme onedark]]
+    vim.cmd[[hi Normal guibg=NONE ctermbg=NONE]]
     vim.g.onedark_transparent_bg = 1
 end
 
