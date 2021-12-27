@@ -355,6 +355,24 @@ configs['neovim/nvim-lspconfig'] = function()
             on_attach = enhance_attach,
         }
     end
+
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    lspconfig.cssls.setup {
+        capabilities = capabilities,
+        cmd = { "vscode-css-languageserver", "--stdio" },
+    }
+    lspconfig.jsonls.setup {
+        capabilities = capabilities,
+        cmd = { "vscode-json-languageserver", "--stdio"  }
+    }
+    lspconfig.html.setup {
+        capabilities = capabilities,
+        cmd = { "vscode-html-languageserver", "--stdio"  }
+    }
+    lspconfig.eslint.setup {
+        capabilities = capabilities,
+        cmd = { "vscode-eslint-language-server", "--stdio"  }
+    }
 end
 
 configs['hrsh7th/nvim-cmp'] = function()
@@ -781,7 +799,7 @@ configs['voldikss/vim-floaterm'] = function()
     vim.g.floaterm_title         = 'floaterm: $1/$2'
     vim.g.floaterm_wintype       = 'popup'
     vim.g.floaterm_position      = 'bottomright'
-    vim.cmd('au Colorscheme * hi link FloatermBorder Floaterm')
+    vim.cmd('hi link FloatermBorder Normal')
 end
 
 configs['jiangmiao/auto-pairs'] = function()
@@ -801,9 +819,8 @@ configs['jiangmiao/auto-pairs'] = function()
 end
 
 configs['alohaia/onedark.vim'] = function()
-    vim.cmd[[colorscheme onedark]]
-    vim.cmd[[hi Normal guibg=NONE ctermbg=NONE]]
     vim.g.onedark_transparent_bg = 1
+    vim.cmd[[colorscheme onedark]]
 end
 
 configs['vim-airline/vim-airline'] = function()
