@@ -62,9 +62,9 @@ return {
     tabstop    = 4,
     expandtab  = true,
     smarttab   = true,  -- softtabstop = 4,
-    -- indent
-    autoindent  = true,
-    smartindent = true, -- !cindent | !indentexpr
+    -- indent(use treesitter instead)
+    -- autoindent  = true,
+    -- smartindent = true, -- !cindent | !indentexpr
     -- cindent  = true,
     -- cinwords = 'if,else,while,do,for,switch', -- smartindent | cindent
     -- cinkeys  = '0{,0},0),0],:,0#,!^F,o,O,e', -- cindent & !indentexpr

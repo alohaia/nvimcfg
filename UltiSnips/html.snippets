@@ -2,27 +2,65 @@ snippet html:5 "Basic html content" bwA
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=divice-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=${1:divice-width}, initial-scale=1.0">
+    <title>${2:Document}</title>
 </head>
 <body>
-  $0
+    $0
 </body>
 </html>
 endsnippet
 
-snippet "meta|a|ul|ol|li|head|title|h[1-6]|div|p|span|header|footer|link|script+" "html tags" riw
-<`!p snip.rv=match.group(0)`${1}>${2:${VISUAL}}</`!p snip.rv=match.group(0)`>$0
+# Tags
+snippet "p|meta|ul|ol|li|head|title|h[1-6]|div|p|span|header|footer|link+" "html tags" riw
+<`!p snip.rv=match.group(0)`${1}>${2:${VISUAL}}</`!p snip.rv=match.group(0)`>
 endsnippet
 
-snippet "(meta|a|ul|ol|li|head|title|h[1-6]|div|p|span|header|footer|link|script) " "multiline html tags" riw
+snippet "(p|meta|ul|ol|li|head|title|h[1-6]|div|p|span|header|footer|link) " "multiline html tags" riw
 <`!p snip.rv=match.group(1)`${1}>
-  ${2:${VISUAL}}
-</`!p snip.rv=match.group(1)`>$0
+	${2:${VISUAL}}
+</`!p snip.rv=match.group(1)`>
 endsnippet
 
-snippet "ht(ag)\?" "description" w
-<${1}>${2}<$1>$0
+# snippet "ht(ag)?" "description" rw
+# <${1}>${2}</${1/\s.*//}>
+# endsnippet
+
+snippet html:xml "" w
+<html xmlns="http://www.w3.org/1999/xhtml">${0:${VISUAL}}</html>
+endsnippet
+
+snippet input "input tag" w
+<input type="${1:text}"$2>
+endsnippet
+
+snippet "input:t(ext)?" "input tag(text)" rw
+<input type="text" name="$1"$2>
+endsnippet
+
+snippet "input:b(utton)?" "input tag(button)" rw
+<input type="button" value="$1"$2>
+endsnippet
+
+snippet style "style tag" w
+<style>$1</style>
+endsnippet
+
+snippet style:src "style tag(with src)" w
+<style src="$1">$2</style>
+endsnippet
+
+snippet script "script tag" w
+<script>$1</script>
+endsnippet
+
+snippet script:src "script tag(with src)" w
+<script src="$1">$2</script>
+endsnippet
+
+snippet a "a tag" w
+<a href="$1">$2</a>
 endsnippet
 

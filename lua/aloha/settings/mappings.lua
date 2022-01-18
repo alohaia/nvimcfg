@@ -18,6 +18,7 @@ return {
     {'n', 'Y', 'y$'},
 
     {'i', '<M-BS>', '<Del>'},
+    {'i', '<C-Entet', '<ESC>o'},
 
     {'n', '<C-h>', '<C-w><C-h>'},
     {'n', '<C-j>', '<C-w><C-j>'},
@@ -55,11 +56,6 @@ return {
     {'i', '<M-l>',   '<Right>'},
     {'i', '<M-k>',   '<Up>'},
     {'i', '<M-j>',   '<Down>'},
-
-    {'n', '<UP>',    '<Cmd>res +1<CR>'},
-    {'n', '<Left>',  '<Cmd>vert res +1<CR>'},
-    {'n', '<DOWN>',  '<Cmd>res -1<CR>'},
-    {'n', '<Right>', '<Cmd>vert res -1<CR>'},
 
     {'n', '<M-k>', [[mz:m-2<cr>`z]]},
     {'n', '<M-j>', [[mz:m+<cr>`z]]},

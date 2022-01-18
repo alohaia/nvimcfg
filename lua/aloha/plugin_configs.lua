@@ -124,10 +124,10 @@ configs['akinsho/nvim-bufferline.lua'] = function()
             custom_areas = {
               right = function()
                 local result = {}
-                local error = vim.lsp.diagnostic.get_count(0, [[Error]])
-                local warning = vim.lsp.diagnostic.get_count(0, [[Warning]])
-                local info = vim.lsp.diagnostic.get_count(0, [[Information]])
-                local hint = vim.lsp.diagnostic.get_count(0, [[Hint]])
+                local error   = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.ERROR }))
+                local warning = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.WARN  }))
+                local info    = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.INFO  }))
+                local hint    = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.HINT  }))
 
                 if error ~= 0 then
                     table.insert(result, {text = "  " .. error, guifg = "#EC5241"})
@@ -356,18 +356,21 @@ configs['neovim/nvim-lspconfig'] = function()
         }
     end
 
+    lspconfig.tsserver.setup{
+        capabilities = capabilities,
+    }
     capabilities.textDocument.completion.completionItem.snippetSupport = true
     lspconfig.cssls.setup {
         capabilities = capabilities,
-        cmd = { "vscode-css-languageserver", "--stdio" },
+        cmd = { "vscode-css-language-server", "--stdio" },
     }
     lspconfig.jsonls.setup {
         capabilities = capabilities,
-        cmd = { "vscode-json-languageserver", "--stdio"  }
+        cmd = { "vscode-json-language-server", "--stdio"  }
     }
     lspconfig.html.setup {
         capabilities = capabilities,
-        cmd = { "vscode-html-languageserver", "--stdio"  }
+        cmd = { "vscode-html-language-server", "--stdio"  }
     }
     lspconfig.eslint.setup {
         capabilities = capabilities,
@@ -563,7 +566,7 @@ configs['nvim-treesitter/nvim-treesitter'] = function()
             },
         },
         indent = {
-            enable = false,
+            enable = true,
         },
         textobjects = {
             select = {
@@ -633,7 +636,10 @@ configs['mhinz/vim-startify'] = function()
     vim.g.startify_session_persistence = 0
     vim.g.startify_session_autoload    = 1
     vim.g.startify_skiplist            = {
-        [[pack/packer/start/vimdoc-cn/doc/.*\.cnx]]
+        [[.*/doc/.*\.txt$]],
+        [[/usr/share/nvim/runtime/doc/.*\.txt$]],
+        [[.*/vimdoc-cn/doc/.*\.cnx]],
+        [[.*/.git/.*]],
     }
     vim.g.startify_files_number = 10
     vim.g.startify_bookmarks = {
@@ -714,7 +720,7 @@ configs['luochen1990/rainbow'] = function()
 end
 
 configs['alohaia/hugowiki.nvim'] = function()
-    vim.g.hugowiki_home = '~/blog.hugo/content/'
+    vim.g.hugowiki_home = '~/Documents/blog/'
     vim.g.hugowiki_try_init_file = 1
     vim.g.hugowiki_follow_after_create = 0
     vim.g.hugowiki_use_imaps = 1

@@ -47,6 +47,7 @@ return {
     ['svermeulen/vim-subversive'] = {},
     ['mg979/vim-visual-multi'] = {},
     ['jiangmiao/auto-pairs'] = {},
+    ['mattn/emmet-vim'] = {};
     ['godlygeek/tabular'] = {
         config = function()
             vim.cmd[[cnorea Tab Tabularize]]

@@ -68,7 +68,7 @@ endfunction
 
 autocmd FileType cpp,c setlocal path+=./include
 autocmd FileType text,markdown setlocal wrap spell
-autocmd FileType html,yaml,toml,vue setlocal tabstop=2 shiftwidth=2
+" autocmd FileType html,yaml,toml,vue setlocal tabstop=2 shiftwidth=2
 
 "-----------------------------------\ vim-table-mode /----------------------------------
 function! s:isAtStartOfLine(mapping)
