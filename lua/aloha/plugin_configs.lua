@@ -733,10 +733,10 @@ configs['alohaia/hugowiki.nvim'] = function()
     vim.g.hugowiki_auto_save = 0
     vim.g.hugowiki_auto_update_lastmod = 1
     vim.g.hugowiki_lastmod_under_date = 1
-    vim.g.hugowiki_rmd_auto_convert = {
+    vim.g.hugowiki_rmd_auto_knit = {
         enable = true,
-        cwd = vim.fn.expand('~') .. '/blog',
-        r_script = vim.fn.expand('~') .. '/blog.hugo/R/build.R',
+        cwd = vim.fn.expand(vim.g.hugowiki_home),
+        r_script = vim.fn.expand(vim.g.hugowiki_home) .. 'R/build_one.R',
     }
 end
 

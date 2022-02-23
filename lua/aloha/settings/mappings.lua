@@ -92,4 +92,7 @@ return {
 
     {'i', '<M-a>', '<ESC>^i'},
     {'i', '<M-e>', '<END>'},
+
+    {'n', '<Leader>ws', [[nnoremap <Leader>as i<Space><Esc>ea<Space><Esc>]]},
+    {'x', 'as', [[<ESC>`<lt>i<Space><Esc>`>la<Space><Esc>]]}
 }
