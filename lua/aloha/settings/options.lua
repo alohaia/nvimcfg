@@ -50,9 +50,9 @@ return {
     backup         = true,
     swapfile       = true,
     undofile       = true,
-    undodir        = vim.fn.stdpath('data')..'/swap',
-    backupdir      = vim.fn.stdpath('data')..'/undo',
-    directory      = vim.fn.stdpath('data')..'/backup',
+    undodir        = vim.fn.stdpath('data')..'/undo',
+    backupdir      = vim.fn.stdpath('data')..'/backup',
+    directory      = vim.fn.stdpath('data')..'/swap',
     -- fold
     foldmethod = 'expr',
     foldexpr   = 'nvim_treesitter#foldexpr()',
