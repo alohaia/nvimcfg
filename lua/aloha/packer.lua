@@ -1,5 +1,7 @@
 local packer = {}
 
+local join = table.concat
+
 local base_path = '' -- initialized in packer:init()
 
 local function exec(cmd, cwd, cmd_type)
@@ -312,13 +314,12 @@ function packer:loadConfig()
         -- opt plugins
         elseif is_opt(settings) then
             local cmd = ''
-            -- config in settings
+            -- `config` option in settings
             if settings.config then
                 self.opt_configs = {}
                 if type(settings.config) == 'function' then
                     cmd = 'lua aloha.packer.plugin_configs[\'' .. name .. '\']()'
-                end
-                if type(settings.config) == 'string' then
+                elseif type(settings.config) == 'string' then
                     if settings.config[1] == ':' then
                         cmd = settings.config:sub(2)
                     elseif settings.config[1] == '!' then
@@ -328,7 +329,7 @@ function packer:loadConfig()
                     end
                 end
             end
-            -- config in plugin_configs
+            -- `config` in plugin_configs
             if self.plugin_configs[name] and type(self.plugin_configs[name]) == 'function' then
                 if cmd ~= '' then
                     cmd = cmd .. ' | ' .. 'lua aloha.packer.plugin_configs[\'' .. name .. '\']()'
@@ -336,8 +337,23 @@ function packer:loadConfig()
                     cmd = 'lua aloha.packer.plugin_configs[\'' .. name .. '\']()'
                 end
             end
+            -- run cmd above
             if cmd ~= '' then
-                vim.cmd('au SourcePre ' .. plugin_path(name) .. '/* ++once ' .. cmd)
+                vim.cmd(join({'au SourcePre', plugin_path(name)..'/*', '++once', cmd}, ' '))
+            end
+
+            -- `on` option in settings
+            if settings.on then
+                local on_cmds = {}
+                if type(settings.on) == "table" then
+                    on_cmds = settings.on
+                elseif type(settings.on) == "string" then
+                    on_cmds = {settings.on}
+                end
+                for _,cmd in ipairs(on_cmds) do
+                    vim.cmd(join({'command', cmd, 'packadd', vim.split(name, '/')[2], '|', cmd}, ' '))
+                    vim.cmd(join({'au SourcePre', plugin_path(name)..'/*', '++once', 'delcommand', cmd}, ' '))
+                end
             end
         -- start plugins
         else
