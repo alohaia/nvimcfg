@@ -75,9 +75,10 @@ require("aloha")({
 
 A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexowiki`, and the value is a list of basic settings:
 
-- `opt`(`bool`): whether the plugin is installed as an opt pack
-- `ft`(`string`, `list`): for which filetypes is the plugin loaded, such as `'markdown,text'` and `{'markdown', 'text'}`
-- `branch`(`string`): branch of the plugin
+- `opt`(`bool`): whether the plugin is installed as an opt pack.
+- `ft`(`string`, `list`): for which filetype(s) is the plugin loaded, such as `'markdown,text'` and `{'markdown', 'text'}`.
+- `on`(`string`, `list`): on which vim command(s) should be loaded.
+- `branch`(`string`): branch of the plugin.
 - `disabled`(`bool`): whether the plugin is disabled. Disabled plugins won't be installed or updated and will be removed while cleaning
 - `config`(`function`, `string`): configuration for the plugin. If this is a function, it'll be directly called in due course. Otherwise, if this is a string, it will be executed accordingly:
     - Begin with `:`: regarded as a vim command
