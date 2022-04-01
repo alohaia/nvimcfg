@@ -13,12 +13,14 @@ return {
 
     -- ui
     ['mhinz/vim-startify'] = {},
-    ['alohaia/onedark.vim'] = {},
-    ['rafalbromirski/vim-airlineish'] = {disable = true},
-    ['vim-airline/vim-airline'] = {
-        config=[[:let g:airline_theme = 'onedark']]
-    },
-    ['kyazdani42/nvim-web-devicons'] = {},
+    -- ['alohaia/onedark.vim'] = {disable = true},
+    ['olimorris/onedarkpro.nvim'] = {},
+    ['nvim-lualine/lualine.nvim'] = {},
+    -- ['rafalbromirski/vim-airlineish'] = {disable = true},
+    -- ['vim-airline/vim-airline'] = {
+    --     config=[[:let g:airline_theme = 'onedark']]
+    -- },
+    ['kyazdani42/nvim-web-devicons'] = {opt = true},
     ['lukas-reineke/indent-blankline.nvim'] = {},
     ['akinsho/nvim-bufferline.lua'] = {},
     ['kyazdani42/nvim-tree.lua'] = {},

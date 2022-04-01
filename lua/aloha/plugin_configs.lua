@@ -153,66 +153,41 @@ configs['akinsho/nvim-bufferline.lua'] = function()
 end
 
 configs['kyazdani42/nvim-tree.lua'] = function()
-    vim.g.nvim_tree_quit_on_open = 0
     vim.g.nvim_tree_indent_markers = 0
     vim.g.nvim_tree_add_trailing = 0
     vim.g.nvim_tree_group_empty = 1
-    vim.g.nvim_tree_window_picker_exclude = {
-        -- filetype = {
-        --     'vista_markdown', 'vista'
-        -- },
-        buftype = { 'nofile', 'quickfix', 'terminal', 'prompt', 'help' }
-    }
-    require'nvim-tree'.setup {
-        disable_netrw = true,
-        hijack_netrw = true,
-        open_on_setup = false,
-        ignore_ft_on_setup = {},
-        update_to_buf_dir = {
+    vim.cmd[[autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]]
+    require("nvim-tree").setup { -- BEGIN_DEFAULT_OPTS
+      auto_reload_on_write = true,
+      disable_netrw = true,
+      hide_root_folder = false,
+      hijack_cursor = true,
+      hijack_netrw = true,
+      actions = {
+        change_dir = {
+          enable = true,
+          global = false,
+        },
+        open_file = {
+          quit_on_open = false,
+          resize_window = false,
+          window_picker = {
             enable = true,
-            auto_open = true,
+            chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+            exclude = {
+              filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
+              buftype = { "nofile", 'quickfix', "terminal", "prompt", "help" },
+            },
+          },
         },
-        auto_close = true,
-        open_on_tab = false,
-        hijack_cursor = false,
-        update_cwd = false,
-        diagnostics = {
-            enable = true,
-            icons = {
-                hint = "",
-                info = "",
-                warning = "",
-                error = "",
-            }
-        },
-        update_focused_file = {
-            enable      = true,
-            update_cwd  = false,
-            ignore_list = {}
-        },
-        system_open = {
-            cmd  = "xdg-open",
-            args = {}
-        },
-        view = {
-            width = 30,
-            height = 30,
-            side = 'left',
-            auto_resize = true,
-            mappings = {
-                custom_only = false,
-                list = {}
-            }
-        },
-        filters = {
-            dotfiles = false,
-            custom = {}
-        }
+      },
+      trash = {
+        cmd = "trash",
+        require_confirm = true,
+      },
     }
     -- see :h nvim-tree-events
-    require("nvim-tree.events").on_nvim_tree_ready(function()
-        vim.api.nvim_set_keymap('n', '<leader>nt', '<Cmd>NvimTreeToggle<CR>', {noremap = true})
-    end)
+    vim.api.nvim_set_keymap('n', '<leader>nt', '<Cmd>NvimTreeToggle<CR>', {noremap = true})
 end
 
 configs['lewis6991/gitsigns.nvim'] = function()
@@ -297,6 +272,10 @@ configs['neovim/nvim-lspconfig'] = function()
     -- local capabilities = vim.lsp.protocol.make_client_capabilities()
     -- capabilities.textDocument.completion.completionItem.snippetSupport = true
     local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+    local runtime_path = vim.split(package.path, ';')
+    table.insert(runtime_path, "lua/?.lua")
+    table.insert(runtime_path, "lua/?/init.lua")
     lspconfig.sumneko_lua.setup {
         capabilities = capabilities,
         on_attach = enhance_attach,
@@ -308,14 +287,14 @@ configs['neovim/nvim-lspconfig'] = function()
             Lua = {
                 diagnostics = {
                     enable = true,
-                    globals = {"vim", "packer_plugins"}
+                    globals = {"vim"}
                 },
                 runtime = {
                     version = "LuaJIT",
-                    -- path = "",
+                    path = runtime_path,
                 },
                 workspace = {
-                    library = vim.list_extend({[vim.fn.expand("$VIMRUNTIME/lua")] = true},{}),
+                    library = vim.api.nvim_get_runtime_file("", true),
                 },
                 -- -- Do not send telemetry data containing a randomized but unique identifier
                 -- telemetry = {
@@ -824,9 +803,79 @@ configs['jiangmiao/auto-pairs'] = function()
     vim.cmd[[au FileType html let b:AutoPairs = extend(g:AutoPairs, {'<': '>'})]]
 end
 
-configs['alohaia/onedark.vim'] = function()
-    vim.g.onedark_transparent_bg = 1
-    vim.cmd[[colorscheme onedark]]
+configs['olimorris/onedarkpro.nvim'] = function()
+    vim.opt.background = "dark"
+    require("onedarkpro").setup({
+        -- Theme can be overwritten with 'onedark' or 'onelight' as a string
+        theme = function()
+            if vim.o.background == "dark" then
+                return "onedark"
+            else
+                return "onelight"
+            end
+        end,
+        colors = {}, -- Override default colors by specifying colors for 'onelight' or 'onedark' themes
+        hlgroups = {}, -- Override default highlight groups
+        filetype_hlgroups = {}, -- Override default highlight groups for specific filetypes
+        plugins = { -- Override which plugins highlight groups are loaded
+            native_lsp = true,
+            polygot = true,
+            treesitter = true,
+            -- NOTE: Other plugins have been omitted for brevity
+        },
+        styles = {
+            strings = "NONE", -- Style that is applied to strings
+            comments = "NONE", -- Style that is applied to comments
+            keywords = "NONE", -- Style that is applied to keywords
+            functions = "NONE", -- Style that is applied to functions
+            variables = "NONE", -- Style that is applied to variables
+        },
+        options = {
+            bold = false, -- Use the themes opinionated bold styles?
+            italic = false, -- Use the themes opinionated italic styles?
+            underline = false, -- Use the themes opinionated underline styles?
+            undercurl = true, -- Use the themes opinionated undercurl styles?
+            cursorline = true, -- Use cursorline highlighting?
+            transparency = true, -- Use a transparent background?
+            terminal_colors = false, -- Use the theme's colors for Neovim's :terminal?
+            window_unfocussed_color = false, -- When the window is out of focus, change the normal background?
+        }
+    })
+    require("onedarkpro").load()
+end
+
+configs['nvim-lualine/lualine.nvim'] = function()
+    require('lualine').setup {
+        options = {
+            icons_enabled = true,
+            theme = 'onedark',
+            component_separators = { left = '┆', right = '┆'},
+            -- component_separators = { left = '', right = ''},
+            section_separators = { left = '┆', right = '┆'},
+            -- section_separators = { left = '', right = ''},
+            disabled_filetypes = {},
+            always_divide_middle = true,
+            globalstatus = false,
+        },
+        sections = {
+            lualine_a = {'mode'},
+            lualine_b = {'branch', 'diff', 'diagnostics'},
+            lualine_c = {'filename'},
+            lualine_x = {'encoding', 'fileformat', 'filetype'},
+            lualine_y = {'progress'},
+            lualine_z = {'location'}
+        },
+        inactive_sections = {
+            lualine_a = {},
+            lualine_b = {},
+            lualine_c = {'filename'},
+            lualine_x = {'location'},
+            lualine_y = {},
+            lualine_z = {}
+        },
+        tabline = {},
+        extensions = {"nvim-tree", "fzf", "fugitive", "quickfix", "symbols-outline"}
+    }
 end
 
 configs['vim-airline/vim-airline'] = function()
