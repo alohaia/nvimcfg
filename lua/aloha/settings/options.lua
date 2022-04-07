@@ -27,7 +27,7 @@ return {
     linebreak      = false,
     breakindent    = false,
     listchars      = "tab:«·»,nbsp:+,trail:·,extends:→,precedes:←"; -- trail:˽
-    fillchars      = 'vert:▏', -- ┆
+    fillchars      = 'vert:┆', -- ┆ ▏
     fileencodings  = 'utf-8,ucs-bom,gb18030,gbk,gb2312,cp936',
     emoji          = true,
     equalalways    = false,
@@ -44,7 +44,7 @@ return {
     number         = true,
     relativenumber = true,
     cursorline     = true,
-    colorcolumn    = '88',
+    colorcolumn    = '0',
     signcolumn     = 'yes',
     -- backup swap undo
     backup         = true,
