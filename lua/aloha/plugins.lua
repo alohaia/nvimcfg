@@ -28,6 +28,7 @@ return {
     ['liuchengxu/vista.vim'] = {},
     ['mbbill/undotree'] = {},
     ['voldikss/vim-floaterm'] = {},
+    ['akinsho/toggleterm.nvim'] = {disable=true},
     ['glepnir/zephyr-nvim'] = {disable = true, config = [[:colorscheme zephyr]]},
     ['glepnir/dashboard-nvim'] = {disable = true},
     ['glepnir/galaxyline.nvim'] = {disable = true, branch = 'main'},

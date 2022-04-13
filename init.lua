@@ -1,4 +1,4 @@
-require("aloha")({
+require "aloha" {
     packer_settings = {
         plugins = require('aloha.plugins'),
         plugin_configs = require('aloha.plugin_configs'),
@@ -8,7 +8,8 @@ require("aloha")({
             -- git = 'git',
             rm = 'gio trash',
         },
-    }
-})
+    },
+    transparency = true,
+}
 
 vim.cmd("source " .. vim.env.HOME .. "/.config/nvim/remain.vim")

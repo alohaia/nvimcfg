@@ -8,6 +8,8 @@ return function(_options)
         sync_plugins = false,
     })
 
+    _G.aloha = { init_opts = options }
+
     local settings = {}
     if vim.fn.glob('./settings/init.lua') or vim.fn.glob('./settings.lua') then
         settings = require('aloha.settings')
@@ -37,6 +39,7 @@ return function(_options)
             ),
         },
         options = settings.options or {},
+        init_opts = options
     }
 
     -- set up mappings

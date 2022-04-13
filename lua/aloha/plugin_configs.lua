@@ -756,10 +756,11 @@ configs['mg979/vim-visual-multi'] = function()
 end
 
 configs['voldikss/vim-floaterm'] = function()
-    vim.g.floaterm_keymap_toggle = '<F1>'
-    vim.g.floaterm_keymap_prev   = '<F2>'
-    vim.g.floaterm_keymap_next   = '<F3>'
-    vim.g.floaterm_keymap_new    = '<F4>'
+    vim.g.floaterm_keymap_toggle = '<C-\\>'
+    vim.g.floaterm_keymap_prev   = '<F1>'
+    vim.g.floaterm_keymap_next   = '<F2>'
+    vim.g.floaterm_keymap_new    = '<F3>'
+    vim.g.floaterm_keymap_kill   = '<F4>'
     vim.g.floaterm_gitcommit     = 'floaterm'
     vim.g.floaterm_autoinsert    = 1
     vim.g.floaterm_width         = 0.5
@@ -769,6 +770,16 @@ configs['voldikss/vim-floaterm'] = function()
     vim.g.floaterm_wintype       = 'popup'
     vim.g.floaterm_position      = 'bottomright'
     vim.cmd('hi link FloatermBorder Normal')
+end
+
+configs['akinsho/toggleterm.nvim'] = function()
+    require("toggleterm").setup{
+        open_mapping = [[<c-\>]],
+        direction = "float",
+        float_opts = {
+            border = "curved",
+        }
+    }
 end
 
 configs['jiangmiao/auto-pairs'] = function()
@@ -800,7 +811,7 @@ configs['olimorris/onedarkpro.nvim'] = function()
             treesitter = true
         },
         options = {
-            transparency = true,
+            transparency = _G.aloha.init_opts.transparency == nil and true or _G.aloha.init_opts.transparency,
             window_unfocussed_color = false,
         }
     })
