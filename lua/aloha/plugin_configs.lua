@@ -153,38 +153,47 @@ configs['akinsho/nvim-bufferline.lua'] = function()
 end
 
 configs['kyazdani42/nvim-tree.lua'] = function()
-    vim.g.nvim_tree_indent_markers = 0
     vim.g.nvim_tree_add_trailing = 0
     vim.g.nvim_tree_group_empty = 1
     vim.cmd[[autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]]
     require("nvim-tree").setup { -- BEGIN_DEFAULT_OPTS
-      auto_reload_on_write = true,
-      disable_netrw = true,
-      hide_root_folder = false,
-      hijack_cursor = true,
-      hijack_netrw = true,
-      actions = {
-        change_dir = {
-          enable = true,
-          global = false,
-        },
-        open_file = {
-          quit_on_open = false,
-          resize_window = false,
-          window_picker = {
-            enable = true,
-            chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-            exclude = {
-              filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
-              buftype = { "nofile", 'quickfix', "terminal", "prompt", "help" },
+        auto_reload_on_write = true,
+        disable_netrw = true,
+        hide_root_folder = false,
+        hijack_cursor = true,
+        hijack_netrw = true,
+        renderer = {
+            indent_markers = {
+                enable = false,
+                icons = {
+                    corner = "└ ",
+                    edge = "│ ",
+                    none = "  ",
+                },
             },
-          },
         },
-      },
-      trash = {
-        cmd = "trash",
-        require_confirm = true,
-      },
+        actions = {
+            change_dir = {
+                enable = true,
+                global = false,
+            },
+            open_file = {
+                quit_on_open = false,
+                resize_window = false,
+                window_picker = {
+                    enable = true,
+                    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+                    exclude = {
+                        filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
+                        buftype = { "nofile", 'quickfix', "terminal", "prompt", "help" },
+                    },
+                },
+            },
+        },
+        trash = {
+            cmd = "trash",
+            require_confirm = true,
+        },
     }
     -- see :h nvim-tree-events
     vim.api.nvim_set_keymap('n', '<leader>nt', '<Cmd>NvimTreeToggle<CR>', {noremap = true})
@@ -342,9 +351,8 @@ configs['neovim/nvim-lspconfig'] = function()
 end
 
 configs['hrsh7th/nvim-cmp'] = function()
-    local cmp = require'cmp'
-
-    cmp.setup({
+    local cmp = require("cmp")
+    cmp.setup{
         snippet = {
             -- REQUIRED - you must specify a snippet engine
             expand = function(args)
@@ -396,20 +404,14 @@ configs['hrsh7th/nvim-cmp'] = function()
         },
         experimental = {
             -- native_menu = true
-        }
-    })
-
-    -- For markdown filetype
-    -- au FileType markdown lua cmp.setup.buffer({})
-
-    -- onsails/lspkind-nvim
-    local lspkind = require('lspkind')
-
-    cmp.setup {
+        },
+        -- onsails/lspkind-nvim
         formatting = {
-            format = lspkind.cmp_format({with_text = true, maxwidth = 50})
+            format = require('lspkind').cmp_format({with_text = true, maxwidth = 50})
         }
     }
+    -- For markdown filetype
+    -- au FileType markdown lua cmp.setup.buffer({})
 end
 
 configs['nvim-telescope/telescope.nvim'] = function()
@@ -511,7 +513,10 @@ configs['nvim-treesitter/nvim-treesitter'] = function()
     vim.api.nvim_command('set foldmethod=expr')
     vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
     require'nvim-treesitter.configs'.setup {
-        ensure_installed = 'maintained',
+        ensure_installed = {
+            "c", "cpp", "css", "bash", "cmake", "glsl", "go", "html", "javascript", "latex",
+            "lua", "r", "ruby", "rust", "toml", "vim", "vue", "yaml"
+        },
         incremental_selection = {
             enable = true,
             keymaps = {
@@ -523,6 +528,7 @@ configs['nvim-treesitter/nvim-treesitter'] = function()
         },
         highlight = {
             enable = true,
+            disable = {"markdwon"},
             custom_captures = {
                 -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
                 -- ["foo.bar"] = "Identifier",
