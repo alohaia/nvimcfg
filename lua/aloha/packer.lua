@@ -81,7 +81,7 @@ local function exec(cmd, cwd, cmd_type)
 end
 
 local function is_opt(settings)
-    if settings.opt or settings.ft then
+    if settings.opt or settings.ft or settings.cmd or settings.on ~= nil then
         return true
     else
         return false
@@ -124,13 +124,24 @@ function packer:init(settings)
     self:loadConfig() -- must be called before self:prepareOptPlugins()
     self:prepareOptPlugins()
 
+    self.plugin_list = {}
+    for name,_ in pairs(self.plugins) do
+        local _,bare_name = name:match([[^([^/]*)/([^/]*)$]])
+        table.insert(self.plugin_list, bare_name)
+    end
+
     return self
+end
+
+function packer.plugin_complete()
+    return join(packer.plugin_list, "\n")
 end
 
 local handle, handle1
 local failed_count = 0
-local function _download(i, total, git_cmd, plugins)
+local function _install(i, git_cmd, plugins)
     i = i or 1
+    local total = #plugins
     print('['..i..'/'..total..'] downloading', plugins[i], '...')
     local branch = packer.plugins[plugins[i]].branch
     local _args = {}
@@ -158,7 +169,7 @@ local function _download(i, total, git_cmd, plugins)
             end
             handle:close()
             if i < total then
-                _download(i+1, total, git_cmd, plugins)
+                _install(i+1, git_cmd, plugins)
             else
                 if failed_count == 0 then
                     print('['..i..'/'..total..'] downloading completed')
@@ -170,8 +181,9 @@ local function _download(i, total, git_cmd, plugins)
         end)
     )
 end
-local function _update(i, total, git_cmd, plugins)
+local function _update(i, git_cmd, plugins)
     i = i or 1
+    local total = #plugins
     if not is_installed(plugins[i]) then
         print('['..i..'/'..total..'] downloading', plugins[i], '...')
         local branch = packer.plugins[plugins[i]].branch
@@ -200,7 +212,7 @@ local function _update(i, total, git_cmd, plugins)
                 end
                 handle:close()
                 if i < total then
-                    _update(i+1, total, git_cmd, plugins)
+                    _update(i+1, git_cmd, plugins)
                 else
                     if failed_count == 0 then
                         print('['..i..'/'..total..'] updating completed')
@@ -239,7 +251,7 @@ local function _update(i, total, git_cmd, plugins)
                             failed_count = failed_count + 1
                         end
                         if i < total then
-                            _update(i+1, total, git_cmd, plugins)
+                            _update(i+1, git_cmd, plugins)
                         else
                             if failed_count == 0 then
                                 print('['..i..'/'..total..'] updating completed')
@@ -256,11 +268,10 @@ local function _update(i, total, git_cmd, plugins)
 end
 -- behaviour(string):
 --      - 'install': install plugins
---      - 'update': install and update installed plugins
-function packer:download(behaviour)
+--      - 'update': install plugins and update installed plugins
+function packer:download(behaviour, name)
     -- default arguments
     behaviour = behaviour or 'install'
-
     -- git command
     local git_cmd = {
         path = 'git',
@@ -277,16 +288,28 @@ function packer:download(behaviour)
 
     -- plugins to download or update
     local plugins = {}
+    -- single plugin
+    if name ~= nil and name ~= "" then
+        for plugin_name,_ in pairs(self.plugins) do
+            local _,bare_plugin_name = plugin_name:match([[^([^/]*)/([^/]*)$]])
+            if name == bare_plugin_name then
+                plugins = { plugin_name }
+                break
+            end
+        end
+        goto single_jmp
+    end
+    -- `name` not specified
     if behaviour == 'update' then
-        for name,settings in pairs(self.plugins) do
+        for plugin_name,settings in pairs(self.plugins) do
             if not settings.disable then
-                table.insert(plugins, name)
+                table.insert(plugins, plugin_name)
             end
         end
     elseif behaviour == 'install' then
-        for name,settings in pairs(self.plugins) do
-            if not settings.disable and not is_installed(name) then
-                table.insert(plugins, name)
+        for plugin_name,settings in pairs(self.plugins) do
+            if not settings.disable and not is_installed(plugin_name) then
+                table.insert(plugins, plugin_name)
             end
         end
         if plugins[1] == nil then
@@ -294,13 +317,13 @@ function packer:download(behaviour)
             return
         end
     end
+    ::single_jmp::
 
     -- install and/or update
-    local total = #plugins
     if behaviour == 'install' then
-        _download(1, total, git_cmd, plugins)
+        _install(1, git_cmd, plugins)
     elseif behaviour == 'update' then
-        _update(1, total, git_cmd, plugins)
+        _update(1, git_cmd, plugins)
     end
 end
 
@@ -308,11 +331,9 @@ function packer:loadConfig()
     for name,settings in pairs(self.plugins) do
         -- to load configuration here, a plugin must be enabled and installed
 
-        -- disabled or not installed
-        if settings.disable or not is_installed(name) then
+        if settings.disable or not is_installed(name) then -- disabled or not installed
             goto continue
-        -- opt plugins
-        elseif is_opt(settings) then
+        elseif is_opt(settings) then  -- opt plugins
             local cmd = ''
             -- `config` option in settings
             if settings.config then
@@ -341,22 +362,7 @@ function packer:loadConfig()
             if cmd ~= '' then
                 vim.cmd(join({'au SourcePre', plugin_path(name)..'/*', '++once', cmd}, ' '))
             end
-
-            -- `on` option in settings
-            if settings.on then
-                local on_cmds = {}
-                if type(settings.on) == "table" then
-                    on_cmds = settings.on
-                elseif type(settings.on) == "string" then
-                    on_cmds = {settings.on}
-                end
-                for _,cmd in ipairs(on_cmds) do
-                    vim.cmd(join({'command', cmd, 'packadd', vim.split(name, '/')[2], '|', cmd}, ' '))
-                    vim.cmd(join({'au SourcePre', plugin_path(name)..'/*', '++once', 'delcommand', cmd}, ' '))
-                end
-            end
-        -- start plugins
-        else
+        else  -- start plugins
             if self.plugin_configs[name] then
                 exec(self.plugin_configs[name])
             end
@@ -369,7 +375,7 @@ function packer:loadConfig()
     end
 end
 
-function packer:clean()
+function packer:uninstall(name)
     -- installed plugins
     local installed_plugins = {}
     local opt_plugins = vim.fn.glob(base_path .. '/opt/*')
@@ -383,25 +389,32 @@ function packer:clean()
 
     -- format self.plugins
     local plugins = {}
-    for name,settings in pairs(self.plugins) do
+    for plugin_name,settings in pairs(self.plugins) do
         if not settings.disable then
-            plugins[vim.split(name, '/')[2]] = {
-                author = vim.split(name, '/')[2],
+            plugins[vim.split(plugin_name, '/')[2]] = {
+                -- author = vim.split(plugin_name, '/')[1],
                 cate = is_opt(settings) and 'opt' or 'start'
             }
         end
     end
 
     -- remove undesired plugins from installed plugins
-    local cate,name
-    for _,plugin in ipairs(installed_plugins) do
-        cate,name = plugin:match('([^/]*)/([^/]*)$')
-        if (not plugins[name]) or plugins[name].cate ~= cate then
-            -- if not os.execute(cmd_silent(self.packer_config.rm .. ' ' .. plugin)) then
-            if exec('!' .. self.packer_config.rm .. ' ' .. plugin) then
-                print(plugin .. ' deleted')
+    local cate,plugin_name
+    for _,path in ipairs(installed_plugins) do
+        cate,plugin_name = path:match('([^/]*)/([^/]*)$')
+        if name ~= nil and name ~= "" then  -- `name` is specified
+            if plugin_name == name then
+                if exec('!' .. self.packer_config.rm .. ' ' .. path) then
+                    print(path .. ' deleted')
+                else
+                    print('failed to delete ' .. plugin_name)
+                end
+            end
+        elseif (not plugins[plugin_name]) or plugins[plugin_name].cate ~= cate then
+            if exec('!' .. self.packer_config.rm .. ' ' .. path) then
+                print(path .. ' deleted')
             else
-                print('failed to delete ' .. name)
+                print('failed to delete ' .. plugin_name)
             end
         end
     end
@@ -409,8 +422,37 @@ end
 
 function packer:prepareOptPlugins()
     for name,settings in pairs(self.plugins) do
-        if settings.disable then goto continue end
+        if settings.disable or not is_opt(settings) then goto continue end
 
+        -- cmd opt plugins
+        if settings.cmd then
+            local on_cmds = {}
+            if type(settings.cmd) == "table" then
+                on_cmds = settings.cmd
+            elseif type(settings.cmd) == "string" then
+                on_cmds = {settings.cmd}
+            end
+            for _,cmd in ipairs(on_cmds) do
+                vim.api.nvim_create_user_command(cmd, join({'packadd', vim.split(name, '/')[2], '|', cmd}, ' '), {})
+                vim.cmd(join({'au SourcePre', plugin_path(name)..'/*', '++once', 'delcommand', cmd}, ' '))
+            end
+        end
+
+        -- on opt plugins
+        if settings.on then
+            local if_on
+            if type(settings.on) == "boolean" then
+                if_on = settings.on
+            elseif type(settings.on == "function") then
+                if_on = settings.on(aloha)
+            end
+            if if_on then
+                vim.cmd('packadd ' .. vim.split(name, '/')[2])
+                print(name)
+            end
+        end
+
+        -- ft opt plugins
         local filetypes
         if type(settings.ft) == 'table' and #settings.ft > 0 then
             filetypes = settings.ft[1]

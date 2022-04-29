@@ -26,6 +26,7 @@ return {
     scrolloff      = 3,
     linebreak      = false,
     breakindent    = false,
+    -- listchars      = "tab:<->,nbsp:+,trail:-,extends:>,precedes:<"; -- «» trail:˽
     listchars      = "tab:«·»,nbsp:+,trail:·,extends:→,precedes:←"; -- trail:˽
     fillchars      = 'vert:┆', -- ┆ ▏
     fileencodings  = 'utf-8,ucs-bom,gb18030,gbk,gb2312,cp936',
@@ -62,6 +63,7 @@ return {
     tabstop    = 4,
     expandtab  = true,
     smarttab   = true,  -- softtabstop = 4,
+
     -- indent(use treesitter instead)
     -- autoindent  = true,
     -- smartindent = true, -- !cindent | !indentexpr

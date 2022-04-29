@@ -39,6 +39,7 @@ return function(_options)
             ),
         },
         options = settings.options or {},
+        commands = settings.commands or {},
         init_opts = options
     }
 
@@ -55,4 +56,9 @@ return function(_options)
 
     -- plugins
     aloha.packer = require('aloha.packer'):init(options.packer_settings)
+
+    -- define user commands
+    for cmd_name,cmd in pairs(aloha.commands) do
+        vim.api.nvim_create_user_command(cmd_name, cmd.exec, cmd.opts)
+    end
 end
