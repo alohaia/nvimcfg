@@ -5,6 +5,7 @@ configs['glepnir/galaxyline.nvim'] = function()
 end
 
 configs['lukas-reineke/indent-blankline.nvim'] = function()
+    print('indent-blankline.nvim')
     require('indent_blankline').setup {
         char = '│',
         -- char_highlight_list = {'Error', 'Function'},

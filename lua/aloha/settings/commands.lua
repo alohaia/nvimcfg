@@ -37,7 +37,7 @@ return {
     },
     ["PackSync"] = {
         exec = function()
-            aloha.packer:clean()
+            aloha.packer:uninstall()
             aloha.packer:download('update')
         end,
         opts = {}

@@ -18,6 +18,22 @@
     lua require('aloha.prepare')
     ```
 
+## Useage
+
+### Commands
+
+- `PackInstall`
+    - `PackInstall`: install all plugins(`disable != true`)
+    - `PackInstall <plugin>`: install specific plugins(`disable != true`)
+- `PackUpdate`
+    - `PackUpdate`: install all installed plugins(`disable != true`) and install plugins which are not installed(`disable != true`)
+    - `PackUpdate <plugin>`: update specific plugins(`disable != true`), install it if it's not installed
+- `PackUninstall <plugin>`: uninstall specific plugins(`disable != true`)
+- `PackClean`
+    - `PackClean`: uninstall disabled plugins(`disable == true`)
+    - `PackClean <plugin>`: same as `PackUninstall`
+- `PackSync`: `PackClean` + `PackUpdate`, no arguments provided
+
 ## Configuration
 
 ### `~/.config/nvim/init.lua`
@@ -75,15 +91,16 @@ require("aloha")({
 
 A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexowiki`, and the value is a list of basic settings:
 
-- `opt`(`bool`): whether the plugin is installed as an opt pack.
-- `ft`(`string`, `list`): for which filetype(s) is the plugin loaded, such as `'markdown,text'` and `{'markdown', 'text'}`.
-- `on`(`string`, `list`): on which vim command(s) should be loaded.
-- `branch`(`string`): branch of the plugin.
-- `disabled`(`bool`): whether the plugin is disabled. Disabled plugins won't be installed or updated and will be removed while cleaning
-- `config`(`function`, `string`): configuration for the plugin. If this is a function, it'll be directly called in due course. Otherwise, if this is a string, it will be executed accordingly:
-    - Begin with `:`: regarded as a vim command
-    - Begin with `!`: regarded as a system command
-    - Other cases: regarded as a piece of Lua code
+- `opt`(`bool`): Whether the plugin is installed as an opt pack. Plugins with `ft`, `cmd` or `on` options are alse opt plugins.
+- `ft`(`string`, `list`): For which filetype(s) is the plugin loaded, such as `'markdown,text'` and `{'markdown', 'text'}`.
+- `cmd`(`string`, `list`): On which vim command(s) should be loaded.
+- `on`(`bool`, `function`): Whether to load this plugin.
+- `branch`(`string`): Branch of the plugin.
+- `disabled`(`bool`): Whether the plugin is disabled. Disabled plugins won't be installed or updated and will be removed while cleaning
+- `config`(`function`, `string`): Configuration for the plugin. If this is a function, it'll be directly called in due course. Otherwise, if this is a string, it will be executed accordingly:
+    - Begin with `:`: Regarded as a vim command
+    - Begin with `!`: Regarded as a system command
+    - Other cases: Regarded as a piece of Lua code
 
 > I recommend you write only simple configuration in `config` and use `plugin_configs` which I'll introduce later to config plugins.
 
