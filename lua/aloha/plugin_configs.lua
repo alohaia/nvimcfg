@@ -159,9 +159,11 @@ configs['kyazdani42/nvim-tree.lua'] = function()
     require("nvim-tree").setup { -- BEGIN_DEFAULT_OPTS
         auto_reload_on_write = true,
         disable_netrw = true,
-        hide_root_folder = false,
         hijack_cursor = true,
         hijack_netrw = true,
+        view = {
+            hide_root_folder = false,
+        },
         renderer = {
             indent_markers = {
                 enable = true,
