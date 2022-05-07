@@ -448,7 +448,6 @@ function packer:prepareOptPlugins()
             end
             if if_on then
                 vim.cmd('packadd ' .. vim.split(name, '/')[2])
-                print(name)
             end
         end
 
