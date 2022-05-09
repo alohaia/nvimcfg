@@ -38,7 +38,7 @@ return {
     -- editor
     ['RRethy/vim-illuminate'] = {},
     ['luochen1990/rainbow'] = {},
-    ['alohaia/hugowiki.nvim'] = {ft='markdown,rmd,text', cmd="HWNewDiary"},
+    ['alohaia/hugowiki.nvim'] = {},
     ['rhysd/clever-f.vim'] = {},
     ['norcalli/nvim-colorizer.lua'] = {},
     ['brooth/far.vim'] = {},
