@@ -10,15 +10,15 @@ return {
     {'x', 'J', '5j'},
     {'x', 'K', '5k'},
 
-    {'n', 'n', 'nzz'},
-    {'n', 'N', 'Nzz'},
+    {'n', '<leader>n', 'nzz'},
+    {'n', '<leader>N', 'Nzz'},
 
     {'n', '<esc>', '<Cmd>nohl<cr>'},
 
     {'n', 'Y', 'y$'},
 
     {'i', '<M-BS>', '<Del>'},
-    {'i', '<C-Entet', '<ESC>o'},
+    {'i', '<M-CR>', '<ESC>o'},
 
     {'n', '<C-h>', '<C-w><C-h>'},
     {'n', '<C-j>', '<C-w><C-j>'},
@@ -37,15 +37,16 @@ return {
     {'x', '_', '<Cmd>tabprevious<cr>'},
     {'n', '+', '<Cmd>tabnext<cr>'},
     {'x', '+', '<Cmd>tabnext<cr>'},
+
     {'n', '<leader>ba', '<Cmd>bufdo bd<cr>'},
+    {'n', '<leader>bo', '<Cmd>%bd|e#|bd#<cr>'},
 
     -- gt gT
     {'n', '<leader>tn', '<Cmd>tabnew<cr>'},
     {'n', '<leader>tc', '<Cmd>tabclose<cr>'},
     {'n', '<leader>to', '<Cmd>tabonly<cr>'},
-    {'n', '<leader>tm', '<Cmd>tabmove<space>'},
-    {'n', ']T', '<Cmd>tablast<cr>'},
-    {'n', '[T', '<Cmd>tabfirst<cr>'},
+    {'n', ']t', '<Cmd>tablast<cr>'},
+    {'n', '[t', '<Cmd>tabfirst<cr>'},
 
     {'n', '<UP>',    '<Cmd>res +5<CR>'},
     {'n', '<DOWN>',  '<Cmd>res -5<CR>'},
@@ -74,25 +75,24 @@ return {
     -- {'c', '<C-l>', '<Right>', {silent = false}},
     -- {'c', '<C-n>', '<Down>', {silent = false}},
 
-    {'n', '<leader>H', ':vert h<space>', {silent = false}},
     {'n', '<leader>o', 'mzo<esc>`z'},
     {'n', '<leader>O', 'mzO<esc>`z'},
 
     {'n', '<leader>e', ':e $HOME/.config/nvim/lua/aloha/<C-z>', {silent = false}},
 
-    {'c', '<M-e>', "getcmdtype()==':' ? expand('%:p:h').'/' : '%%'", {silent = false, expr = true}},
+    {'c', '<M-e>', "getcmdtype()==':' ? expand('%:p:h').'/' : ''", {silent = false, expr = true}},
     {'i', '<C-s>', "<c-g>u<Esc>[s1z=`^a<c-g>u"},
 
     {'n', '<C-c>', [["+yW""yW]]},
-    {'v', '<C-c>', [["+ygv""y]]},
+    {'x', '<C-c>', [["+ygv""y]]},
 
-    {'i', '<M-i>', '<C-r>=Ocr()<cr>'},
+    -- {'i', '<M-i>', '<C-r>=Ocr()<cr>'},
 
     {'t', '<M-q>', '<C-\\><C-n>'},
 
     {'i', '<M-a>', '<ESC>^i'},
     {'i', '<M-e>', '<END>'},
 
-    {'n', '<Leader>ws', [[nnoremap <Leader>as i<Space><Esc>ea<Space><Esc>]]},
+    {'n', '<Leader>ws', [[i<Space><Esc>ea<Space><Esc>]]},
     {'x', 'as', [[<ESC>`<lt>i<Space><Esc>`>la<Space><Esc>]]}
 }

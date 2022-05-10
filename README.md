@@ -1,10 +1,19 @@
 <h1 align="center">nvimcfg</h1>
 
-<p align="center">My NeoVim Configuration Written in Lua.</p>
+<p align="center">My NeoVim configuration with built-in packer, mostly written in Lua.</p>
+
+<p align="center">[中文文档](./README_cn.md)</p>
 
 ![2021-08-27_12-36-07](https://user-images.githubusercontent.com/36324537/131072598-7969fcce-3e29-49f2-bdb1-9851ddfda637.png)
 
 ![2021-08-27_12-33-04](https://user-images.githubusercontent.com/36324537/131072714-1db0ed6d-c6ef-421d-9641-0720342230da.png)
+
+## Features
+
+- Built-in packer
+- Useful plugins with detailed configuration
+- Mostly written in Lua
+- Snippets for [UltiSnips](https://github.com/SirVer/ultisnips)
 
 ## Installation
 
@@ -26,13 +35,13 @@
     - `PackInstall`: install all plugins(`disable != true`)
     - `PackInstall <plugin>`: install specific plugins(`disable != true`)
 - `PackUpdate`
-    - `PackUpdate`: install all installed plugins(`disable != true`) and install plugins which are not installed(`disable != true`)
+    - `PackUpdate`: update all installed plugins(`disable != true`) and install plugins which are not installed(`disable != true`)
     - `PackUpdate <plugin>`: update specific plugins(`disable != true`), install it if it's not installed
 - `PackUninstall <plugin>`: uninstall specific plugins(`disable != true`)
 - `PackClean`
     - `PackClean`: uninstall disabled plugins(`disable == true`)
     - `PackClean <plugin>`: same as `PackUninstall`
-- `PackSync`: `PackClean` + `PackUpdate`, no arguments provided
+- `PackSync`: equivalent to `PackClean` + `PackUpdate`
 
 ## Configuration
 
@@ -89,18 +98,20 @@ require("aloha")({
 > }
 > ```
 
-A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexowiki`, and the value is a list of basic settings:
+A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexowiki`, and the value is another dictionary of basic settings:
 
 - `opt`(`bool`): Whether the plugin is installed as an opt pack. Plugins with `ft`, `cmd` or `on` options are alse opt plugins.
 - `ft`(`string`, `list`): For which filetype(s) is the plugin loaded, such as `'markdown,text'` and `{'markdown', 'text'}`.
 - `cmd`(`string`, `list`): On which vim command(s) should be loaded.
 - `on`(`bool`, `function`): Whether to load this plugin.
 - `branch`(`string`): Branch of the plugin.
-- `disabled`(`bool`): Whether the plugin is disabled. Disabled plugins won't be installed or updated and will be removed while cleaning
-- `config`(`function`, `string`): Configuration for the plugin. If this is a function, it'll be directly called in due course. Otherwise, if this is a string, it will be executed accordingly:
-    - Begin with `:`: Regarded as a vim command
-    - Begin with `!`: Regarded as a system command
-    - Other cases: Regarded as a piece of Lua code
+- `disabled`(`bool`): Whether the plugin is disabled. Disabled plugins won't be installed or updated and will be removed while cleaning.
+- `config`(`function`, `string`): Configuration for the plugin, Can be a function:
+    - Function: well be directly called in due course.
+    - String:
+        - Begin with `:`: Regarded as a vim command
+        - Begin with `!`: Regarded as a commandline command
+        - Other cases: Regarded as a piece of Lua code
 
 > I recommend you write only simple configuration in `config` and use `plugin_configs` which I'll introduce later to config plugins.
 
@@ -108,7 +119,8 @@ A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexow
 
 A table of configuration for plugins. The key is a plugin's name, and the value is a function.
 
-> **Example** `~/.config/nvim/lua/aloha/plugin_configs.lua`
+> **Example**
+> `~/.config/nvim/lua/aloha/plugin_configs.lua`
 > ```lua
 > local configs = {}
 > 
@@ -133,14 +145,8 @@ A table of configuration for plugins. The key is a plugin's name, and the value 
 > 
 > return configs
 > ```
+> And then you can use `require('aloha.plugin_configs')` in [`~/.config/nvim/init.lua`](#~/.config/nvim/init.lua) to get plugin configs.
 
 ### `~/.config/nvim/remain.vim`
 
-Some VimL code, which will be sourced in `init.lua`. You can add your VimL code here.
-
-## Features
-
-- Built-in packer
-- Useful plugins with detailed configuration
-- Mostly written in Lua
-- Snippets for [UltiSnips](https://github.com/SirVer/ultisnips)
+Some VimL code, which will be sourced in `init.lua`. This is planned to be removed in the future.
