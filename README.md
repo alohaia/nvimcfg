@@ -2,7 +2,7 @@
 
 <p align="center">My NeoVim configuration with built-in packer, mostly written in Lua.</p>
 
-<p align="center">[中文文档](./README_cn.md)</p>
+[中文文档](./README_cn.md)
 
 ![2021-08-27_12-36-07](https://user-images.githubusercontent.com/36324537/131072598-7969fcce-3e29-49f2-bdb1-9851ddfda637.png)
 
