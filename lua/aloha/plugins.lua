@@ -23,7 +23,7 @@ return {
     },
     ['kyazdani42/nvim-web-devicons'] = {opt = true},
     ['lukas-reineke/indent-blankline.nvim'] = {},
-    ['akinsho/nvim-bufferline.lua'] = {},
+    ['akinsho/bufferline.nvim'] = {},
     ['kyazdani42/nvim-tree.lua'] = {},
     ['lewis6991/gitsigns.nvim'] = {},
     ['liuchengxu/vista.vim'] = {},

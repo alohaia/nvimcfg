@@ -12,4 +12,4 @@ require "aloha" {
     transparency = true,
 }
 
-vim.cmd("source " .. vim.env.HOME .. "/.config/nvim/remain.vim")
+vim.cmd[[cabbrev <expr> %% expand('%:p')]]

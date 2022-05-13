@@ -10,10 +10,11 @@ return function(_options)
 
     _G.aloha = { init_opts = options }
 
-    local settings = {}
-    if vim.fn.glob('./settings/init.lua') or vim.fn.glob('./settings.lua') then
-        settings = require('aloha.settings')
-    end
+    -- local settings = {}
+    -- if vim.fn.glob('./settings/init.lua') or vim.fn.glob('./settings.lua') then
+    --     settings = require('aloha.settings')
+    -- end
+    local settings = require('aloha.settings')
 
     _G.aloha = {
         map = {
@@ -59,6 +60,9 @@ return function(_options)
 
     -- define user commands
     for cmd_name,cmd in pairs(aloha.commands) do
-        vim.api.nvim_create_user_command(cmd_name, cmd.exec, cmd.opts)
+        vim.api.nvim_create_user_command(cmd_name, cmd.exec, cmd.opts or {})
     end
+
+    -- autocmds
+    require('aloha.autocmds')
 end

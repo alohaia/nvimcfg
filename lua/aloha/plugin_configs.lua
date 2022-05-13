@@ -45,7 +45,7 @@ configs['norcalli/nvim-colorizer.lua'] = function()
     })
 end
 
-configs['akinsho/nvim-bufferline.lua'] = function()
+configs['akinsho/bufferline.nvim'] = function()
     require('bufferline').setup {
         options = {
             numbers = function(opts)
@@ -808,6 +808,7 @@ end
 
 configs['olimorris/onedarkpro.nvim'] = function()
     vim.opt.background = "dark"
+    local transparentbg = _G.aloha.init_opts.transparency == nil and true or _G.aloha.init_opts.transparency
     require("onedarkpro").setup({
         hlgroups = {
             -- FoldColumn = { link = "Normal" }
@@ -819,11 +820,16 @@ configs['olimorris/onedarkpro.nvim'] = function()
             treesitter = true
         },
         options = {
-            transparency = _G.aloha.init_opts.transparency == nil and true or _G.aloha.init_opts.transparency,
+            transparency = transparentbg,
             window_unfocussed_color = false,
+            undercurl = true,
+            cursorline = false,
         }
     })
     require("onedarkpro").load()
+    if transparentbg then
+        vim.cmd[[au VimEnter * hi lualine_c_normal guibg=NONE]]
+    end
 end
 
 configs['nvim-lualine/lualine.nvim'] = function()
