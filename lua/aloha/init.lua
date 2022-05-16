@@ -1,14 +1,22 @@
-return function(_options)
-    local options = vim.tbl_extend('keep', _options, {
-        -- disable unnecessary operations
-        minimal = true,
-        -- minimal is overrided by the options below
-        create_dirs = true,
-        install_plugins = false,
-        sync_plugins = false,
+return function(_configs)
+    local configs = vim.tbl_extend('keep', _configs, {
+        transparency = true,
+        mapleader = ' ',
     })
+    if configs.packer_settings == nil then
+        configs.packer_settings = {
+            plugins = require('aloha.plugins'),
+            plugin_configs = require('aloha.plugin_configs'),
+            packer_config = {
+                pack_root = vim.fn.stdpath('data') .. '/site/pack',
+                pack_name = 'packer',
+                git = 'git',
+                rm = 'rm -rf',
+            }
+        }
+    end
 
-    _G.aloha = { init_opts = options }
+    _G.aloha = { configs = configs }
 
     -- local settings = {}
     -- if vim.fn.glob('./settings/init.lua') or vim.fn.glob('./settings.lua') then
@@ -19,7 +27,7 @@ return function(_options)
     _G.aloha = {
         map = {
             list = settings.mappings or {},
-            leader = ' ',
+            leader = configs.mapleader or ' ',
             default_args = setmetatable({
                     silent = true,
                     noremap = true
@@ -41,7 +49,7 @@ return function(_options)
         },
         options = settings.options or {},
         commands = settings.commands or {},
-        init_opts = options
+        configs = configs
     }
 
     -- set up mappings
@@ -56,7 +64,7 @@ return function(_options)
     end
 
     -- plugins
-    aloha.packer = require('aloha.packer'):init(options.packer_settings)
+    aloha.packer = require('aloha.packer'):init(configs.packer_settings)
 
     -- define user commands
     for cmd_name,cmd in pairs(aloha.commands) do

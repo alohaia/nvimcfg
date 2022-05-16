@@ -808,7 +808,7 @@ end
 
 configs['olimorris/onedarkpro.nvim'] = function()
     vim.opt.background = "dark"
-    local transparentbg = _G.aloha.init_opts.transparency == nil and true or _G.aloha.init_opts.transparency
+    local transparentbg = _G.aloha.configs.transparency == nil and true or _G.aloha.configs.transparency
     require("onedarkpro").setup({
         hlgroups = {
             -- FoldColumn = { link = "Normal" }
