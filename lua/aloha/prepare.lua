@@ -10,5 +10,5 @@ for _,path in ipairs({vim.o.backupdir, vim.o.directory, vim.o.undodir}) do
 end
 
 -- clean and update/install plugins
-aloha.packer:clean()
+aloha.packer:uninstall()
 aloha.packer:download('update')
