@@ -201,21 +201,43 @@ require("aloha")({
 > **Example** `~/.config/nvim/lua/aloha/plugins.lua`
 > ```lua
 > return {
->     ['RRethy/vim-illuminate'] = {},
->     ['luochen1990/rainbow'] = {},
->     ['alohaia/hugowiki.nvim'] = {ft='markdown,rmd,text'},
->     ['tpope/vim-surround'] = {},
->     ['tpope/vim-repeat'] = {},
->     ['dhruvasagar/vim-table-mode'] = {ft='rmd,markdown,text'},
->     ['svermeulen/vim-subversive'] = {},
->     ['mg979/vim-visual-multi'] = {},
->     ['jiangmiao/auto-pairs'] = {},
+>     ['alohaia/hugowiki.nvim'] = { ft = 'markdown,rmd,text' },
+>     ['dhruvasagar/vim-table-mode'] = { ft = {'rmd', 'markdown', 'text'} },
 >     ['godlygeek/tabular'] = {
 >         config = function()
 >             vim.cmd[[cnorea Tab Tabularize]]
 >         end
 >     },
 >     ['jalvesaq/Nvim-R'] = {disable = true, ft = 'r', branch = 'master'},
+>     ['kyazdani42/nvim-tree.lua'] = {
+>         cmd = 'NvimTreeToggle',
+>         map = {
+>             {mode = 'n', lhs = '<leader>nt'},
+>         }
+>     },
+>     ['lewis6991/gitsigns.nvim'] = {
+>         dependency = 'nvim-lua/plenary.nvim'
+>     },
+>     ['nvim-telescope/telescope.nvim'] = {
+>         cmd = 'Telescope',
+>         map = {
+>             {mode = 'n', lhs = ',f'},
+>             {mode = 'n', lhs = ',b'},
+>             {mode = 'n', lhs = ',F'},
+>             {mode = 'n', lhs = ',g'},
+>         },
+>         dependency = {
+>             'nvim-lua/plenary.nvim',
+>             'nvim-lua/popup.nvim',
+>             'nvim-telescope/telescope-fzy-native.nvim'
+>         }
+>     },
+> 
+>     -- 依赖项
+>     ['nvim-lua/plenary.nvim'] = {opt=true},
+>     ['nvim-lua/popup.nvim'] = {opt=true},
+>     ['nvim-telescope/telescope-fzy-native.nvim'] = {opt=true},
+>     ['nvim-treesitter/nvim-treesitter-textobjects'] = {opt=true},
 > }
 > ```
 
@@ -223,7 +245,8 @@ require("aloha")({
 
 - `opt`(`bool`)：该插件是否是 `opt` 插件。设置了 `ft`, `cmd` or `enable` 选项的插件也是 `opt` 插件。
 - `ft`(`string`, `list`)：对哪些文件类型启用该插件，如 `'markdown,text'` 或 `{'markdown', 'text'}`。
-- `cmd`(`string`, `list`)：在使用哪些 Vim 命令启用该插件。
+- `cmd`(`string`, `list`)：在使用哪些 Vim 命令时启用该插件。
+- `map`(`table`): 在按下哪些映射时启用该插件。
 - `enable`(`bool`, `function`)：根据布尔值或函数返回值决定是非加载该插件。
 - `branch`(`string`)：插件的 GitHub 仓库的分支。
 - `dependency`(`string`, `table`)：插件的依赖项。依赖项应该单独列在列表中，并且设置 `opt=true`。
@@ -244,8 +267,8 @@ require("aloha")({
 > **Example**
 > `~/.config/nvim/lua/aloha/plugin_configs.lua`
 > ```lua
-> local configs = {}
 >
+> local configs = {}
 > configs['glepnir/galaxyline.nvim'] = function()
 >     require('aloha.plugin_configs.galaxyline')
 > end

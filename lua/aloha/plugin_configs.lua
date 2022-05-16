@@ -252,12 +252,12 @@ configs['neovim/nvim-lspconfig'] = function()
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
         vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
-        vim.api.nvim_create_user_command('Format', {
-            callback = function ()
+        vim.api.nvim_create_user_command('Format',
+            function ()
                 vim.lsp.buf.formatting()
             end,
-            force = true,
-        })
+            { force = true }
+        )
         -- omnifunc
         vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
         -- for 'RRethy/vim-illuminate'

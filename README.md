@@ -81,29 +81,52 @@ require("aloha")({
 > **Example** `~/.config/nvim/lua/aloha/plugins.lua`
 > ```lua
 > return {
->     ['RRethy/vim-illuminate'] = {},
->     ['luochen1990/rainbow'] = {},
->     ['alohaia/hugowiki.nvim'] = {ft='markdown,rmd,text'},
->     ['tpope/vim-surround'] = {},
->     ['tpope/vim-repeat'] = {},
->     ['dhruvasagar/vim-table-mode'] = {ft='rmd,markdown,text'},
->     ['svermeulen/vim-subversive'] = {},
->     ['mg979/vim-visual-multi'] = {},
->     ['jiangmiao/auto-pairs'] = {},
+>     ['alohaia/hugowiki.nvim'] = { ft = 'markdown,rmd,text' },
+>     ['dhruvasagar/vim-table-mode'] = { ft = {'rmd', 'markdown', 'text'} },
 >     ['godlygeek/tabular'] = {
 >         config = function()
 >             vim.cmd[[cnorea Tab Tabularize]]
 >         end
 >     },
 >     ['jalvesaq/Nvim-R'] = {disable = true, ft = 'r', branch = 'master'},
+>     ['kyazdani42/nvim-tree.lua'] = {
+>         cmd = 'NvimTreeToggle',
+>         map = {
+>             {mode = 'n', lhs = '<leader>nt'},
+>         }
+>     },
+>     ['lewis6991/gitsigns.nvim'] = {
+>         dependency = 'nvim-lua/plenary.nvim'
+>     },
+>     ['nvim-telescope/telescope.nvim'] = {
+>         cmd = 'Telescope',
+>         map = {
+>             {mode = 'n', lhs = ',f'},
+>             {mode = 'n', lhs = ',b'},
+>             {mode = 'n', lhs = ',F'},
+>             {mode = 'n', lhs = ',g'},
+>         },
+>         dependency = {
+>             'nvim-lua/plenary.nvim',
+>             'nvim-lua/popup.nvim',
+>             'nvim-telescope/telescope-fzy-native.nvim'
+>         }
+>     },
+> 
+>     -- dependencies
+>     ['nvim-lua/plenary.nvim'] = {opt=true},
+>     ['nvim-lua/popup.nvim'] = {opt=true},
+>     ['nvim-telescope/telescope-fzy-native.nvim'] = {opt=true},
+>     ['nvim-treesitter/nvim-treesitter-textobjects'] = {opt=true},
 > }
 > ```
 
 A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexowiki`, and the value is another dictionary of basic settings:
 
 - `opt`(`bool`): Whether the plugin is installed as an opt pack. Plugins with `ft`, `cmd` or `enable` options are alse opt plugins.
-- `ft`(`string`, `list`): For which filetype(s) is the plugin loaded, such as `'markdown,text'` and `{'markdown', 'text'}`.
-- `cmd`(`string`, `list`): On which vim command(s) should be loaded.
+- `ft`(`string`, `list`): For which filetype(s) should the plugin be loaded, such as `'markdown,text'` and `{'markdown', 'text'}`.
+- `cmd`(`string`, `list`): On which vim command(s) should the plugin be loaded.
+- `map`(`table`): On which mapping(s) should the plugin be loaded.
 - `enable`(`bool`, `function`): Whether to load this plugin.
 - `branch`(`string`): Branch of the plugin.
 - `dependency`(`string`, `table`): Plugin's dependencies. A dependency should be in plugin list additionally and set `opt=true`.
