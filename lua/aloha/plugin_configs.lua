@@ -38,7 +38,7 @@ end
 
 configs['norcalli/nvim-colorizer.lua'] = function()
     require 'colorizer'.setup({
-        '*',
+        'markdown', 'html', 'gohtmltmpl',
         ['css'] = { css = true },
     }, {
         name = false,
@@ -202,10 +202,6 @@ configs['kyazdani42/nvim-tree.lua'] = function()
 end
 
 configs['lewis6991/gitsigns.nvim'] = function()
-    if not vim.g.pack_plenary_loaded then
-        vim.cmd [[packadd plenary.nvim]]
-        vim.g.pack_plenary_loaded = true
-    end
     require('gitsigns').setup {
         signs = {
             add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
@@ -240,24 +236,28 @@ configs['neovim/nvim-lspconfig'] = function()
         local opts = { noremap = true, silent = true }
         vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
         vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', 'g?', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>?', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>r', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
         -- -- vim.api.nvim_buf_set_keymap(bufnr, 'v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', opts)
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
         -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
-        -- format
-        vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+        vim.api.nvim_create_user_command('Format', {
+            callback = function ()
+                vim.lsp.buf.formatting()
+            end,
+            force = true,
+        })
         -- omnifunc
         vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
         -- for 'RRethy/vim-illuminate'
@@ -298,13 +298,6 @@ configs['neovim/nvim-lspconfig'] = function()
             },
         }
     }
-    -- lspconfig.tsserver.setup {
-    --     capabilities = capabilities,
-    --     on_attach = function(client, bufnr)
-    --         client.resolved_capabilities.document_formatting = false
-    --         enhance_attach(client, bufnr)
-    --     end
-    -- }
     lspconfig.clangd.setup {
         capabilities = capabilities,
         on_attach = function (client, bufnr)
@@ -345,10 +338,6 @@ configs['neovim/nvim-lspconfig'] = function()
     lspconfig.html.setup {
         capabilities = capabilities,
         cmd = { "vscode-html-language-server", "--stdio"  }
-    }
-    lspconfig.eslint.setup {
-        capabilities = capabilities,
-        cmd = { "vscode-eslint-language-server", "--stdio"  }
     }
 end
 
@@ -417,18 +406,6 @@ configs['hrsh7th/nvim-cmp'] = function()
 end
 
 configs['nvim-telescope/telescope.nvim'] = function()
-    if not vim.g.pack_plenary_loaded then
-        vim.cmd [[packadd plenary.nvim]]
-        vim.g.pack_plenary_loaded = true
-    end
-    if not vim.g.pack_popup_loaded then
-        vim.cmd [[packadd popup.nvim]]
-        vim.g.pack_popup_loaded = true
-    end
-    if not vim.g.pack_telescope_fzy_native_loaded then
-        vim.cmd [[packadd telescope-fzy-native.nvim]]
-        vim.g.pack_telescope_fzy_native_loaded = true
-    end
     require('telescope').setup{
         defaults = {
             vimgrep_arguments = {
@@ -477,7 +454,6 @@ configs['nvim-telescope/telescope.nvim'] = function()
             }
         },
     }
-    vim.cmd('packadd telescope-fzy-native.nvim')
     require('telescope').load_extension('fzy_native')
     -- require'telescope'.load_extension('dotfiles')
     -- require'telescope'.load_extension('gosource')
@@ -516,24 +492,24 @@ configs['nvim-treesitter/nvim-treesitter'] = function()
     vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
     require'nvim-treesitter.configs'.setup {
         ensure_installed = {
-            "c", "cpp", "css", "bash", "cmake", "glsl", "go", "html", "javascript", "latex",
-            "lua", "r", "ruby", "rust", "toml", "vim", "vue", "yaml"
+            'c', 'cpp', 'css', 'bash', 'cmake', 'glsl', 'go', 'html', 'javascript', 'latex',
+            'lua', 'r', 'ruby', 'rust', 'toml', 'vim', 'vue', 'yaml'
         },
         incremental_selection = {
             enable = true,
             keymaps = {
-                init_selection = "gnn",
-                node_incremental = "grn",
-                scope_incremental = "grc",
-                node_decremental = "grm",
+                init_selection = '<leader>ti',
+                node_incremental = '<leader>ta',
+                scope_incremental = '<leader>ts',
+                node_decremental = '<leader>td',
             },
         },
         highlight = {
             enable = true,
-            disable = {"markdwon"},
+            disable = {'markdwon'},
             custom_captures = {
                 -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
-                -- ["foo.bar"] = "Identifier",
+                -- ['foo.bar'] = 'Identifier',
             },
         },
         indent = {
@@ -543,10 +519,10 @@ configs['nvim-treesitter/nvim-treesitter'] = function()
             select = {
                 enable = true,
                 keymaps = {
-                    ["af"] = "@function.outer",
-                    ["if"] = "@function.inner",
-                    ["ac"] = "@class.outer",
-                    ["ic"] = "@class.inner",
+                    ['af'] = '@function.outer',
+                    ['if'] = '@function.inner',
+                    ['ac'] = '@class.outer',
+                    ['ic'] = '@class.inner',
                 },
             },
         },

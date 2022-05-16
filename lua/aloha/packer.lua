@@ -1,11 +1,24 @@
 local packer = {}
 
+local api = vim.api
+local fn = vim.fn
 local join = table.concat
+local split = vim.split
+local printf = function (s, ...)
+    print(string.format(s, ...))
+end
 
 local base_path = '' -- initialized in packer:init()
+local added_plugins = {} -- opt plugins that have been added and whose configs have been loaded
 
 local function exec(cmd, cwd, cmd_type)
     local rt = true -- return value
+
+    local save_cwd
+    if cwd then
+        save_cwd = fn.getcwd()
+        fn.chdir(cwd)
+    end
 
     -- if 'cmd_type' is provided, use it to determine type of 'cmd'
     if cmd_type then goto direct else goto check end
@@ -16,7 +29,7 @@ local function exec(cmd, cwd, cmd_type)
     elseif cmd_type == 'vim' then
         vim.cmd(cmd)
     elseif cmd_type == 'cmd' then
-        local cmd_splits = vim.split(cmd, ' ')
+        local cmd_splits = split(cmd, ' ')
         local handle = 0
         handle = vim.loop.spawn(cmd_splits[1], {
                 cwd = cwd,
@@ -24,7 +37,7 @@ local function exec(cmd, cwd, cmd_type)
             },
             vim.schedule_wrap(function(code, signal)
                 if code ~= 0 then
-                    print(cmd .. ' failed with code', code, ', signal', signal)
+                    printf('"%s" failed with code %d, signal %d', cmd, code, signal)
                     rt = nil
                 end
                 handle:close()
@@ -49,7 +62,7 @@ local function exec(cmd, cwd, cmd_type)
         if first == ':' then
             vim.cmd(cmd:sub(2))
         elseif first == '!' then
-            local cmd_splits = vim.split(cmd:sub(2), ' ')
+            local cmd_splits = split(cmd:sub(2), ' ')
             local handle = 0
             handle = vim.loop.spawn(cmd_splits[1], {
                     cwd = cwd,
@@ -57,7 +70,7 @@ local function exec(cmd, cwd, cmd_type)
                 },
                 vim.schedule_wrap(function(code, signal)
                     if code ~= 0 then
-                        print(cmd .. ' failed with code', code, ', signal', signal)
+                        printf('"%s" failed with code %d, signal %d', cmd, code, signal)
                         rt = nil
                     end
                     handle:close()
@@ -73,15 +86,18 @@ local function exec(cmd, cwd, cmd_type)
             end
         end
     end
-    -- goto finish
 
     ::finish::
+
+    if cwd then
+        fn.chdir(save_cwd)
+    end
     -- for function and vim.cmd, rt is always true
     return rt
 end
 
 local function is_opt(settings)
-    if settings.opt or settings.ft or settings.cmd or settings.on ~= nil then
+    if settings.opt or settings.ft or settings.cmd or settings.enable ~= nil then
         return true
     else
         return false
@@ -89,8 +105,8 @@ local function is_opt(settings)
 end
 
 local function is_installed(name)
-    if vim.fn.glob(base_path .. (is_opt(packer.plugins[name]) and '/opt/' or '/start/')
-        .. vim.split(name, '/')[2]) ~= '' then
+    if fn.glob(base_path .. (is_opt(packer.plugins[name]) and '/opt/' or '/start/')
+        .. split(name, '/')[2]) ~= '' then
         return true
     else
         return false
@@ -99,10 +115,20 @@ end
 
 local function plugin_path(name)
     if is_opt(packer.plugins[name]) then
-        return base_path .. '/opt/' .. vim.split(name, '/')[2]
+        return base_path .. '/opt/' .. split(name, '/')[2]
     else
-        return base_path .. '/start/' .. vim.split(name, '/')[2]
+        return base_path .. '/start/' .. split(name, '/')[2]
     end
+end
+
+local function fullname(name)
+    for plugin_name,_ in pairs(packer.plugins) do
+        local bare_plugin_name = split(plugin_name, '/')[2]
+        if name == bare_plugin_name then
+            return plugin_name
+        end
+    end
+    return nil
 end
 
 function packer:init(settings)
@@ -111,7 +137,7 @@ function packer:init(settings)
     self.plugins = (type(settings.plugins) == 'table') and settings.plugins or {}
     self.plugin_configs = type(settings.plugin_configs) == 'table' and settings.plugin_configs or {}
     self.packer_config = vim.tbl_extend('keep', settings.packer_config, {
-        pack_root = vim.fn.stdpath('data') .. '/site/pack',
+        pack_root = fn.stdpath('data') .. '/site/pack',
         pack_name = 'packer',
         git = 'git',
         rm = 'rm -rf',
@@ -142,7 +168,7 @@ local failed_count = 0
 local function _install(i, git_cmd, plugins)
     i = i or 1
     local total = #plugins
-    print('['..i..'/'..total..'] downloading', plugins[i], '...')
+    printf('[%d/%d] downloading %s ...', i, total, plugins[i])
     local branch = packer.plugins[plugins[i]].branch
     local _args = {}
     if branch then
@@ -185,7 +211,7 @@ local function _update(i, git_cmd, plugins)
     i = i or 1
     local total = #plugins
     if not is_installed(plugins[i]) then
-        print('['..i..'/'..total..'] downloading', plugins[i], '...')
+        printf('[%d/%d] downloading %s ...', i, total, plugins[i])
         local branch = packer.plugins[plugins[i]].branch
         local _args = {}
         if branch then
@@ -203,7 +229,7 @@ local function _update(i, git_cmd, plugins)
                         exec(run, plugin_path(plugins[i]))
                     end
                 else
-                    print('['..i..'/'..total..'] failed to download', plugins[i], 'with code', code, 'and signal', signal)
+                    printf('[%d/%d] failed to download %s with code %d and signal %d', i, total, plugins[i], code, signal)
                     failed_count = failed_count + 1
                     -- remove incompleted plugins
                     if is_installed(plugins[i]) then
@@ -215,16 +241,16 @@ local function _update(i, git_cmd, plugins)
                     _update(i+1, git_cmd, plugins)
                 else
                     if failed_count == 0 then
-                        print('['..i..'/'..total..'] updating completed')
+                        printf('[%d/%d] updating completed', i, total)
                     else
-                        print('['..i..'/'..total..'] updating completed,', failed_count, 'failed')
+                        printf('[%d/%d] updating completed, %d failed', i, total, failed_count)
                         failed_count = 0
                     end
                 end
             end)
         )
     else
-        print('['..i..'/'..total..'] updating', plugins[i], '...')
+        printf('[%d/%d] updating %s ...', i, total, plugins[i])
         local update_submodules_failed = false
         handle = vim.loop.spawn(git_cmd.path, {
                 cwd = plugin_path(plugins[i]),
@@ -232,7 +258,7 @@ local function _update(i, git_cmd, plugins)
             },
             vim.schedule_wrap(function(code, signal)
                 if code ~= 0 then
-                    print('['..i..'/'..total..'] failed to update', plugins[i], 'with code', code, 'and signal', signal)
+                    printf('[%d/%d] failed to update %s with code %d and signal %d', i, total, plugins[i], code, signal)
                 end
                 -- update submodules
                 handle1 = vim.loop.spawn(git_cmd.path, {
@@ -241,7 +267,7 @@ local function _update(i, git_cmd, plugins)
                     },
                     vim.schedule_wrap(function(_code, _signal)
                         if _code ~= 0 then
-                            print('['..i..'/'..total..'] failed to update submodules of', plugins[i], 'with code', _code, 'and signal', _signal)
+                            printf('[%d/%d] failed to update submodules of %s with code %d and signal %d', i, total, plugins[i], _code, _signal)
                             update_submodules_failed = true
                         end
                         handle1:close()
@@ -254,9 +280,9 @@ local function _update(i, git_cmd, plugins)
                             _update(i+1, git_cmd, plugins)
                         else
                             if failed_count == 0 then
-                                print('['..i..'/'..total..'] updating completed')
+                                printf('[%d/%d] updating completed', i, total)
                             else
-                                print('['..i..'/'..total..'] updating completed,', failed_count, 'failed')
+                                printf('[%d/%d] updating completed, %d failed', i, total, failed_count)
                                 failed_count = 0
                             end
                         end
@@ -277,7 +303,7 @@ function packer:download(behaviour, name)
         path = 'git',
         args = {}
     }
-    local packer_git_split = vim.split(self.packer_config.git, ' ')
+    local packer_git_split = split(self.packer_config.git, ' ')
     local split_len = #packer_git_split
     if split_len == 1 then
         git_cmd.path = packer_git_split[1]
@@ -290,13 +316,7 @@ function packer:download(behaviour, name)
     local plugins = {}
     -- single plugin
     if name ~= nil and name ~= "" then
-        for plugin_name,_ in pairs(self.plugins) do
-            local _,bare_plugin_name = plugin_name:match([[^([^/]*)/([^/]*)$]])
-            if name == bare_plugin_name then
-                plugins = { plugin_name }
-                break
-            end
-        end
+        plugins = { fullname(name) }
         goto single_jmp
     end
     -- `name` not specified
@@ -317,6 +337,7 @@ function packer:download(behaviour, name)
             return
         end
     end
+
     ::single_jmp::
 
     -- install and/or update
@@ -327,50 +348,56 @@ function packer:download(behaviour, name)
     end
 end
 
-function packer:loadConfig()
-    for name,settings in pairs(self.plugins) do
-        -- to load configuration here, a plugin must be enabled and installed
+-- name: bare name
+-- _plugin_name: fullname to avoid calling fullname()
+function packer:add(name, _plugin_name)
+    local plugin_name = _plugin_name or fullname(name)
+    if plugin_name and not added_plugins[plugin_name] then
+        vim.cmd('packadd ' .. name)
+        self:loadConfig(plugin_name)
+        added_plugins[plugin_name] = true
+    else
+        print('can not find ' .. name)
+    end
+end
 
+local function load_dependencies(name)
+    local deps = packer.plugins[name].dependency
+    if type(deps) == 'string' then
+        packer:add(split(deps, '/')[2], deps)
+    elseif type(deps) == 'table' then
+        for _,dep in ipairs(deps) do
+            packer:add(split(dep, '/')[2], dep)
+        end
+    end
+end
+
+-- load dependencies and configs of all start plugins or one specific plugin
+function packer:loadConfig(plugin_name)
+    if plugin_name and not self.plugins[plugin_name].disable then
+        load_dependencies(plugin_name)
+        local config = self.plugins[plugin_name].config
+        if self.plugin_configs[plugin_name] then
+            self.plugin_configs[plugin_name]()
+        end
+        if config then
+            exec(config)
+        end
+        return
+    end
+
+    for name,settings in pairs(self.plugins) do
         if settings.disable or not is_installed(name) then -- disabled or not installed
             goto continue
-        elseif is_opt(settings) then  -- opt plugins
-            local cmd = ''
-            -- `config` option in settings
-            if settings.config then
-                self.opt_configs = {}
-                if type(settings.config) == 'function' then
-                    cmd = 'lua aloha.packer.plugin_configs[\'' .. name .. '\']()'
-                elseif type(settings.config) == 'string' then
-                    if settings.config[1] == ':' then
-                        cmd = settings.config:sub(2)
-                    elseif settings.config[1] == '!' then
-                        cmd = settings.config
-                    else
-                        cmd = 'lua ' .. settings.config
-                    end
-                end
-            end
-            -- `config` in plugin_configs
-            if self.plugin_configs[name] and type(self.plugin_configs[name]) == 'function' then
-                if cmd ~= '' then
-                    cmd = cmd .. ' | ' .. 'lua aloha.packer.plugin_configs[\'' .. name .. '\']()'
-                else
-                    cmd = 'lua aloha.packer.plugin_configs[\'' .. name .. '\']()'
-                end
-            end
-            -- run cmd above
-            if cmd ~= '' then
-                vim.cmd(join({'au SourcePre', plugin_path(name)..'/*', '++once', cmd}, ' '))
-            end
-        else  -- start plugins
-            if self.plugin_configs[name] then
-                exec(self.plugin_configs[name])
-            end
+        elseif not is_opt(settings) then -- start plugins
+            load_dependencies(name)
             if type(settings.config) then
                 exec(settings.config)
             end
+            if self.plugin_configs[name] then
+                self.plugin_configs[name]()
+            end
         end
-
         ::continue::
     end
 end
@@ -378,21 +405,21 @@ end
 function packer:uninstall(name)
     -- installed plugins
     local installed_plugins = {}
-    local opt_plugins = vim.fn.glob(base_path .. '/opt/*')
-    local start_plugins = vim.fn.glob(base_path .. '/start/*')
+    local opt_plugins = fn.glob(base_path .. '/opt/*')
+    local start_plugins = fn.glob(base_path .. '/start/*')
     if opt_plugins ~= '' then
-        installed_plugins = vim.split(opt_plugins, '\n')
+        installed_plugins = split(opt_plugins, '\n')
     end
     if start_plugins ~= '' then
-        vim.list_extend(installed_plugins, vim.split(start_plugins, '\n'))
+        vim.list_extend(installed_plugins, split(start_plugins, '\n'))
     end
 
     -- format self.plugins
     local plugins = {}
     for plugin_name,settings in pairs(self.plugins) do
         if not settings.disable then
-            plugins[vim.split(plugin_name, '/')[2]] = {
-                -- author = vim.split(plugin_name, '/')[1],
+            plugins[split(plugin_name, '/')[2]] = {
+                -- author = split(plugin_name, '/')[1],
                 cate = is_opt(settings) and 'opt' or 'start'
             }
         end
@@ -420,9 +447,31 @@ function packer:uninstall(name)
     end
 end
 
+function packer.load_map(mode, lhs, name)
+    api.nvim_del_keymap(mode, lhs)
+    packer:add(split(name, '/')[2], name)
+    local expr = '"' .. lhs:gsub('"', '\\"') .. '"'
+    local keys = api.nvim_eval(api.nvim_replace_termcodes(expr, true, false, true))
+    fn.feedkeys(keys) -- notice: this would be interrupted by outputs
+end
+
 function packer:prepareOptPlugins()
     for name,settings in pairs(self.plugins) do
         if settings.disable or not is_opt(settings) then goto continue end
+
+        -- 'enable' opt plugins
+        if settings.enable then
+            local if_on
+            if type(settings.enable) == "boolean" then
+                if_on = settings.enable
+            elseif type(settings.enable == "function") then
+                if_on = settings.enable(aloha)
+            end
+            if if_on then
+                self:add(split(name, '/')[2], name)
+                goto continue -- don't process cmd, ft...
+            end
+        end
 
         -- cmd opt plugins
         if settings.cmd then
@@ -433,38 +482,52 @@ function packer:prepareOptPlugins()
                 on_cmds = {settings.cmd}
             end
             for _,cmd in ipairs(on_cmds) do
-                vim.api.nvim_create_user_command(cmd, join({'packadd', vim.split(name, '/')[2], '|', cmd}, ' '), {})
-                vim.cmd(join({'au SourcePre', plugin_path(name)..'/*', '++once', 'delcommand', cmd}, ' '))
-            end
-        end
-
-        -- on opt plugins
-        if settings.on then
-            local if_on
-            if type(settings.on) == "boolean" then
-                if_on = settings.on
-            elseif type(settings.on == "function") then
-                if_on = settings.on(aloha)
-            end
-            if if_on then
-                vim.cmd('packadd ' .. vim.split(name, '/')[2])
+                api.nvim_create_user_command(cmd,
+                    function (args)
+                        self:add(split(name, '/')[2], name)
+                        vim.cmd(string.format('%s%s%s %s',
+                            (args.line1 ~= args.line2) and (args.line1..','..args.line2) or '',
+                            cmd,
+                            args.bang and '!' or '',
+                            join(args.fargs, ' ')
+                        ))
+                    end,
+                    {
+                        force = true,
+                        complete = 'file',
+                        nargs = '*',
+                        bang = true,
+                        range = true
+                    }
+                )
             end
         end
 
         -- ft opt plugins
-        local filetypes
-        if type(settings.ft) == 'table' and #settings.ft > 0 then
-            filetypes = settings.ft[1]
-            for i = 2,#settings.ft do -- skip if #settings == 1
-                -- filetypes
-                filetypes = filetypes .. ',' .. settings.ft[i]
-            end
-        elseif type(settings.ft) == 'string' then
-            filetypes = settings.ft
+        local filetypes = settings.ft
+        if type(settings.ft) == 'string' then
+            filetypes = split(settings.ft, ',')
+        end
+        if filetypes then
+            api.nvim_create_autocmd('FileType', {
+                pattern = filetypes,
+                once = true,
+                nested = true,
+                callback = function ()
+                    self:add(split(name, '/')[2], name)
+                end
+            })
         end
 
-        if filetypes then
-            vim.cmd('au FileType ' .. filetypes .. ' ++once ++nested packadd ' .. vim.split(name, '/')[2])
+        -- map opt plugins
+        if settings.map then
+            for _,mapping in ipairs(settings.map) do
+                api.nvim_set_keymap(mapping.mode, mapping.lhs,
+                    string.format([[<Cmd>lua aloha.packer.load_map('%s', '%s', '%s')<CR>]],
+                        mapping.mode, mapping.lhs:gsub('<', '<lt>'), name),
+                    {noremap = true, silent = true}
+                )
+            end
         end
 
         ::continue::

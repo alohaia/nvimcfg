@@ -42,6 +42,7 @@
     - `PackClean`: uninstall disabled plugins(`disable == true`)
     - `PackClean <plugin>`: same as `PackUninstall`
 - `PackSync`: equivalent to `PackClean` + `PackUpdate`
+- `PackAdd <plugin>`: load an opt plugin and its confgs manually
 
 ## Configuration
 
@@ -100,12 +101,13 @@ require("aloha")({
 
 A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexowiki`, and the value is another dictionary of basic settings:
 
-- `opt`(`bool`): Whether the plugin is installed as an opt pack. Plugins with `ft`, `cmd` or `on` options are alse opt plugins.
+- `opt`(`bool`): Whether the plugin is installed as an opt pack. Plugins with `ft`, `cmd` or `enable` options are alse opt plugins.
 - `ft`(`string`, `list`): For which filetype(s) is the plugin loaded, such as `'markdown,text'` and `{'markdown', 'text'}`.
 - `cmd`(`string`, `list`): On which vim command(s) should be loaded.
-- `on`(`bool`, `function`): Whether to load this plugin.
+- `enable`(`bool`, `function`): Whether to load this plugin.
 - `branch`(`string`): Branch of the plugin.
-- `disabled`(`bool`): Whether the plugin is disabled. Disabled plugins won't be installed or updated and will be removed while cleaning.
+- `dependency`(`string`, `table`): Plugin's dependencies. A dependency should be in plugin list additionally and set `opt=true`.
+- `disabled`(`bool`): Whether the plugin is disabled. Disabled plugins won't be installed or updated and will be removed while cleaning. The difference between disabled plugins and plugins that are not in the plugin list is that the former appears in completion list of packer [commands](#commands).
 - `config`(`function`, `string`): Configuration for the plugin, Can be a function:
     - Function: well be directly called in due course.
     - String:
@@ -123,11 +125,11 @@ A table of configuration for plugins. The key is a plugin's name, and the value 
 > `~/.config/nvim/lua/aloha/plugin_configs.lua`
 > ```lua
 > local configs = {}
-> 
+>
 > configs['glepnir/galaxyline.nvim'] = function()
 >     require('aloha.plugin_configs.galaxyline')
 > end
-> 
+>
 > configs['alohaia/hugowiki.nvim'] = function()
 >     vim.g.hugowiki_home = '~/blog.hugo/content/'
 >     vim.g.hugowiki_try_init_file = 1
@@ -140,13 +142,9 @@ A table of configuration for plugins. The key is a plugin's name, and the value 
 >     }
 >     -- ...
 > end
-> 
+>
 > -- ...
-> 
+>
 > return configs
 > ```
 > And then you can use `require('aloha.plugin_configs')` in [`~/.config/nvim/init.lua`](#~/.config/nvim/init.lua) to get plugin configs.
-
-### `~/.config/nvim/remain.vim`
-
-Some VimL code, which will be sourced in `init.lua`. This is planned to be removed in the future.

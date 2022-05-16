@@ -1,6 +1,19 @@
 return {
     -- completion
-    ['neovim/nvim-lspconfig']         = {},
+    ['neovim/nvim-lspconfig']         = {
+        ft = {
+            'lua',                          -- sumneko_lua
+            'c', 'cpp', 'objc', 'objcpp',   -- clangd
+            'sh',                           -- bashls
+            'python',                       -- pyright
+            'r', 'rmd',                     -- r_language_server
+            'javascript', 'javascriptreact', 'javascript.jsx', 'typescript',
+                'typescriptreact', 'typescript.tsx', -- tsserver
+            'css', 'scss', 'less',          -- ccsls
+            'json', 'jsonc',                -- jsonls
+            'html',                         -- html
+        }
+    },
     ['hrsh7th/nvim-cmp']              = {},
     ['hrsh7th/cmp-nvim-lsp']          = {},
     ['hrsh7th/cmp-buffer']            = {},
@@ -9,7 +22,6 @@ return {
     ['glepnir/lspsaga.nvim']          = {disable = true},
     ['onsails/lspkind-nvim']          = {},
     ['SirVer/ultisnips']              = {},
-    ['nvim-telescope/telescope.nvim'] = {},
 
     -- ui
     ['mhinz/vim-startify'] = {},
@@ -24,8 +36,15 @@ return {
     ['kyazdani42/nvim-web-devicons'] = {opt = true},
     ['lukas-reineke/indent-blankline.nvim'] = {},
     ['akinsho/bufferline.nvim'] = {},
-    ['kyazdani42/nvim-tree.lua'] = {},
-    ['lewis6991/gitsigns.nvim'] = {},
+    ['kyazdani42/nvim-tree.lua'] = {
+        cmd = 'NvimTreeToggle',
+        map = {
+            {mode = 'n', lhs = '<leader>nt'},
+        }
+    },
+    ['lewis6991/gitsigns.nvim'] = {
+        dependency = 'nvim-lua/plenary.nvim'
+    },
     ['liuchengxu/vista.vim'] = {},
     ['mbbill/undotree'] = {},
     ['voldikss/vim-floaterm'] = {},
@@ -34,6 +53,20 @@ return {
     ['glepnir/dashboard-nvim'] = {disable = true},
     ['glepnir/galaxyline.nvim'] = {disable = true, branch = 'main'},
     ['fatih/vim-go'] = {},
+    ['nvim-telescope/telescope.nvim'] = {
+        cmd = 'Telescope',
+        map = {
+            {mode = 'n', lhs = ',f'},
+            {mode = 'n', lhs = ',b'},
+            {mode = 'n', lhs = ',F'},
+            {mode = 'n', lhs = ',g'},
+        },
+        dependency = {
+            'nvim-lua/plenary.nvim',
+            'nvim-lua/popup.nvim',
+            'nvim-telescope/telescope-fzy-native.nvim'
+        }
+    },
 
     -- editor
     ['RRethy/vim-illuminate'] = {},
@@ -64,18 +97,23 @@ return {
         config = [[vim.g.fcitx5_remote = '/usr/bin/fcitx5-remote']]
     },
 
-    -- git
     ['tpope/vim-fugitive'] = {},
     ['cohama/agit.vim'] = {config = ':let g:agit_no_default_mappings = 0'},
 
-    -- dependences
-    ['nvim-treesitter/nvim-treesitter'] = {},
-    ['nvim-treesitter/nvim-treesitter-textobjects'] = {},
+    ['nvim-treesitter/nvim-treesitter'] = {
+        dependency = 'nvim-treesitter/nvim-treesitter-textobjects'
+    },
+
+    -- dependencies
     ['nvim-lua/plenary.nvim'] = {opt=true},
     ['nvim-lua/popup.nvim'] = {opt=true},
     ['nvim-telescope/telescope-fzy-native.nvim'] = {opt=true},
+    ['nvim-treesitter/nvim-treesitter-textobjects'] = {opt=true},
 
     -- database
     ['tpope/vim-dadbod'] = {disable = true},
     ['kristijanhusak/vim-dadbod-ui'] = {disable = true},
+
+    -- test
+    ['dstein64/vim-startuptime'] = {},
 }

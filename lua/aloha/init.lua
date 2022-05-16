@@ -63,7 +63,7 @@ return function(_configs)
         vim.opt[o] = v
     end
 
-    -- plugins
+    -- packer
     aloha.packer = require('aloha.packer'):init(configs.packer_settings)
 
     -- define user commands

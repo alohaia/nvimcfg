@@ -48,5 +48,14 @@ commands.PackSync = {
     end,
     opts = {}
 }
+commands.PackAdd = {
+    exec = function(args)
+        aloha.packer:add(args.args)
+    end,
+    opts = {
+        nargs = 1,
+        complete = 'packadd'
+    }
+}
 
 return commands

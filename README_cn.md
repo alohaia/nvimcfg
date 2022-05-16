@@ -29,6 +29,8 @@
 
 ### 命令
 
+内置 packer 的命令：
+
 - `PackInstall`
     - `PackInstall`：安装所有插件（`disable != true`）
     - `PackInstall <plugin>`：安装指定插件（`disable != true`）
@@ -40,8 +42,11 @@
     - `PackClean`：卸载禁用的插件（`disable == true`）
     - `PackClean <plugin>`：与 `PackUninstall <plugin>` 相同
 - `PackSync`：相当于 `PackClean` + `PackUpdate`
+- `PackAdd <plugin>`：手动加载一个 `opt` 插件及其配置
 
+其他命令：
 
+- `Format`（neovim/nvim-lspconfig）：调用 `vim.lsp.buf.formatting()` 格式化代码
 
 ### 快捷键
 
@@ -103,49 +108,61 @@
 
 插件相关的快捷键：
 
-| 模式 | 按键                 | 映射                                           | 说明                                   |
-|------|----------------------|------------------------------------------------|----------------------------------------|
-| `n`  | `<leader>tm`         | `<cmd>TableModeToggle<cr>`                     | 开关“表格模式”，见 `:h table-mode.txt` |
-| `i`  | `<C-a>`              | `<Cmd>ToggleCheckbox<CR>`                      | 见 `:h bullets.txt`                    |
-| `n`  | `<leader>sn`         | `<Cmd>RenumberList<CR>`                        | *同上*                                 |
-| `x`  | `<leader>sn`         | `<Cmd>RenumberSelection<CR>`                   | *同上*                                 |
-| `i`  | `<Down>`,`<Tab>`     | nvim-cmp 快捷键                                | 方向下键/Tab 选择补全下一个            |
-| `i`  | `<Up>`,`<S-Tab>`     | nvim-cmp 快捷键                                | 方向上键/Tab 选择补全上一个            |
-| `i`  | `CR`                 | nvim-cmp 快捷键                                | 回车确定补全选择                       |
-| `i`  | `<C-Space>`          | ultisnips 快捷键                               | 展开代码片段                           |
-| `i`  | `<C-j>`              | ultisnips 快捷键                               | 移动到下一个 placeholder               |
-| `i`  | `<C-k>`              | ultisnips 快捷键                               | 移动到上一个 placeholder               |
-| `n`  | `<C-\\>`             | vim-floaterm 快捷键                            | 开关浮动终端                           |
-| `n`  | `<F1>`               | vim-floaterm 快捷键                            | 切换到前一个浮动终端                   |
-| `n`  | `<F2>`               | vim-floaterm 快捷键                            | 切换到后一个浮动终端                   |
-| `n`  | `<F3>`               | vim-floaterm 快捷键                            | 新建浮动终端                           |
-| `n`  | `<F4>`               | vim-floaterm 快捷键                            | 杀死当前浮动终端                       |
-| `n`  | `<leader>ut`         | `<Cmd>UndotreeToggle<CR>`                      | 开关修改历史树，见 `:h undotree.txt`   |
-| `n`  | `<leader>vt`         | `<Cmd>Vista<Cr>`                               | vista.vim，开关标签列表                |
-| `n`  | `,T`                 | `<Cmd>Vista finder<Cr>`                        | vista.vim，查找 ctags 标签             |
-| `n`  | `,g`                 | `<Cmd>Telescope live_grep<CR>`                 | telescope.nvim，在当前目录查找文件内容 |
-| `n`  | `,f`                 | `<Cmd>Telescope find_files<CR>`                | telescope.nvim，在当前目录查找文件     |
-| `n`  | `,b`                 | `<Cmd>Telescope buffers<CR>`                   | telescope.nvim，在当前目录查找 buffer  |
-| `n`  | `,F`                 | `<Cmd>Telescope file_browser<CR>`              | telescope.nvim，在当前目录浏览文件     |
-| `n`  | `gb`                 | `<Cmd>BufferLinePick<CR>`                      | nvim-bufferline.lua，快速切换 buffer   |
-| `n`  | `<leader>nt`         | `<Cmd>NvimTreeToggle<CR>`                      | 打开 nvim-tree.lua（文件浏览器）       |
-| `n`  | `<F5>`               | `<cmd>AsyncTask run<cr>`                       | asynctasks.vim，运行 run 任务          |
-| `n`  | `<F6>`               | `<cmd>AsyncTask build<cr>`                     | asynctasks.vim，运行 build 任务        |
-| `n`  | `s`                  | `<plug>(SubversiveSubstitute)`                 | 见 `:h subversive.txt`                 |
-| `x`  | `s`                  | `<plug>(SubversiveSubstitute)`                 | *同上*                                 |
-| `x`  | `p`                  | `<plug>(SubversiveSubstitute)`                 | *同上*                                 |
-| `x`  | `P`                  | `<plug>(SubversiveSubstitute)`                 | *同上*                                 |
-| `n`  | `ss`                 | `<plug>(SubversiveSubstituteLine)`             | *同上*                                 |
-| `n`  | `S`                  | `<plug>(SubversiveSubstituteToEndOfLine)`      | *同上*                                 |
-| `n`  | `<leader>s`          | `<plug>(SubversiveSubstituteRange)`            | *同上*                                 |
-| `x`  | `<leader>s`          | `<plug>(SubversiveSubstituteRange)`            | *同上*                                 |
-| `n`  | `<leader>ss`         | `<plug>(SubversiveSubstituteWordRange)`        | *同上*                                 |
-| `n`  | `<leader>cr`         | `<plug>(SubversiveSubstituteRangeConfirm)`     | *同上*                                 |
-| `x`  | `<leader>cr`         | `<plug>(SubversiveSubstituteRangeConfirm)`     | *同上*                                 |
-| `n`  | `<leader>crr`        | `<plug>(SubversiveSubstituteWordRangeConfirm)` | *同上*                                 |
-| `n`  | `<leader><leader>s`  | `<plug>(SubversiveSubvertRange)`               | *同上*                                 |
-| `x`  | `<leader><leader>s`  | `<plug>(SubversiveSubvertRange)`               | *同上*                                 |
-| `n`  | `<leader><leader>ss` | `<plug>(SubversiveSubvertWordRange)`           | *同上*                                 |
+| 模式 | 按键                 | 映射                                           | 说明                                              |
+|------|----------------------|------------------------------------------------|---------------------------------------------------|
+| `n`  | `<leader>tm`         | `<cmd>TableModeToggle<cr>`                     | 开关“表格模式”，见 `:h table-mode.txt`            |
+| `i`  | `<C-a>`              | `<Cmd>ToggleCheckbox<CR>`                      | 见 `:h bullets.txt`                               |
+| `n`  | `<leader>sn`         | `<Cmd>RenumberList<CR>`                        | *同上*                                            |
+| `x`  | `<leader>sn`         | `<Cmd>RenumberSelection<CR>`                   | *同上*                                            |
+| `n`  | `gD`                 | `<cmd> lua vim.lsp.buf.declaration()`          | 跳转到声明                                        |
+| `n`  | `gd`                 | `<cmd> lua vim.lsp.buf.definition()`           | 跳转到定义                                        |
+| `n`  | `<leader>?`          | `<cmd> lua vim.lsp.buf.hover()`                | 在浮动窗口中查看文档                              |
+| `n`  | `<leader>r`          | `<cmd> lua vim.lsp.buf.references()`           | 列出所有引用                                      |
+| `n`  | `<leader>rn`         | `<cmd> lua vim.lsp.buf.rename()`               | 重命名                                            |
+| `n`  | `<leader>?`          | `<cmd> lua vim.lsp.diagnostic.set_loclist()`   | 列出代码审查结果                                  |
+| `n`  | `<leader>ti`         | init_selection                                 | 见 `:h nvim-treesitter-incremental-selection-mod` |
+| `x`  | `<leader>ta`         | node_incremental                               | *同上*                                            |
+| `x`  | `<leader>ts`         | scope_incremental                              | *同上*                                            |
+| `x`  | `<leader>td`         | node_decremental                               | *同上*                                            |
+| `i`  | `<Down>`,`<Tab>`     | nvim-cmp 快捷键                                | 方向下键/Tab 选择补全下一个                       |
+| `i`  | `<Up>`,`<S-Tab>`     | nvim-cmp 快捷键                                | 方向上键/Tab 选择补全上一个                       |
+| `i`  | `CR`                 | nvim-cmp 快捷键                                | 回车确定补全选择                                  |
+| `i`  | `<C-Space>`          | ultisnips 快捷键                               | 展开代码片段                                      |
+| `i`  | `<C-j>`              | ultisnips 快捷键                               | 移动到下一个 placeholder                          |
+| `i`  | `<C-k>`              | ultisnips 快捷键                               | 移动到上一个 placeholder                          |
+| `n`  | `<C-\\>`             | vim-floaterm 快捷键                            | 开关浮动终端                                      |
+| `n`  | `<F1>`               | vim-floaterm 快捷键                            | 切换到前一个浮动终端                              |
+| `n`  | `<F2>`               | vim-floaterm 快捷键                            | 切换到后一个浮动终端                              |
+| `n`  | `<F3>`               | vim-floaterm 快捷键                            | 新建浮动终端                                      |
+| `n`  | `<F4>`               | vim-floaterm 快捷键                            | 杀死当前浮动终端                                  |
+| `n`  | `<leader>ut`         | `<Cmd>UndotreeToggle<CR>`                      | 开关修改历史树，见 `:h undotree.txt`              |
+| `n`  | `<leader>vt`         | `<Cmd>Vista<Cr>`                               | vista.vim，开关标签列表                           |
+| `n`  | `,T`                 | `<Cmd>Vista finder<Cr>`                        | vista.vim，查找 ctags 标签                        |
+| `n`  | `,g`                 | `<Cmd>Telescope live_grep<CR>`                 | telescope.nvim，在当前目录查找文件内容            |
+| `n`  | `,f`                 | `<Cmd>Telescope find_files<CR>`                | telescope.nvim，在当前目录查找文件                |
+| `n`  | `,b`                 | `<Cmd>Telescope buffers<CR>`                   | telescope.nvim，在当前目录查找 buffer             |
+| `n`  | `,F`                 | `<Cmd>Telescope file_browser<CR>`              | telescope.nvim，在当前目录浏览文件                |
+| `n`  | `gb`                 | `<Cmd>BufferLinePick<CR>`                      | nvim-bufferline.lua，快速切换 buffer              |
+| `n`  | `<leader>nt`         | `<Cmd>NvimTreeToggle<CR>`                      | 打开 nvim-tree.lua（文件浏览器）                  |
+| `n`  | `<F5>`               | `<cmd>AsyncTask run<cr>`                       | asynctasks.vim，运行 run 任务                     |
+| `n`  | `<F6>`               | `<cmd>AsyncTask build<cr>`                     | asynctasks.vim，运行 build 任务                   |
+| `n`  | `s`                  | `<plug>(SubversiveSubstitute)`                 | 见 `:h subversive.txt`                            |
+| `x`  | `s`                  | `<plug>(SubversiveSubstitute)`                 | *同上*                                            |
+| `x`  | `p`                  | `<plug>(SubversiveSubstitute)`                 | *同上*                                            |
+| `x`  | `P`                  | `<plug>(SubversiveSubstitute)`                 | *同上*                                            |
+| `n`  | `ss`                 | `<plug>(SubversiveSubstituteLine)`             | *同上*                                            |
+| `n`  | `S`                  | `<plug>(SubversiveSubstituteToEndOfLine)`      | *同上*                                            |
+| `n`  | `<leader>s`          | `<plug>(SubversiveSubstituteRange)`            | *同上*                                            |
+| `x`  | `<leader>s`          | `<plug>(SubversiveSubstituteRange)`            | *同上*                                            |
+| `n`  | `<leader>ss`         | `<plug>(SubversiveSubstituteWordRange)`        | *同上*                                            |
+| `n`  | `<leader>cr`         | `<plug>(SubversiveSubstituteRangeConfirm)`     | *同上*                                            |
+| `x`  | `<leader>cr`         | `<plug>(SubversiveSubstituteRangeConfirm)`     | *同上*                                            |
+| `n`  | `<leader>crr`        | `<plug>(SubversiveSubstituteWordRangeConfirm)` | *同上*                                            |
+| `n`  | `<leader><leader>s`  | `<plug>(SubversiveSubvertRange)`               | *同上*                                            |
+| `x`  | `<leader><leader>s`  | `<plug>(SubversiveSubvertRange)`               | *同上*                                            |
+| `n`  | `<leader><leader>ss` | `<plug>(SubversiveSubvertWordRange)`           | *同上*                                            |
+
+> 插件自带的命令见各自的文档。
 
 ## 配置
 
@@ -204,12 +221,13 @@ require("aloha")({
 
 一个用来表示插件的键-值对字典。“键”是插件的名称如 `alohaia/vim-hexowiki`，“值”是另一个字典，包含一些基本设置：
 
-- `opt`(`bool`)：该插件是否是 `opt` 插件。设置了 `ft`, `cmd` or `on` 选项的插件也是 `opt` 插件。
+- `opt`(`bool`)：该插件是否是 `opt` 插件。设置了 `ft`, `cmd` or `enable` 选项的插件也是 `opt` 插件。
 - `ft`(`string`, `list`)：对哪些文件类型启用该插件，如 `'markdown,text'` 或 `{'markdown', 'text'}`。
 - `cmd`(`string`, `list`)：在使用哪些 Vim 命令启用该插件。
-- `on`(`bool`, `function`)：根据布尔值或函数返回值决定是非加载该插件。
+- `enable`(`bool`, `function`)：根据布尔值或函数返回值决定是非加载该插件。
 - `branch`(`string`)：插件的 GitHub 仓库的分支。
-- `disabled`(`bool`)：是否禁用该插件。禁用的插件不会被安装或更新，并会在清理（`PackClean`）时被移除。
+- `dependency`(`string`, `table`)：插件的依赖项。依赖项应该单独列在列表中，并且设置 `opt=true`。
+- `disabled`(`bool`)：是否禁用该插件。禁用的插件不会被安装或更新，并会在清理（`PackClean`）时被移除。禁用的插件和不在列表中的插件的区别是，前者会出现在[命令](#命令)补全中。
 - `config`(`function`, `string`)：插件的简单配置。可以是函数或者字符串：
     - 函数：会在适当的时候调用
     - 字符串：
@@ -221,17 +239,17 @@ require("aloha")({
 
 #### `plugin_configs`
 
-一个包含插件配置的字典。“键”是插件的名称，值是一个函数。
+一个包含插件配置的字典。“键”是插件的名称，“值”是一个函数。
 
 > **Example**
 > `~/.config/nvim/lua/aloha/plugin_configs.lua`
 > ```lua
 > local configs = {}
-> 
+>
 > configs['glepnir/galaxyline.nvim'] = function()
 >     require('aloha.plugin_configs.galaxyline')
 > end
-> 
+>
 > configs['alohaia/hugowiki.nvim'] = function()
 >     vim.g.hugowiki_home = '~/blog.hugo/content/'
 >     vim.g.hugowiki_try_init_file = 1
@@ -244,13 +262,9 @@ require("aloha")({
 >     }
 >     -- ...
 > end
-> 
+>
 > -- ...
-> 
+>
 > return configs
 > ```
 > 然后就可以在之前提到的 [`~/.config/nvim/init.lua`](#~/.config/nvim/init.lua) 文件中通过 `require('aloha.plugin_configs')` 获取插件配置。
-
-### *`~/.config/nvim/remain.vim`*
-
-一些 VimL 代码，在 `init.lua` 中被调用，计划在将来移除。
