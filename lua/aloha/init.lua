@@ -49,6 +49,7 @@ return function(_configs)
         },
         options = settings.options or {},
         commands = settings.commands or {},
+        autocmds = settings.autocmds or {},
         configs = configs
     }
 
@@ -72,5 +73,7 @@ return function(_configs)
     end
 
     -- autocmds
-    require('aloha.autocmds')
+    for _,autocmd in ipairs(aloha.autocmds) do
+        vim.api.nvim_create_autocmd(autocmd[1], autocmd[2])
+    end
 end

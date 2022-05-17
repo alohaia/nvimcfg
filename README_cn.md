@@ -232,7 +232,7 @@ require("aloha")({
 >             'nvim-telescope/telescope-fzy-native.nvim'
 >         }
 >     },
-> 
+>
 >     -- 依赖项
 >     ['nvim-lua/plenary.nvim'] = {opt=true},
 >     ['nvim-lua/popup.nvim'] = {opt=true},
