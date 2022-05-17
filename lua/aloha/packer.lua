@@ -353,11 +353,16 @@ end
 function packer:add(name, _plugin_name)
     local plugin_name = _plugin_name or fullname(name)
     if plugin_name and not added_plugins[plugin_name] then
-        vim.cmd('packadd ' .. name)
-        self:loadConfig(plugin_name)
-        added_plugins[plugin_name] = true
-    else
-        print('can not find ' .. name)
+        local path = fn.globpath(vim.o.rtp, 'pack/*/opt/'..name)
+        if path ~= '' then
+            vim.cmd('packadd ' .. name)
+            self:loadConfig(plugin_name)
+            added_plugins[plugin_name] = true
+        else
+            print(plugin_name .. " is required")
+        end
+    elseif not plugin_name then
+        print("can not find " .. name)
     end
 end
 
