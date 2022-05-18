@@ -19,7 +19,7 @@ return {
     }},
     { 'FileType', {
         pattern = {'markdown', 'rmd', 'text'},
-        command = [[setlocal wrap spell]]
+        command = [[setlocal spell]]
     }},
     { 'TextYankPost', {
         pattern = '*',
