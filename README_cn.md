@@ -1,6 +1,6 @@
 <h1 align="center">nvimcfg</h1>
 
-<p align="center">我的 NeoVim 配置，内置 packer，大部分使用 Lua 编写。</p>
+<p align="center">我的 NeoVim 配置，内置 packer，使用 Lua 编写。</p>
 
 ![2021-08-27_12-36-07](https://user-images.githubusercontent.com/36324537/131072598-7969fcce-3e29-49f2-bdb1-9851ddfda637.png)
 
@@ -10,7 +10,7 @@
 
 - 内置的 packer
 - 许多有用的插件，详尽的配置
-- 大部分使用 Lua 编写
+- 使用 Lua 编写
 - [UltiSnips](https://github.com/SirVer/ultisnips) 代码片段
 
 ## 安装

@@ -1,6 +1,6 @@
 <h1 align="center">nvimcfg</h1>
 
-<p align="center">My NeoVim configuration with built-in packer, mostly written in Lua.</p>
+<p align="center">My NeoVim configuration with built-in packer, written in Lua.</p>
 
 [中文文档](./README_cn.md)
 
@@ -12,7 +12,7 @@
 
 - Built-in packer
 - Useful plugins with detailed configuration
-- Mostly written in Lua
+- Written in Lua
 - Snippets for [UltiSnips](https://github.com/SirVer/ultisnips)
 
 ## Installation
