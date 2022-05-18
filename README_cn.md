@@ -94,8 +94,8 @@
 | `x`     | `<M-k>`      | ``:m'<-2<cr>`>my`<mzgv`yo`z``                     | visual 模式下移选中的的行             |
 | `n`     | `<M-l>`      | `5zh`                                             | （行过长时）向左移动文本              |
 | `n`     | `<M-h>`      | `5zl`                                             | （行过长时）向右移动文本              |
-| `n`     | `<leader>o`  | `mzo<esc>`z`                                      | 在下方插入空行                        |
-| `n`     | `<leader>O`  | `mzO<esc>`z`                                      | 在上方插入空行                        |
+| `n`     | `<leader>o`  | ``mzo<esc>`z``                                    | 在下方插入空行                        |
+| `n`     | `<leader>O`  | ``mzO<esc>`z``                                    | 在上方插入空行                        |
 | `n`     | `<leader>e`  | `:e $HOME/.config/nvim/lua/aloha/<C-z>`           | 快速打开配置文件                      |
 | `c`     | `<M-e>`      | `getcmdtype()==':' ? expand('%:p:h').'/' : ''`    | 命令模式下快速插入当前文件所在目录    |
 | `i`     | `<C-s>`      | ``<c-g>u<Esc>[s1z=`^a<c-g>u``                     | 纠正光标前单词的拼写                  |
