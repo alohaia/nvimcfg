@@ -13,7 +13,7 @@ return {
     {'n', '<leader>n', 'nzz'},
     {'n', '<leader>N', 'Nzz'},
 
-    {'n', '<esc>', '<Cmd>nohl<cr>'},
+    {'n', '<esc>', '<Cmd>nohl<CR>'},
 
     {'n', 'Y', 'y$'},
 
@@ -29,25 +29,25 @@ return {
     {'x', '<C-k>', '<C-w><C-k>'},
     {'x', '<C-l>', '<C-w><C-l>'},
 
-    {'n', '-', '<Cmd>bp<cr>'},
-    {'x', '-', '<Cmd>bp<cr>'},
-    {'n', '=', '<Cmd>bn<cr>'},
-    {'x', '=', '<Cmd>bn<cr>'},
-    {'n', '_', '<Cmd>tabprevious<cr>'},
-    {'x', '_', '<Cmd>tabprevious<cr>'},
-    {'n', '+', '<Cmd>tabnext<cr>'},
-    {'x', '+', '<Cmd>tabnext<cr>'},
+    {'n', '-', '<Cmd>bp<CR>'},
+    {'x', '-', '<Cmd>bp<CR>'},
+    {'n', '=', '<Cmd>bn<CR>'},
+    {'x', '=', '<Cmd>bn<CR>'},
+    {'n', '_', '<Cmd>tabprevious<CR>'},
+    {'x', '_', '<Cmd>tabprevious<CR>'},
+    {'n', '+', '<Cmd>tabnext<CR>'},
+    {'x', '+', '<Cmd>tabnext<CR>'},
 
-    {'n', '<leader>bd', '<Cmd>bd<cr>'},
-    {'n', '<leader>ba', '<Cmd>bufdo bd<cr>'},
-    {'n', '<leader>bo', '<Cmd>%bd|e#|bd#<cr>'},
+    {'n', '<leader>bd', '<Cmd>bd<CR>'},
+    {'n', '<leader>ba', '<Cmd>bufdo bd<CR>'},
+    {'n', '<leader>bo', '<Cmd>%bd|e#|bd#<CR>'},
 
     -- gt gT
-    {'n', '<leader>tn', '<Cmd>tabnew<cr>'},
-    {'n', '<leader>tc', '<Cmd>tabclose<cr>'},
-    {'n', '<leader>to', '<Cmd>tabonly<cr>'},
-    {'n', ']t', '<Cmd>tablast<cr>'},
-    {'n', '[t', '<Cmd>tabfirst<cr>'},
+    {'n', '<leader>tn', '<Cmd>tabnew<CR>'},
+    {'n', '<leader>tc', '<Cmd>tabclose<CR>'},
+    {'n', '<leader>to', '<Cmd>tabonly<CR>'},
+    {'n', ']t', '<Cmd>tablast<CR>'},
+    {'n', '[t', '<Cmd>tabfirst<CR>'},
 
     {'n', '<UP>',    '<Cmd>res +5<CR>'},
     {'n', '<DOWN>',  '<Cmd>res -5<CR>'},
@@ -59,10 +59,12 @@ return {
     {'i', '<M-k>',   '<Up>'},
     {'i', '<M-j>',   '<Down>'},
 
-    {'n', '<M-k>', [[mz:m-2<cr>`z]]},
-    {'n', '<M-j>', [[mz:m+<cr>`z]]},
-    {'x', '<M-j>', [[:m'>+<cr>`<my`>mzgv`yo`z]]},
-    {'x', '<M-k>', [[:m'<-2<cr>`>my`<mzgv`yo`z]]},
+    {'n', '<M-k>', [[mz<Cmd>m-2<CR>`z]]},
+    {'n', '<M-j>', [[mz<Cmd>m+<CR>`z]]},
+    -- {'x', '<M-j>', [[:'<,'>m'>+<CR>`<my`>mzgv`yo`z]]},
+    -- {'x', '<M-k>', [[:'<,'>m'<-2<CR>`>my`<mzgv`yo`z]]},
+    {'x', '<M-j>', [[:'<,'>m'>+<CR>gv]]},
+    {'x', '<M-k>', [[:'<,'>m'<-2<CR>gv]]},
     {'n', '<M-l>', [[5zh]]},
     {'n', '<M-h>', [[5zl]]},
     -- {'x', '<M-l>', [["zxl"z`<v`>P]]},
@@ -87,7 +89,7 @@ return {
     {'n', '<C-c>', [["+yW""yW]]},
     {'x', '<C-c>', [["+ygv""y]]},
 
-    -- {'i', '<M-i>', '<C-r>=Ocr()<cr>'},
+    -- {'i', '<M-i>', '<C-r>=Ocr()<CR>'},
 
     {'t', '<M-q>', '<C-\\><C-n>'},
 

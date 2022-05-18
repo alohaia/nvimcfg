@@ -60,7 +60,7 @@
 | `n`,`x` | `K`          | `5k`                                              | *同上*                                |
 | `n`     | `<leader>n`  | `nzz`                                             | 搜索下一个并居中                      |
 | `n`     | `<leader>N`  | `Nzz`                                             | 搜索上一个并居中                      |
-| `n`     | `<esc>`      | `<Cmd>nohl<cr>`                                   | normal 模式 `ESC` 消除搜索高亮        |
+| `n`     | `<esc>`      | `<Cmd>nohl<CR>`                                   | normal 模式 `ESC` 消除搜索高亮        |
 | `n`     | `Y`          | `y$`                                              | `Y` 复制直到行尾，与 `D` 类似         |
 | `i`     | `<M-BS>`     | `<Del>`                                           | 插入模式 Alt + 退格键删除光标后的文字 |
 | `i`     | `<M-CR>`     | `<ESC>o`                                          | 插入模式快速换行                      |
@@ -68,18 +68,18 @@
 | `n`,`x` | `<C-j>`      | `<C-w><C-j>`                                      | *同上*                                |
 | `n`,`x` | `<C-k>`      | `<C-w><C-k>`                                      | *同上*                                |
 | `n`,`x` | `<C-l>`      | `<C-w><C-l>`                                      | *同上*                                |
-| `n`,`x` | `-`          | `<Cmd>bp<cr>`                                     | 快速切换 buffer                       |
-| `n`,`x` | `=`          | `<Cmd>bn<cr>`                                     | *同上*                                |
-| `n`,`x` | `_`          | `<Cmd>tabprevious<cr>`                            | 快速切换 tab                          |
-| `n`,`x` | `+`          | `<Cmd>tabnext<cr>`                                | *同上*                                |
-| `n`     | `<leader>bd` | `<Cmd>bd<cr>`                                     | 删除当前 buffer                       |
-| `n`     | `<leader>ba` | `<Cmd>bufdo bd<cr>`                               | 删除所有 buffer                       |
-| `n`     | `<leader>bo` | `<Cmd>%bd\|e#\|bd#<cr>`                           | 删除当前 buffer 以外的所有 buffer     |
-| `n`     | `<leader>tn` | `<Cmd>tabnew<cr>`                                 | 新建 tab                              |
-| `n`     | `<leader>tc` | `<Cmd>tabclose<cr>`                               | 关闭当前 tab                          |
-| `n`     | `<leader>to` | `<Cmd>tabonly<cr>`                                | 关闭当前 tab 以外的所有 tab           |
-| `n`     | `]t`         | `<Cmd>tablast<cr>`                                | 切换到最后一个 tab                    |
-| `n`     | `[t`         | `<Cmd>tabfirst<cr>`                               | 切换到第一个 tab                      |
+| `n`,`x` | `-`          | `<Cmd>bp<CR>`                                     | 快速切换 buffer                       |
+| `n`,`x` | `=`          | `<Cmd>bn<CR>`                                     | *同上*                                |
+| `n`,`x` | `_`          | `<Cmd>tabprevious<CR>`                            | 快速切换 tab                          |
+| `n`,`x` | `+`          | `<Cmd>tabnext<CR>`                                | *同上*                                |
+| `n`     | `<leader>bd` | `<Cmd>bd<CR>`                                     | 删除当前 buffer                       |
+| `n`     | `<leader>ba` | `<Cmd>bufdo bd<CR>`                               | 删除所有 buffer                       |
+| `n`     | `<leader>bo` | `<Cmd>%bd\|e#\|bd#<CR>`                           | 删除当前 buffer 以外的所有 buffer     |
+| `n`     | `<leader>tn` | `<Cmd>tabnew<CR>`                                 | 新建 tab                              |
+| `n`     | `<leader>tc` | `<Cmd>tabclose<CR>`                               | 关闭当前 tab                          |
+| `n`     | `<leader>to` | `<Cmd>tabonly<CR>`                                | 关闭当前 tab 以外的所有 tab           |
+| `n`     | `]t`         | `<Cmd>tablast<CR>`                                | 切换到最后一个 tab                    |
+| `n`     | `[t`         | `<Cmd>tabfirst<CR>`                               | 切换到第一个 tab                      |
 | `n`     | `<UP>`       | `<Cmd>res +5<CR>`                                 | 沿垂直方向增大窗口                    |
 | `n`     | `<DOWN>`     | `<Cmd>res -5<CR>`                                 | 沿垂直方向减小窗口                    |
 | `n`     | `<Left>`     | `<Cmd>vertical resize-5<CR>`                      | 沿水平方向增大窗口                    |
@@ -88,10 +88,10 @@
 | `i`     | `<M-h>`      | `<Left>`                                          | 插入模式下移动光标                    |
 | `i`     | `<M-k>`      | `<Up>`                                            | *同上*                                |
 | `i`     | `<M-j>`      | `<Down>`                                          | *同上*                                |
-| `n`     | `<M-k>`      | ``mz:m-2<cr>`z``                                  | 常规模式上移光标所在的行              |
-| `n`     | `<M-j>`      | ``mz:m+<cr>`z``                                   | 常规模式下移光标所在的行              |
-| `x`     | `<M-j>`      | ``:m'>+<cr>`<my`>mzgv`yo`z``                      | visual 模式上移选中的的行             |
-| `x`     | `<M-k>`      | ``:m'<-2<cr>`>my`<mzgv`yo`z``                     | visual 模式下移选中的的行             |
+| `n`     | `<M-k>`      | ``mz<Cmd>m-2<CR>`z``                              | 常规模式上移光标所在的行              |
+| `n`     | `<M-j>`      | ``mz<Cmd>m+<CR>`z``                               | 常规模式下移光标所在的行              |
+| `x`     | `<M-j>`      | ``:'<,'>m'>+<CR>gv``                              | visual 模式上移选中的的行             |
+| `x`     | `<M-k>`      | ``:'<,'>m'<-2<CR>gv``                             | visual 模式下移选中的的行             |
 | `n`     | `<M-l>`      | `5zh`                                             | （行过长时）向左移动文本              |
 | `n`     | `<M-h>`      | `5zl`                                             | （行过长时）向右移动文本              |
 | `n`     | `<leader>o`  | ``mzo<esc>`z``                                    | 在下方插入空行                        |
@@ -111,7 +111,7 @@
 
 | 模式 | 按键                 | 映射                                           | 说明                                              |
 |------|----------------------|------------------------------------------------|---------------------------------------------------|
-| `n`  | `<leader>tm`         | `<cmd>TableModeToggle<cr>`                     | 开关“表格模式”，见 `:h table-mode.txt`            |
+| `n`  | `<leader>tm`         | `<cmd>TableModeToggle<CR>`                     | 开关“表格模式”，见 `:h table-mode.txt`            |
 | `i`  | `<C-a>`              | `<Cmd>ToggleCheckbox<CR>`                      | 见 `:h bullets.txt`                               |
 | `n`  | `<leader>sn`         | `<Cmd>RenumberList<CR>`                        | *同上*                                            |
 | `x`  | `<leader>sn`         | `<Cmd>RenumberSelection<CR>`                   | *同上*                                            |
@@ -137,16 +137,16 @@
 | `n`  | `<F3>`               | vim-floaterm 快捷键                            | 新建浮动终端                                      |
 | `n`  | `<F4>`               | vim-floaterm 快捷键                            | 杀死当前浮动终端                                  |
 | `n`  | `<leader>ut`         | `<Cmd>UndotreeToggle<CR>`                      | 开关修改历史树，见 `:h undotree.txt`              |
-| `n`  | `<leader>vt`         | `<Cmd>Vista<Cr>`                               | vista.vim，开关标签列表                           |
-| `n`  | `,T`                 | `<Cmd>Vista finder<Cr>`                        | vista.vim，查找 ctags 标签                        |
+| `n`  | `<leader>vt`         | `<Cmd>Vista<CR>`                               | vista.vim，开关标签列表                           |
+| `n`  | `,T`                 | `<Cmd>Vista finder<CR>`                        | vista.vim，查找 ctags 标签                        |
 | `n`  | `,g`                 | `<Cmd>Telescope live_grep<CR>`                 | telescope.nvim，在当前目录查找文件内容            |
 | `n`  | `,f`                 | `<Cmd>Telescope find_files<CR>`                | telescope.nvim，在当前目录查找文件                |
 | `n`  | `,b`                 | `<Cmd>Telescope buffers<CR>`                   | telescope.nvim，在当前目录查找 buffer             |
 | `n`  | `,F`                 | `<Cmd>Telescope file_browser<CR>`              | telescope.nvim，在当前目录浏览文件                |
 | `n`  | `gb`                 | `<Cmd>BufferLinePick<CR>`                      | nvim-bufferline.lua，快速切换 buffer              |
 | `n`  | `<leader>nt`         | `<Cmd>NvimTreeToggle<CR>`                      | 打开 nvim-tree.lua（文件浏览器）                  |
-| `n`  | `<F5>`               | `<cmd>AsyncTask run<cr>`                       | asynctasks.vim，运行 run 任务                     |
-| `n`  | `<F6>`               | `<cmd>AsyncTask build<cr>`                     | asynctasks.vim，运行 build 任务                   |
+| `n`  | `<F5>`               | `<cmd>AsyncTask run<CR>`                       | asynctasks.vim，运行 run 任务                     |
+| `n`  | `<F6>`               | `<cmd>AsyncTask build<CR>`                     | asynctasks.vim，运行 build 任务                   |
 | `n`  | `s`                  | `<plug>(SubversiveSubstitute)`                 | 见 `:h subversive.txt`                            |
 | `x`  | `s`                  | `<plug>(SubversiveSubstitute)`                 | *同上*                                            |
 | `x`  | `p`                  | `<plug>(SubversiveSubstitute)`                 | *同上*                                            |
