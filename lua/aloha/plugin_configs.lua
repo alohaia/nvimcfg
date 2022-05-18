@@ -809,6 +809,13 @@ configs['olimorris/onedarkpro.nvim'] = function()
 end
 
 configs['nvim-lualine/lualine.nvim'] = function()
+    local function spelllang()
+        if vim.opt.spell:get() then
+            return '﯑ ' .. string.upper(table.concat(vim.opt.spelllang:get(), ','))
+        else
+            return ''
+        end
+    end
     require('lualine').setup {
         options = {
             icons_enabled = true,
@@ -826,7 +833,7 @@ configs['nvim-lualine/lualine.nvim'] = function()
             lualine_b = {'branch', 'diff', 'diagnostics'},
             lualine_c = {'filename'},
             lualine_x = {'encoding', 'fileformat', 'filetype'},
-            lualine_y = {'progress'},
+            lualine_y = {spelllang, 'progress'},
             lualine_z = {'location'}
         },
         inactive_sections = {
