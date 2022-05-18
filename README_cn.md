@@ -170,7 +170,7 @@
 ### `~/.config/nvim/init.lua`
 
 ```lua
-require("aloha")({
+require 'aloha' {
     packer_settings = {
         plugins = require('aloha.plugins'),
         plugin_configs = require('aloha.plugin_configs'),
@@ -178,16 +178,20 @@ require("aloha")({
             -- pack_root = vim.fn.stdpath('data') .. '/site/pack',
             -- pack_name = 'packer',
             -- git = 'git',
-            -- rm = 'rm -rf',
+            rm = 'rm -rf',
         },
-    }
-})
+    },
+    transparency = true,
+    mapleader = ' ',
+}
 ```
 
 - `packer_settings`
     - [`plugins`](#plugins)：插件列表和一些简单配置，示例见 `~/.config/nvim/lua/aloha/plugins.lua`
     - [`plugin_configs`](#plugin_configs)：插件配置，示例见 `~/.config/nvim/lua/aloha/plugin_configs/init.lua`
     - `packer_config`：内置 packer 的配置
+- `transparency`：背景透明及相关配置
+- `mapleader`：`<Leader>` 键
 
 > **Tips** 在 GNOME 上，你可以将 `packer_config.rm` 设置为 `gio trash`。你可以将 `packer_config.git` 设置为 `proxychains -q git`，但是用 `~/.gitconfig` 更好，比如:
 > ```dosini

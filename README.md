@@ -49,7 +49,7 @@
 ### `~/.config/nvim/init.lua`
 
 ```lua
-require("aloha")({
+require 'aloha' {
     packer_settings = {
         plugins = require('aloha.plugins'),
         plugin_configs = require('aloha.plugin_configs'),
@@ -57,16 +57,20 @@ require("aloha")({
             -- pack_root = vim.fn.stdpath('data') .. '/site/pack',
             -- pack_name = 'packer',
             -- git = 'git',
-            -- rm = 'rm -rf',
+            rm = 'rm -rf',
         },
-    }
-})
+    },
+    transparency = true,
+    mapleader = ' ',
+}
 ```
 
 - `packer_settings`
     - [`plugins`](#plugins): plugin list with basic configuration, see `~/.config/nvim/lua/aloha/plugins.lua` for example
     - [`plugin_configs`](#plugin_configs): configuration for plugins, see `~/.config/nvim/lua/aloha/plugin_configs/init.lua` for example
     - `packer_config`: settings for built-in packer
+- `transparency`: transparent background and related config
+- `mapleader`：`<Leader>` key
 
 > **Tips** You can set `packer_config.rm` to `gio trash` on GNOME. You can also set `packer_config.git` to `proxychains -q git` to use proxy, but using `~/.gitconfig` is better. For example:
 > ```dosini
@@ -112,7 +116,7 @@ require("aloha")({
 >             'nvim-telescope/telescope-fzy-native.nvim'
 >         }
 >     },
-> 
+>
 >     -- dependencies
 >     ['nvim-lua/plenary.nvim'] = {opt=true},
 >     ['nvim-lua/popup.nvim'] = {opt=true},
