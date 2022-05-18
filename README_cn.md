@@ -72,6 +72,7 @@
 | `n`,`x` | `=`          | `<Cmd>bn<cr>`                                     | *同上*                                |
 | `n`,`x` | `_`          | `<Cmd>tabprevious<cr>`                            | 快速切换 tab                          |
 | `n`,`x` | `+`          | `<Cmd>tabnext<cr>`                                | *同上*                                |
+| `n`     | `<leader>bd` | `<Cmd>bd<cr>`                                     | 删除当前 buffer                       |
 | `n`     | `<leader>ba` | `<Cmd>bufdo bd<cr>`                               | 删除所有 buffer                       |
 | `n`     | `<leader>bo` | `<Cmd>%bd\|e#\|bd#<cr>`                           | 删除当前 buffer 以外的所有 buffer     |
 | `n`     | `<leader>tn` | `<Cmd>tabnew<cr>`                                 | 新建 tab                              |

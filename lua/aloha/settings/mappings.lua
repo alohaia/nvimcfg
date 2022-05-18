@@ -38,6 +38,7 @@ return {
     {'n', '+', '<Cmd>tabnext<cr>'},
     {'x', '+', '<Cmd>tabnext<cr>'},
 
+    {'n', '<leader>bd', '<Cmd>bd<cr>'},
     {'n', '<leader>ba', '<Cmd>bufdo bd<cr>'},
     {'n', '<leader>bo', '<Cmd>%bd|e#|bd#<cr>'},
 
