@@ -150,7 +150,7 @@ local function _install(i, git_cmd, plugins)
     local _args = {
         'clone',
         '--recurse-submodules',
-        packer.plugins[plugins[i]].branch and ('--branch='..branch) or nil,
+        packer.plugins[plugins[i]].branch and ('--branch=' .. packer.plugins[plugins[i]].branch) or nil,
         git_cmd.config.shallow_submodules and '--shallow-submodules' or nil,
         git_cmd.config.base_url..'/'..plugins[i],
         plugin_path(plugins[i])
@@ -193,7 +193,7 @@ local function _update(i, git_cmd, plugins)
         local _args = {
             'clone',
             '--recurse-submodules',
-            packer.plugins[plugins[i]].branch and ('--branch='..branch) or nil,
+            packer.plugins[plugins[i]].branch and ('--branch=' .. packer.plugins[plugins[i]].branch) or nil,
             git_cmd.config.shallow_submodules and '--shallow-submodules' or nil,
             git_cmd.config.base_url..'/'..plugins[i],
             plugin_path(plugins[i])
@@ -250,7 +250,7 @@ local function _update(i, git_cmd, plugins)
                         info("[%d/%d] run %s", i, total, run)
                     end
                 end
-                local _args = {
+                local submod_args = {
                     'submodule', 'update',
                     '--init', '--recursive',
                     git_cmd.config.shallow_submodules and '--depth=1' or nil,
@@ -259,7 +259,7 @@ local function _update(i, git_cmd, plugins)
                 handle1 = vim.loop.spawn(git_cmd.path,
                     {
                         cwd = plugin_path(plugins[i]),
-                        args = vim.list_extend(vim.deepcopy(git_cmd.args), _args),
+                        args = vim.list_extend(vim.deepcopy(git_cmd.args), submod_args),
                     },
                     vim.schedule_wrap(function(_code, _signal)
                         if _code ~= 0 then
