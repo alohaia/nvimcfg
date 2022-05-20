@@ -155,8 +155,7 @@ end
 configs['kyazdani42/nvim-tree.lua'] = function()
     vim.g.nvim_tree_add_trailing = 0
     vim.g.nvim_tree_group_empty = 1
-    vim.cmd[[autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]]
-    require("nvim-tree").setup { -- BEGIN_DEFAULT_OPTS
+    require("nvim-tree").setup {
         auto_reload_on_write = true,
         disable_netrw = true,
         hijack_cursor = true,
@@ -181,7 +180,7 @@ configs['kyazdani42/nvim-tree.lua'] = function()
             },
             open_file = {
                 quit_on_open = false,
-                resize_window = false,
+                resize_window = true,
                 window_picker = {
                     enable = true,
                     chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
@@ -199,6 +198,7 @@ configs['kyazdani42/nvim-tree.lua'] = function()
     }
     -- see :h nvim-tree-events
     vim.api.nvim_set_keymap('n', '<leader>nt', '<Cmd>NvimTreeToggle<CR>', {noremap = true})
+    vim.cmd[[autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]]
 end
 
 configs['lewis6991/gitsigns.nvim'] = function()
@@ -377,9 +377,12 @@ configs['hrsh7th/nvim-cmp'] = function()
             -- { name = 'luasnip' }, -- For luasnip users.
             { name = 'ultisnips' }, -- For ultisnips users.
             -- { name = 'snippy' }, -- For snippy users.
-        -- }, {
+        }, {
             { name = 'buffer' },
-            { name = 'buffer' },
+            { name = 'path', option = {
+                trailing_slash = true,
+                -- get_cwd = fucntion
+            }},
         }),
         preselect = cmp.PreselectMode.Item,
         completion = {
@@ -406,32 +409,53 @@ configs['hrsh7th/nvim-cmp'] = function()
 end
 
 configs['nvim-telescope/telescope.nvim'] = function()
-    require('telescope').setup{
+    local telescope = require('telescope')
+    telescope.setup {
+        -- extensions = {
+        --     fzy_native = {
+        --         override_generic_sorter = false,
+        --         override_file_sorter = true,
+        --     },
+        --     fzf = {
+        --         fuzzy = true,                    -- false will only do exact matching
+        --         override_generic_sorter = true,  -- override the generic sorter
+        --         override_file_sorter = true,     -- override the file sorter
+        --         case_mode = 'smart_case',        -- or "ignore_case" or "respect_case"
+        --     },
+        -- },
         defaults = {
             vimgrep_arguments = {
                 'rg',
                 '--color=never',
+                '--no-heading',
+                '--with-filename',
                 '--line-number',
                 '--column',
                 '--smart-case'
             },
-            -- prompt_prefix = "🔭 ",
-            selection_caret = " ",
-            entry_prefix = "  ",
-            initial_mode = "insert",
-            selection_strategy = "reset",
-            sorting_strategy = "descending",
-            layout_strategy = "horizontal",
-            -- layout_config = {
-            --     horizontal = {
-            --         mirror = false,
-            --     },
-            --     vertical = {
-            --         mirror = true,
-            --     },
-            -- },
+            prompt_prefix = '   ', -- 🔍
+            selection_caret = '> ', -- 
+            entry_prefix = '  ',
+            initial_mode = 'insert',
+            sorting_strategy = 'ascending',
+            selection_strategy = 'reset',
+            layout_strategy = 'horizontal',
+            scroll_strategy = 'cycle',
+            layout_config = {
+                horizontal = {
+                    prompt_position = 'top',
+                    preview_width = 0.55,
+                    results_width = 0.8,
+                },
+                vertical = {
+                    mirror = false,
+                },
+                width = 0.87,
+                height = 0.80,
+                preview_cutoff = 120,
+            },
             file_sorter =  require'telescope.sorters'.get_fuzzy_file,
-            file_ignore_patterns = {},
+            file_ignore_patterns = { 'node_modules' },
             generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
             winblend = 0,
             border = {},
@@ -445,24 +469,21 @@ configs['nvim-telescope/telescope.nvim'] = function()
             qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
 
             -- Developer configurations: Not meant for general override
-            buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker
-        },
-        extensions = {
-            fzy_native = {
-                override_generic_sorter = false,
-                override_file_sorter = true,
-            }
+            buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker,
+            mappings = {
+                n = { ['q'] = require('telescope.actions').close },
+            },
         },
     }
-    require('telescope').load_extension('fzy_native')
-    -- require'telescope'.load_extension('dotfiles')
-    -- require'telescope'.load_extension('gosource')
+    -- telescope.load_extension('fzy_native')
+    -- telescope.load_extension('fzf')
 
     -- keybindings
     vim.api.nvim_set_keymap('n', ',f', '<Cmd>Telescope find_files<CR>', {noremap = true})
-    vim.api.nvim_set_keymap('n', ',b', '<Cmd>Telescope buffers<CR>', {noremap = true})
     vim.api.nvim_set_keymap('n', ',F', '<Cmd>Telescope file_browser<CR>', {noremap = true})
+    vim.api.nvim_set_keymap('n', ',b', '<Cmd>Telescope buffers<CR>', {noremap = true})
     vim.api.nvim_set_keymap('n', ',g', '<Cmd>Telescope live_grep<CR>', {noremap = true})
+    vim.api.nvim_set_keymap('n', ',h', '<Cmd>Telescope help_tags<CR>', {noremap = true})
 end
 
 configs['RRethy/vim-illuminate'] = function()
@@ -804,7 +825,13 @@ configs['olimorris/onedarkpro.nvim'] = function()
     })
     require("onedarkpro").load()
     if transparentbg then
-        vim.cmd[[au VimEnter * hi lualine_c_normal guibg=NONE]]
+        vim.api.nvim_create_autocmd("VimEnter", {
+            pattern = "*",
+            callback = function ()
+                vim.api.nvim_set_hl(0, 'lualine_c_normal', {bg="NONE"})
+                vim.api.nvim_set_hl(0, 'lualine_c_inactive',{bg="NONE"})
+            end
+        })
     end
 end
 

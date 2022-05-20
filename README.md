@@ -49,14 +49,21 @@
 ### `~/.config/nvim/init.lua`
 
 ```lua
+-- Default config
 require 'aloha' {
     packer_settings = {
         plugins = require('aloha.plugins'),
         plugin_configs = require('aloha.plugin_configs'),
-        packer_config = {
-            -- pack_root = vim.fn.stdpath('data') .. '/site/pack',
-            -- pack_name = 'packer',
-            -- git = 'git',
+        packer = {
+            pack_root = vim.fn.stdpath('data') .. '/site/pack',
+            pack_name = 'packer',
+            git = {
+                cmd = 'git',
+                clone_depth = 1,
+                clone_submodules = true,
+                shallow_submodules = true,
+                base_url = 'https://github.com',
+            },
             rm = 'rm -rf',
         },
     },
@@ -68,7 +75,13 @@ require 'aloha' {
 - `packer_settings`
     - [`plugins`](#plugins): plugin list with basic configuration, see `~/.config/nvim/lua/aloha/plugins.lua` for example
     - [`plugin_configs`](#plugin_configs): configuration for plugins, see `~/.config/nvim/lua/aloha/plugin_configs/init.lua` for example
-    - `packer_config`: settings for built-in packer
+    - `packer`: settings for built-in packer
+        - `pack_root`, `pack_name`: plugins will be installed under `pack_root/pack_name/{opt,start}`
+        - `git`
+            - `cmd`: base git command, can be replaced with `proxychains -q git` for example.
+            - `clone_depth`: `--depth` option for `clone`
+            - `shallow_submodules`: whether to add `--shallow-submodules` in `clone` command and add `--depth=1` in `submodule update` command
+            - `base_url`: base URL of GitHub, you can replace this to use a mirror site
 - `transparency`: transparent background and related config
 - `mapleader`：`<Leader>` key
 
@@ -132,7 +145,7 @@ A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexow
 - `cmd`(`string`, `list`): On which vim command(s) should the plugin be loaded.
 - `map`(`table`): On which mapping(s) should the plugin be loaded.
 - `enable`(`bool`, `function`): Whether to load this plugin.
-- `branch`(`string`): Branch of the plugin.
+- `branch`(`string`): Branch of the plugin. This is effective only at initial installation.
 - `dependency`(`string`, `table`): Plugin's dependencies. A dependency should be in plugin list additionally and set `opt=true`.
 - `disabled`(`bool`): Whether the plugin is disabled. Disabled plugins won't be installed or updated and will be removed while cleaning. The difference between disabled plugins and plugins that are not in the plugin list is that the former appears in completion list of packer [commands](#commands).
 - `config`(`function`, `string`): Configuration for the plugin, Can be a function:

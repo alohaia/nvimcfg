@@ -3,14 +3,20 @@ return function(_configs)
         transparency = true,
         mapleader = ' ',
     })
-    if configs.packer_settings == nil then
-        configs.packer_settings = {
+    if configs.packer == nil then
+        configs.packer = {
             plugins = require('aloha.plugins'),
             plugin_configs = require('aloha.plugin_configs'),
             packer_config = {
                 pack_root = vim.fn.stdpath('data') .. '/site/pack',
                 pack_name = 'packer',
-                git = 'git',
+                git = {
+                    cmd = 'git',
+                    clone_depth = 1,
+                    clone_submodules = true,
+                    shallow_submodules = true,
+                    base_url = 'https://github.com',
+                },
                 rm = 'rm -rf',
             }
         }
@@ -65,7 +71,7 @@ return function(_configs)
     end
 
     -- packer
-    aloha.packer = require('aloha.packer'):init(configs.packer_settings)
+    aloha.packer = require('aloha.packer'):init(configs.packer)
 
     -- define user commands
     for cmd_name,cmd in pairs(aloha.commands) do

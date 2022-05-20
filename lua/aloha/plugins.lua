@@ -1,6 +1,6 @@
 return {
     -- completion
-    ['neovim/nvim-lspconfig']         = {
+    ['neovim/nvim-lspconfig'] = {
         ft = {
             'lua',                          -- sumneko_lua
             'c', 'cpp', 'objc', 'objcpp',   -- clangd
@@ -12,15 +12,23 @@ return {
             'css', 'scss', 'less',          -- ccsls
             'json', 'jsonc',                -- jsonls
             'html',                         -- html
+        },
+    },
+    ['hrsh7th/nvim-cmp'] = {
+        dependency = {
+            'hrsh7th/cmp-nvim-lsp',
+            'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-path',
+            'quangnguyen30192/cmp-nvim-ultisnips',
+            'onsails/lspkind-nvim'
         }
     },
-    ['hrsh7th/nvim-cmp']              = {},
-    ['hrsh7th/cmp-nvim-lsp']          = {},
-    ['hrsh7th/cmp-buffer']            = {},
-    ['hrsh7th/cmp-path']              = {},
-    ['quangnguyen30192/cmp-nvim-ultisnips'] = {},
+    ['hrsh7th/cmp-nvim-lsp']          = {opt=true},
+    ['hrsh7th/cmp-buffer']            = {opt=true},
+    ['hrsh7th/cmp-path']              = {opt=true},
+    ['quangnguyen30192/cmp-nvim-ultisnips'] = {opt=true},
     ['glepnir/lspsaga.nvim']          = {disable = true},
-    ['onsails/lspkind-nvim']          = {},
+    ['onsails/lspkind-nvim']          = {opt=true},
     ['SirVer/ultisnips']              = {},
 
     -- ui
@@ -63,10 +71,19 @@ return {
         },
         dependency = {
             'nvim-lua/plenary.nvim',
-            'nvim-lua/popup.nvim',
-            'nvim-telescope/telescope-fzy-native.nvim'
+            -- 'nvim-lua/popup.nvim',
+            -- 'nvim-telescope/telescope-fzy-native.nvim',
+            -- 'nvim-telescope/telescope-fzf-native.nvim',
         }
     },
+    -- dependencies
+    ['nvim-lua/plenary.nvim'] = {opt=true},
+    -- ['nvim-lua/popup.nvim'] = {opt=true},
+    -- ['nvim-telescope/telescope-fzy-native.nvim'] = {opt=true},
+    -- ['nvim-telescope/telescope-fzf-native.nvim'] = {
+    --     opt = true,
+    --     run = '!make'
+    -- },
 
     -- editor
     ['RRethy/vim-illuminate'] = {},
@@ -100,15 +117,12 @@ return {
     ['tpope/vim-fugitive'] = {},
     ['cohama/agit.vim'] = {config = ':let g:agit_no_default_mappings = 0'},
 
+    -- syntax highlight
     ['nvim-treesitter/nvim-treesitter'] = {
         dependency = 'nvim-treesitter/nvim-treesitter-textobjects'
     },
-
-    -- dependencies
-    ['nvim-lua/plenary.nvim'] = {opt=true},
-    ['nvim-lua/popup.nvim'] = {opt=true},
-    ['nvim-telescope/telescope-fzy-native.nvim'] = {opt=true},
     ['nvim-treesitter/nvim-treesitter-textobjects'] = {opt=true},
+    ['fladson/vim-kitty'] = {ft='kitty'},
 
     -- database
     ['tpope/vim-dadbod'] = {disable = true},

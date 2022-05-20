@@ -170,14 +170,21 @@
 ### `~/.config/nvim/init.lua`
 
 ```lua
+-- 默认配置
 require 'aloha' {
     packer_settings = {
         plugins = require('aloha.plugins'),
         plugin_configs = require('aloha.plugin_configs'),
-        packer_config = {
-            -- pack_root = vim.fn.stdpath('data') .. '/site/pack',
-            -- pack_name = 'packer',
-            -- git = 'git',
+        packer = {
+            pack_root = vim.fn.stdpath('data') .. '/site/pack',
+            pack_name = 'packer',
+            git = {
+                cmd = 'git',
+                clone_depth = 1,
+                clone_submodules = true,
+                shallow_submodules = true,
+                base_url = 'https://github.com',
+            },
             rm = 'rm -rf',
         },
     },
@@ -189,7 +196,13 @@ require 'aloha' {
 - `packer_settings`
     - [`plugins`](#plugins)：插件列表和一些简单配置，示例见 `~/.config/nvim/lua/aloha/plugins.lua`
     - [`plugin_configs`](#plugin_configs)：插件配置，示例见 `~/.config/nvim/lua/aloha/plugin_configs/init.lua`
-    - `packer_config`：内置 packer 的配置
+    - `packer`：内置 packer 的配置
+        - `pack_root`, `pack_name`：插件会被安装到 `pack_root/pack_name/{opt,start}` 目录下
+        - `git`
+            - `cmd`：基本的 git 命令，可以替换成 `proxychains -q git` 等
+            - `clone_depth`：`clone` 的 `--depth` 选项
+            - `shallow_submodules`：是否为 `clone` 添加 `--shallow-submodules` 选项以及为 `submodule update` 添加 `--depth=1` 选项
+            - `base_url`：GitHub 的 base URL，如果想用镜像站（比如 fastgit），可以设置该选项
 - `transparency`：背景透明及相关配置
 - `mapleader`：`<Leader>` 键
 
@@ -253,7 +266,7 @@ require 'aloha' {
 - `cmd`(`string`, `list`)：在使用哪些 Vim 命令时启用该插件。
 - `map`(`table`): 在按下哪些映射时启用该插件。
 - `enable`(`bool`, `function`)：根据布尔值或函数返回值决定是非加载该插件。
-- `branch`(`string`)：插件的 GitHub 仓库的分支。
+- `branch`(`string`)：插件的 GitHub 仓库的分支，只在初次安装时生效。
 - `dependency`(`string`, `table`)：插件的依赖项。依赖项应该单独列在列表中，并且设置 `opt=true`。
 - `disabled`(`bool`)：是否禁用该插件。禁用的插件不会被安装或更新，并会在清理（`PackClean`）时被移除。禁用的插件和不在列表中的插件的区别是，前者会出现在[命令](#命令)补全中。
 - `config`(`function`, `string`)：插件的简单配置。可以是函数或者字符串：
