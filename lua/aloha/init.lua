@@ -1,10 +1,8 @@
 return function(_configs)
-    local configs = vim.tbl_extend('keep', _configs, {
+    local configs = vim.tbl_deep_extend('keep', _configs, {
         transparency = true,
         mapleader = ' ',
-    })
-    if configs.packer == nil then
-        configs.packer = {
+        packer = {
             plugins = require('aloha.plugins'),
             plugin_configs = require('aloha.plugin_configs'),
             config = {
@@ -21,7 +19,7 @@ return function(_configs)
                 strict_deps = true,
             }
         }
-    end
+    })
 
     _G.aloha = { configs = configs }
 

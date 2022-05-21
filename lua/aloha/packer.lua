@@ -114,7 +114,7 @@ function packer:init(configs)
     -- default arguments
     self.plugins = (type(configs.plugins) == 'table') and configs.plugins or {}
     self.plugin_configs = type(configs.plugin_configs) == 'table' and configs.plugin_configs or {}
-    self.config = vim.tbl_extend('keep', configs.config, {
+    self.config = vim.tbl_deep_extend('keep', configs.config, {
         pack_root = fn.stdpath('data') .. '/site/pack',
         pack_name = 'packer',
         git = 'git',
