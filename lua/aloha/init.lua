@@ -7,7 +7,7 @@ return function(_configs)
         configs.packer = {
             plugins = require('aloha.plugins'),
             plugin_configs = require('aloha.plugin_configs'),
-            packer_config = {
+            config = {
                 pack_root = vim.fn.stdpath('data') .. '/site/pack',
                 pack_name = 'packer',
                 git = {
@@ -18,6 +18,7 @@ return function(_configs)
                     base_url = 'https://github.com',
                 },
                 rm = 'rm -rf',
+                strict_deps = true,
             }
         }
     end

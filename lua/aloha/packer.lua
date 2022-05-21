@@ -109,12 +109,12 @@ local function fullname(name)
     return nil
 end
 
-function packer:init(settings)
+function packer:init(configs)
     --{{1 initialization
     -- default arguments
-    self.plugins = (type(settings.plugins) == 'table') and settings.plugins or {}
-    self.plugin_configs = type(settings.plugin_configs) == 'table' and settings.plugin_configs or {}
-    self.packer_config = vim.tbl_extend('keep', settings.packer_config, {
+    self.plugins = (type(configs.plugins) == 'table') and configs.plugins or {}
+    self.plugin_configs = type(configs.plugin_configs) == 'table' and configs.plugin_configs or {}
+    self.config = vim.tbl_extend('keep', configs.config, {
         pack_root = fn.stdpath('data') .. '/site/pack',
         pack_name = 'packer',
         git = 'git',
@@ -122,7 +122,7 @@ function packer:init(settings)
     })
 
     -- others vars
-    base_path = self.packer_config.pack_root .. '/' .. self.packer_config.pack_name
+    base_path = self.config.pack_root .. '/' .. self.config.pack_name
     --}}1 initialization
 
     self:loadConfig() -- must be called before self:prepareOptPlugins()
@@ -138,7 +138,7 @@ function packer:init(settings)
 end
 
 function packer.plugin_complete()
-    return join(packer.plugin_list, "\n")
+    return join(packer.plugin_list, '\n')
 end
 
 local handle, handle1
@@ -168,7 +168,7 @@ local function _install(i, git_cmd, plugins)
                 failed_count = failed_count + 1
                 -- remove incompleted plugins
                 if is_installed(plugins[i]) then
-                    exec(packer.packer_config.rm .. ' ', plugin_path(plugins[i]))
+                    exec(packer.config.rm .. ' ', plugin_path(plugins[i]))
                 end
             end
             handle:close()
@@ -211,7 +211,7 @@ local function _update(i, git_cmd, plugins)
                     failed_count = failed_count + 1
                     -- remove incompleted plugins
                     if is_installed(plugins[i]) then
-                        exec(packer.packer_config.rm .. ' ', plugin_path(plugins[i]))
+                        exec(packer.config.rm .. ' ', plugin_path(plugins[i]))
                     end
                 end
                 handle:close()
@@ -247,7 +247,7 @@ local function _update(i, git_cmd, plugins)
                     local run = packer.plugins[plugins[i]].run
                     if run then
                         exec(run, plugin_path(plugins[i]))
-                        info("[%d/%d] run %s", i, total, run)
+                        info('[%d/%d] run %s', i, total, run)
                     end
                 end
                 local submod_args = {
@@ -298,9 +298,9 @@ function packer:download(behaviour, name)
     local git_cmd = {
         path = 'git',
         args = {},
-        config = self.packer_config.git
+        config = self.config.git
     }
-    local packer_git_split = split(self.packer_config.git.cmd, ' ')
+    local packer_git_split = split(self.config.git.cmd, ' ')
     local split_len = #packer_git_split
     if split_len == 1 then
         git_cmd.path = packer_git_split[1]
@@ -312,7 +312,7 @@ function packer:download(behaviour, name)
     -- plugins to download or update
     local plugins = {}
     -- single plugin
-    if name ~= nil and name ~= "" then
+    if name ~= nil and name ~= '' then
         plugins = { fullname(name) }
         goto single_jmp
     end
@@ -354,35 +354,47 @@ function packer:add(name, _plugin_name)
             vim.cmd('packadd ' .. name)
             self:loadConfig(plugin_name)
             added_plugins[plugin_name] = true
+            return true
         else
-            warn(plugin_name .. " is required")
+            warn(plugin_name .. ' not installed')
+            return false
         end
     elseif not plugin_name then
-        warn("can not find " .. name)
+        warn('no plugin named %d' .. name)
+        return false
     end
 end
 
 local function load_dependencies(name)
+    local is_success = true
     local deps = packer.plugins[name].dependency
     if type(deps) == 'string' then
-        packer:add(split(deps, '/')[2], deps)
+        if not packer:add(split(deps, '/')[2], deps) then
+            warn('failed to load dependency %s for %s', deps, name)
+            is_success = false
+        end
     elseif type(deps) == 'table' then
         for _,dep in ipairs(deps) do
-            packer:add(split(dep, '/')[2], dep)
+            if not packer:add(split(dep, '/')[2], dep) then
+                warn('failed to load dependency %s for %s', dep, name)
+                is_success = false
+            end
         end
     end
+    return is_success
 end
 
 -- load dependencies and configs of all start plugins or one specific plugin
 function packer:loadConfig(plugin_name)
-    if plugin_name and not self.plugins[plugin_name].disable then
-        load_dependencies(plugin_name)
-        local config = self.plugins[plugin_name].config
-        if self.plugin_configs[plugin_name] then
-            self.plugin_configs[plugin_name]()
-        end
-        if config then
-            exec(config)
+    if plugin_name then
+        if load_dependencies(plugin_name) or not self.config.strict_deps then
+            local config = self.plugins[plugin_name].config
+            if self.plugin_configs[plugin_name] then
+                self.plugin_configs[plugin_name]()
+            end
+            if config then
+                exec(config)
+            end
         end
         return
     end
@@ -390,13 +402,16 @@ function packer:loadConfig(plugin_name)
     for name,settings in pairs(self.plugins) do
         if settings.disable or not is_installed(name) then -- disabled or not installed
             goto continue
-        elseif not is_opt(settings) then -- start plugins
-            load_dependencies(name)
-            if type(settings.config) then
-                exec(settings.config)
-            end
-            if self.plugin_configs[name] then
-                self.plugin_configs[name]()
+        -- start plugins
+        -- dependencies must be opt plugins
+        elseif not is_opt(settings) then
+            if load_dependencies(name) or not self.config.strict_deps then
+                if settings.config then
+                    exec(settings.config)
+                end
+                if self.plugin_configs[name] then
+                    self.plugin_configs[name]()
+                end
             end
         end
         ::continue::
@@ -430,16 +445,16 @@ function packer:uninstall(name)
     local cate,plugin_name
     for _,path in ipairs(installed_plugins) do
         cate,plugin_name = path:match('([^/]*)/([^/]*)$')
-        if name ~= nil and name ~= "" then  -- `name` is specified
+        if name ~= nil and name ~= '' then  -- `name` is specified
             if plugin_name == name then
-                if exec('!' .. self.packer_config.rm .. ' ' .. path) then
+                if exec('!' .. self.config.rm .. ' ' .. path) then
                     info('%s deleted', path)
                 else
                     err('failed to delete %s', plugin_name)
                 end
             end
         elseif (not plugins[plugin_name]) or plugins[plugin_name].cate ~= cate then
-            if exec('!' .. self.packer_config.rm .. ' ' .. path) then
+            if exec('!' .. self.config.rm .. ' ' .. path) then
                 info('%s deleted', path)
             else
                 err('failed to delete %s', plugin_name)
@@ -463,9 +478,9 @@ function packer:prepareOptPlugins()
         -- 'enable' opt plugins
         if settings.enable then
             local if_on
-            if type(settings.enable) == "boolean" then
+            if type(settings.enable) == 'boolean' then
                 if_on = settings.enable
-            elseif type(settings.enable == "function") then
+            elseif type(settings.enable == 'function') then
                 if_on = settings.enable(aloha)
             end
             if if_on then
@@ -477,9 +492,9 @@ function packer:prepareOptPlugins()
         -- cmd opt plugins
         if settings.cmd then
             local on_cmds = {}
-            if type(settings.cmd) == "table" then
+            if type(settings.cmd) == 'table' then
                 on_cmds = settings.cmd
-            elseif type(settings.cmd) == "string" then
+            elseif type(settings.cmd) == 'string' then
                 on_cmds = {settings.cmd}
             end
             for _,cmd in ipairs(on_cmds) do

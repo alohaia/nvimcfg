@@ -51,10 +51,10 @@
 ```lua
 -- Default config
 require 'aloha' {
-    packer_settings = {
+    packer = {
         plugins = require('aloha.plugins'),
         plugin_configs = require('aloha.plugin_configs'),
-        packer = {
+        config = {
             pack_root = vim.fn.stdpath('data') .. '/site/pack',
             pack_name = 'packer',
             git = {
@@ -65,6 +65,7 @@ require 'aloha' {
                 base_url = 'https://github.com',
             },
             rm = 'rm -rf',
+            strict_deps = true,
         },
     },
     transparency = true,
@@ -72,20 +73,21 @@ require 'aloha' {
 }
 ```
 
-- `packer_settings`
+- `packer`
     - [`plugins`](#plugins): plugin list with basic configuration, see `~/.config/nvim/lua/aloha/plugins.lua` for example
     - [`plugin_configs`](#plugin_configs): configuration for plugins, see `~/.config/nvim/lua/aloha/plugin_configs/init.lua` for example
-    - `packer`: settings for built-in packer
+    - `config`: settings for built-in packer
         - `pack_root`, `pack_name`: plugins will be installed under `pack_root/pack_name/{opt,start}`
         - `git`
             - `cmd`: base git command, can be replaced with `proxychains -q git` for example.
             - `clone_depth`: `--depth` option for `clone`
             - `shallow_submodules`: whether to add `--shallow-submodules` in `clone` command and add `--depth=1` in `submodule update` command
             - `base_url`: base URL of GitHub, you can replace this to use a mirror site
+        - `strict_deps`: when set to `true`, a plugin's config won't be executed if any dependency of this plugin is not successfully loaded
 - `transparency`: transparent background and related config
 - `mapleader`：`<Leader>` key
 
-> **Tips** You can set `packer_config.rm` to `gio trash` on GNOME. You can also set `packer_config.git` to `proxychains -q git` to use proxy, but using `~/.gitconfig` is better. For example:
+> **Tips** You can set `packer.rm` to `gio trash` on GNOME. You can also set `packer.git` to `proxychains -q git` to use proxy, but using `~/.gitconfig` is better. For example:
 > ```dosini
 > [http]
 > 	proxy = socks5://127.0.0.1:1089

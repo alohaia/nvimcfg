@@ -172,10 +172,10 @@
 ```lua
 -- 默认配置
 require 'aloha' {
-    packer_settings = {
+    packer = {
         plugins = require('aloha.plugins'),
         plugin_configs = require('aloha.plugin_configs'),
-        packer = {
+        config = {
             pack_root = vim.fn.stdpath('data') .. '/site/pack',
             pack_name = 'packer',
             git = {
@@ -186,6 +186,7 @@ require 'aloha' {
                 base_url = 'https://github.com',
             },
             rm = 'rm -rf',
+            strict_deps = true,
         },
     },
     transparency = true,
@@ -193,20 +194,21 @@ require 'aloha' {
 }
 ```
 
-- `packer_settings`
+- `packer`
     - [`plugins`](#plugins)：插件列表和一些简单配置，示例见 `~/.config/nvim/lua/aloha/plugins.lua`
     - [`plugin_configs`](#plugin_configs)：插件配置，示例见 `~/.config/nvim/lua/aloha/plugin_configs/init.lua`
-    - `packer`：内置 packer 的配置
+    - `config`：内置 packer 的配置
         - `pack_root`, `pack_name`：插件会被安装到 `pack_root/pack_name/{opt,start}` 目录下
         - `git`
             - `cmd`：基本的 git 命令，可以替换成 `proxychains -q git` 等
             - `clone_depth`：`clone` 的 `--depth` 选项
             - `shallow_submodules`：是否为 `clone` 添加 `--shallow-submodules` 选项以及为 `submodule update` 添加 `--depth=1` 选项
             - `base_url`：GitHub 的 base URL，如果想用镜像站（比如 fastgit），可以设置该选项
+        - `strict_deps`：设置为 `true` 时，当一个依赖加载失败时，不会加载该插件的配置
 - `transparency`：背景透明及相关配置
 - `mapleader`：`<Leader>` 键
 
-> **Tips** 在 GNOME 上，你可以将 `packer_config.rm` 设置为 `gio trash`。你可以将 `packer_config.git` 设置为 `proxychains -q git`，但是用 `~/.gitconfig` 更好，比如:
+> **Tips** 在 GNOME 上，你可以将 `packer.rm` 设置为 `gio trash`。你可以将 `packer.git` 设置为 `proxychains -q git`，但是用 `~/.gitconfig` 更好，比如:
 > ```dosini
 > [http]
 > 	proxy = socks5://127.0.0.1:1089
