@@ -38,7 +38,8 @@ return {
     {'n', '+', '<Cmd>tabnext<CR>'},
     {'x', '+', '<Cmd>tabnext<CR>'},
 
-    {'n', '<leader>bd', '<Cmd>bd<CR>'},
+    -- {'n', '<leader>bd', '<Cmd>let _bd_nr = bufnr() | b# | sp | exec "bd "._bd_nr<CR>'},
+    {'n', '<leader>bd', '<Cmd>bp|sp|bn|bd<CR>'},
     {'n', '<leader>ba', '<Cmd>bufdo bd<CR>'},
     {'n', '<leader>bo', '<Cmd>%bd|e#|bd#<CR>'},
 
@@ -61,10 +62,10 @@ return {
 
     {'n', '<M-k>', [[mz<Cmd>m-2<CR>`z]]},
     {'n', '<M-j>', [[mz<Cmd>m+<CR>`z]]},
-    -- {'x', '<M-j>', [[:'<,'>m'>+<CR>`<my`>mzgv`yo`z]]},
-    -- {'x', '<M-k>', [[:'<,'>m'<-2<CR>`>my`<mzgv`yo`z]]},
-    {'x', '<M-j>', [[:'<,'>m'>+<CR>gv]]},
-    {'x', '<M-k>', [[:'<,'>m'<-2<CR>gv]]},
+    -- {'v', '<M-j>', [[:'<,'>m'>+<CR>`<my`>mzgv`yo`z]]},
+    -- {'v', '<M-k>', [[:'<,'>m'<-2<CR>`>my`<mzgv`yo`z]]},
+    {'v', '<M-j>', [[:'<,'>m'>+<CR>gv]]},
+    {'v', '<M-k>', [[:'<,'>m'<-2<CR>gv]]},
     {'n', '<M-l>', [[5zh]]},
     {'n', '<M-h>', [[5zl]]},
     -- {'x', '<M-l>', [["zxl"z`<v`>P]]},
@@ -87,7 +88,7 @@ return {
     {'i', '<C-s>', "<c-g>u<Esc>[s1z=ea<c-g>u"},
 
     {'n', '<C-c>', [["+yW""yW]]},
-    {'x', '<C-c>', [["+ygv""y]]},
+    {'v', '<C-c>', [["+ygv""y]]},
 
     -- {'i', '<M-i>', '<C-r>=Ocr()<CR>'},
 

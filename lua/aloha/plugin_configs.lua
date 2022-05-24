@@ -341,21 +341,56 @@ configs['neovim/nvim-lspconfig'] = function()
     }
 end
 
+configs['L3MON4D3/LuaSnip'] = function()
+    require("luasnip.loaders.from_lua").lazy_load()
+
+    vim.api.nvim_set_keymap("i", "<C-n>", "<Plug>luasnip-next-choice", {})
+    vim.api.nvim_set_keymap("s", "<C-n>", "<Plug>luasnip-next-choice", {})
+    vim.api.nvim_set_keymap("i", "<C-p>", "<Plug>luasnip-previous-choice", {})
+    vim.api.nvim_set_keymap("s", "<C-p>", "<Plug>luasnip-previous-choice", {})
+end
+
 configs['hrsh7th/nvim-cmp'] = function()
+    local has_words_before = function()
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    end
+
+    local luasnip = require("luasnip")
     local cmp = require("cmp")
     cmp.setup{
         snippet = {
             -- REQUIRED - you must specify a snippet engine
             expand = function(args)
                 -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-                -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-                vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+                require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+                -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
                 -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
             end,
         },
         mapping = {
-            ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-            ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+            ["<Tab>"] = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    cmp.select_next_item()
+                elseif luasnip.expand_or_jumpable() then
+                    luasnip.expand_or_jump()
+                elseif has_words_before() then
+                    cmp.complete()
+                else
+                    fallback()
+                end
+            end, { "i", "s" }),
+            ["<S-Tab>"] = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    cmp.select_prev_item()
+                elseif luasnip.jumpable(-1) then
+                    luasnip.jump(-1)
+                else
+                    fallback()
+                end
+            end, { "i", "s" }),
+            -- ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+            -- ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
             ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
             ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
             ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -371,13 +406,13 @@ configs['hrsh7th/nvim-cmp'] = function()
                 select = true,
             })
         },
-        sources = cmp.config.sources({
+        sources = cmp.config.sources({ -- group 1
             { name = 'nvim_lsp' },
             -- { name = 'vsnip' }, -- For vsnip users.
-            -- { name = 'luasnip' }, -- For luasnip users.
-            { name = 'ultisnips' }, -- For ultisnips users.
+            { name = 'luasnip' }, -- For luasnip users.
+            -- { name = 'ultisnips' }, -- For ultisnips users.
             -- { name = 'snippy' }, -- For snippy users.
-        }, {
+        }, {                           -- group 2
             { name = 'buffer' },
             { name = 'path', option = {
                 trailing_slash = true,
@@ -749,6 +784,19 @@ configs['svermeulen/vim-subversive'] = function()
     vim.api.nvim_set_keymap('n', '<leader><leader>ss', '<plug>(SubversiveSubvertWordRange)',           { noremap = false })
 end
 
+configs['svermeulen/vim-yoink'] = function ()
+    vim.api.nvim_set_keymap('n', 'p', '<plug>(YoinkPaste_p)', {noremap=false})
+    vim.api.nvim_set_keymap('n', 'P', '<plug>(YoinkPaste_P)', {noremap=false})
+    vim.api.nvim_set_keymap('n', 'gp', '<plug>(YoinkPaste_gp)', {noremap=false})
+    vim.api.nvim_set_keymap('n', 'gP', '<plug>(YoinkPaste_gP)', {noremap=false})
+    vim.api.nvim_set_keymap('n', '<M-n>', '<plug>(YoinkPostPasteSwapBack)', {noremap=false})
+    vim.api.nvim_set_keymap('n', '<M-p>', '<plug>(YoinkPostPasteSwapForward)', {noremap=false})
+    vim.api.nvim_set_keymap('n', '[y', '<plug>(YoinkRotateBack)', {noremap=false})
+    vim.api.nvim_set_keymap('n', ']y', '<plug>(YoinkRotateForward)', {noremap=false})
+    vim.api.nvim_set_keymap('n', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
+    vim.api.nvim_set_keymap('x', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
+end
+
 configs['mg979/vim-visual-multi'] = function()
     vim.g.VM_leader = { default = ',', visual = ',', buffer = ',' }
     vim.g.VM_default_mappings = 1
@@ -789,18 +837,48 @@ end
 
 configs['jiangmiao/auto-pairs'] = function()
     -- vim.g.AutoPairsFlyMode            = 1
-    vim.g.AutoPairsShortcutToggle     = '<M-o>'
+    vim.g.AutoPairsShortcutToggle     = ''
     vim.g.AutoPairsShortcutFastWrap   = '<M-w>'
-    -- vim.g.AutoPairsShortcutBackInsert = '<M-b>'
-    -- vim.g.AutoPairsShortcutJump       = '<M-n>'
-    -- vim.g.AutoPairsMapBs              = 1
+    vim.g.AutoPairsShortcutBackInsert = '<M-b>'
+    vim.g.AutoPairsShortcutJump       = ''
     vim.g.AutoPairsMapCh              = 0
-    -- vim.g.AutoPairsMapCR              = 1
     vim.g.AutoPairsCenterLine         = 0
-    -- vim.g.AutoPairsMapSpace         = 1
     vim.g.AutoPairsMultilineClose     = 1
 
-    vim.cmd[[au FileType html let b:AutoPairs = extend(g:AutoPairs, {'<': '>'})]]
+    vim.g.AutoPairs = {
+        ['(']   = ')',
+        ['[']   = ']',
+        ['{']   = '}',
+        ["'"]   = "'",
+        ['"']   = '"',
+        ['`']   = '`'
+    }
+    vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'html',
+        callback = function ()
+            vim.b.AutoPairs = vim.tbl_extend('force', vim.g.AutoPairs, {
+                ['<'] = '>'
+            })
+        end
+    })
+    vim.api.nvim_create_autocmd('FileType', {
+        pattern = {'markdown', 'rmd'},
+        callback = function ()
+            vim.b.AutoPairs = vim.tbl_extend('force', vim.g.AutoPairs, {
+                ['``'] = '``',
+                ['```'] = '```',
+            })
+        end
+    })
+    vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'vim',
+        callback = function ()
+            vim.b.AutoPairs = vim.tbl_extend('force', vim.g.AutoPairs, {
+                ['"'] = '',
+                ['"""'] = ''
+            })
+        end
+    })
 end
 
 configs['olimorris/onedarkpro.nvim'] = function()

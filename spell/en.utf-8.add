@@ -650,3 +650,7 @@ config
 vimscript
 lua
 neovim
+fcitx
+configs
+#nterventional
+CDFI

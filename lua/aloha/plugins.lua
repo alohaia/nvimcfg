@@ -16,20 +16,23 @@ return {
     },
     ['hrsh7th/nvim-cmp'] = {
         dependency = {
-            'hrsh7th/cmp-nvim-lsp',
-            'hrsh7th/cmp-buffer',
-            'hrsh7th/cmp-path',
-            'quangnguyen30192/cmp-nvim-ultisnips',
+            'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
+            -- 'quangnguyen30192/cmp-nvim-ultisnips', 'SirVer/ultisnips'
+            'saadparwaiz1/cmp_luasnip',
             'onsails/lspkind-nvim'
         }
     },
     ['hrsh7th/cmp-nvim-lsp']          = {opt=true},
     ['hrsh7th/cmp-buffer']            = {opt=true},
     ['hrsh7th/cmp-path']              = {opt=true},
-    ['quangnguyen30192/cmp-nvim-ultisnips'] = {opt=true},
     ['glepnir/lspsaga.nvim']          = {disable = true},
     ['onsails/lspkind-nvim']          = {opt=true},
-    ['SirVer/ultisnips']              = {},
+
+    ['quangnguyen30192/cmp-nvim-ultisnips'] = {disable=true, opt=true},
+    ['SirVer/ultisnips']              = {disable=true},
+
+    ['L3MON4D3/LuaSnip']              = {},
+    ['saadparwaiz1/cmp_luasnip']      = {opt=true},
 
     -- ui
     ['mhinz/vim-startify'] = {},
@@ -99,17 +102,25 @@ return {
     ['dkarter/bullets.vim'] = {},   -- use `vim.g.bullets_enabled_file_types`
     ['dhruvasagar/vim-table-mode'] = {ft='rmd,markdown,text'},
     ['svermeulen/vim-subversive'] = {},
+    ['svermeulen/vim-yoink'] = {},
     ['mg979/vim-visual-multi'] = {},
     ['jiangmiao/auto-pairs'] = {},
     ['mattn/emmet-vim'] = {};
     ['godlygeek/tabular'] = {
-        config = [[:cnorea Tab Tabularize]]
+        config = [[:cnorea Tbu Tabularize]]
     },
     ['jalvesaq/Nvim-R'] = {disable = true, ft = 'r', branch = 'master'},
     ['skywind3000/asyncrun.vim'] = {disable = true},
     ['skywind3000/asyncrun.extra'] = {disable = true},
     ['skywind3000/asynctasks.vim'] = {disable = true},
+    ['h-hg/fcitx.nvim'] = {
+        ft = 'rmd,markdown,text',
+        config = function ()
+            require 'fcitx' {}
+        end
+    },
     ['lilydjwg/fcitx.vim'] = {
+        disable=true,
         ft = 'rmd,markdown,text',
         config = [[vim.g.fcitx5_remote = '/usr/bin/fcitx5-remote']]
     },

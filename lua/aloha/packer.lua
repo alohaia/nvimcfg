@@ -354,15 +354,16 @@ function packer:add(name, _plugin_name)
             vim.cmd('packadd ' .. name)
             self:loadConfig(plugin_name)
             added_plugins[plugin_name] = true
-            return true
         else
-            warn(plugin_name .. ' not installed')
+            warn(plugin_name .. ' not installed or it\'s not an opt plugin')
             return false
         end
     elseif not plugin_name then
         warn('no plugin named %d' .. name)
         return false
     end
+
+    return true
 end
 
 local function load_dependencies(name)

@@ -115,6 +115,8 @@
 | `i`  | `<C-a>`              | `<Cmd>ToggleCheckbox<CR>`                      | 见 `:h bullets.txt`                               |
 | `n`  | `<leader>sn`         | `<Cmd>RenumberList<CR>`                        | *同上*                                            |
 | `x`  | `<leader>sn`         | `<Cmd>RenumberSelection<CR>`                   | *同上*                                            |
+| 'i'  | `<M-w>`              | `AutoPairsShortcutFastWrap`                    | 见 `:h g:AutoPairsShortcutFastWrap`               |
+| 'i'  | `<M-b>`              | `AutoPairsShortcutBackInsert`                  | 见 `:h g:AutoPairsShortcutBackInsert`             |
 | `n`  | `gD`                 | `<cmd> lua vim.lsp.buf.declaration()`          | 跳转到声明                                        |
 | `n`  | `gd`                 | `<cmd> lua vim.lsp.buf.definition()`           | 跳转到定义                                        |
 | `n`  | `<leader>?`          | `<cmd> lua vim.lsp.buf.hover()`                | 在浮动窗口中查看文档                              |

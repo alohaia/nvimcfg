@@ -45,7 +45,7 @@ return {
     number         = true,
     relativenumber = true,
     cursorline     = _G.aloha.configs.transparency == nil and false or (not _G.aloha.configs.transparency),
-    colorcolumn    = '0',
+    colorcolumn    = '80',
     signcolumn     = 'yes',
     -- backup swap undo
     backup         = true,
