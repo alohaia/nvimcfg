@@ -74,6 +74,6 @@ return {
     -- set indentexpr = Get{Vim|Lua|Cpp}Indent -- Xcindent Xsmartindent !lisp
     spelllang    = 'en_us,cjk',
     spellfile    = vim.fn.expand('~/.config/nvim/spell/en.utf-8.add'),
-    spelloptions = 'camel',
+    -- spelloptions = 'camel',
     inccommand   = 'split',
 }

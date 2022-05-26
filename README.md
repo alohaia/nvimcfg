@@ -42,7 +42,7 @@
     - `PackClean`: uninstall disabled plugins(`disable == true`)
     - `PackClean <plugin>`: same as `PackUninstall`
 - `PackSync`: equivalent to `PackClean` + `PackUpdate`
-- `PackAdd <plugin>`: load an opt plugin and its confgs manually
+- `PackAdd <plugin>`: load an opt plugin and its confgs manually, use this command instead of `packadd` as far as possible
 
 ## Configuration
 

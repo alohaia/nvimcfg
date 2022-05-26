@@ -1,4 +1,6 @@
 return function(_configs)
+    _G.aloha = { utils = require('aloha.utils') }
+
     local configs = vim.tbl_deep_extend('keep', _configs, {
         transparency = true,
         mapleader = ' ',
@@ -21,42 +23,35 @@ return function(_configs)
         }
     })
 
-    _G.aloha = { configs = configs }
+    aloha.configs = configs
 
-    -- local settings = {}
-    -- if vim.fn.glob('./settings/init.lua') or vim.fn.glob('./settings.lua') then
-    --     settings = require('aloha.settings')
-    -- end
     local settings = require('aloha.settings')
 
-    _G.aloha = {
-        map = {
-            list = settings.mappings or {},
-            leader = configs.mapleader or ' ',
-            default_args = setmetatable({
-                    silent = true,
-                    noremap = true
-                }, {
-                    __add = function(tbl_o, tbl_n)
-                        local new_table = vim.deepcopy(tbl_o)
-                        if tbl_n ~= nil then
-                            vim.validate{
-                                tbl_n = {tbl_n, 't'}
-                            }
-                            for k,v in pairs(tbl_n) do
-                                new_table[k] = v
-                            end
+    aloha.map = {
+        list = settings.mappings or {},
+        leader = configs.mapleader or ' ',
+        default_args = setmetatable({
+                silent = true,
+                noremap = true
+            }, {
+                __add = function(tbl_o, tbl_n)
+                    local new_table = vim.deepcopy(tbl_o)
+                    if tbl_n ~= nil then
+                        vim.validate{
+                            tbl_n = {tbl_n, 't'}
+                        }
+                        for k,v in pairs(tbl_n) do
+                            new_table[k] = v
                         end
-                        return new_table
                     end
-                }
-            ),
-        },
-        options = settings.options or {},
-        commands = settings.commands or {},
-        autocmds = settings.autocmds or {},
-        configs = configs
+                    return new_table
+                end
+            }
+        ),
     }
+    aloha.options = settings.options or {}
+    aloha.commands = settings.commands or {}
+    aloha.autocmds = settings.autocmds or {}
 
     -- set up mappings
     vim.g.mapleader = aloha.map.leader

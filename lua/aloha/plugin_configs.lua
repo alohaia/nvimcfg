@@ -211,7 +211,7 @@ configs['lewis6991/gitsigns.nvim'] = function()
             changedelete = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
         },
         numhl              = true,
-        current_line_blame = true
+        current_line_blame = false
     }
 end
 
@@ -351,46 +351,48 @@ configs['L3MON4D3/LuaSnip'] = function()
 end
 
 configs['hrsh7th/nvim-cmp'] = function()
-    local has_words_before = function()
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-    end
-
-    local luasnip = require("luasnip")
+    -- local has_words_before = function()
+    --     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    --     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    -- end
+    --
+    -- local luasnip = require("luasnip")
+    -- local cmp_autopairs = require('nvim-autopairs.completion.cmp')
     local cmp = require("cmp")
     cmp.setup{
         snippet = {
             -- REQUIRED - you must specify a snippet engine
             expand = function(args)
                 -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-                require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-                -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+                -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+                vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
                 -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
             end,
         },
         mapping = {
-            ["<Tab>"] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_next_item()
-                elseif luasnip.expand_or_jumpable() then
-                    luasnip.expand_or_jump()
-                elseif has_words_before() then
-                    cmp.complete()
-                else
-                    fallback()
-                end
-            end, { "i", "s" }),
-            ["<S-Tab>"] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_prev_item()
-                elseif luasnip.jumpable(-1) then
-                    luasnip.jump(-1)
-                else
-                    fallback()
-                end
-            end, { "i", "s" }),
-            -- ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-            -- ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+            -- -- for LuaSnip
+            -- ["<Tab>"] = cmp.mapping(function(fallback)
+            --     if cmp.visible() then
+            --         cmp.select_next_item()
+            --     elseif luasnip.expand_or_jumpable() then
+            --         luasnip.expand_or_jump()
+            --     elseif has_words_before() then
+            --         cmp.complete()
+            --     else
+            --         fallback()
+            --     end
+            -- end, { "i", "s" }),
+            -- ["<S-Tab>"] = cmp.mapping(function(fallback)
+            --     if cmp.visible() then
+            --         cmp.select_prev_item()
+            --     elseif luasnip.jumpable(-1) then
+            --         luasnip.jump(-1)
+            --     else
+            --         fallback()
+            --     end
+            -- end, { "i", "s" }),
+            ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+            ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
             ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
             ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
             ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -409,8 +411,8 @@ configs['hrsh7th/nvim-cmp'] = function()
         sources = cmp.config.sources({ -- group 1
             { name = 'nvim_lsp' },
             -- { name = 'vsnip' }, -- For vsnip users.
-            { name = 'luasnip' }, -- For luasnip users.
-            -- { name = 'ultisnips' }, -- For ultisnips users.
+            -- { name = 'luasnip' }, -- For luasnip users.
+            { name = 'ultisnips' }, -- For ultisnips users.
             -- { name = 'snippy' }, -- For snippy users.
         }, {                           -- group 2
             { name = 'buffer' },
@@ -441,6 +443,9 @@ configs['hrsh7th/nvim-cmp'] = function()
     }
     -- For markdown filetype
     -- au FileType markdown lua cmp.setup.buffer({})
+    -- For nvim-autopairs
+    -- cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex = '' } }))
+    -- cmp_autopairs.lisp[#cmp_autopairs.lisp+1] = "racket"
 end
 
 configs['nvim-telescope/telescope.nvim'] = function()
@@ -879,6 +884,63 @@ configs['jiangmiao/auto-pairs'] = function()
             })
         end
     })
+end
+
+configs['windwp/nvim-autopairs'] = function()
+    local npairs = require("nvim-autopairs")
+    local Rule = require('nvim-autopairs.rule')
+    -- local conds = require('nvim-autopairs.conds')
+    npairs.setup{
+        disable_filetype = { "TelescopePrompt" },
+        disable_in_macro = false,                 -- disable when recording or executing a macro
+        disable_in_visualblock = true,            -- disable when insert after visual block mode
+        ignored_next_char = [=[[%w%%%'%[%"%.]]=],
+        enable_moveright = true,
+        enable_afterquote = true,                 -- add bracket pairs after quote
+        enable_check_bracket_line = true,         -- - check bracket in same line
+        enable_bracket_in_quote = true,
+        check_ts = true,
+        map_cr = true,
+        map_bs = true,                            -- map the <BS> key
+        map_c_h = false,                          -- Map the <C-h> key to delete a pair
+        map_c_w = false,                          -- map <c-w> to delete a pair if possible
+        fast_wrap = {
+            map = '<M-w>',
+            chars = { '{', '[', '(', '"', "'" },
+            pattern = [=[[%'%"%)%>%]%)%}%,]]=],
+            end_key = '$',
+            keys = 'qwertyuiopzxcvbnmasdfghjkl',
+            check_comma = true,
+            highlight = 'Search',
+            highlight_grey='Comment'
+        },
+    }
+    Rule('“', '”', {'markdown', 'rmd', 'text'})
+    Rule('‘', '’', {'markdown', 'rmd', 'text'})
+    Rule('``', '``', {'markdown', 'rmd', 'text'})
+    Rule('h', 'a', {'markdown', 'rmd', 'text'})
+    -- Rule('%s```.*', '```', {'markdown', 'rmd'})
+
+        :use_regex(true)
+        -- :end_wise(conds.done())
+        -- :only_cr(conds.done())
+    -- Treesitter rules
+    -- local ts_conds = require('nvim-autopairs.ts-conds')
+    -- npairs.setup({
+    --     check_ts = true,
+    --     ts_config = {
+    --         lua = {'string'},-- it will not add a pair on that treesitter node
+    --         javascript = {'template_string'},
+    --         java = false,-- don't check treesitter on java
+    --     }
+    -- })
+    -- -- press % => %% only while inside a comment or string
+    -- npairs.add_rules({
+    --   Rule("%", "%", "lua")
+    --     :with_pair(ts_conds.is_ts_node({'string','comment'})),
+    --   Rule("$", "$", "lua")
+    --     :with_pair(ts_conds.is_not_ts_node({'function'}))
+    -- })
 end
 
 configs['olimorris/onedarkpro.nvim'] = function()

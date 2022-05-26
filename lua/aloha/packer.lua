@@ -1,18 +1,14 @@
 local packer = {}
 
+local utils = aloha.utils
+
 local api = vim.api
 local fn = vim.fn
 local join = table.concat
 local split = vim.split
-local info = function (s, ...)
-    vim.notify(string.format(s, ...), vim.log.levels.INFO)
-end
-local warn = function (s, ...)
-    vim.notify(string.format(s, ...), vim.log.levels.WARN)
-end
-local err = function (s, ...)
-    vim.notify(string.format(s, ...), vim.log.levels.ERROR)
-end
+local info = utils.info
+local warn = utils.warn
+local err = utils.err
 
 local base_path = '' -- initialized in packer:init()
 local added_plugins = {} -- opt plugins that have been added and whose configs have been loaded
@@ -108,6 +104,19 @@ local function fullname(name)
     end
     return nil
 end
+
+function packer.ensure(name)
+    name = fullname(name)
+    if name == nil then
+        return 1        -- not found in config
+    elseif not is_installed(name) then
+        return 2        -- not installed
+    elseif is_opt(packer.plugins[name]) and not added_plugins[name] then
+        return 3        -- opt not added
+    end
+    return 0
+end
+
 
 function packer:init(configs)
     --{{1 initialization
@@ -368,20 +377,27 @@ end
 
 local function load_dependencies(name)
     local is_success = true
-    local deps = packer.plugins[name].dependency
-    if type(deps) == 'string' then
-        if not packer:add(split(deps, '/')[2], deps) then
-            warn('failed to load dependency %s for %s', deps, name)
-            is_success = false
-        end
-    elseif type(deps) == 'table' then
-        for _,dep in ipairs(deps) do
-            if not packer:add(split(dep, '/')[2], dep) then
-                warn('failed to load dependency %s for %s', dep, name)
+
+    if not packer.plugins[name] then
+        warn('cant not find %s in configs', name)
+        is_success = false
+    else
+        local deps = packer.plugins[name].dependency
+        if type(deps) == 'string' then
+            if not packer:add(split(deps, '/')[2], deps) then
+                warn('failed to load dependency %s for %s', deps, name)
                 is_success = false
+            end
+        elseif type(deps) == 'table' then
+            for _,dep in ipairs(deps) do
+                if not packer:add(split(dep, '/')[2], dep) then
+                    warn('failed to load dependency %s for %s', dep, name)
+                    is_success = false
+                end
             end
         end
     end
+
     return is_success
 end
 

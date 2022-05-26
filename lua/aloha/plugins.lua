@@ -17,22 +17,22 @@ return {
     ['hrsh7th/nvim-cmp'] = {
         dependency = {
             'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
-            -- 'quangnguyen30192/cmp-nvim-ultisnips', 'SirVer/ultisnips'
-            'saadparwaiz1/cmp_luasnip',
-            'onsails/lspkind-nvim'
+            'quangnguyen30192/cmp-nvim-ultisnips',
+            -- 'saadparwaiz1/cmp_luasnip',
+            'onsails/lspkind-nvim',
         }
     },
     ['hrsh7th/cmp-nvim-lsp']          = {opt=true},
     ['hrsh7th/cmp-buffer']            = {opt=true},
     ['hrsh7th/cmp-path']              = {opt=true},
-    ['glepnir/lspsaga.nvim']          = {disable = true},
+    -- ['glepnir/lspsaga.nvim']          = {disable = true},
     ['onsails/lspkind-nvim']          = {opt=true},
 
-    ['quangnguyen30192/cmp-nvim-ultisnips'] = {disable=true, opt=true},
-    ['SirVer/ultisnips']              = {disable=true},
+    ['SirVer/ultisnips'] = {},
+    ['quangnguyen30192/cmp-nvim-ultisnips'] = {opt=true},
 
-    ['L3MON4D3/LuaSnip']              = {},
-    ['saadparwaiz1/cmp_luasnip']      = {opt=true},
+    -- ['L3MON4D3/LuaSnip'] = {},
+    -- ['saadparwaiz1/cmp_luasnip'] = {opt=true},
 
     -- ui
     ['mhinz/vim-startify'] = {},
@@ -105,7 +105,13 @@ return {
     ['svermeulen/vim-yoink'] = {},
     ['mg979/vim-visual-multi'] = {},
     ['jiangmiao/auto-pairs'] = {},
-    ['mattn/emmet-vim'] = {};
+    ['windwp/nvim-autopairs'] = {disable=true},
+    ['RRethy/nvim-treesitter-endwise'] = {
+        config = function ()
+            require('nvim-treesitter.configs').setup { endwise = { enable = true } }
+        end
+    },
+    ['mattn/emmet-vim'] = {},
     ['godlygeek/tabular'] = {
         config = [[:cnorea Tbu Tabularize]]
     },
@@ -113,7 +119,7 @@ return {
     ['skywind3000/asyncrun.vim'] = {disable = true},
     ['skywind3000/asyncrun.extra'] = {disable = true},
     ['skywind3000/asynctasks.vim'] = {disable = true},
-    ['h-hg/fcitx.nvim'] = {
+    ['alohaia/fcitx.nvim'] = {
         ft = 'rmd,markdown,text',
         config = function ()
             require 'fcitx' {}

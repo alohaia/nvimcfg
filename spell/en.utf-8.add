@@ -654,3 +654,8 @@ fcitx
 configs
 #nterventional
 CDFI
+mOsm
+commandline
+filetype
+javascript
+zsh

@@ -42,7 +42,7 @@
     - `PackClean`：卸载禁用的插件（`disable == true`）
     - `PackClean <plugin>`：与 `PackUninstall <plugin>` 相同
 - `PackSync`：相当于 `PackClean` + `PackUpdate`
-- `PackAdd <plugin>`：手动加载一个 `opt` 插件及其配置
+- `PackAdd <plugin>`：手动加载一个 `opt` 插件及其配置，尽量使用该命令替代 `packadd`
 
 其他命令：
 

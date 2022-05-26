@@ -39,7 +39,8 @@ return {
     {'x', '+', '<Cmd>tabnext<CR>'},
 
     -- {'n', '<leader>bd', '<Cmd>let _bd_nr = bufnr() | b# | sp | exec "bd "._bd_nr<CR>'},
-    {'n', '<leader>bd', '<Cmd>bp|sp|bn|bd<CR>'},
+    -- {'n', '<leader>bd', '<Cmd>bp|sp|bn|bd<CR>'},
+    {'n', '<leader>bd', '<Cmd>lua aloha.utils.bufdelete()<CR>'},
     {'n', '<leader>ba', '<Cmd>bufdo bd<CR>'},
     {'n', '<leader>bo', '<Cmd>%bd|e#|bd#<CR>'},
 
