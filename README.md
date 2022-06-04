@@ -27,7 +27,7 @@
     lua require('aloha.prepare')
     ```
 
-## Useage
+## Usage
 
 ### Commands
 
@@ -42,7 +42,7 @@
     - `PackClean`: uninstall disabled plugins(`disable == true`)
     - `PackClean <plugin>`: same as `PackUninstall`
 - `PackSync`: equivalent to `PackClean` + `PackUpdate`
-- `PackAdd <plugin>`: load an opt plugin and its confgs manually, use this command instead of `packadd` as far as possible
+- `PackAdd <plugin>`: load an opt plugin and its configs manually, use this command instead of `packadd` as far as possible
 
 ## Configuration
 
@@ -142,7 +142,7 @@ require 'aloha' {
 
 A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexowiki`, and the value is another dictionary of basic settings:
 
-- `opt`(`bool`): Whether the plugin is installed as an opt pack. Plugins with `ft`, `cmd` or `enable` options are alse opt plugins.
+- `opt`(`bool`): Whether the plugin is installed as an opt pack. Plugins with `ft`, `cmd` or `enable` options are also opt plugins.
 - `ft`(`string`, `list`): For which filetype(s) should the plugin be loaded, such as `'markdown,text'` and `{'markdown', 'text'}`.
 - `cmd`(`string`, `list`): On which vim command(s) should the plugin be loaded.
 - `map`(`table`): On which mapping(s) should the plugin be loaded.
