@@ -153,8 +153,6 @@ configs['akinsho/bufferline.nvim'] = function()
 end
 
 configs['kyazdani42/nvim-tree.lua'] = function()
-    vim.g.nvim_tree_add_trailing = 0
-    vim.g.nvim_tree_group_empty = 1
     require("nvim-tree").setup {
         auto_reload_on_write = true,
         disable_netrw = true,
@@ -164,6 +162,8 @@ configs['kyazdani42/nvim-tree.lua'] = function()
             hide_root_folder = false,
         },
         renderer = {
+            add_trailing = 0,
+            group_empty = 1,
             indent_markers = {
                 enable = true,
                 icons = {
