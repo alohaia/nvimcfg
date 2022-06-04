@@ -162,8 +162,8 @@ configs['kyazdani42/nvim-tree.lua'] = function()
             hide_root_folder = false,
         },
         renderer = {
-            add_trailing = 0,
-            group_empty = 1,
+            add_trailing = false,
+            group_empty = true,
             indent_markers = {
                 enable = true,
                 icons = {
