@@ -46,6 +46,9 @@ configs['norcalli/nvim-colorizer.lua'] = function()
 end
 
 configs['akinsho/bufferline.nvim'] = function()
+    local fg_colors = {
+        Error = vim.fn.synIDattr(vim.fn.hlID("Error"), "fg", "gui"),
+    }
     require('bufferline').setup {
         options = {
             numbers = function(opts)
@@ -64,7 +67,7 @@ configs['akinsho/bufferline.nvim'] = function()
             show_tab_indicators = true,
             indicator_icon = "", -- ▎»
             buffer_close_icon = '', -- 
-            modified_icon = '✥',
+            modified_icon = '✥ ',
             close_icon = '',
             left_trunc_marker = '',
             right_trunc_marker = '',
@@ -83,8 +86,10 @@ configs['akinsho/bufferline.nvim'] = function()
             tab_size = 18,
             diagnostics = "nvim_lsp", -- false | "nvim_lsp",
             -- diagnostics_indicator = function(count, level, diagnostics_dict, context)
-            diagnostics_indicator = function(count)
-                return "("..count..")"
+            diagnostics_indicator = function(count, level, _, context)
+                local sym = level == "error" and " "
+                    or (level == "warning" and " " or (level == "hint" and "" or ""))
+                return sym.."("..count..")"
             end,
             --- NOTE: this will be called a lot so don't do any heavy processing here
             -- custom_filter = function(buf_number)
@@ -130,19 +135,19 @@ configs['akinsho/bufferline.nvim'] = function()
                 local hint    = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.HINT  }))
 
                 if error ~= 0 then
-                    table.insert(result, {text = "  " .. error, guifg = "#EC5241"})
+                    table.insert(result, {text = "  " .. error, guifg = "#E06C75"})
                 end
 
                 if warning ~= 0 then
-                    table.insert(result, {text = "  " .. warning, guifg = "#EFB839"})
+                    table.insert(result, {text = "  " .. warning, guifg = "#E5C07B"})
                 end
 
                 if hint ~= 0 then
-                    table.insert(result, {text = "  " .. hint, guifg = "#A3BA5E"})
+                    table.insert(result, {text = "  " .. hint, guifg = "#56B6C2"})
                 end
 
                 if info ~= 0 then
-                    table.insert(result, {text = "  " .. info, guifg = "#7EA9A7"})
+                    table.insert(result, {text = "  " .. info, guifg = "#61AFEF"})
                 end
                 return result
               end,
