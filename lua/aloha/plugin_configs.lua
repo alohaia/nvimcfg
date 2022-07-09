@@ -742,7 +742,7 @@ configs['alohaia/hugowiki.nvim'] = function()
         'lua',  'c', 'cpp', 'r', 'javascript', 'python',
         'sh', 'bash', 'zsh', 'yaml', 'tex'
     }
-    vim.g.hugowiki_wrap = 1
+    vim.g.hugowiki_wrap = 0
     vim.g.hugowiki_auto_save = 0
     vim.g.hugowiki_auto_update_lastmod = 1
     vim.g.hugowiki_lastmod_under_date = 1
@@ -952,6 +952,8 @@ configs['olimorris/onedarkpro.nvim'] = function()
     vim.opt.background = "dark"
     local transparentbg = _G.aloha.configs.transparency == nil and true or _G.aloha.configs.transparency
     require("onedarkpro").setup({
+        dark_theme = "onedark_vivid",
+        light_theme = "onelight_vivid",
         hlgroups = {
             -- FoldColumn = { link = "Normal" }
         },
@@ -965,7 +967,7 @@ configs['olimorris/onedarkpro.nvim'] = function()
             transparency = transparentbg,
             window_unfocussed_color = false,
             undercurl = true,
-            cursorline = false,
+            cursorline = true,
         }
     })
     require("onedarkpro").load()
