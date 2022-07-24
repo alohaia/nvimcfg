@@ -15,6 +15,12 @@
 - Written in Lua
 - Snippets for [UltiSnips](https://github.com/SirVer/ultisnips)
 
+## Requirements
+
+- nvim ≥ 0.7
+- Other softwares: [ripgrep](https://github.com/BurntSushi/ripgrep), git
+- [language servers](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md) you need, you can add related configs [here](https://github.com/alohaia/nvimcfg/blob/b814f4427880159fb9c2cd54cc82fe358798bd57/lua/aloha/plugin_configs.lua#L223).
+
 ## Installation
 
 1. Move `~/.config/nvim` to another place
