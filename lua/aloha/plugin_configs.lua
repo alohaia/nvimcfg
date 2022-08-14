@@ -166,15 +166,18 @@ configs['kyazdani42/nvim-tree.lua'] = function()
         view = {
             hide_root_folder = false,
         },
+        filters = {
+            dotfiles = true,
+        },
         renderer = {
             add_trailing = false,
             group_empty = true,
             indent_markers = {
                 enable = true,
                 icons = {
-                    corner = "└ ",
-                    edge = "│ ",
-                    none = "  ",
+                    corner = "└",
+                    edge = "│",
+                    none = " ",
                 },
             },
         },
