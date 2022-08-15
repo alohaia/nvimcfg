@@ -120,10 +120,10 @@ return {
     ['skywind3000/asyncrun.extra'] = {disable = true},
     ['skywind3000/asynctasks.vim'] = {disable = true},
     ['alohaia/fcitx.nvim'] = {
-        ft = 'rmd,markdown,text',
-        config = function ()
-            require 'fcitx' {}
-        end
+        -- ft = 'rmd,markdown,text',
+        -- config = function ()
+        --     require 'fcitx' {}
+        -- end
     },
     ['lilydjwg/fcitx.vim'] = {
         disable=true,

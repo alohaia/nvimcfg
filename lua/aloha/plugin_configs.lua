@@ -359,13 +359,6 @@ configs['L3MON4D3/LuaSnip'] = function()
 end
 
 configs['hrsh7th/nvim-cmp'] = function()
-    -- local has_words_before = function()
-    --     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-    --     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-    -- end
-    --
-    -- local luasnip = require("luasnip")
-    -- local cmp_autopairs = require('nvim-autopairs.completion.cmp')
     local cmp = require("cmp")
     cmp.setup{
         snippet = {
@@ -377,30 +370,47 @@ configs['hrsh7th/nvim-cmp'] = function()
                 -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
             end,
         },
+        sources = cmp.config.sources({ -- group 1
+            { name = 'nvim_lsp' },
+            -- { name = 'vsnip' }, -- For vsnip users.
+            -- { name = 'luasnip' }, -- For luasnip users.
+            { name = 'ultisnips' }, -- For ultisnips users.
+            -- { name = 'snippy' }, -- For snippy users.
+        }, {                           -- group 2
+            { name = 'buffer' },
+            { name = 'path', option = {
+                trailing_slash = true,
+                -- get_cwd = fucntion
+            }},
+        }),
         mapping = {
-            -- -- for LuaSnip
-            -- ["<Tab>"] = cmp.mapping(function(fallback)
-            --     if cmp.visible() then
-            --         cmp.select_next_item()
-            --     elseif luasnip.expand_or_jumpable() then
-            --         luasnip.expand_or_jump()
-            --     elseif has_words_before() then
-            --         cmp.complete()
-            --     else
-            --         fallback()
-            --     end
-            -- end, { "i", "s" }),
-            -- ["<S-Tab>"] = cmp.mapping(function(fallback)
-            --     if cmp.visible() then
-            --         cmp.select_prev_item()
-            --     elseif luasnip.jumpable(-1) then
-            --         luasnip.jump(-1)
-            --     else
-            --         fallback()
-            --     end
-            -- end, { "i", "s" }),
-            ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-            ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+            ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+            ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+            ["<Tab>"] = cmp.mapping({
+                i = function(fallback)
+                    if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
+                        vim.fn["UltiSnips#CursorMoved"]()
+                        vim.fn["UltiSnips#ExpandSnippet"]()
+                    elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
+                        vim.fn["UltiSnips#JumpForwards"]()
+                    elseif cmp.visible() then
+                        cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                    else
+                        fallback()
+                    end
+                end,
+            }),
+            ["<S-Tab>"] = cmp.mapping({
+                i = function(fallback)
+                    if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
+                        vim.fn["UltiSnips#JumpBackwards"]()
+                    elseif cmp.visible() then
+                        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+                    else
+                        fallback()
+                    end
+                end,
+            }),
             ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
             ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
             ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -416,19 +426,6 @@ configs['hrsh7th/nvim-cmp'] = function()
                 select = true,
             })
         },
-        sources = cmp.config.sources({ -- group 1
-            { name = 'nvim_lsp' },
-            -- { name = 'vsnip' }, -- For vsnip users.
-            -- { name = 'luasnip' }, -- For luasnip users.
-            { name = 'ultisnips' }, -- For ultisnips users.
-            -- { name = 'snippy' }, -- For snippy users.
-        }, {                           -- group 2
-            { name = 'buffer' },
-            { name = 'path', option = {
-                trailing_slash = true,
-                -- get_cwd = fucntion
-            }},
-        }),
         preselect = cmp.PreselectMode.Item,
         completion = {
             -- autocomplete = types.cmp.TriggerEvent.TextChanged,
@@ -719,11 +716,11 @@ configs['nvim-lua/completion-nvim'] = function()
 end
 
 configs['SirVer/ultisnips'] = function()
-    vim.g.UltiSnipsEditSplit="vertical"
+    vim.g.UltiSnipsEditSplit = "vertical"
     vim.g.UltiSnipsRemoveSelectModeMappings = 0
-    vim.g.UltiSnipsExpandTrigger="<C-Space>"
-    vim.g.UltiSnipsJumpForwardTrigger="<C-j>"
-    vim.g.UltiSnipsJumpBackwardTrigger="<C-k>"
+    vim.g.UltiSnipsExpandTrigger = 0
+    vim.g.UltiSnipsJumpForwardTrigger = "<Tab>"
+    vim.g.UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 end
 
 configs['luochen1990/rainbow'] = function()

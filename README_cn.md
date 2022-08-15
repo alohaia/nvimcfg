@@ -121,8 +121,8 @@
 | `i`  | `<C-a>`              | `<Cmd>ToggleCheckbox<CR>`                      | 见 `:h bullets.txt`                               |
 | `n`  | `<leader>sn`         | `<Cmd>RenumberList<CR>`                        | *同上*                                            |
 | `x`  | `<leader>sn`         | `<Cmd>RenumberSelection<CR>`                   | *同上*                                            |
-| 'i'  | `<M-w>`              | `AutoPairsShortcutFastWrap`                    | 见 `:h g:AutoPairsShortcutFastWrap`               |
-| 'i'  | `<M-b>`              | `AutoPairsShortcutBackInsert`                  | 见 `:h g:AutoPairsShortcutBackInsert`             |
+| `i`  | `<M-w>`              | `AutoPairsShortcutFastWrap`                    | 见 `:h g:AutoPairsShortcutFastWrap`               |
+| `i`  | `<M-b>`              | `AutoPairsShortcutBackInsert`                  | 见 `:h g:AutoPairsShortcutBackInsert`             |
 | `n`  | `gD`                 | `<cmd> lua vim.lsp.buf.declaration()`          | 跳转到声明                                        |
 | `n`  | `gd`                 | `<cmd> lua vim.lsp.buf.definition()`           | 跳转到定义                                        |
 | `n`  | `<leader>?`          | `<cmd> lua vim.lsp.buf.hover()`                | 在浮动窗口中查看文档                              |
@@ -136,9 +136,9 @@
 | `i`  | `<Down>`,`<Tab>`     | nvim-cmp 快捷键                                | 方向下键/Tab 选择补全下一个                       |
 | `i`  | `<Up>`,`<S-Tab>`     | nvim-cmp 快捷键                                | 方向上键/Tab 选择补全上一个                       |
 | `i`  | `CR`                 | nvim-cmp 快捷键                                | 回车确定补全选择                                  |
-| `i`  | `<C-Space>`          | ultisnips 快捷键                               | 展开代码片段                                      |
-| `i`  | `<C-j>`              | ultisnips 快捷键                               | 移动到下一个 placeholder                          |
-| `i`  | `<C-k>`              | ultisnips 快捷键                               | 移动到上一个 placeholder                          |
+| `i`  | `<Tab>`              | ultisnips 快捷键                               | 展开代码片段                                      |
+| `i`  | `<Tab>`              | ultisnips 快捷键                               | 移动到下一个 placeholder                          |
+| `i`  | `<S-Tab>`            | ultisnips 快捷键                               | 移动到上一个 placeholder                          |
 | `n`  | `<C-\\>`             | vim-floaterm 快捷键                            | 开关浮动终端                                      |
 | `n`  | `<F1>`               | vim-floaterm 快捷键                            | 切换到前一个浮动终端                              |
 | `n`  | `<F2>`               | vim-floaterm 快捷键                            | 切换到后一个浮动终端                              |
