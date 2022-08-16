@@ -386,31 +386,20 @@ configs['hrsh7th/nvim-cmp'] = function()
         mapping = {
             ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
             ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-            ["<Tab>"] = cmp.mapping({
-                i = function(fallback)
-                    if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-                        vim.fn["UltiSnips#CursorMoved"]()
-                        vim.fn["UltiSnips#ExpandSnippet"]()
-                    elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-                        vim.fn["UltiSnips#JumpForwards"]()
-                    elseif cmp.visible() then
-                        cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
-                    else
-                        fallback()
-                    end
-                end,
-            }),
-            ["<S-Tab>"] = cmp.mapping({
-                i = function(fallback)
-                    if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-                        vim.fn["UltiSnips#JumpBackwards"]()
-                    elseif cmp.visible() then
-                        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
-                    else
-                        fallback()
-                    end
-                end,
-            }),
+            ['<Tab>'] = function(fallback)
+                if cmp.visible() then
+                    cmp.select_next_item()
+                else
+                    fallback()
+                end
+            end,
+            ['<S-Tab>'] = function(fallback)
+                if cmp.visible() then
+                    cmp.select_prev_item()
+                else
+                    fallback()
+                end
+            end,
             ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
             ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
             ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -718,7 +707,7 @@ end
 configs['SirVer/ultisnips'] = function()
     vim.g.UltiSnipsEditSplit = "vertical"
     vim.g.UltiSnipsRemoveSelectModeMappings = 0
-    vim.g.UltiSnipsExpandTrigger = 0
+    vim.g.UltiSnipsExpandTrigger = "<Tab>"
     vim.g.UltiSnipsJumpForwardTrigger = "<Tab>"
     vim.g.UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 end
