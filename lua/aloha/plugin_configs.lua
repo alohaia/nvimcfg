@@ -331,21 +331,21 @@ configs['neovim/nvim-lspconfig'] = function()
         }
     end
 
-    lspconfig.tsserver.setup{
+    lspconfig.tsserver.setup {
         capabilities = capabilities,
     }
     capabilities.textDocument.completion.completionItem.snippetSupport = true
     lspconfig.cssls.setup {
         capabilities = capabilities,
-        cmd = { "vscode-css-language-server", "--stdio" },
+        cmd = { "/usr/bin/vscode-css-language-server", "--stdio" },
     }
     lspconfig.jsonls.setup {
         capabilities = capabilities,
-        cmd = { "vscode-json-language-server", "--stdio"  }
+        cmd = { "/usr/bin/vscode-json-language-server", "--stdio"  }
     }
     lspconfig.html.setup {
         capabilities = capabilities,
-        cmd = { "vscode-html-language-server", "--stdio"  }
+        cmd = { "/usr/bin/vscode-html-language-server", "--stdio"  }
     }
 end
 
