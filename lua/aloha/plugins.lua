@@ -17,6 +17,7 @@ return {
     ['hrsh7th/nvim-cmp'] = {
         dependency = {
             'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
+            'hrsh7th/cmp-omni',
             'quangnguyen30192/cmp-nvim-ultisnips',
             -- 'saadparwaiz1/cmp_luasnip',
             'onsails/lspkind-nvim',
@@ -25,6 +26,7 @@ return {
     ['hrsh7th/cmp-nvim-lsp']          = {opt=true},
     ['hrsh7th/cmp-buffer']            = {opt=true},
     ['hrsh7th/cmp-path']              = {opt=true},
+    ['hrsh7th/cmp-omni']              = {opt=true},
     -- ['glepnir/lspsaga.nvim']          = {disable = true},
     ['onsails/lspkind-nvim']          = {opt=true},
 
@@ -92,6 +94,7 @@ return {
     ['RRethy/vim-illuminate'] = {},
     ['luochen1990/rainbow'] = {},
     ['alohaia/hugowiki.nvim'] = {},
+    ['lervag/vimtex'] = {},
     ['rhysd/clever-f.vim'] = {},
     ['norcalli/nvim-colorizer.lua'] = {},
     ['brooth/far.vim'] = {},
@@ -120,7 +123,7 @@ return {
     ['skywind3000/asyncrun.extra'] = {disable = true},
     ['skywind3000/asynctasks.vim'] = {disable = true},
     ['alohaia/fcitx.nvim'] = {
-        ft = 'rmd,markdown,text',
+        ft = 'rmd,markdown,text,tex',
         config = function ()
             require 'fcitx' {}
         end

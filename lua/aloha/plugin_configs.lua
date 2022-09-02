@@ -1,8 +1,6 @@
 local configs = {}
-
-configs['glepnir/galaxyline.nvim'] = function()
-    require('aloha.plugin_configs.galaxyline')
-end
+local g = vim.g
+local api = vim.api
 
 configs['lukas-reineke/indent-blankline.nvim'] = function()
     require('indent_blankline').setup {
@@ -25,13 +23,13 @@ configs['lukas-reineke/indent-blankline.nvim'] = function()
             "selector", "^if", "^table", "if_statement", "while", "for"
         },
     }
-    -- vim.g.indent_blankline_show_current_context = 1
+    -- g.indent_blankline_show_current_context = 1
     -- vim.cmd[[au VimEnter * highlight IndentBlanklineChar guifg=#00FF00 gui=nocombine]]
     -- vim.cmd[[au VimEnter * highlight IndentBlanklineSpaceChar guifg=#00FF00 gui=nocombine]]
     -- vim.cmd[[au VimEnter * highlight IndentBlanklineSpaceCharBlankline guifg=#00FF00 gui=nocombine]]
     -- vim.cmd[[au VimEnter * highlight IndentBlanklineContextChar guifg=#00FF00 gui=nocombine]]
-    --   vim.g.indent_blankline_show_trailing_blankline_indent = false
-    --   vim.g.indent_blankline_show_current_context = true
+    --   g.indent_blankline_show_trailing_blankline_indent = false
+    --   g.indent_blankline_show_current_context = true
     -- because lazy load indent-blankline so need readd this autocmd
     -- vim.cmd('autocmd CursorMoved * IndentBlanklineRefresh')
 end
@@ -65,7 +63,10 @@ configs['akinsho/bufferline.nvim'] = function()
             show_buffer_close_icons = false,
             show_close_icon = true,
             show_tab_indicators = true,
-            indicator_icon = "", -- ▎»
+            indicator = {
+                icon = '',
+                style =  'none', -- 'icon' | 'underline' | 'none',
+            },
             buffer_close_icon = '', -- 
             modified_icon = '✥ ',
             close_icon = '',
@@ -154,7 +155,7 @@ configs['akinsho/bufferline.nvim'] = function()
             },
         }
     }
-    vim.api.nvim_set_keymap("n", "gb", "<Cmd>BufferLinePick<CR>", {noremap = true, silent = true})
+    api.nvim_set_keymap("n", "gb", "<Cmd>BufferLinePick<CR>", {noremap = true, silent = true})
 end
 
 configs['kyazdani42/nvim-tree.lua'] = function()
@@ -205,7 +206,7 @@ configs['kyazdani42/nvim-tree.lua'] = function()
         },
     }
     -- see :h nvim-tree-events
-    vim.api.nvim_set_keymap('n', '<leader>nt', '<Cmd>NvimTreeToggle<CR>', {noremap = true})
+    api.nvim_set_keymap('n', '<leader>nt', '<Cmd>NvimTreeToggle<CR>', {noremap = true})
     vim.cmd[[autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]]
 end
 
@@ -229,7 +230,7 @@ configs['neovim/nvim-lspconfig'] = function()
     local enhance_attach = function(client,bufnr)
         -- Set autocommands conditional on server_capabilities
         if client.resolved_capabilities.document_highlight then
-            vim.api.nvim_exec([[
+            api.nvim_exec([[
                 hi LspReferenceRead cterm=bold ctermbg=red gui=italic guibg=#2C323C
                 hi LspReferenceText cterm=bold ctermbg=red gui=italic guibg=#2C323C
                 hi LspReferenceWrite cterm=bold ctermbg=red gui=italic guibg=#2C323C
@@ -242,32 +243,32 @@ configs['neovim/nvim-lspconfig'] = function()
         end
         -- keymaps
         local opts = { noremap = true, silent = true }
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>?', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>r', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-        -- -- vim.api.nvim_buf_set_keymap(bufnr, 'v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
-        vim.api.nvim_create_user_command('Format',
+        api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+        api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+        api.nvim_buf_set_keymap(bufnr, 'n', '<leader>?', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+        api.nvim_buf_set_keymap(bufnr, 'n', '<leader>r', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+        -- api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+        -- api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+        -- api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+        -- api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+        -- api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+        -- api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+        api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+        -- api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+        -- -- api.nvim_buf_set_keymap(bufnr, 'v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', opts)
+        -- api.nvim_buf_set_keymap(bufnr, 'n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+        -- api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+        -- api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+        api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+        -- api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
+        api.nvim_create_user_command('Format',
             function ()
                 vim.lsp.buf.formatting()
             end,
             { force = true }
         )
         -- omnifunc
-        vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+        api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
         -- for 'RRethy/vim-illuminate'
         require 'illuminate'.on_attach(client)
     end
@@ -297,7 +298,7 @@ configs['neovim/nvim-lspconfig'] = function()
                     path = runtime_path,
                 },
                 workspace = {
-                    library = vim.api.nvim_get_runtime_file("", true),
+                    library = api.nvim_get_runtime_file("", true),
                 },
                 -- -- Do not send telemetry data containing a randomized but unique identifier
                 -- telemetry = {
@@ -309,7 +310,7 @@ configs['neovim/nvim-lspconfig'] = function()
     lspconfig.clangd.setup {
         capabilities = capabilities,
         on_attach = function (client, bufnr)
-            vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<Cmd>ClangdSwitchSourceHeader<cr>', {noremap=true})
+            api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<Cmd>ClangdSwitchSourceHeader<cr>', {noremap=true})
             enhance_attach(client, bufnr)
         end,
         cmd = {
@@ -352,10 +353,10 @@ end
 configs['L3MON4D3/LuaSnip'] = function()
     require("luasnip.loaders.from_lua").lazy_load()
 
-    vim.api.nvim_set_keymap("i", "<C-n>", "<Plug>luasnip-next-choice", {})
-    vim.api.nvim_set_keymap("s", "<C-n>", "<Plug>luasnip-next-choice", {})
-    vim.api.nvim_set_keymap("i", "<C-p>", "<Plug>luasnip-previous-choice", {})
-    vim.api.nvim_set_keymap("s", "<C-p>", "<Plug>luasnip-previous-choice", {})
+    api.nvim_set_keymap("i", "<C-n>", "<Plug>luasnip-next-choice", {})
+    api.nvim_set_keymap("s", "<C-n>", "<Plug>luasnip-next-choice", {})
+    api.nvim_set_keymap("i", "<C-p>", "<Plug>luasnip-previous-choice", {})
+    api.nvim_set_keymap("s", "<C-p>", "<Plug>luasnip-previous-choice", {})
 end
 
 configs['hrsh7th/nvim-cmp'] = function()
@@ -376,6 +377,7 @@ configs['hrsh7th/nvim-cmp'] = function()
             -- { name = 'luasnip' }, -- For luasnip users.
             { name = 'ultisnips' }, -- For ultisnips users.
             -- { name = 'snippy' }, -- For snippy users.
+            { name = 'omni' },
         }, {                           -- group 2
             { name = 'buffer' },
             { name = 'path', option = {
@@ -513,41 +515,41 @@ configs['nvim-telescope/telescope.nvim'] = function()
     -- telescope.load_extension('fzf')
 
     -- keybindings
-    vim.api.nvim_set_keymap('n', ',f', '<Cmd>Telescope find_files<CR>', {noremap = true})
-    vim.api.nvim_set_keymap('n', ',F', '<Cmd>Telescope file_browser<CR>', {noremap = true})
-    vim.api.nvim_set_keymap('n', ',b', '<Cmd>Telescope buffers<CR>', {noremap = true})
-    vim.api.nvim_set_keymap('n', ',g', '<Cmd>Telescope live_grep<CR>', {noremap = true})
-    vim.api.nvim_set_keymap('n', ',h', '<Cmd>Telescope help_tags<CR>', {noremap = true})
+    api.nvim_set_keymap('n', ',f', '<Cmd>Telescope find_files<CR>', {noremap = true})
+    api.nvim_set_keymap('n', ',F', '<Cmd>Telescope file_browser<CR>', {noremap = true})
+    api.nvim_set_keymap('n', ',b', '<Cmd>Telescope buffers<CR>', {noremap = true})
+    api.nvim_set_keymap('n', ',g', '<Cmd>Telescope live_grep<CR>', {noremap = true})
+    api.nvim_set_keymap('n', ',h', '<Cmd>Telescope help_tags<CR>', {noremap = true})
 end
 
 configs['RRethy/vim-illuminate'] = function()
     vim.cmd[[autocmd VimEnter * hi illuminatedWord guibg=Grey]]
     -- vim.cmd[[autocmd VimEnter * hi illuminatedCurWord gui=bold]]
-    vim.g.Illuminate_highlightUnderCursor = 0
-    vim.g.Illuminate_insert_mode_highlight = true
-    vim.g.Illuminate_ftblacklist = {'dashboard', 'NvimTree'}
-    -- vim.g.Illuminate_ftwhitelist = {}
-    -- vim.api.nvim_set_keymap('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>', {noremap=true})
-    -- vim.api.nvim_set_keymap('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', {noremap=true})
+    g.Illuminate_highlightUnderCursor = 0
+    g.Illuminate_insert_mode_highlight = true
+    g.Illuminate_ftblacklist = {'dashboard', 'NvimTree'}
+    -- g.Illuminate_ftwhitelist = {}
+    -- api.nvim_set_keymap('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>', {noremap=true})
+    -- api.nvim_set_keymap('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', {noremap=true})
 end
 
 configs['rhysd/clever-f.vim'] = function()
-    vim.g.clever_f_smart_case              = 1
-    vim.g.clever_f_use_migemo              = 0
-    vim.g.clever_f_fix_key_direction       = 1
-    vim.g.clever_f_chars_match_any_signs   = ''
-    vim.g.clever_f_repeat_last_char_inputs = { [[\<CR>]], [[\<Tab>]] }
-    vim.g.clever_f_mark_direct             = 1
-    vim.g.clever_f_mark_direct_color       = "CleverFDefaultLabel"
+    g.clever_f_smart_case              = 1
+    g.clever_f_use_migemo              = 0
+    g.clever_f_fix_key_direction       = 1
+    g.clever_f_chars_match_any_signs   = ''
+    g.clever_f_repeat_last_char_inputs = { [[\<CR>]], [[\<Tab>]] }
+    g.clever_f_mark_direct             = 1
+    g.clever_f_mark_direct_color       = "CleverFDefaultLabel"
 end
 
 
 configs['nvim-treesitter/nvim-treesitter'] = function()
-    vim.api.nvim_command('set foldmethod=expr')
-    vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
+    api.nvim_command('set foldmethod=expr')
+    api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
     require'nvim-treesitter.configs'.setup {
         ensure_installed = {
-            'c', 'cpp', 'css', 'bash', 'cmake', 'glsl', 'go', 'html', 'javascript', 'latex',
+            'c', 'cpp', 'css', 'bash', 'cmake', 'glsl', 'go', 'html', 'javascript',
             'lua', 'r', 'ruby', 'rust', 'toml', 'vim', 'vue', 'yaml'
         },
         incremental_selection = {
@@ -585,9 +587,9 @@ configs['nvim-treesitter/nvim-treesitter'] = function()
 end
 
 configs['brooth/far.vim'] = function()
-    vim.g['far#source'] = 'rgnvim'
-    vim.g['far#enable_undo'] = 1
-    vim.g['far#mapping'] = {
+    g['far#source'] = 'rgnvim'
+    g['far#enable_undo'] = 1
+    g['far#mapping'] = {
         stoggle_expand_all = 'zt',
         toggle_expand_all  = 'zA',
         expand_all         = 'zr',
@@ -597,33 +599,33 @@ end
 
 configs['liuchengxu/vista.vim'] = function()
     vim.cmd[[autocmd FileType vista,vista_kind nnoremap <buffer> <silent> f <Cmd>call vista#finder#fzf#Run()<CR>]]
-    vim.api.nvim_set_keymap('n', '<leader>vt', '<Cmd>Vista<Cr>', {noremap = true})
-    vim.api.nvim_set_keymap('n', ',T', '<Cmd>Vista finder<Cr>', {noremap = true})
-    vim.g.vista_default_executive = 'ctags'
-    vim.g.vista_ctags_executable = 'ctags'
-    vim.g.vista_ctags_project_opts = '--sort=no -R -o tags'
-    vim.g.vista_executive_for = {
+    api.nvim_set_keymap('n', '<leader>vt', '<Cmd>Vista<Cr>', {noremap = true})
+    api.nvim_set_keymap('n', ',T', '<Cmd>Vista finder<Cr>', {noremap = true})
+    g.vista_default_executive = 'ctags'
+    g.vista_ctags_executable = 'ctags'
+    g.vista_ctags_project_opts = '--sort=no -R -o tags'
+    g.vista_executive_for = {
         -- vimwiki  = 'markdown',
         pandoc   = 'markdown',
         rmd      = 'markdown',
         markdown = 'toc',
     }
-    vim.g.vista_enable_markdown_extension    = 1
-    vim.g.vista_enable_markdown_extension    = 1
-    vim.g.vista_fzf_preview                  = {'right:50%'}
-    vim.g.vista_sidebar_width                = 30
-    vim.g.vista_fold_toggle_icons            = {'▾', '▸'}
-    vim.g.vista_icon_indent                  = {"└─▸ ", "├─▸ "}
-    vim.g.vista_echo_cursor                  = 1
-    vim.g.vista_cursor_delay                 = 0
-    vim.g.vista_echo_cursor_strategy         = 'scroll'
-    vim.g.vista_update_on_text_changed       = 1
-    vim.g.vista_update_on_text_changed_delay = 2000
-    vim.g.vista_close_on_jump                = 0
-    vim.g.vista_stay_on_open                 = 1
-    vim.g.vista_blink                        = {0, 0}
-    vim.g.vista_top_level_blink              = {0, 0}
-    vim.g.vista_highlight_whole_line         = 1
+    g.vista_enable_markdown_extension    = 1
+    g.vista_enable_markdown_extension    = 1
+    g.vista_fzf_preview                  = {'right:50%'}
+    g.vista_sidebar_width                = 30
+    g.vista_fold_toggle_icons            = {'▾', '▸'}
+    g.vista_icon_indent                  = {"└─▸ ", "├─▸ "}
+    g.vista_echo_cursor                  = 1
+    g.vista_cursor_delay                 = 0
+    g.vista_echo_cursor_strategy         = 'scroll'
+    g.vista_update_on_text_changed       = 1
+    g.vista_update_on_text_changed_delay = 2000
+    g.vista_close_on_jump                = 0
+    g.vista_stay_on_open                 = 1
+    g.vista_blink                        = {0, 0}
+    g.vista_top_level_blink              = {0, 0}
+    g.vista_highlight_whole_line         = 1
     -- g['vista#renderer#icons'] = {
     --     function = "",
     --     variable = "",
@@ -631,29 +633,29 @@ configs['liuchengxu/vista.vim'] = function()
 end
 
 configs['mhinz/vim-startify'] = function()
-    vim.g.startify_change_to_vcs_dir   = 1
-    vim.g.startify_change_to_dir       = 0
-    vim.g.startify_fortune_use_unicode = 0
-    vim.g.startify_padding_left        = 3
-    vim.g.startify_session_persistence = 0
-    vim.g.startify_session_autoload    = 1
-    vim.g.startify_skiplist            = {
+    g.startify_change_to_vcs_dir   = 1
+    g.startify_change_to_dir       = 0
+    g.startify_fortune_use_unicode = 0
+    g.startify_padding_left        = 3
+    g.startify_session_persistence = 0
+    g.startify_session_autoload    = 1
+    g.startify_skiplist            = {
         [[.*/doc/.*\.txt$]],
         [[/usr/share/nvim/runtime/doc/.*\.txt$]],
         [[.*/vimdoc-cn/doc/.*\.cnx]],
         [[.*/.git/.*]],
     }
-    vim.g.startify_files_number = 10
-    vim.g.startify_bookmarks = {
+    g.startify_files_number = 10
+    g.startify_bookmarks = {
         -- '~/.config/nvim/plugins/vimspector/docs/schema/vimspector.schema.json',
         -- '~/.config/nvim/plugins/vimspector/docs/schema/gadgets.schema.json',
     }
-    vim.g.startify_commands = {
+    g.startify_commands = {
         -- { t = {'Press t to open coc-explorer.',      'CocCommand explorer'}},
         -- { w = {"Open Index page for Vimwiki.",       'VimwikiIndex'}},
         -- { d = {"Open Index page for Vimwiki Diary.", 'VimwikiDiaryIndex'}},
     }
-    vim.g.startify_lists = {
+    g.startify_lists = {
         { type = 'dir',       header = {'   PWD: '..vim.fn.getcwd()}},
         { type = 'commands',  header = {'   Commands'}              },
         { type = 'files',     header = {'   Recent Opened Files'}   },
@@ -663,24 +665,24 @@ configs['mhinz/vim-startify'] = function()
 end
 
 configs['preservim/nerdcommenter'] = function()
-    vim.g.NERDSpaceDelims = 1
-    vim.g.NERDCompactSexyComs = 1
-    vim.g.NERDDefaultAlign = 'left'
-    vim.g.NERDAltDelims_java = 1
-    vim.g.NERDCustomDelimiters = {
+    g.NERDSpaceDelims = 1
+    g.NERDCompactSexyComs = 1
+    g.NERDDefaultAlign = 'left'
+    g.NERDAltDelims_java = 1
+    g.NERDCustomDelimiters = {
         c = {
             left = '/**',
             right = '*/'
         }
     }
-    vim.g.NERDCommentEmptyLines = 1
-    vim.g.NERDTrimTrailingWhitespace = 1
-    vim.g.NERDToggleCheckAllLines = 1
+    g.NERDCommentEmptyLines = 1
+    g.NERDTrimTrailingWhitespace = 1
+    g.NERDToggleCheckAllLines = 1
 end
 
 configs['mbbill/undotree'] = function()
-    vim.api.nvim_set_keymap('n', '<leader>ut', '<Cmd>UndotreeToggle<CR>', {noremap = true})
-    vim.g.undotree_CustomUndotreeCmd  = 'topleft vertical 30 new'
+    api.nvim_set_keymap('n', '<leader>ut', '<Cmd>UndotreeToggle<CR>', {noremap = true})
+    g.undotree_CustomUndotreeCmd  = 'topleft vertical 30 new'
     vim.cmd[[
         function g:Undotree_CustomMap()
             nnoremap <buffer> n <plug>UndotreeNextState
@@ -689,32 +691,32 @@ configs['mbbill/undotree'] = function()
             nnoremap <buffer> P 5<plug>UndotreePreviousState
         endfunc
     ]]
-    vim.g.undotree_CustomDiffpanelCmd = 'botright 10 new'
-    vim.g.undotree_SetFocusWhenToggle = 1
-    vim.g.undotree_TreeNodeShape      = '⚑'
-    vim.g.undotree_RelativeTimestamp  = 0
-    vim.g.undotree_HelpLine           = 0
+    g.undotree_CustomDiffpanelCmd = 'botright 10 new'
+    g.undotree_SetFocusWhenToggle = 1
+    g.undotree_TreeNodeShape      = '⚑'
+    g.undotree_RelativeTimestamp  = 0
+    g.undotree_HelpLine           = 0
 end
 
 configs['nvim-lua/completion-nvim'] = function()
-    vim.api.nvim_set_keymap('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], {noremap=true, expr=true})
-    vim.api.nvim_set_keymap('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], {noremap=true, expr=true})
-    vim.g.completion_enable_auto_popup = 1
-    vim.g.completion_enable_snippet = 'UltiSnips'
-    vim.g.completion_confirm_key = '<CR>'
+    api.nvim_set_keymap('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], {noremap=true, expr=true})
+    api.nvim_set_keymap('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], {noremap=true, expr=true})
+    g.completion_enable_auto_popup = 1
+    g.completion_enable_snippet = 'UltiSnips'
+    g.completion_confirm_key = '<CR>'
 end
 
 configs['SirVer/ultisnips'] = function()
-    vim.g.UltiSnipsEditSplit = "vertical"
-    vim.g.UltiSnipsRemoveSelectModeMappings = 0
-    vim.g.UltiSnipsExpandTrigger = "<Tab>"
-    vim.g.UltiSnipsJumpForwardTrigger = "<Tab>"
-    vim.g.UltiSnipsJumpBackwardTrigger = "<S-Tab>"
+    g.UltiSnipsEditSplit = "vertical"
+    g.UltiSnipsRemoveSelectModeMappings = 0
+    g.UltiSnipsExpandTrigger = "<Tab>"
+    g.UltiSnipsJumpForwardTrigger = "<Tab>"
+    g.UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 end
 
 configs['luochen1990/rainbow'] = function()
-    vim.g.rainbow_conf = {}
-    vim.g.rainbow_conf.separately = {
+    g.rainbow_conf = {}
+    g.rainbow_conf.separately = {
         ['*'] = {},
         markdown = 0;
         rmd = 0;
@@ -722,105 +724,144 @@ configs['luochen1990/rainbow'] = function()
 end
 
 configs['alohaia/hugowiki.nvim'] = function()
-    vim.g.hugowiki_home = '~/Documents/blog/'
-    vim.g.hugowiki_try_init_file = 1
-    vim.g.hugowiki_follow_after_create = 0
-    vim.g.hugowiki_use_imaps = 1
-    vim.g.hugowiki_disable_fold = 0
-    vim.g.markdown_fenced_languages = {
+    g.hugowiki_home = '~/Documents/blog/'
+    g.hugowiki_try_init_file = 1
+    g.hugowiki_follow_after_create = 0
+    g.hugowiki_use_imaps = 1
+    g.hugowiki_disable_fold = 0
+    g.markdown_fenced_languages = {
         'lua',  'c', 'cpp', 'r', 'javascript', 'python',
         'sh', 'bash', 'zsh', 'yaml', 'tex'
     }
-    vim.g.hugowiki_wrap = 0
-    vim.g.hugowiki_auto_save = 0
-    vim.g.hugowiki_auto_update_lastmod = 1
-    vim.g.hugowiki_lastmod_under_date = 1
-    vim.g.hugowiki_rmd_auto_knit = {
+    g.hugowiki_wrap = 0
+    g.hugowiki_auto_save = 0
+    g.hugowiki_auto_update_lastmod = 1
+    g.hugowiki_lastmod_under_date = 1
+    g.hugowiki_rmd_auto_knit = {
         enable = true,
-        cwd = vim.fn.expand(vim.g.hugowiki_home),
-        r_script = vim.fn.expand(vim.g.hugowiki_home) .. 'R/build_one.R',
+        cwd = vim.fn.expand(g.hugowiki_home),
+        r_script = vim.fn.expand(g.hugowiki_home) .. 'R/build_one.R',
+    }
+end
+
+configs['lervag/vimtex'] = function()
+    g.vimtex_view_method = 'zathura'
+    g.vimtex_complete_close_braces = 1  -- ineffective?
+    g.vimtex_fold_enabled = 1
+    g.vimtex_quickfix_ignore_filters = {
+        [[Package fontspec Warning.*CJK]]
+    }
+    g.vimtex_syntax_conceal = {
+        math_bounds = 0,
+        sections = 1,
+    }
+
+    g.vimtex_compiler_method = 'latexmk'
+    g.vimtex_compiler_latexmk = {
+        build_dir = '',
+        callback = 1,
+        hooks = {},
+        executable = 'latexmk',
+        options   = {
+            '-verbose',
+            '-file-line-error',
+            '-synctex=1',
+            '-interaction=nonstopmode',
+        },
+    }
+    g.vimtex_compiler_latexmk_engines = {
+        _                    = '-xelatex',
+        pdfdvi               = '-pdfdvi',
+        pdfps                = '-pdfps',
+        pdflatex             = '-pdf',
+        luatex               = '-lualatex',
+        lualatex             = '-lualatex',
+        xelatex              = '-xelatex',
+        ['context (pdftex)'] = '-pdf -pdflatex = texexec',
+        ['context (luatex)'] = '-pdf -pdflatex = context',
+        ['context (xetex)']  = '-pdf -pdflatex = "texexec --xtx"',
     }
 end
 
 configs['dkarter/bullets.vim'] = function()
-    vim.g.bullets_enabled_file_types = { "markdown", "text" }
-    vim.g.bullets_enable_in_empty_buffers = 1
-    vim.g.bullets_checkbox_markers = " X"
-    vim.g.bullets_mapping_leader = ""
-    vim.g.bullets_delete_last_bullet_if_empty = 1
-    vim.g.bullets_outline_levels = {'ROM'}
-    vim.api.nvim_set_keymap("i", "<C-a>", "<Cmd>ToggleCheckbox<CR>", {noremap = true})
-    vim.api.nvim_set_keymap("n", "<leader>sn", "<Cmd>RenumberList<CR>", {noremap = true})
-    vim.api.nvim_set_keymap("x", "<leader>sn", "<Cmd>RenumberSelection<CR>", {noremap = true})
+    g.bullets_enabled_file_types = { "markdown", "text" }
+    g.bullets_enable_in_empty_buffers = 1
+    g.bullets_checkbox_markers = " X"
+    g.bullets_mapping_leader = ""
+    g.bullets_delete_last_bullet_if_empty = 1
+    g.bullets_outline_levels = {'ROM'}
+    api.nvim_set_keymap("i", "<C-a>", "<Cmd>ToggleCheckbox<CR>", {noremap = true})
+    api.nvim_set_keymap("n", "<leader>sn", "<Cmd>RenumberList<CR>", {noremap = true})
+    api.nvim_set_keymap("x", "<leader>sn", "<Cmd>RenumberSelection<CR>", {noremap = true})
 end
 
 configs['dhruvasagar/vim-table-mode'] = function()
-    vim.api.nvim_set_keymap("n", "<leader>tm", "<cmd>TableModeToggle<cr>", {noremap = true})
-    vim.g.table_mode_corner = '|'
-    vim.g.table_mode_corner_corner="|"
-    vim.g.table_mode_align_char=":"
-    vim.g.table_mode_header_fillchar="-"
-    vim.g.table_mode_delimiter = ','
+    api.nvim_set_keymap("n", "<leader>tm", "<cmd>TableModeToggle<cr>", {noremap = true})
+    g.table_mode_corner = '|'
+    g.table_mode_corner_corner="|"
+    g.table_mode_align_char=":"
+    g.table_mode_header_fillchar="-"
+    g.table_mode_delimiter = ','
 end
 
 
 configs['svermeulen/vim-subversive'] = function()
-    vim.g.subversiveCurrentTextRegister = 1
-    vim.api.nvim_set_keymap('n', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
-    vim.api.nvim_set_keymap('x', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
-    vim.api.nvim_set_keymap('x', 'p',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
-    vim.api.nvim_set_keymap('x', 'P',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
-    vim.api.nvim_set_keymap('n', 'ss',                 '<plug>(SubversiveSubstituteLine)',             { noremap = false })
-    vim.api.nvim_set_keymap('n', 'S',                  '<plug>(SubversiveSubstituteToEndOfLine)',      { noremap = false })
-    vim.api.nvim_set_keymap('n', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
-    vim.api.nvim_set_keymap('x', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
-    vim.api.nvim_set_keymap('n', '<leader>ss',         '<plug>(SubversiveSubstituteWordRange)',        { noremap = false })
-    vim.api.nvim_set_keymap('n', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
-    vim.api.nvim_set_keymap('x', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
-    vim.api.nvim_set_keymap('n', '<leader>crr',        '<plug>(SubversiveSubstituteWordRangeConfirm)', { noremap = false })
-    vim.api.nvim_set_keymap('n', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
-    vim.api.nvim_set_keymap('x', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
-    vim.api.nvim_set_keymap('n', '<leader><leader>ss', '<plug>(SubversiveSubvertWordRange)',           { noremap = false })
+    g.subversiveCurrentTextRegister = 1
+    api.nvim_set_keymap('n', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+    api.nvim_set_keymap('x', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+    api.nvim_set_keymap('x', 'p',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+    api.nvim_set_keymap('x', 'P',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+    api.nvim_set_keymap('n', 'ss',                 '<plug>(SubversiveSubstituteLine)',             { noremap = false })
+    api.nvim_set_keymap('n', 'S',                  '<plug>(SubversiveSubstituteToEndOfLine)',      { noremap = false })
+    api.nvim_set_keymap('n', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
+    api.nvim_set_keymap('x', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
+    api.nvim_set_keymap('n', '<leader>ss',         '<plug>(SubversiveSubstituteWordRange)',        { noremap = false })
+    api.nvim_set_keymap('n', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
+    api.nvim_set_keymap('x', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
+    api.nvim_set_keymap('n', '<leader>crr',        '<plug>(SubversiveSubstituteWordRangeConfirm)', { noremap = false })
+    api.nvim_set_keymap('n', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
+    api.nvim_set_keymap('x', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
+    api.nvim_set_keymap('n', '<leader><leader>ss', '<plug>(SubversiveSubvertWordRange)',           { noremap = false })
 end
 
 configs['svermeulen/vim-yoink'] = function ()
-    vim.api.nvim_set_keymap('n', 'p', '<plug>(YoinkPaste_p)', {noremap=false})
-    vim.api.nvim_set_keymap('n', 'P', '<plug>(YoinkPaste_P)', {noremap=false})
-    vim.api.nvim_set_keymap('n', 'gp', '<plug>(YoinkPaste_gp)', {noremap=false})
-    vim.api.nvim_set_keymap('n', 'gP', '<plug>(YoinkPaste_gP)', {noremap=false})
-    vim.api.nvim_set_keymap('n', '<M-n>', '<plug>(YoinkPostPasteSwapBack)', {noremap=false})
-    vim.api.nvim_set_keymap('n', '<M-p>', '<plug>(YoinkPostPasteSwapForward)', {noremap=false})
-    vim.api.nvim_set_keymap('n', '[y', '<plug>(YoinkRotateBack)', {noremap=false})
-    vim.api.nvim_set_keymap('n', ']y', '<plug>(YoinkRotateForward)', {noremap=false})
-    vim.api.nvim_set_keymap('n', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
-    vim.api.nvim_set_keymap('x', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
+    api.nvim_set_keymap('n', 'p', '<plug>(YoinkPaste_p)', {noremap=false})
+    api.nvim_set_keymap('n', 'P', '<plug>(YoinkPaste_P)', {noremap=false})
+    api.nvim_set_keymap('n', 'gp', '<plug>(YoinkPaste_gp)', {noremap=false})
+    api.nvim_set_keymap('n', 'gP', '<plug>(YoinkPaste_gP)', {noremap=false})
+    api.nvim_set_keymap('n', '<M-n>', '<plug>(YoinkPostPasteSwapBack)', {noremap=false})
+    api.nvim_set_keymap('n', '<M-p>', '<plug>(YoinkPostPasteSwapForward)', {noremap=false})
+    api.nvim_set_keymap('n', '[y', '<plug>(YoinkRotateBack)', {noremap=false})
+    api.nvim_set_keymap('n', ']y', '<plug>(YoinkRotateForward)', {noremap=false})
+    api.nvim_set_keymap('n', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
+    api.nvim_set_keymap('x', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
 end
 
 configs['mg979/vim-visual-multi'] = function()
-    vim.g.VM_leader = { default = ',', visual = ',', buffer = ',' }
-    vim.g.VM_default_mappings = 1
-    vim.g.VM_theme = 'spacegray'
-    -- vim.g.VM_maps = {[vim.type_idx] = vim.types.dictionary}
-    -- vim.g.VM_maps['Undo'] = 'u'
-    -- vim.g.VM_maps['Redo'] = '<C-r>'
-    -- vim.g.VM_maps['Find Under'] = '<M-n>'
-    -- vim.g.VM_maps['Find Subword Under'] = '<M-n>'
+    g.VM_leader = { default = ',', visual = ',', buffer = ',' }
+    g.VM_default_mappings = 1
+    g.VM_theme = 'spacegray'
+    -- g.VM_maps = {[vim.type_idx] = vim.types.dictionary}
+    -- g.VM_maps['Undo'] = 'u'
+    -- g.VM_maps['Redo'] = '<C-r>'
+    -- g.VM_maps['Find Under'] = '<M-n>'
+    -- g.VM_maps['Find Subword Under'] = '<M-n>'
 end
 
 configs['voldikss/vim-floaterm'] = function()
-    vim.g.floaterm_keymap_toggle = '<C-\\>'
-    vim.g.floaterm_keymap_prev   = '<F1>'
-    vim.g.floaterm_keymap_next   = '<F2>'
-    vim.g.floaterm_keymap_new    = '<F3>'
-    vim.g.floaterm_keymap_kill   = '<F4>'
-    vim.g.floaterm_gitcommit     = 'floaterm'
-    vim.g.floaterm_autoinsert    = 1
-    vim.g.floaterm_width         = 0.5
-    vim.g.floaterm_height        = 0.5
-    vim.g.floaterm_autoclose     = 1
-    vim.g.floaterm_title         = 'floaterm: $1/$2'
-    vim.g.floaterm_wintype       = 'popup'
-    vim.g.floaterm_position      = 'bottomright'
+    g.floaterm_keymap_toggle = '<C-\\>'
+    g.floaterm_keymap_prev   = '<F1>'
+    g.floaterm_keymap_next   = '<F2>'
+    g.floaterm_keymap_new    = '<F3>'
+    g.floaterm_keymap_kill   = '<F4>'
+    g.floaterm_gitcommit     = 'floaterm'
+    g.floaterm_autoinsert    = 1
+    g.floaterm_width         = 0.5
+    g.floaterm_height        = 0.5
+    g.floaterm_autoclose     = 1
+    g.floaterm_title         = 'floaterm: $1/$2'
+    g.floaterm_wintype       = 'popup'
+    g.floaterm_position      = 'bottomright'
     vim.cmd('hi link FloatermBorder Normal')
 end
 
@@ -835,16 +876,16 @@ configs['akinsho/toggleterm.nvim'] = function()
 end
 
 configs['jiangmiao/auto-pairs'] = function()
-    -- vim.g.AutoPairsFlyMode            = 1
-    vim.g.AutoPairsShortcutToggle     = ''
-    vim.g.AutoPairsShortcutFastWrap   = '<M-w>'
-    vim.g.AutoPairsShortcutBackInsert = '<M-b>'
-    vim.g.AutoPairsShortcutJump       = ''
-    vim.g.AutoPairsMapCh              = 0
-    vim.g.AutoPairsCenterLine         = 0
-    vim.g.AutoPairsMultilineClose     = 1
+    -- g.AutoPairsFlyMode            = 1
+    g.AutoPairsShortcutToggle     = ''
+    g.AutoPairsShortcutFastWrap   = '<M-w>'
+    g.AutoPairsShortcutBackInsert = '<M-b>'
+    g.AutoPairsShortcutJump       = ''
+    g.AutoPairsMapCh              = 0
+    g.AutoPairsCenterLine         = 0
+    g.AutoPairsMultilineClose     = 1
 
-    vim.g.AutoPairs = {
+    g.AutoPairs = {
         ['(']   = ')',
         ['[']   = ']',
         ['{']   = '}',
@@ -852,27 +893,27 @@ configs['jiangmiao/auto-pairs'] = function()
         ['"']   = '"',
         ['`']   = '`'
     }
-    vim.api.nvim_create_autocmd('FileType', {
+    api.nvim_create_autocmd('FileType', {
         pattern = 'html',
         callback = function ()
-            vim.b.AutoPairs = vim.tbl_extend('force', vim.g.AutoPairs, {
+            vim.b.AutoPairs = vim.tbl_extend('force', g.AutoPairs, {
                 ['<'] = '>'
             })
         end
     })
-    vim.api.nvim_create_autocmd('FileType', {
+    api.nvim_create_autocmd('FileType', {
         pattern = {'markdown', 'rmd'},
         callback = function ()
-            vim.b.AutoPairs = vim.tbl_extend('force', vim.g.AutoPairs, {
+            vim.b.AutoPairs = vim.tbl_extend('force', g.AutoPairs, {
                 ['``'] = '``',
                 ['```'] = '```',
             })
         end
     })
-    vim.api.nvim_create_autocmd('FileType', {
+    api.nvim_create_autocmd('FileType', {
         pattern = 'vim',
         callback = function ()
-            vim.b.AutoPairs = vim.tbl_extend('force', vim.g.AutoPairs, {
+            vim.b.AutoPairs = vim.tbl_extend('force', g.AutoPairs, {
                 ['"'] = '',
                 ['"""'] = ''
             })
@@ -943,8 +984,8 @@ configs['olimorris/onedarkpro.nvim'] = function()
     require("onedarkpro").setup({
         dark_theme = "onedark_vivid",
         light_theme = "onelight_vivid",
-        hlgroups = {
-            -- FoldColumn = { link = "Normal" }
+        highlights = {
+            Conceal = { link = "Normal" }
         },
         plugins = {
             all = false,
@@ -961,11 +1002,11 @@ configs['olimorris/onedarkpro.nvim'] = function()
     })
     require("onedarkpro").load()
     if transparentbg then
-        vim.api.nvim_create_autocmd("VimEnter", {
+        api.nvim_create_autocmd("VimEnter", {
             pattern = "*",
             callback = function ()
-                vim.api.nvim_set_hl(0, 'lualine_c_normal', {bg="NONE"})
-                vim.api.nvim_set_hl(0, 'lualine_c_inactive',{bg="NONE"})
+                api.nvim_set_hl(0, 'lualine_c_normal', {bg="NONE"})
+                api.nvim_set_hl(0, 'lualine_c_inactive',{bg="NONE"})
             end
         })
     end
@@ -1013,13 +1054,13 @@ configs['nvim-lualine/lualine.nvim'] = function()
 end
 
 configs['vim-airline/vim-airline'] = function()
-    vim.g['airline#extensions#tabline#enabled'] = 0
+    g['airline#extensions#tabline#enabled'] = 0
     -- ﯑韛 
-    vim.g['airline_left_sep']                   = '┆'
-    vim.g['airline_left_alt_sep']               = '┆'
-    vim.g['airline_right_sep']                  = '┆'
-    vim.g['airline_right_alt_sep']              = '┆'
-    vim.g.airline_symbols = {
+    g['airline_left_sep']                   = '┆'
+    g['airline_left_alt_sep']               = '┆'
+    g['airline_right_sep']                  = '┆'
+    g['airline_right_alt_sep']              = '┆'
+    g.airline_symbols = {
         colnr      = ' ㏇:',
         notexists  = 'Ɇ',
         readonly   = '',    -- 🔒
@@ -1034,17 +1075,17 @@ configs['vim-airline/vim-airline'] = function()
 end
 
 configs['skywind3000/asyncrun.vim'] = function()
-    vim.g.asyncrun_rootmarks = {'.git', '.svn', '.root'}
+    g.asyncrun_rootmarks = {'.git', '.svn', '.root'}
 end
 
 configs['skywind3000/asyncrun.extra'] = function()
-    vim.g['asyncrun_extra#floaterm#title_style'] = 'asyncrun'
-    vim.g.asynctasks_term_pos = 'floaterm'
+    g['asyncrun_extra#floaterm#title_style'] = 'asyncrun'
+    g.asynctasks_term_pos = 'floaterm'
 end
 
 configs['skywind3000/asynctasks.vim'] = function()
-    vim.api.nvim_set_keymap('n', '<F5>', '<cmd>AsyncTask run<cr>', {})
-    vim.api.nvim_set_keymap('n', '<F6>', '<cmd>AsyncTask build<cr>', {})
+    api.nvim_set_keymap('n', '<F5>', '<cmd>AsyncTask run<cr>', {})
+    api.nvim_set_keymap('n', '<F6>', '<cmd>AsyncTask build<cr>', {})
 end
 
 return configs
