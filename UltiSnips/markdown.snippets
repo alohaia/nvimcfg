@@ -1,0 +1,150 @@
+# Vim plugin for writing hugo posts
+# Maintainer: Qihuan Liu <liu.qihuan@outlook.com>
+
+global !p
+def anchor_format(str):
+    result = re.sub('\s+', '-', str, 0).lower()
+    result = re.sub('\*', '', result, 0)
+    return result
+endglobal
+
+################# Basic Markdown Syntas ##############
+snippet "(# )?H1" "First heading" rbA
+# ${1:`!v expand('%:t:r')`}
+endsnippet
+
+snippet ll "A simple line" bw
+----------------------------------------------------------------
+
+endsnippet
+
+snippet "^----" "Line" brA
+----------------------------------------------------------------
+
+endsnippet
+
+snippet "(\# )?h([1-6])" "Headings" rbA
+`!p snip.rv = '#' * int(match.group(2))` ${1:${VISUAL}}
+endsnippet
+
+snippet icd "inline code" iw
+\`${1:${VISUAL}}\`
+endsnippet
+
+snippet mcd "Code block" bw
+\`\`\`${1:xxx}${2: ${3:title} ${4:url} ${5:link_text}}
+${6:${VISUAL}}
+\`\`\`
+endsnippet
+
+snippet MM "Math block" bwA
+\$\$${1:${VISUAL}}
+\\\\,.\$\$
+endsnippet
+
+snippet mm "Inline math" iw
+\$${1:${VISUAL}}\$
+endsnippet
+
+snippet  "Blod text" iA
+**${1:${VISUAL}}**
+endsnippet
+
+snippet it "italic text" iw
+*${1:${VISUAL}}*
+endsnippet
+
+snippet ib "italic blod text" iw
+***${1:${VISUAL}}***
+endsnippet
+
+snippet ins "insert" iw
+<ins>${1:${VISUAL}}</ins>
+endsnippet
+
+snippet del "deleted line" iw
+~~${1:${VISUAL}}~~
+endsnippet
+
+snippet sub "subscript" i
+<sub>${1:${VISUAL}}</sub>
+endsnippet
+
+snippet sup "subscript" i
+<sup>${1:${VISUAL}}</sup>
+endsnippet
+
+snippet hl "highlight" i
+<mark>${1:${VISUAL}}</mark>
+endsnippet
+
+snippet kbd "kbd tag" i
+<kbd>${1:${VISUAL}}</kbd>
+endsnippet
+
+snippet anc "anchor" i
+[${1:${VISUAL}}](#${2:`!p snip.rv=anchor_format(t[1])`})
+endsnippet
+
+# snippet '^\*' "Abbr" rA
+# *[${1:abbr}]: ${2:description}
+# endsnippet
+
+############# Hugo Shortcodes #############
+snippet tag "primary tag" iw
+{{% ${1:tag} ${2:${VISUAL} }%}}
+endsnippet
+
+snippet ref "hugo ref shortcode" iw
+[${1:${VISUAL}}]({{< ref "${2:$1}" >}})
+endsnippet
+
+snippet rrf "hugo relref shortcode" iw
+[${1:${VISUAL}}]({{< relref "${2:$1}" >}})
+endsnippet
+
+snippet fig "hugo figure shortcode" iw
+{{< figure src="${1}.${2:png}" title="${3:$1}" caption="${4}" alt="$3" class="${5}" `!p snip.rv = ('id="fig_' + anchor_format(t[1]) + '" ') if t[1] else ""`>}}
+endsnippet
+
+snippet tab "tab" iw
+{{% tab type="${1:default}" summary="${2}" details=false open=true `!p snip.rv = ('id="tab_' + anchor_format(t[2]) + '" ') if t[2] else ""`%}}
+${3:${VISUAL}}
+{{% /tab %}}
+endsnippet
+
+snippet hzl "horizontal list" iw
+{{% hzl %}}${1:${VISUAL}}{{% /hzl %}}
+endsnippet
+
+snippet hdt "hidden text" iw
+{{% hdt "${1:${VISUAL}}" %}}
+endsnippet
+
+snippet sg "sense group" iw
+{{% sg %}}${1:${VISUAL}}{{% /sg %}}
+endsnippet
+
+snippet tbl "table with title and caption" bw
+{{% table title="${1}" caption="${2}" left_sticky=${3:false} `!p snip.rv = ('id="tbl_' + anchor_format(t[1]) + '" ') if t[1] else ""` %}}
+${0:${VISUAL}}
+{{% /table %}}
+endsnippet
+
+snippet sa "see also" iw
+{{% sa %}}${1:${VISUAL}}{{% /sa %}}
+endsnippet
+
+############## Special Snippets #############
+snippet more "more" bw
+<!--more-->
+endsnippet
+
+snippet br "<br/> tag" iw
+<br/>
+endsnippet
+
+
+snippet per "Percentage Range" iw
+${1}%\~${2}%$0
+endsnippet
