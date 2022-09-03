@@ -19,14 +19,12 @@ def ceil(i):
 endglobal
 
 snippet line "Comment Using Line" bw
-`!p snip.rv = '#' * floor((linelen - 4 - len(t[1])) / 2)`\ ${1} /`!p snip.rv = '#' * ceil((linelen - 4 - len(t[1])) / 2)`
-$0
+`!p snip.rv = '#' * floor((linelen - 4 - len(t[1])) / 2)`\ ${1} /`!p snip.rv = '#' * ceil((linelen - 4 - len(t[1])) / 2)`$0
 endsnippet
 
 snippet "snip(pet)?" "Snippet" brA
 `!p snip.rv = 'snippet'` ${1:trigger} "${2:description}" ${3}
 ${4}
-`!p snip.rv = 'endsnippet'`
-$0
+`!p snip.rv = 'endsnippet'`$0
 endsnippet
 
