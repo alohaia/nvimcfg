@@ -24,7 +24,16 @@ endsnippet
 snippet fig "figure envirenment" bw
 \begin{figure}[ht]
     \centering
-    \includegraphics[${1:size}]{${2:filename}}
+    \includegraphics[${1:width=\textwidth}]{${2:filename}}
+    \caption{${3:caption}}
+    \label{fig:${4:label}}
+\end{figure}$0
+endsnippet
+
+snippet fullfig "figure envirenment" bw
+\begin{figure}[ht]
+    \centering
+    \makebox[\textwidth]{\includegraphics[${1:width=\textwidth}]{${2:filename}}}
     \caption{${3:caption}}
     \label{fig:${4:label}}
 \end{figure}$0
