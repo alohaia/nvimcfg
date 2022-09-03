@@ -27,7 +27,7 @@ snippet fig "figure envirenment" bw
     \includegraphics[${1:size}]{${2:filename}}
     \caption{${3:caption}}
     \label{fig:${4:label}}
-\end{figure}
+\end{figure}$0
 endsnippet
 
 # Snippets for math
@@ -42,7 +42,7 @@ ${1:${VISUAL}}
 endsnippet
 
 context "math()"
-snippet "(\(.*?\)|[0-9]*[A-z]+|[0-9]+[A-z]*)/" "Fraction" irAe
+snippet "(\(.*?\)|[0-9]*[A-Za-z]+|[0-9]+[A-Za-z]*)/" "Fraction" irAe
 \\frac{${1:`!p snip.rv = ('' if not match.group(1) else match.group(1))`}}{$2}$0
 endsnippet
 
@@ -52,17 +52,7 @@ snippet '([A-Za-z])(\d)' "auto subscript" wrAe
 endsnippet
 
 context "math()"
-snippet '([A-Za-z])_(\d+) ' "auto subscript2" wrAe
-`!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`} 
-endsnippet
-
-context "math()"
-snippet '([A-Za-z])^(\d+) ' "auto supscript2" wrAe
-`!p snip.rv = match.group(1)`^{`!p snip.rv = match.group(2)`} 
-endsnippet
-
-context "math()"
-snippet "([0-9]*[A-z]+|[0-9]+[A-z]*)deg" "degree" wrAe
+snippet "([0-9]*[A-Za-z]+|[0-9]+[A-Za-z]*)deg" "degree" wrAe
 `!p snip.rv = match.group(1)`^\circ
 endsnippet
 
