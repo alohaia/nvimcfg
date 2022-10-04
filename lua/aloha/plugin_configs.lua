@@ -229,7 +229,9 @@ configs['neovim/nvim-lspconfig'] = function()
 
     local enhance_attach = function(client,bufnr)
         -- Set autocommands conditional on server_capabilities
-        if client.resolved_capabilities.document_highlight then
+        -- :lua =vim.lsp.get_active_clients()[1].server_capabilities
+        -- https://github.com/neovim/neovim/issues/14090#issuecomment-1113956767
+        if client.server_capabilities.documentHighlightProvider then
             api.nvim_exec([[
                 hi LspReferenceRead cterm=bold ctermbg=red gui=italic guibg=#2C323C
                 hi LspReferenceText cterm=bold ctermbg=red gui=italic guibg=#2C323C
@@ -523,14 +525,12 @@ configs['nvim-telescope/telescope.nvim'] = function()
 end
 
 configs['RRethy/vim-illuminate'] = function()
-    vim.cmd[[autocmd VimEnter * hi illuminatedWord guibg=Grey]]
-    -- vim.cmd[[autocmd VimEnter * hi illuminatedCurWord gui=bold]]
     g.Illuminate_highlightUnderCursor = 0
     g.Illuminate_insert_mode_highlight = true
     g.Illuminate_ftblacklist = {'dashboard', 'NvimTree'}
     -- g.Illuminate_ftwhitelist = {}
-    -- api.nvim_set_keymap('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>', {noremap=true})
-    -- api.nvim_set_keymap('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', {noremap=true})
+    api.nvim_set_keymap('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>', {noremap=true})
+    api.nvim_set_keymap('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', {noremap=true})
 end
 
 configs['rhysd/clever-f.vim'] = function()
@@ -662,6 +662,17 @@ configs['mhinz/vim-startify'] = function()
         { type = 'sessions',  header = {'   Sessions'}              },
         { type = 'bookmarks', header = {'   Bookmarks'}             },
     }
+
+    _G.webDevIcons = function(path)
+        local filename = vim.fn.fnamemodify(path, ':t')
+        local extension = vim.fn.fnamemodify(path, ':e')
+        return require'nvim-web-devicons'.get_icon(filename, extension, { default = true })
+    end
+    vim.cmd[[
+    function! StartifyEntryFormat() abort
+        return 'v:lua.webDevIcons(absolute_path) . " " . entry_path'
+    endfunction
+    ]]
 end
 
 configs['preservim/nerdcommenter'] = function()
@@ -829,8 +840,8 @@ configs['svermeulen/vim-yoink'] = function ()
     api.nvim_set_keymap('n', 'P', '<plug>(YoinkPaste_P)', {noremap=false})
     api.nvim_set_keymap('n', 'gp', '<plug>(YoinkPaste_gp)', {noremap=false})
     api.nvim_set_keymap('n', 'gP', '<plug>(YoinkPaste_gP)', {noremap=false})
-    api.nvim_set_keymap('n', '<M-n>', '<plug>(YoinkPostPasteSwapBack)', {noremap=false})
-    api.nvim_set_keymap('n', '<M-p>', '<plug>(YoinkPostPasteSwapForward)', {noremap=false})
+    api.nvim_set_keymap('n', '[s', '<plug>(YoinkPostPasteSwapBack)', {noremap=false})
+    api.nvim_set_keymap('n', ']s', '<plug>(YoinkPostPasteSwapForward)', {noremap=false})
     api.nvim_set_keymap('n', '[y', '<plug>(YoinkRotateBack)', {noremap=false})
     api.nvim_set_keymap('n', ']y', '<plug>(YoinkRotateForward)', {noremap=false})
     api.nvim_set_keymap('n', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
@@ -985,7 +996,8 @@ configs['olimorris/onedarkpro.nvim'] = function()
         dark_theme = "onedark_vivid",
         light_theme = "onelight_vivid",
         highlights = {
-            Conceal = { link = "Normal" }
+            Conceal = { link = "Normal" },
+            -- Keyword = { gui = "italic" }
         },
         plugins = {
             all = false,
@@ -994,10 +1006,14 @@ configs['olimorris/onedarkpro.nvim'] = function()
             treesitter = true
         },
         options = {
-            transparency = transparentbg,
-            window_unfocussed_color = false,
+            bold = true,
+            italic = true,
             undercurl = true,
+            underline = true,
             cursorline = true,
+            transparency = transparentbg,
+            terminal_colors = true,
+            window_unfocussed_color = false,
         }
     })
     require("onedarkpro").load()

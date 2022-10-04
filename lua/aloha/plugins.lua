@@ -37,7 +37,7 @@ return {
     -- ['saadparwaiz1/cmp_luasnip'] = {opt=true},
 
     -- ui
-    ['mhinz/vim-startify'] = {},
+    ['mhinz/vim-startify'] = { dependency = {'kyazdani42/nvim-web-devicons'} },
     ['alohaia/onedark.vim'] = {disable = true},
     ['olimorris/onedarkpro.nvim'] = {},
     ['nvim-lualine/lualine.nvim'] = {},
