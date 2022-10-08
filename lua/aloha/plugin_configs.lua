@@ -165,7 +165,11 @@ configs['kyazdani42/nvim-tree.lua'] = function()
         hijack_cursor = true,
         hijack_netrw = true,
         view = {
-            hide_root_folder = false,
+            hide_root_folder = true,
+            adaptive_size = true,
+            float = {
+                enable = true
+            },
         },
         filters = {
             dotfiles = true,
@@ -189,7 +193,7 @@ configs['kyazdani42/nvim-tree.lua'] = function()
             },
             open_file = {
                 quit_on_open = false,
-                resize_window = true,
+                resize_window = false,
                 window_picker = {
                     enable = true,
                     chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
