@@ -23,15 +23,6 @@ configs['lukas-reineke/indent-blankline.nvim'] = function()
             "selector", "^if", "^table", "if_statement", "while", "for"
         },
     }
-    -- g.indent_blankline_show_current_context = 1
-    -- vim.cmd[[au VimEnter * highlight IndentBlanklineChar guifg=#00FF00 gui=nocombine]]
-    -- vim.cmd[[au VimEnter * highlight IndentBlanklineSpaceChar guifg=#00FF00 gui=nocombine]]
-    -- vim.cmd[[au VimEnter * highlight IndentBlanklineSpaceCharBlankline guifg=#00FF00 gui=nocombine]]
-    -- vim.cmd[[au VimEnter * highlight IndentBlanklineContextChar guifg=#00FF00 gui=nocombine]]
-    --   g.indent_blankline_show_trailing_blankline_indent = false
-    --   g.indent_blankline_show_current_context = true
-    -- because lazy load indent-blankline so need readd this autocmd
-    -- vim.cmd('autocmd CursorMoved * IndentBlanklineRefresh')
 end
 
 configs['norcalli/nvim-colorizer.lua'] = function()
@@ -1021,24 +1012,20 @@ configs['olimorris/onedarkpro.nvim'] = function()
         }
     })
     require("onedarkpro").load()
-    if transparentbg then
-        api.nvim_create_autocmd("VimEnter", {
-            pattern = "*",
-            callback = function ()
-                api.nvim_set_hl(0, 'lualine_c_normal', {bg="NONE"})
-                api.nvim_set_hl(0, 'lualine_c_inactive',{bg="NONE"})
-            end
-        })
-    end
+    -- if transparentbg then
+    --     api.nvim_create_autocmd("VimEnter", {
+    --         pattern = "*",
+    --         callback = function ()
+    --             api.nvim_set_hl(0, 'lualine_c_normal', {bg="NONE"})
+    --             api.nvim_set_hl(0, 'lualine_c_inactive',{bg="NONE"})
+    --         end
+    --     })
+    -- end
 end
 
 configs['nvim-lualine/lualine.nvim'] = function()
     local function spelllang()
-        if vim.opt.spell:get() then
-            return '﯑ ' .. string.upper(table.concat(vim.opt.spelllang:get(), ','))
-        else
-            return ''
-        end
+        return '﯑ ' .. string.upper(table.concat(vim.opt.spelllang:get(), ','))
     end
     require('lualine').setup {
         options = {
@@ -1055,9 +1042,9 @@ configs['nvim-lualine/lualine.nvim'] = function()
         sections = {
             lualine_a = {'mode'},
             lualine_b = {'branch', 'diff', 'diagnostics'},
-            lualine_c = {'filename'},
-            lualine_x = {'encoding', 'fileformat', 'filetype'},
-            lualine_y = {spelllang, 'progress'},
+            lualine_c = {'filetype', 'filename'},
+            lualine_x = {'encoding', 'fileformat'},
+            lualine_y = {{spelllang, cond = function() return vim.opt.spell:get() end}, 'progress'},
             lualine_z = {'location'}
         },
         inactive_sections = {
