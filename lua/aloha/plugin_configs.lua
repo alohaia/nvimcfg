@@ -1012,15 +1012,15 @@ configs['olimorris/onedarkpro.nvim'] = function()
         }
     })
     require("onedarkpro").load()
-    -- if transparentbg then
-    --     api.nvim_create_autocmd("VimEnter", {
-    --         pattern = "*",
-    --         callback = function ()
-    --             api.nvim_set_hl(0, 'lualine_c_normal', {bg="NONE"})
-    --             api.nvim_set_hl(0, 'lualine_c_inactive',{bg="NONE"})
-    --         end
-    --     })
-    -- end
+    if transparentbg then
+        api.nvim_create_autocmd("VimEnter", {
+            pattern = "*",
+            callback = function ()
+                api.nvim_set_hl(0, 'lualine_c_normal', {bg="NONE"})
+                api.nvim_set_hl(0, 'lualine_c_inactive',{bg="NONE"})
+            end
+        })
+    end
 end
 
 configs['nvim-lualine/lualine.nvim'] = function()
@@ -1042,8 +1042,14 @@ configs['nvim-lualine/lualine.nvim'] = function()
         sections = {
             lualine_a = {'mode'},
             lualine_b = {'branch', 'diff', 'diagnostics'},
-            lualine_c = {'filetype', 'filename'},
-            lualine_x = {'encoding', 'fileformat'},
+            lualine_c = {
+                {'filetype', color = {bg='#2c323c'}},
+                {'filename'}
+            },
+            lualine_x = {
+                'encoding',
+                {'fileformat', color = {bg="NONE"}, separator = {right='┆', left=""}}
+            },
             lualine_y = {{spelllang, cond = function() return vim.opt.spell:get() end}, 'progress'},
             lualine_z = {'location'}
         },
