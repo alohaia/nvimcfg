@@ -42,7 +42,7 @@ snippet MM "Math block" bwA
 \\\\,.\$\$
 endsnippet
 
-snippet mm "Inline math" iw
+snippet mm "Inline math" i
 \$${1:${VISUAL}}\$
 endsnippet
 
@@ -50,19 +50,23 @@ snippet  "Blod text" iA
 **${1:${VISUAL}}**
 endsnippet
 
-snippet it "italic text" iw
+snippet bb "Blod text" iA
+**${1:${VISUAL}}**
+endsnippet
+
+snippet ii "italic text" iA
 *${1:${VISUAL}}*
 endsnippet
 
-snippet ib "italic blod text" iw
+snippet ib "italic blod text" i
 ***${1:${VISUAL}}***
 endsnippet
 
-snippet ins "insert" iw
+snippet ins "insert" i
 <ins>${1:${VISUAL}}</ins>
 endsnippet
 
-snippet del "deleted line" iw
+snippet del "deleted line" i
 ~~${1:${VISUAL}}~~
 endsnippet
 
@@ -84,6 +88,10 @@ endsnippet
 
 snippet anc "anchor" i
 [${1:${VISUAL}}](#${2:`!p snip.rv=anchor_format(t[1])`})
+endsnippet
+
+snippet ln "link" i
+[${1:${VISUAL}}](${2:`!p snip.rv=anchor_format(t[1])`})
 endsnippet
 
 # snippet '^\*' "Abbr" rA

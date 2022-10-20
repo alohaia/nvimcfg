@@ -35,14 +35,72 @@ configs['norcalli/nvim-colorizer.lua'] = function()
 end
 
 configs['akinsho/bufferline.nvim'] = function()
-    local fg_colors = {
-        Error = vim.fn.synIDattr(vim.fn.hlID("Error"), "fg", "gui"),
+    local colors = {
+        white = "#ABB2BF",
+        gray = "#3E4452",
+        dark_gray = "#2C323C",
+        green = "#98C379",
+    }
+    local hls = {
+        normal = { bg=colors.dark_gray, italic=true, bold=false },
+        selected = { bg=colors.white, italic=false, bold=true },
+        visible = { bg=colors.gray, italic=false, bold=true }
     }
     require('bufferline').setup {
+        highlights = {
+            fill = { bg="NONE" },
+
+            background = hls.normal,
+            buffer_selected = vim.tbl_extend("force", hls.selected, { fg=colors.dark_gray }),
+            buffer_visible = hls.visible,
+
+            hint = hls.normal, hint_selected = hls.selected, hint_visible = hls.visible,
+            info = hls.normal, info_selected = hls.selected, info_visible = hls.visible,
+            warning = hls.normal, warning_selected = hls.selected, warning_visible = hls.visible,
+            error = hls.normal, error_selected = hls.selected, error_visible = hls.visible,
+            hint_diagnostic = hls.normal, hint_diagnostic_selected = hls.selected, hint_diagnostic_visible = hls.visible,
+            info_diagnostic = hls.normal, info_diagnostic_selected = hls.selected, info_diagnostic_visible = hls.visible,
+            warning_diagnostic = hls.normal, warning_diagnostic_selected = hls.selected, warning_diagnostic_visible = hls.visible,
+            error_diagnostic = hls.normal, error_diagnostic_selected = hls.selected, error_diagnostic_visible = hls.visible,
+
+            duplicate = { bg=colors.dark_gray },
+            duplicate_selected = { fg=colors.dark_gray, bg=colors.white },
+            duplicate_visible = { bg=colors.gray },
+
+            separator = { bg=colors.dark_gray },
+            separator_selected = { fg=colors.dark_gray, bg=colors.white },
+            separator_visible = { bg=colors.gray },
+
+            indicator_selected = { fg=colors.dark_gray, bg=colors.white },
+            indicator_visible = { bg=colors.gray },
+
+            numbers = { bg=colors.dark_gray },
+            numbers_selected = { fg=colors.dark_gray, bg=colors.white },
+            numbers_visible = { bg=colors.gray },
+
+            tab = { bg=colors.dark_gray },
+            tab_selected = { fg=colors.dark_gray, bg=colors.white },
+
+            tab_separator = { fg=colors.dark_gray, bg=colors.dark_gray },
+            tab_separator_selected = { fg=colors.white, bg=colors.white },
+
+            modified = { fg=colors.green, bg=colors.dark_gray },
+            modified_selected = { fg=colors.dark_gray, bg=colors.white },
+            modified_visible = { fg=colors.green, bg=colors.gray },
+
+            pick = { fg=colors.green, bg=colors.dark_gray },
+            pick_visible = { fg=colors.dark_gray, fg=colors.green, bg=colors.white },
+            pick_selected = { fg=colors.green, bg=colors.gray },
+
+            diagnostic = { bg=colors.dark_gray },
+            diagnostic_visible = { fg=colors.dark_gray, bg=colors.white },
+            diagnostic_selected = { bg=colors.gray },
+
+            offset_separator = { bg=colors.dark_gray },
+        },
         options = {
-            numbers = function(opts)
-                return opts.id .. "."
-            end,
+            mode = "buffers",
+            numbers = "buffer_id",
             close_command = "bdelete! %d",       -- can be a string | function, see "Mouse actions"
             right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
             left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
@@ -50,62 +108,27 @@ configs['akinsho/bufferline.nvim'] = function()
             --- NOTE: this plugin is designed with this icon in mind,
             --- and so changing this is NOT recommended, this is intended
             --- as an escape hatch for people who cannot bear it for whatever reason
-            show_buffer_icons = true, -- disable filetype icons for buffers
+            show_buffer_icons = true,
             show_buffer_close_icons = false,
-            show_close_icon = true,
             show_tab_indicators = true,
-            indicator = {
-                icon = '',
-                style =  'none', -- 'icon' | 'underline' | 'none',
-            },
-            buffer_close_icon = '', -- 
-            modified_icon = '✥ ',
-            close_icon = '',
+            show_close_icon = false,
+            indicator = { style = 'none' },
+            modified_icon = '✥',
             left_trunc_marker = '',
             right_trunc_marker = '',
-            --- name_formatter can be used to change the buffer's label in the bufferline.
-            --- Please note some names can/will break the
-            --- bufferline so use this at your discretion knowing that it has
-            --- some limitations that will *NOT* be fixed.
-            -- name_formatter = function(buf)  -- buf contains a "name", "path" and "bufnr"
-            --   -- remove extension from markdown files for example
-            --   if buf.name:match('%.md') then
-            --     return vim.fn.fnamemodify(buf.name, ':t:r')
-            --   end
-            -- end,
             max_name_length = 18,
             max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
             tab_size = 18,
             diagnostics = "nvim_lsp", -- false | "nvim_lsp",
-            -- diagnostics_indicator = function(count, level, diagnostics_dict, context)
             diagnostics_indicator = function(count, level, _, context)
                 local sym = level == "error" and " "
                     or (level == "warning" and " " or (level == "hint" and "" or ""))
                 return sym.."("..count..")"
             end,
-            --- NOTE: this will be called a lot so don't do any heavy processing here
-            -- custom_filter = function(buf_number)
-            --   -- filter out filetypes you don't want to see
-            --   if vim.bo[buf_number].filetype ~= "<i-dont-want-to-see-this>" then
-            --     return true
-            --   end
-            --   -- filter out by buffer name
-            --   if vim.fn.bufname(buf_number) ~= "<buffer-name-I-dont-want>" then
-            --     return true
-            --   end
-            --   -- filter out based on arbitrary rules
-            --   -- e.g. filter out vim wiki buffer from tabline in your work repo
-            --   if vim.fn.getcwd() == "<work-repo>" and vim.bo[buf_number].filetype ~= "wiki" then
-            --     return true
-            --   end
-            -- end,
             offsets = {
                 {
-                    filetype = "NvimTree",
-                    -- text = function()
-                    --     return vim.fn.getcwd()
-                    -- end,
-                    text = "Nvim Tree",
+                    filetype = "vista_markdown",
+                    text = "Vista Tags",
                     highlight = "Title",
                     text_align = "left",
                 }
@@ -113,11 +136,10 @@ configs['akinsho/bufferline.nvim'] = function()
             persist_buffer_sort = true, -- whether or not custom sorted buffers should persist
             --- can also be a table containing 2 custom separators
             --- [focused and unfocused]. eg: { '|', '|' }
-            separator_style = {'', ''}, -- "slant" | "thick" | "thin" | { 'any', 'any' },
+            separator_style = { "", "" }, -- "slant" | "thick" | "thin" | { 'any', 'any' },
             enforce_regular_tabs = false,
             always_show_bufferline = true,
-            sort_by = 'id', -- 'id' | 'extension' | 'relative_directory' | 'directory' | 'tabs' |
-                -- function(buffer_a, buffer_b) return buffer_a.modified > buffer_b.modified end
+            sort_by = "id",
             custom_areas = {
               right = function()
                 local result = {}
@@ -221,23 +243,24 @@ end
 
 configs['neovim/nvim-lspconfig'] = function()
     local lspconfig = require 'lspconfig'
+    local util = require 'lspconfig.util'
 
-    local enhance_attach = function(client,bufnr)
+    local on_attach = function(client,bufnr)
         -- Set autocommands conditional on server_capabilities
         -- :lua =vim.lsp.get_active_clients()[1].server_capabilities
         -- https://github.com/neovim/neovim/issues/14090#issuecomment-1113956767
-        if client.server_capabilities.documentHighlightProvider then
-            api.nvim_exec([[
-                hi LspReferenceRead cterm=bold ctermbg=red gui=italic guibg=#2C323C
-                hi LspReferenceText cterm=bold ctermbg=red gui=italic guibg=#2C323C
-                hi LspReferenceWrite cterm=bold ctermbg=red gui=italic guibg=#2C323C
-                augroup lsp_document_highlight
-                    autocmd! * <buffer>
-                    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-                    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-                augroup END
-            ]], false)
-        end
+        -- if client.server_capabilities.documentHighlightProvider then
+        --     api.nvim_exec([[
+        --         hi LspReferenceRead cterm=bold ctermbg=red gui=italic guibg=#2C323C
+        --         hi LspReferenceText cterm=bold ctermbg=red gui=italic guibg=#2C323C
+        --         hi LspReferenceWrite cterm=bold ctermbg=red gui=italic guibg=#2C323C
+        --         augroup lsp_document_highlight
+        --             autocmd! * <buffer>
+        --             autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        --             autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+        --         augroup END
+        --     ]], false)
+        -- end
         -- keymaps
         local opts = { noremap = true, silent = true }
         api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -258,36 +281,55 @@ configs['neovim/nvim-lspconfig'] = function()
         -- api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
         api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
         -- api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
-        api.nvim_create_user_command('Format',
-            function ()
-                vim.lsp.buf.formatting()
-            end,
-            { force = true }
-        )
-        -- omnifunc
+
+        -- Enable completion triggered by <c-x><c-o>
         api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
         -- for 'RRethy/vim-illuminate'
         require 'illuminate'.on_attach(client)
     end
 
-    -- local capabilities = vim.lsp.protocol.make_client_capabilities()
-    -- capabilities.textDocument.completion.completionItem.snippetSupport = true
-    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.completion.completionItem = {
+        documentationFormat = { "markdown", "plaintext" },
+        snippetSupport = true,
+        preselectSupport = true,
+        insertReplaceSupport = true,
+        labelDetailsSupport = true,
+        deprecatedSupport = true,
+        commitCharactersSupport = true,
+        tagSupport = { valueSet = { 1 } },
+        resolveSupport = {
+            properties = {
+                "documentation",
+                "detail",
+                "additionalTextEdits",
+            },
+        },
+    }
 
     local runtime_path = vim.split(package.path, ';')
     table.insert(runtime_path, "lua/?.lua")
     table.insert(runtime_path, "lua/?/init.lua")
+    local root_files = {
+        '.luarc.json',
+        '.luacheckrc',
+        '.stylua.toml',
+        'selene.toml',
+    }
     lspconfig.sumneko_lua.setup {
         capabilities = capabilities,
-        on_attach = enhance_attach,
+        on_attach = on_attach,
         cmd = {
             "lua-language-server",
             "-E", "/usr/share/lua-language-server/main.lua"
-        };
+        },
+        single_file_support = true,
+        root_dir = function(fname)
+            return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
+        end,
         settings = {
             Lua = {
                 diagnostics = {
-                    enable = true,
                     globals = {"vim"}
                 },
                 runtime = {
@@ -295,12 +337,13 @@ configs['neovim/nvim-lspconfig'] = function()
                     path = runtime_path,
                 },
                 workspace = {
-                    library = api.nvim_get_runtime_file("", true),
+                    library = {
+                        [vim.fn.expand "$VIMRUNTIME/lua"] = true,
+                        [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
+                    },
+                    maxPreload = 100000,
+                    preloadFileSize = 10000,
                 },
-                -- -- Do not send telemetry data containing a randomized but unique identifier
-                -- telemetry = {
-                --     enable = false,
-                -- },
             },
         }
     }
@@ -308,7 +351,7 @@ configs['neovim/nvim-lspconfig'] = function()
         capabilities = capabilities,
         on_attach = function (client, bufnr)
             api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<Cmd>ClangdSwitchSourceHeader<cr>', {noremap=true})
-            enhance_attach(client, bufnr)
+            on_attach(client, bufnr)
         end,
         cmd = {
             "clangd",
@@ -325,14 +368,13 @@ configs['neovim/nvim-lspconfig'] = function()
     for _,server in ipairs(servers) do
         lspconfig[server].setup {
             capabilities = capabilities,
-            on_attach = enhance_attach,
+            on_attach = on_attach,
         }
     end
 
     lspconfig.tsserver.setup {
         capabilities = capabilities,
     }
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
     lspconfig.cssls.setup {
         capabilities = capabilities,
         cmd = { "/usr/bin/vscode-css-language-server", "--stdio" },
@@ -1031,33 +1073,34 @@ configs['nvim-lualine/lualine.nvim'] = function()
         options = {
             icons_enabled = true,
             theme = 'onedark',
-            component_separators = { left = '┆', right = '┆'},
-            -- component_separators = { left = '', right = ''},
+            component_separators = { left = '┆', right = '┆'}, -- 
             section_separators = { left = '┆', right = '┆'},
-            -- section_separators = { left = '', right = ''},
             disabled_filetypes = {},
             always_divide_middle = true,
             globalstatus = false,
         },
         sections = {
-            lualine_a = {'mode'},
-            lualine_b = {'branch', 'diff', 'diagnostics'},
+            lualine_a = { 'mode' },
+            lualine_b = { 'branch', 'diff', 'diagnostics' },
             lualine_c = {
-                {'filetype', color = {bg='#2c323c'}},
-                {'filename'}
+                { 'filetype', color = { bg='#2c323c' } },
+                { 'filename' }
             },
             lualine_x = {
                 'encoding',
-                {'fileformat', color = {bg="NONE"}, separator = {right='┆', left=""}}
+                { 'fileformat', color = { bg='#2c323c' } }
             },
-            lualine_y = {{spelllang, cond = function() return vim.opt.spell:get() end}, 'progress'},
-            lualine_z = {'location'}
+            lualine_y = {
+                { spelllang, cond = function() return vim.opt.spell:get() end },
+                'progress'
+            },
+            lualine_z = { 'location' }
         },
         inactive_sections = {
             lualine_a = {},
             lualine_b = {},
-            lualine_c = {'filename'},
-            lualine_x = {'location'},
+            lualine_c = { 'filename' },
+            lualine_x = { 'location' },
             lualine_y = {},
             lualine_z = {}
         },
