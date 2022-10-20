@@ -1,19 +1,6 @@
 return {
     -- completion
-    ['neovim/nvim-lspconfig'] = {
-        ft = {
-            'lua',                          -- sumneko_lua
-            'c', 'cpp', 'objc', 'objcpp',   -- clangd
-            'sh',                           -- bashls
-            'python',                       -- pyright
-            'r', 'rmd',                     -- r_language_server
-            'javascript', 'javascriptreact', 'javascript.jsx', 'typescript',
-                'typescriptreact', 'typescript.tsx', -- tsserver
-            'css', 'scss', 'less',          -- ccsls
-            'json', 'jsonc',                -- jsonls
-            'html',                         -- html
-        },
-    },
+    ['neovim/nvim-lspconfig'] = {},
     ['hrsh7th/nvim-cmp'] = {
         dependency = {
             'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
