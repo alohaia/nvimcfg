@@ -36,7 +36,7 @@ local function exec(cmd, cwd, cmd_type)
             func()
         else
             err('%s failed: %s', cmd, mes)
-            rt = nil
+            rt = false
         end
     end
     goto finish
@@ -60,7 +60,7 @@ local function exec(cmd, cwd, cmd_type)
                 func()
             else
                 err('%s failed: %s', cmd, mes)
-                rt = nil
+                rt = false
             end
         end
     end

@@ -27,13 +27,14 @@ return {
     linebreak      = false,
     breakindent    = false,
     -- listchars      = "tab:<->,nbsp:+,trail:-,extends:>,precedes:<"; -- «» trail:˽
-    listchars      = "tab:«·»,nbsp:+,trail:·,extends:→,precedes:←"; -- trail:˽
+    listchars      = "tab:«·»,nbsp:+,trail:˽,extends:→,precedes:←"; -- trail:˽
     fillchars      = 'vert:┆', -- ┆ ▏
     fileencodings  = 'utf-8,ucs-bom,gb18030,gbk,gb2312,cp936',
     emoji          = true,
     equalalways    = false,
     switchbuf      = 'useopen,usetab,newtab',
     showtabline    = 2,
+    cmdheight      = 0,
     shortmess      = "atAFc",
     mouse          = 'a',
     grepprg        = 'rg -n',

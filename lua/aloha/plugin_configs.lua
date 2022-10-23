@@ -89,7 +89,7 @@ configs['akinsho/bufferline.nvim'] = function()
             modified_visible = { fg=colors.green, bg=colors.gray },
 
             pick = { fg=colors.green, bg=colors.dark_gray },
-            pick_visible = { fg=colors.dark_gray, fg=colors.green, bg=colors.white },
+            pick_visible = { fg=colors.dark_gray, bg=colors.white },
             pick_selected = { fg=colors.green, bg=colors.gray },
 
             diagnostic = { bg=colors.dark_gray },
