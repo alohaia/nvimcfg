@@ -41,24 +41,33 @@ configs['akinsho/bufferline.nvim'] = function()
         dark_gray = "#2C323C",
         green = "#98C379",
     }
-    local hls = {
+    local hls_style = {
         normal = { bg=colors.dark_gray, italic=true, bold=false },
         selected = { bg=colors.white, italic=false, bold=true },
         visible = { bg=colors.gray, italic=false, bold=true }
+    }
+    local hls = {
+        normal = { bg=colors.dark_gray },
+        selected = { bg=colors.white },
+        visible = { bg=colors.gray }
     }
     require('bufferline').setup {
         highlights = {
             fill = { bg="NONE" },
 
-            background = hls.normal,
-            buffer_selected = vim.tbl_extend("force", hls.selected, { fg=colors.dark_gray }),
-            buffer_visible = hls.visible,
+            background = hls_style.normal,
+            buffer_selected = vim.tbl_extend("force", hls_style.selected, { fg=colors.dark_gray }),
+            buffer_visible = hls_style.visible,
 
-            hint = hls.normal, hint_selected = hls.selected, hint_visible = hls.visible,
-            info = hls.normal, info_selected = hls.selected, info_visible = hls.visible,
-            warning = hls.normal, warning_selected = hls.selected, warning_visible = hls.visible,
-            error = hls.normal, error_selected = hls.selected, error_visible = hls.visible,
-            hint_diagnostic = hls.normal, hint_diagnostic_selected = hls.selected, hint_diagnostic_visible = hls.visible,
+            hint = hls_style.normal,
+            hint_selected = vim.tbl_extend("force", hls_style.selected, { fg=colors.dark_gray }),
+            hint_visible = hls_style.visible,
+            info = hls_style.normal, info_selected = hls_style.selected, info_visible = hls_style.visible,
+            warning = hls_style.normal, warning_selected = hls_style.selected, warning_visible = hls_style.visible,
+            error = hls_style.normal, error_selected = hls_style.selected, error_visible = hls_style.visible,
+            hint_diagnostic = hls.normal,
+            hint_diagnostic_selected = vim.tbl_extend("force", hls_style.selected, { fg=colors.dark_gray }),
+            hint_diagnostic_visible = hls.visible,
             info_diagnostic = hls.normal, info_diagnostic_selected = hls.selected, info_diagnostic_visible = hls.visible,
             warning_diagnostic = hls.normal, warning_diagnostic_selected = hls.selected, warning_diagnostic_visible = hls.visible,
             error_diagnostic = hls.normal, error_diagnostic_selected = hls.selected, error_diagnostic_visible = hls.visible,
