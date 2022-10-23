@@ -110,10 +110,10 @@ configs['akinsho/bufferline.nvim'] = function()
         options = {
             mode = "buffers",
             numbers = "buffer_id",
-            close_command = "bdelete! %d",       -- can be a string | function, see "Mouse actions"
-            right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
-            left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
-            middle_mouse_command = nil,          -- can be a string | function, see "Mouse actions"
+            close_command = "bdelete! %d",
+            right_mouse_command = "bdelete! %d",
+            left_mouse_command = "buffer %d",
+            middle_mouse_command = nil,
             --- NOTE: this plugin is designed with this icon in mind,
             --- and so changing this is NOT recommended, this is intended
             --- as an escape hatch for people who cannot bear it for whatever reason
@@ -122,16 +122,16 @@ configs['akinsho/bufferline.nvim'] = function()
             show_tab_indicators = true,
             show_close_icon = false,
             indicator = { style = 'none' },
-            modified_icon = '✥',
-            left_trunc_marker = '',
-            right_trunc_marker = '',
+            modified_icon = 'M', -- ✥ ●
+            left_trunc_marker = '<', -- 
+            right_trunc_marker = '>', -- 
             max_name_length = 18,
             max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
             tab_size = 18,
             diagnostics = "nvim_lsp", -- false | "nvim_lsp",
-            diagnostics_indicator = function(count, level, _, context)
-                local sym = level == "error" and " "
-                    or (level == "warning" and " " or (level == "hint" and "" or ""))
+            diagnostics_indicator = function(count, level, _, context) -- 
+                local sym = level == "error" and "E"
+                    or (level == "warning" and "W" or (level == "hint" and "H" or "I"))
                 return sym.."("..count..")"
             end,
             offsets = {
