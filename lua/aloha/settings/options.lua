@@ -9,7 +9,7 @@ return {
     virtualedit    = "block",
     hidden         = true,
     tags           = './tags;,tags,./.tags',
-    wildcharm      = 26,  -- wildchar for cmap, <c-z>, `set wildcharm          = <C-z> | echo &wildcharm`
+    wildcharm      = 26,  -- wildchar for cmap, <c-z>
     wildmode       = 'longest:full,full',
     wildignore     = '*.o,*~,*.pyc',
     fileformats    = 'unix,dos,mac',
@@ -34,7 +34,7 @@ return {
     equalalways    = false,
     switchbuf      = 'useopen,usetab,newtab',
     showtabline    = 2,
-    cmdheight      = 0,
+    cmdheight      = 1,
     shortmess      = "atAFc",
     mouse          = 'a',
     grepprg        = 'rg -n',

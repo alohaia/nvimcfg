@@ -114,6 +114,7 @@ return {
     ['alohaia/hugowiki.nvim'] = {},
     ['lervag/vimtex'] = {},
     ['rhysd/clever-f.vim'] = {},
+    ['rainbowhxch/accelerated-jk.nvim'] = {},
     ['norcalli/nvim-colorizer.lua'] = {},
     ['brooth/far.vim'] = {},
     ['preservim/nerdcommenter'] = {},
