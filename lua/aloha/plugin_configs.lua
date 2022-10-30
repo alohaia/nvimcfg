@@ -563,6 +563,7 @@ configs['nvim-telescope/telescope.nvim'] = function()
     -- telescope.load_extension('fzf')
 
     -- keybindings
+    api.nvim_set_keymap('n', ',t', '<Cmd>Telescope resume<CR>', {noremap = true})
     api.nvim_set_keymap('n', ',f', '<Cmd>Telescope find_files<CR>', {noremap = true})
     api.nvim_set_keymap('n', ',F', '<Cmd>Telescope file_browser<CR>', {noremap = true})
     api.nvim_set_keymap('n', ',b', '<Cmd>Telescope buffers<CR>', {noremap = true})
