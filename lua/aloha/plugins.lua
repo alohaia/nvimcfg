@@ -121,7 +121,7 @@ return {
     ['tpope/vim-capslock'] = {},
     ['tpope/vim-surround'] = {},
     ['tpope/vim-repeat'] = {},
-    ['dkarter/bullets.vim'] = {},   -- use `vim.g.bullets_enabled_file_types`
+    ['dkarter/bullets.vim'] = {disable=true},   -- use `vim.g.bullets_enabled_file_types`
     ['dhruvasagar/vim-table-mode'] = {ft='rmd,markdown,text'},
     ['svermeulen/vim-subversive'] = {},
     ['svermeulen/vim-yoink'] = {},

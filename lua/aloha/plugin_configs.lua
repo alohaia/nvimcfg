@@ -811,7 +811,7 @@ configs['alohaia/hugowiki.nvim'] = function()
     g.hugowiki_rmd_auto_knit = {
         enable = true,
         cwd = vim.fn.expand(g.hugowiki_home),
-        r_script = vim.fn.expand(g.hugowiki_home) .. 'R/build_one.R',
+        r_script = vim.fn.expand(g.hugowiki_home) .. 'utils/R/build_one.R',
     }
 end
 

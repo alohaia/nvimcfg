@@ -103,6 +103,10 @@ snippet tag "primary tag" iw
 {{% ${1:tag} ${2:${VISUAL} }%}}
 endsnippet
 
+snippet tags "primary tag" iw
+{{% ${1:tag} %}}${2:${VISUAL}}{{% /$1 %}}
+endsnippet
+
 snippet ref "hugo ref shortcode" iw
 [${1:${VISUAL}}]({{< ref "${2:$1}" >}})
 endsnippet
@@ -116,8 +120,8 @@ snippet fig "hugo figure shortcode" iw
 endsnippet
 
 snippet tab "tab" iw
-{{% tab type="${1:default}" summary="${2}" details=false open=true `!p snip.rv = ('id="tab_' + anchor_format(t[2]) + '" ') if t[2] else ""`%}}
-${3:${VISUAL}}
+{{% tab type="${1:default}" summary="${2}" details=${3:false} `!p snip.rv = 'open=true' if t[3] == 'true' else ''` `!p snip.rv = ('id="tab_' + anchor_format(t[2]) + '" ') if t[2] else ""`%}}
+${0:${VISUAL}}
 {{% /tab %}}
 endsnippet
 

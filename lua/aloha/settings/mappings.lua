@@ -94,7 +94,7 @@ return {
 
     {'n', '<leader>e', ':e $HOME/.config/nvim/lua/aloha/<C-z>', {silent = false}},
 
-    {'c', '<M-e>', "getcmdtype()==':' ? expand('%:p:h').'/' : ''", {silent = false, expr = true}},
+    {'c', '<M-e>', [[getcmdtype()==':' ? substitute(expand('%:p:h'), '\s', '\\\0', "g").'/' : '']], {silent = false, expr = true}},
     {'i', '<C-s>', "<c-g>u<Esc>[s1z=ea<c-g>u"},
 
     {'n', '<C-c>', [["+yW""yW]]},
