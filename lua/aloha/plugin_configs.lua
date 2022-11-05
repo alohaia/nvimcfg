@@ -572,10 +572,12 @@ configs['nvim-telescope/telescope.nvim'] = function()
 end
 
 configs['RRethy/vim-illuminate'] = function()
-    g.Illuminate_highlightUnderCursor = 0
-    g.Illuminate_insert_mode_highlight = true
-    g.Illuminate_ftblacklist = {'dashboard', 'NvimTree'}
-    -- g.Illuminate_ftwhitelist = {}
+    require('illuminate').configure({
+        providers = {'lsp', 'treesitter', 'regex'},
+        filetypes_denylist = {'dashboard', 'NvimTree'},
+        under_cursor = true,
+        modes_denylist = {},
+    })
     api.nvim_set_keymap('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>', {noremap=true})
     api.nvim_set_keymap('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', {noremap=true})
 end
