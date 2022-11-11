@@ -149,32 +149,32 @@ configs['akinsho/bufferline.nvim'] = function()
             enforce_regular_tabs = false,
             always_show_bufferline = true,
             sort_by = "id",
-            custom_areas = {
-              right = function()
-                local result = {}
-                local error   = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.ERROR }))
-                local warning = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.WARN  }))
-                local info    = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.INFO  }))
-                local hint    = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.HINT  }))
-
-                if error ~= 0 then
-                    table.insert(result, {text = "  " .. error, guifg = "#E06C75"})
-                end
-
-                if warning ~= 0 then
-                    table.insert(result, {text = "  " .. warning, guifg = "#E5C07B"})
-                end
-
-                if hint ~= 0 then
-                    table.insert(result, {text = "  " .. hint, guifg = "#56B6C2"})
-                end
-
-                if info ~= 0 then
-                    table.insert(result, {text = "  " .. info, guifg = "#61AFEF"})
-                end
-                return result
-              end,
-            },
+            -- custom_areas = {
+            --   right = function()
+            --     local result = {}
+            --     local error   = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.ERROR }))
+            --     local warning = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.WARN  }))
+            --     local info    = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.INFO  }))
+            --     local hint    = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.HINT  }))
+            --
+            --     if error ~= 0 then
+            --         table.insert(result, {text = "  " .. error, guifg = "#E06C75"})
+            --     end
+            --
+            --     if warning ~= 0 then
+            --         table.insert(result, {text = "  " .. warning, guifg = "#E5C07B"})
+            --     end
+            --
+            --     if hint ~= 0 then
+            --         table.insert(result, {text = "  " .. hint, guifg = "#56B6C2"})
+            --     end
+            --
+            --     if info ~= 0 then
+            --         table.insert(result, {text = "  " .. info, guifg = "#61AFEF"})
+            --     end
+            --     return result
+            --   end,
+            -- },
         }
     }
     api.nvim_set_keymap("n", "gb", "<Cmd>BufferLinePick<CR>", {noremap = true, silent = true})
@@ -574,7 +574,7 @@ end
 configs['RRethy/vim-illuminate'] = function()
     require('illuminate').configure({
         providers = {'lsp', 'treesitter', 'regex'},
-        filetypes_denylist = {'dashboard', 'NvimTree'},
+        filetypes_denylist = {'dashboard', 'NvimTree', 'markdown', 'rmd', 'tex'},
         under_cursor = true,
         modes_denylist = {},
     })
