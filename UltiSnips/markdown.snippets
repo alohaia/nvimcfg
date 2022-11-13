@@ -116,11 +116,11 @@ snippet rrf "hugo relref shortcode" iw
 endsnippet
 
 snippet fig "hugo figure shortcode" iw
-{{< figure src="${1}.${2:png}" title="${3:$1}" caption="${4}" alt="$3" class="${5}" `!p snip.rv = ('id="fig_' + anchor_format(t[1]) + '" ') if t[1] else ""`>}}
+{{< figure src="${1}.${2:png}" title="${3:$1}" caption="${4}" alt="$3" class="${5}"`!p snip.rv = (' id="fig_' + anchor_format(t[1]) + '"') if t[1] else ""` >}}
 endsnippet
 
 snippet tab "tab" iw
-{{% tab type="${1:default}" summary="${2}" details=${3:false} `!p snip.rv = 'open=true' if t[3] == 'true' else ''` `!p snip.rv = ('id="tab_' + anchor_format(t[2]) + '" ') if t[2] else ""`%}}
+{{% tab type="${1:default}" summary="${2}" details=${3:false}`!p snip.rv = ' open=true' if t[3] == 'true' else ''``!p snip.rv = (' id="tab_' + anchor_format(t[2]) + '"') if t[2] else ""` %}}
 ${0:${VISUAL}}
 {{% /tab %}}
 endsnippet
@@ -138,7 +138,7 @@ snippet sg "sense group" iw
 endsnippet
 
 snippet tbl "table with title and caption" bw
-{{% table title="${1}" caption="${2}" left_sticky=${3:false} `!p snip.rv = ('id="tbl_' + anchor_format(t[1]) + '" ') if t[1] else ""` %}}
+{{% table title="${1}" caption="${2}" left_sticky=${3:false}`!p snip.rv = (' id="tbl_' + anchor_format(t[1]) + '"') if t[1] else ""` %}}
 ${0:${VISUAL}}
 {{% /table %}}
 endsnippet
@@ -150,6 +150,10 @@ endsnippet
 ############## Special Snippets #############
 snippet more "more" bw
 <!--more-->
+endsnippet
+
+snippet sep "separator for deflists" 
+<!--separator-->
 endsnippet
 
 snippet br "<br/> tag" i
