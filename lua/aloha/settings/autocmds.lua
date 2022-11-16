@@ -13,14 +13,6 @@ return {
             vim.fn.setreg('/', save_query)
         end
     }},
-    { 'FileType', {
-        pattern = {'cpp', 'c'},
-        command = [[setlocal path+=./include]]
-    }},
-    { 'FileType', {
-        pattern = {'markdown', 'rmd', 'text'},
-        command = [[setlocal spell]]
-    }},
     { 'TextYankPost', {
         pattern = '*',
         callback = function ()

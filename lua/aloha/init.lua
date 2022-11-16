@@ -60,8 +60,24 @@ return function(_configs)
     end
 
     -- set up options
-    for o,v in pairs(aloha.options) do
-        vim.opt[o] = v
+    if aloha.options.global_options then
+        for o,v in pairs(aloha.options.global_options) do
+            vim.opt[o] = v
+        end
+    end
+    if aloha.options.filetype_options then
+        local ft_options_id = vim.api.nvim_create_augroup("aloha_ft_options", {clear=true})
+        for filetypes,options in pairs(aloha.options.filetype_options) do
+            vim.api.nvim_create_autocmd("FileType", {
+                group = ft_options_id,
+                pattern = filetypes,
+                callback = function ()
+                    for o,v in pairs(options) do
+                        vim.opt_local[o] = v
+                    end
+                end
+            })
+        end
     end
 
     -- packer
@@ -73,7 +89,8 @@ return function(_configs)
     end
 
     -- autocmds
+    local au_id = vim.api.nvim_create_augroup('aloha_autocmds', {clear=true})
     for _,autocmd in ipairs(aloha.autocmds) do
-        vim.api.nvim_create_autocmd(autocmd[1], autocmd[2])
+        vim.api.nvim_create_autocmd(autocmd[1], vim.tbl_extend('keep', autocmd[2], {group=au_id}))
     end
 end
