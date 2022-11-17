@@ -39,4 +39,17 @@ M.bufdelete = function ()
     vim.cmd('bd ' .. tostring(buf))
 end
 
+M.meta_tbl_add = function(tbl_o, tbl_n)
+    local new_table = vim.deepcopy(tbl_o)
+    if tbl_n ~= nil then
+        vim.validate{
+            tbl_n = {tbl_n, 't'}
+        }
+        for k,v in pairs(tbl_n) do
+            new_table[k] = v
+        end
+    end
+    return new_table
+end
+
 return M

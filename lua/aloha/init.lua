@@ -1,3 +1,4 @@
+-- use _configs and ... to fill up _G.aloha
 return function(_configs)
     _G.aloha = { utils = require('aloha.utils') }
 
@@ -22,31 +23,15 @@ return function(_configs)
             }
         }
     })
-
     aloha.configs = configs
 
     local settings = require('aloha.settings')
-
     aloha.map = {
         list = settings.mappings or {},
         leader = configs.mapleader or ' ',
-        default_args = setmetatable({
-                silent = true,
-                noremap = true
-            }, {
-                __add = function(tbl_o, tbl_n)
-                    local new_table = vim.deepcopy(tbl_o)
-                    if tbl_n ~= nil then
-                        vim.validate{
-                            tbl_n = {tbl_n, 't'}
-                        }
-                        for k,v in pairs(tbl_n) do
-                            new_table[k] = v
-                        end
-                    end
-                    return new_table
-                end
-            }
+        default_args = setmetatable(
+            { silent = true, noremap = true },
+            { __add = aloha.utils.meta_tbl_add }
         ),
     }
     aloha.options = settings.options or {}
