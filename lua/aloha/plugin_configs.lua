@@ -5,12 +5,11 @@ local api = vim.api
 configs['lukas-reineke/indent-blankline.nvim'] = function()
     require('indent_blankline').setup {
         char = '│',
-        -- char_highlight_list = {'Error', 'Function'},
-        space_char = ' ',
         use_treesitter = true,
         show_first_indent_level = false,
-        -- show_end_of_line = false,
+        show_end_of_line = true,
         show_current_context = true,
+        show_current_context_start = false,
         filetype_exclude = {
             "startify", "dashboard", "dotooagenda", "log", "fugitive", "gitcommit",
             "packer", "vimwiki", "markdown", "json", "txt", "vista", "help", "todoist",
@@ -611,7 +610,7 @@ configs['nvim-treesitter/nvim-treesitter'] = function()
     api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
     require'nvim-treesitter.configs'.setup {
         ensure_installed = {
-            'c', 'cpp', 'css', 'bash', 'cmake', 'glsl', 'go', 'html', 'javascript',
+            'c', 'cpp', 'python', 'css', 'bash', 'cmake', 'glsl', 'go', 'html', 'javascript',
             'lua', 'r', 'ruby', 'rust', 'toml', 'vim', 'vue', 'yaml'
         },
         incremental_selection = {
