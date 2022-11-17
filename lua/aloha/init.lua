@@ -56,7 +56,7 @@ return function(_configs)
     -- set up mappings
     vim.g.mapleader = aloha.map.leader
     for _,map in pairs(aloha.map.list) do
-        vim.api.nvim_set_keymap(map[1], map[2], map[3], aloha.map.default_args + map[4])
+        vim.keymap.set(map[1], map[2], map[3], aloha.map.default_args + map[4])
     end
 
     -- set up options

@@ -41,7 +41,7 @@ return {
         foldlevel      = 999,
         conceallevel   = 2,
         wrap           = false,
-        showbreak      = "↳ ";
+        showbreak      = "↳",
         list           = true,
         number         = true,
         relativenumber = true,

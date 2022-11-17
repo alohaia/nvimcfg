@@ -254,9 +254,9 @@ configs['neovim/nvim-lspconfig'] = function()
     local util = require 'lspconfig.util'
 
     local on_attach = function(client,bufnr)
-        -- Set autocommands conditional on server_capabilities
-        -- :lua =vim.lsp.get_active_clients()[1].server_capabilities
-        -- https://github.com/neovim/neovim/issues/14090#issuecomment-1113956767
+        -- -- Set autocommands conditional on server_capabilities
+        -- -- :lua =vim.lsp.get_active_clients()[1].server_capabilities
+        -- -- https://github.com/neovim/neovim/issues/14090#issuecomment-1113956767
         -- if client.server_capabilities.documentHighlightProvider then
         --     api.nvim_exec([[
         --         hi LspReferenceRead cterm=bold ctermbg=red gui=italic guibg=#2C323C
@@ -273,7 +273,7 @@ configs['neovim/nvim-lspconfig'] = function()
         local opts = { noremap = true, silent = true }
         api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
         api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-        api.nvim_buf_set_keymap(bufnr, 'n', '<leader>?', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+        api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
         api.nvim_buf_set_keymap(bufnr, 'n', '<leader>r', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
         -- api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
         -- api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
@@ -285,15 +285,13 @@ configs['neovim/nvim-lspconfig'] = function()
         -- api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
         -- -- api.nvim_buf_set_keymap(bufnr, 'v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', opts)
         -- api.nvim_buf_set_keymap(bufnr, 'n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-        -- api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-        -- api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-        api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+        api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+        api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+        -- api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
         -- api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
 
         -- Enable completion triggered by <c-x><c-o>
         api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-        -- for 'RRethy/vim-illuminate'
-        require 'illuminate'.on_attach(client)
     end
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -576,9 +574,15 @@ configs['RRethy/vim-illuminate'] = function()
         filetypes_denylist = {'dashboard', 'NvimTree', 'markdown', 'rmd', 'tex'},
         under_cursor = true,
         modes_denylist = {},
+        large_file_overrides = 1000,
+        large_file_config = {},
     })
-    api.nvim_set_keymap('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>', {noremap=true})
-    api.nvim_set_keymap('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', {noremap=true})
+    api.nvim_set_keymap('n', '<M-n>', '<Cmd>lua require"illuminate".next_reference{wrap=true}<CR>', {noremap=true})
+    api.nvim_set_keymap('n', '<M-p>', '<Cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<CR>', {noremap=true})
+    api.nvim_set_keymap('n', '<M-i>', '<Cmd>lua require("illuminate").textobj_select()<CR>', {noremap=true})
+    api.nvim_set_hl(0, "IlluminatedWordText", {italic=true, bg="#53565d"})
+    api.nvim_set_hl(0, "IlluminatedWordRead", {link="IlluminatedWordText"})
+    api.nvim_set_hl(0, "IlluminatedWordWrite", {link="IlluminatedWordText"})
 end
 
 configs['rhysd/clever-f.vim'] = function()
