@@ -258,11 +258,12 @@ configs['neovim/nvim-lspconfig'] = function()
         -- keymaps
         local opts = { noremap = true, silent = true, buffer = 0 }
         -- lspsaga
-        setmap({'n','x'},   'K',            '<cmd>Lspsaga diagnostic_jump_next<CR>',   opts)
-        setmap('n',         '<leader>rn',   '<Cmd>Lspsaga rename<CR>',                 opts)
-        setmap({'n','v'},   '<leader>ca',   '<cmd>Lspsaga code_action<CR>',            opts)
-        setmap('n',         '[d',           '<cmd>Lspsaga diagnostic_jump_prev<CR>',   opts)
-        setmap('n',         ']d',           '<cmd>Lspsaga diagnostic_jump_next<CR>',   opts)
+        setmap({'n','x'}, 'K',          '<cmd>Lspsaga hover_doc<CR>',               opts)
+        setmap('n',       'g?',         '<Cmd>Lspsaga show_line_diagnostics<CR>', opts)
+        setmap('n',       '<leader>rn', '<Cmd>Lspsaga rename<CR>',                  opts)
+        setmap({'n','v'}, '<leader>ca', '<cmd>Lspsaga code_action<CR>',             opts)
+        setmap('n',       '[d',         '<cmd>Lspsaga diagnostic_jump_prev<CR>',    opts)
+        setmap('n',       ']d',         '<cmd>Lspsaga diagnostic_jump_next<CR>',    opts)
         setmap("n", "[e", function()
             require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR })
         end, opts)
