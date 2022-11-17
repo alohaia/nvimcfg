@@ -176,7 +176,7 @@ configs['akinsho/bufferline.nvim'] = function()
             -- },
         }
     }
-    api.nvim_set_keymap("n", "gb", "<Cmd>BufferLinePick<CR>", {noremap = true, silent = true})
+    vim.keymap.set("n", "gb", "<Cmd>BufferLinePick<CR>", {noremap = true, silent = true})
 end
 
 configs['kyazdani42/nvim-tree.lua'] = function()
@@ -231,7 +231,7 @@ configs['kyazdani42/nvim-tree.lua'] = function()
         },
     }
     -- see :h nvim-tree-events
-    api.nvim_set_keymap('n', '<leader>nt', '<Cmd>NvimTreeToggle<CR>', {noremap = true})
+    vim.keymap.set('n', '<leader>nt', '<Cmd>NvimTreeToggle<CR>', {noremap = true})
     vim.cmd[[autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]]
 end
 
@@ -398,10 +398,10 @@ end
 configs['L3MON4D3/LuaSnip'] = function()
     require("luasnip.loaders.from_lua").lazy_load()
 
-    api.nvim_set_keymap("i", "<C-n>", "<Plug>luasnip-next-choice", {})
-    api.nvim_set_keymap("s", "<C-n>", "<Plug>luasnip-next-choice", {})
-    api.nvim_set_keymap("i", "<C-p>", "<Plug>luasnip-previous-choice", {})
-    api.nvim_set_keymap("s", "<C-p>", "<Plug>luasnip-previous-choice", {})
+    vim.keymap.set("i", "<C-n>", "<Plug>luasnip-next-choice", {})
+    vim.keymap.set("s", "<C-n>", "<Plug>luasnip-next-choice", {})
+    vim.keymap.set("i", "<C-p>", "<Plug>luasnip-previous-choice", {})
+    vim.keymap.set("s", "<C-p>", "<Plug>luasnip-previous-choice", {})
 end
 
 configs['hrsh7th/nvim-cmp'] = function()
@@ -560,12 +560,12 @@ configs['nvim-telescope/telescope.nvim'] = function()
     -- telescope.load_extension('fzf')
 
     -- keybindings
-    api.nvim_set_keymap('n', ',t', '<Cmd>Telescope resume<CR>', {noremap = true})
-    api.nvim_set_keymap('n', ',f', '<Cmd>Telescope find_files<CR>', {noremap = true})
-    api.nvim_set_keymap('n', ',F', '<Cmd>Telescope file_browser<CR>', {noremap = true})
-    api.nvim_set_keymap('n', ',b', '<Cmd>Telescope buffers<CR>', {noremap = true})
-    api.nvim_set_keymap('n', ',g', '<Cmd>Telescope live_grep<CR>', {noremap = true})
-    api.nvim_set_keymap('n', ',h', '<Cmd>Telescope help_tags<CR>', {noremap = true})
+    vim.keymap.set('n', ',t', '<Cmd>Telescope resume<CR>', {noremap = true})
+    vim.keymap.set('n', ',f', '<Cmd>Telescope find_files<CR>', {noremap = true})
+    vim.keymap.set('n', ',F', '<Cmd>Telescope file_browser<CR>', {noremap = true})
+    vim.keymap.set('n', ',b', '<Cmd>Telescope buffers<CR>', {noremap = true})
+    vim.keymap.set('n', ',g', '<Cmd>Telescope live_grep<CR>', {noremap = true})
+    vim.keymap.set('n', ',h', '<Cmd>Telescope help_tags<CR>', {noremap = true})
 end
 
 configs['RRethy/vim-illuminate'] = function()
@@ -577,9 +577,9 @@ configs['RRethy/vim-illuminate'] = function()
         large_file_overrides = 1000,
         large_file_config = {},
     })
-    api.nvim_set_keymap('n', '<M-n>', '<Cmd>lua require"illuminate".next_reference{wrap=true}<CR>', {noremap=true})
-    api.nvim_set_keymap('n', '<M-p>', '<Cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<CR>', {noremap=true})
-    api.nvim_set_keymap('n', '<M-i>', '<Cmd>lua require("illuminate").textobj_select()<CR>', {noremap=true})
+    vim.keymap.set('n', '<M-n>', '<Cmd>lua require"illuminate".next_reference{wrap=true}<CR>', {noremap=true})
+    vim.keymap.set('n', '<M-p>', '<Cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<CR>', {noremap=true})
+    vim.keymap.set('n', '<M-i>', '<Cmd>lua require("illuminate").textobj_select()<CR>', {noremap=true})
     api.nvim_set_hl(0, "IlluminatedWordText", {italic=true, bg="#53565d"})
     api.nvim_set_hl(0, "IlluminatedWordRead", {link="IlluminatedWordText"})
     api.nvim_set_hl(0, "IlluminatedWordWrite", {link="IlluminatedWordText"})
@@ -605,8 +605,8 @@ configs['rainbowhxch/accelerated-jk.nvim'] = function ()
     --     -- when 'enable_deceleration = true', 'deceleration_table = { {200, 3}, {300, 7}, {450, 11}, {600, 15}, {750, 21}, {900, 9999} }'
     --     deceleration_table = { {150, 9999} }
     -- })
-    vim.api.nvim_set_keymap('n', 'j', '<Plug>(accelerated_jk_gj)', {})
-    vim.api.nvim_set_keymap('n', 'k', '<Plug>(accelerated_jk_gk)', {})
+    vim.keymap.set('n', 'j', '<Plug>(accelerated_jk_gj)', {})
+    vim.keymap.set('n', 'k', '<Plug>(accelerated_jk_gk)', {})
 end
 
 configs['nvim-treesitter/nvim-treesitter'] = function()
@@ -664,8 +664,8 @@ end
 
 configs['liuchengxu/vista.vim'] = function()
     vim.cmd[[autocmd FileType vista,vista_kind nnoremap <buffer> <silent> f <Cmd>call vista#finder#fzf#Run()<CR>]]
-    api.nvim_set_keymap('n', '<leader>vt', '<Cmd>Vista<Cr>', {noremap = true})
-    api.nvim_set_keymap('n', ',T', '<Cmd>Vista finder<Cr>', {noremap = true})
+    vim.keymap.set('n', '<leader>vt', '<Cmd>Vista<Cr>', {noremap = true})
+    vim.keymap.set('n', ',T', '<Cmd>Vista finder<Cr>', {noremap = true})
     g.vista_default_executive = 'ctags'
     g.vista_ctags_executable = 'ctags'
     g.vista_ctags_project_opts = '--sort=no -R -o tags'
@@ -757,7 +757,7 @@ configs['preservim/nerdcommenter'] = function()
 end
 
 configs['mbbill/undotree'] = function()
-    api.nvim_set_keymap('n', '<leader>ut', '<Cmd>UndotreeToggle<CR>', {noremap = true})
+    vim.keymap.set('n', '<leader>ut', '<Cmd>UndotreeToggle<CR>', {noremap = true})
     g.undotree_CustomUndotreeCmd  = 'topleft vertical 30 new'
     vim.cmd[[
         function g:Undotree_CustomMap()
@@ -775,8 +775,8 @@ configs['mbbill/undotree'] = function()
 end
 
 configs['nvim-lua/completion-nvim'] = function()
-    api.nvim_set_keymap('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], {noremap=true, expr=true})
-    api.nvim_set_keymap('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], {noremap=true, expr=true})
+    vim.keymap.set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], {noremap=true, expr=true})
+    vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], {noremap=true, expr=true})
     g.completion_enable_auto_popup = 1
     g.completion_enable_snippet = 'UltiSnips'
     g.completion_confirm_key = '<CR>'
@@ -866,13 +866,13 @@ configs['dkarter/bullets.vim'] = function()
     g.bullets_mapping_leader = ""
     g.bullets_delete_last_bullet_if_empty = 1
     g.bullets_outline_levels = {'ROM'}
-    api.nvim_set_keymap("i", "<C-a>", "<Cmd>ToggleCheckbox<CR>", {noremap = true})
-    api.nvim_set_keymap("n", "<leader>sn", "<Cmd>RenumberList<CR>", {noremap = true})
-    api.nvim_set_keymap("x", "<leader>sn", "<Cmd>RenumberSelection<CR>", {noremap = true})
+    vim.keymap.set("i", "<C-a>", "<Cmd>ToggleCheckbox<CR>", {noremap = true})
+    vim.keymap.set("n", "<leader>sn", "<Cmd>RenumberList<CR>", {noremap = true})
+    vim.keymap.set("x", "<leader>sn", "<Cmd>RenumberSelection<CR>", {noremap = true})
 end
 
 configs['dhruvasagar/vim-table-mode'] = function()
-    api.nvim_set_keymap("n", "<leader>tm", "<cmd>TableModeToggle<cr>", {noremap = true})
+    vim.keymap.set("n", "<leader>tm", "<cmd>TableModeToggle<cr>", {noremap = true})
     g.table_mode_corner = '|'
     g.table_mode_corner_corner="|"
     g.table_mode_align_char=":"
@@ -883,34 +883,34 @@ end
 
 configs['svermeulen/vim-subversive'] = function()
     g.subversiveCurrentTextRegister = 1
-    api.nvim_set_keymap('n', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
-    api.nvim_set_keymap('x', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
-    api.nvim_set_keymap('x', 'p',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
-    api.nvim_set_keymap('x', 'P',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
-    api.nvim_set_keymap('n', 'ss',                 '<plug>(SubversiveSubstituteLine)',             { noremap = false })
-    api.nvim_set_keymap('n', 'S',                  '<plug>(SubversiveSubstituteToEndOfLine)',      { noremap = false })
-    api.nvim_set_keymap('n', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
-    api.nvim_set_keymap('x', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
-    api.nvim_set_keymap('n', '<leader>ss',         '<plug>(SubversiveSubstituteWordRange)',        { noremap = false })
-    api.nvim_set_keymap('n', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
-    api.nvim_set_keymap('x', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
-    api.nvim_set_keymap('n', '<leader>crr',        '<plug>(SubversiveSubstituteWordRangeConfirm)', { noremap = false })
-    api.nvim_set_keymap('n', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
-    api.nvim_set_keymap('x', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
-    api.nvim_set_keymap('n', '<leader><leader>ss', '<plug>(SubversiveSubvertWordRange)',           { noremap = false })
+    vim.keymap.set('n', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+    vim.keymap.set('x', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+    vim.keymap.set('x', 'p',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+    vim.keymap.set('x', 'P',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+    vim.keymap.set('n', 'ss',                 '<plug>(SubversiveSubstituteLine)',             { noremap = false })
+    vim.keymap.set('n', 'S',                  '<plug>(SubversiveSubstituteToEndOfLine)',      { noremap = false })
+    vim.keymap.set('n', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
+    vim.keymap.set('x', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
+    vim.keymap.set('n', '<leader>ss',         '<plug>(SubversiveSubstituteWordRange)',        { noremap = false })
+    vim.keymap.set('n', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
+    vim.keymap.set('x', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
+    vim.keymap.set('n', '<leader>crr',        '<plug>(SubversiveSubstituteWordRangeConfirm)', { noremap = false })
+    vim.keymap.set('n', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
+    vim.keymap.set('x', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
+    vim.keymap.set('n', '<leader><leader>ss', '<plug>(SubversiveSubvertWordRange)',           { noremap = false })
 end
 
 configs['svermeulen/vim-yoink'] = function ()
-    api.nvim_set_keymap('n', 'p', '<plug>(YoinkPaste_p)', {noremap=false})
-    api.nvim_set_keymap('n', 'P', '<plug>(YoinkPaste_P)', {noremap=false})
-    api.nvim_set_keymap('n', 'gp', '<plug>(YoinkPaste_gp)', {noremap=false})
-    api.nvim_set_keymap('n', 'gP', '<plug>(YoinkPaste_gP)', {noremap=false})
-    api.nvim_set_keymap('n', '[s', '<plug>(YoinkPostPasteSwapBack)', {noremap=false})
-    api.nvim_set_keymap('n', ']s', '<plug>(YoinkPostPasteSwapForward)', {noremap=false})
-    api.nvim_set_keymap('n', '[y', '<plug>(YoinkRotateBack)', {noremap=false})
-    api.nvim_set_keymap('n', ']y', '<plug>(YoinkRotateForward)', {noremap=false})
-    api.nvim_set_keymap('n', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
-    api.nvim_set_keymap('x', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
+    vim.keymap.set('n', 'p', '<plug>(YoinkPaste_p)', {noremap=false})
+    vim.keymap.set('n', 'P', '<plug>(YoinkPaste_P)', {noremap=false})
+    vim.keymap.set('n', 'gp', '<plug>(YoinkPaste_gp)', {noremap=false})
+    vim.keymap.set('n', 'gP', '<plug>(YoinkPaste_gP)', {noremap=false})
+    vim.keymap.set('n', '[s', '<plug>(YoinkPostPasteSwapBack)', {noremap=false})
+    vim.keymap.set('n', ']s', '<plug>(YoinkPostPasteSwapForward)', {noremap=false})
+    vim.keymap.set('n', '[y', '<plug>(YoinkRotateBack)', {noremap=false})
+    vim.keymap.set('n', ']y', '<plug>(YoinkRotateForward)', {noremap=false})
+    vim.keymap.set('n', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
+    vim.keymap.set('x', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
 end
 
 configs['mg979/vim-visual-multi'] = function()
@@ -1168,8 +1168,8 @@ configs['skywind3000/asyncrun.extra'] = function()
 end
 
 configs['skywind3000/asynctasks.vim'] = function()
-    api.nvim_set_keymap('n', '<F5>', '<cmd>AsyncTask run<cr>', {})
-    api.nvim_set_keymap('n', '<F6>', '<cmd>AsyncTask build<cr>', {})
+    vim.keymap.set('n', '<F5>', '<cmd>AsyncTask run<cr>', {})
+    vim.keymap.set('n', '<F6>', '<cmd>AsyncTask build<cr>', {})
 end
 
 return configs

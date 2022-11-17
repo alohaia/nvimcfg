@@ -91,6 +91,9 @@ return function(_configs)
     -- autocmds
     local au_id = vim.api.nvim_create_augroup('aloha_autocmds', {clear=true})
     for _,autocmd in ipairs(aloha.autocmds) do
-        vim.api.nvim_create_autocmd(autocmd[1], vim.tbl_extend('keep', autocmd[2], {group=au_id}))
+        if not autocmd[2].group then
+            autocmd[2].group = au_id
+        end
+        vim.api.nvim_create_autocmd(autocmd[1], autocmd[2])
     end
 end

@@ -1,6 +1,6 @@
 return {
     -- mode keys content extra
-    { {'n', 'x'}, ';', ':', {silent=false, nowaiut=true} },
+    { {'n', 'x'}, ';', ':', {silent=false, nowait=true} },
     { {'n', 'x'}, ':', ';' },
 
     { {'n', 'x'}, 'j', 'gj' },
