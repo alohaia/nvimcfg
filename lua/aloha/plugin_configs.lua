@@ -258,7 +258,7 @@ configs['neovim/nvim-lspconfig'] = function()
         -- keymaps
         local opts = { noremap = true, silent = true, buffer = 0 }
         -- lspsaga
-        setmap({'n','x'}, 'K',          '<Cmd>Lspsaga hover_doc<CR>',               opts)
+        setmap({'n','x'}, '<C-k>',    '<Cmd>Lspsaga hover_doc<CR>',               opts)
         setmap('n',       'g?',         '<Cmd>Lspsaga show_line_diagnostics<CR>',   opts)
         setmap('n',       '<leader>rn', '<Cmd>Lspsaga rename<CR>',                  opts)
         setmap({'n','v'}, '<leader>ca', '<Cmd>Lspsaga code_action<CR>',             opts)
