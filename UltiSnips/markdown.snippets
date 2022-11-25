@@ -27,7 +27,7 @@ snippet "(\# )?h([1-6])" "Headings" rbA
 `!p snip.rv = '#' * int(match.group(2))` ${1:${VISUAL}}
 endsnippet
 
-snippet icd "inline code" iw
+snippet icd "inline code" i
 \`${1:${VISUAL}}\`
 endsnippet
 
@@ -99,41 +99,41 @@ endsnippet
 # endsnippet
 
 ############# Hugo Shortcodes #############
-snippet tag "primary tag" iw
+snippet tag "primary tag" i
 {{% ${1:tag} ${2:${VISUAL} }%}}
 endsnippet
 
-snippet tags "primary tag" iw
+snippet tags "primary tag" i
 {{% ${1:tag} %}}${2:${VISUAL}}{{% /$1 %}}
 endsnippet
 
-snippet ref "hugo ref shortcode" iw
+snippet ref "hugo ref shortcode" i
 [${1:${VISUAL}}]({{< ref "${2:$1}" >}})
 endsnippet
 
-snippet rrf "hugo relref shortcode" iw
+snippet rrf "hugo relref shortcode" i
 [${1:${VISUAL}}]({{< relref "${2:$1}" >}})
 endsnippet
 
-snippet fig "hugo figure shortcode" iw
-{{< figure src="${1}.${2:png}" title="${3:$1}" caption="${4}" alt="$3" class="${5}"`!p snip.rv = (' id="fig_' + anchor_format(t[1]) + '"') if t[1] else ""` >}}
+snippet fig "hugo figure shortcode" i
+{{< figure src="${1}.${2:png}" title="${3:$1}" caption="${4}" attribution="$5" alt="$3" class="${6}"`!p snip.rv = (' id="fig_' + anchor_format(t[1]) + '"') if t[1] else ""` >}}
 endsnippet
 
-snippet tab "tab" iw
+snippet tab "tab" i
 {{% tab type="${1:default}" summary="${2}" details=${3:false}`!p snip.rv = ' open=true' if t[3] == 'true' else ''``!p snip.rv = (' id="tab_' + anchor_format(t[2]) + '"') if t[2] else ""` %}}
 ${0:${VISUAL}}
 {{% /tab %}}
 endsnippet
 
-snippet hzl "horizontal list" iw
+snippet hzl "horizontal list" i
 {{% hzl %}}${1:${VISUAL}}{{% /hzl %}}
 endsnippet
 
-snippet hdt "hidden text" iw
+snippet hdt "hidden text" i
 {{% hdt "${1:${VISUAL}}" %}}
 endsnippet
 
-snippet sg "sense group" iw
+snippet sg "sense group" i
 {{% sg %}}${1:${VISUAL}}{{% /sg %}}
 endsnippet
 
@@ -143,7 +143,19 @@ ${0:${VISUAL}}
 {{% /table %}}
 endsnippet
 
-snippet sa "see also" iw
+snippet tc "description" i
+{{% tc ${1} %}}${2:${VISUAL}}{{% /tc %}}$0
+endsnippet
+
+snippet tcl "description" i
+{{% tc left %}}${1:${VISUAL}}{{% /tc %}}$0
+endsnippet
+
+snippet tcr "description" i
+{{% tc right %}}${1:${VISUAL}}{{% /tc %}}$0
+endsnippet
+
+snippet sa "see also" i
 {{% sa %}}${1:${VISUAL}}{{% /sa %}}
 endsnippet
 
@@ -161,6 +173,6 @@ snippet br "<br/> tag" i
 endsnippet
 
 
-snippet per "Percentage Range" iw
+snippet per "Percentage Range" i
 ${1}%\~${2}%$0
 endsnippet

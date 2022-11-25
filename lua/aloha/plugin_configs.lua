@@ -770,9 +770,9 @@ end
 configs['SirVer/ultisnips'] = function()
     g.UltiSnipsEditSplit = "vertical"
     g.UltiSnipsRemoveSelectModeMappings = 0
-    g.UltiSnipsExpandTrigger = "<Tab>"
-    g.UltiSnipsJumpForwardTrigger = "<Tab>"
-    g.UltiSnipsJumpBackwardTrigger = "<S-Tab>"
+    g.UltiSnipsExpandTrigger = "<C-Space>"
+    g.UltiSnipsJumpForwardTrigger = "<M-j>"
+    g.UltiSnipsJumpBackwardTrigger = "<M-k>"
 end
 
 configs['luochen1990/rainbow'] = function()
@@ -803,6 +803,7 @@ configs['alohaia/hugowiki.nvim'] = function()
         cwd = vim.fn.expand(g.hugowiki_home),
         r_script = vim.fn.expand(g.hugowiki_home) .. 'utils/R/build_one.R',
     }
+    g.hugowiki_spellcheck_ignore_upcase = 1
 end
 
 configs['lervag/vimtex'] = function()
