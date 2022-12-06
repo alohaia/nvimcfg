@@ -27,7 +27,7 @@ return {
         scrolloff      = 3,
         linebreak      = false,
         breakindent    = false,
-        listchars      = "tab:»·,nbsp:+,trail:˽,eol:↴,extends:→,precedes:←"; -- trail:˽,tab:«·»
+        listchars      = "tab:»·,nbsp:+,trail:˽,eol:⤶,extends:→,precedes:←"; -- trail:˽,tab:«·»
         fillchars      = 'vert:┆', -- ┆ ▏
         fileencodings  = 'utf-8,ucs-bom,gb18030,gbk,gb2312,cp936',
         emoji          = true,
