@@ -416,6 +416,7 @@ function packer:loadConfig(plugin_name)
         return
     end
 
+    -- with no plugin_name provided
     for name,settings in pairs(self.plugins) do
         if settings.disable or not is_installed(name) then -- disabled or not installed
             goto continue
@@ -561,6 +562,16 @@ function packer:prepareOptPlugins()
                     {noremap = true, silent = true}
                 )
             end
+        end
+
+        -- event opt plugins
+        if settings.event then
+            api.nvim_create_autocmd(settings.event, {
+                pattern = '*',
+                callback = function ()
+                    self:add(split(name, '/')[2], name)
+                end
+            })
         end
 
         ::continue::

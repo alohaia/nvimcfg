@@ -1,10 +1,6 @@
 return {
     -- completion
-    ['neovim/nvim-lspconfig'] = {
-        dependency = {
-            'glepnir/lspsaga.nvim',
-        },
-    },
+    ['neovim/nvim-lspconfig'] = {},
     ['hrsh7th/nvim-cmp'] = {
         dependency = {
             'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
@@ -19,7 +15,7 @@ return {
     ['hrsh7th/cmp-path']     = { opt=true },
     ['hrsh7th/cmp-omni']     = { opt=true },
     ['onsails/lspkind-nvim'] = { opt=true },
-    ['glepnir/lspsaga.nvim'] = { opt=true, branch = 'main' },
+    ['glepnir/lspsaga.nvim'] = { opt=true, event='BufRead', branch = 'main' },
 
     ['SirVer/ultisnips'] = {},
     ['quangnguyen30192/cmp-nvim-ultisnips'] = { opt=true },
@@ -36,7 +32,7 @@ return {
     ['fgheng/winbar.nvim'] = {
         disable = true,
         config = function()
-            require('winbar').setup({
+            require'winbar'.setup({
                 enabled = true,
 
                 show_file_path = false,
@@ -172,5 +168,14 @@ return {
     ['kristijanhusak/vim-dadbod-ui'] = { disable = true },
 
     -- test
-    ['dstein64/vim-startuptime'] = {},
+    ['dstein64/vim-startuptime'] = { disable = true },
+    ['vim-autoformat/vim-autoformat'] = {
+        disable = true,
+        config = [[
+            let g:autoformat_autoindent = 0
+            let g:autoformat_retab = 0
+            let g:autoformat_remove_trailing_spaces = 0
+        ]]
+    },
+    ['Shatur/neovim-session-manager'] = { disable = true }
 }

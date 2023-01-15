@@ -35,7 +35,7 @@ return {
         switchbuf      = 'useopen,usetab,newtab',
         showtabline    = 2,
         cmdheight      = 1,
-        shortmess      = "atAFc",
+        shortmess      = "atAIFc",
         mouse          = 'a',
         grepprg        = 'rg -n',
         foldlevel      = 999,

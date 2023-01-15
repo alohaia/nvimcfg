@@ -4,7 +4,7 @@ local api = vim.api
 local setmap = vim.keymap.set
 
 configs['lukas-reineke/indent-blankline.nvim'] = function()
-    require('indent_blankline').setup {
+    require'indent_blankline'.setup {
         char = '│',
         use_treesitter = true,
         show_first_indent_level = false,
@@ -471,7 +471,16 @@ configs['hrsh7th/nvim-cmp'] = function()
 end
 
 configs['glepnir/lspsaga.nvim'] = function ()
-    require("lspsaga").init_lsp_saga {}
+    require("lspsaga").setup {
+        symbol_in_winbar = {
+            enable = false,
+            separator = ' ▸ ',
+            hide_keyword = true,
+            show_file = false,
+            folder_level = 2,
+            respect_root = false,
+        },
+    }
 end
 
 configs['nvim-telescope/telescope.nvim'] = function()
@@ -797,7 +806,7 @@ configs['alohaia/hugowiki.nvim'] = function()
     g.hugowiki_wrap = 0
     g.hugowiki_auto_save = 0
     g.hugowiki_auto_update_lastmod = 1
-    g.hugowiki_lastmod_under_date = 0
+    g.hugowiki_lastmod_under_date = 1
     g.hugowiki_rmd_auto_knit = {
         enable = true,
         cwd = vim.fn.expand(g.hugowiki_home),
@@ -969,6 +978,14 @@ configs['jiangmiao/auto-pairs'] = function()
             vim.b.AutoPairs = vim.tbl_extend('force', g.AutoPairs, {
                 ['``'] = '``',
                 ['```'] = '```',
+                -- ['［'] = '］',
+                -- ['「'] = '」',
+                -- ['【'] = '】',
+                -- ['〔'] = '〕',
+                -- ['“'] = '”',
+                -- ['‘'] = '’',
+                -- ['（'] = '）',
+                -- ['《'] = '》',
             })
         end
     })
@@ -1044,8 +1061,6 @@ configs['olimorris/onedarkpro.nvim'] = function()
     vim.opt.background = "dark"
     local transparentbg = _G.aloha.configs.transparency == nil and true or _G.aloha.configs.transparency
     require("onedarkpro").setup({
-        dark_theme = "onedark_vivid",
-        light_theme = "onelight_vivid",
         highlights = {
             Conceal = { link = "Normal" },
             -- Keyword = { gui = "italic" }
@@ -1083,6 +1098,14 @@ configs['nvim-lualine/lualine.nvim'] = function()
     local function spelllang()
         return '﯑ ' .. string.upper(table.concat(vim.opt.spelllang:get(), ','))
     end
+    local function saga()
+        local wb = require('lspsaga.symbolwinbar'):get_winbar()
+        if wb ~= nil then
+            return wb
+        else
+            return ''
+        end
+    end
     require('lualine').setup {
         options = {
             icons_enabled = true,
@@ -1098,7 +1121,8 @@ configs['nvim-lualine/lualine.nvim'] = function()
             lualine_b = { 'branch', 'diff', 'diagnostics' },
             lualine_c = {
                 { 'filetype', color = { bg='#2c323c' } },
-                { 'filename' }
+                { 'filename' },
+                { saga }
             },
             lualine_x = {
                 'encoding',

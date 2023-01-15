@@ -120,9 +120,13 @@ snippet fig "hugo figure shortcode" i
 endsnippet
 
 snippet tab "tab" i
-{{% tab type="${1:default}" summary="${2}" details=${3:false}`!p snip.rv = ' open=true' if t[3] == 'true' else ''``!p snip.rv = (' id="tab_' + anchor_format(t[2]) + '"') if t[2] else ""` %}}
+{{% tab type="${1:default}" summary="${2}" details=${3:true}`!p snip.rv = ' open=true' if t[3] == 'true' else ''``!p snip.rv = (' id="tab_' + anchor_format(t[2]) + '"') if t[2] else ""` %}}
 ${0:${VISUAL}}
 {{% /tab %}}
+endsnippet
+
+snippet card "card" i
+{{< card type="${1:default}" src="${2}" details=${3:true}`!p snip.rv = ' open=true' if t[3] == 'true' else ''` >}}
 endsnippet
 
 snippet hzl "horizontal list" i
@@ -159,6 +163,16 @@ snippet sa "see also" i
 {{% sa %}}${1:${VISUAL}}{{% /sa %}}
 endsnippet
 
+snippet nn "note" iA
+{{% note "${2}" %}}${1:${VISUAL}}{{% /note %}}
+endsnippet
+
+snippet bq "blockquote" i
+{{% quote author="${1}" work="${2}" style="${3}" %}}
+$0
+{{% /quote %}}
+endsnippet
+
 ############## Special Snippets #############
 snippet more "more" bw
 <!--more-->
@@ -172,7 +186,6 @@ snippet br "<br/> tag" i
 <br/>
 endsnippet
 
-
 snippet per "Percentage Range" i
-${1}%\~${2}%$0
+${1}%--${2}%$0
 endsnippet
