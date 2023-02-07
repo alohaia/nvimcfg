@@ -13,7 +13,7 @@ require 'aloha' {
                shallow_submodules = true,
                base_url = 'https://github.com',
            },
-           rm = 'rm -rf',
+           rm = '/usr/bin/rm -rf',
            strict_deps = true,
        },
     },

@@ -105,7 +105,7 @@ return {
     -- ['nvim-telescope/telescope-fzy-native.nvim'] = { opt=true },
     -- ['nvim-telescope/telescope-fzf-native.nvim'] = {
     --     opt = true,
-    --     run = '!make'
+    --     run = '!cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
     -- },
 
     -- editor

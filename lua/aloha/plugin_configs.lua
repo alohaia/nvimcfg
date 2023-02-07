@@ -485,6 +485,8 @@ end
 
 configs['nvim-telescope/telescope.nvim'] = function()
     local telescope = require('telescope')
+    -- telescope.load_extension('fzy_native')
+    -- telescope.load_extension('fzf')
     telescope.setup {
         -- extensions = {
         --     fzy_native = {
@@ -532,9 +534,7 @@ configs['nvim-telescope/telescope.nvim'] = function()
             file_sorter =  require'telescope.sorters'.get_fuzzy_file,
             file_ignore_patterns = { 'node_modules' },
             generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
-            winblend = 0,
-            border = {},
-            borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+            border = true,
             color_devicons = true,
             use_less = true,
             path_display = {},
@@ -550,8 +550,6 @@ configs['nvim-telescope/telescope.nvim'] = function()
             },
         },
     }
-    -- telescope.load_extension('fzy_native')
-    -- telescope.load_extension('fzf')
 
     -- keybindings
     setmap('n', ',t', '<Cmd>Telescope resume<CR>', {noremap = true})
@@ -745,7 +743,7 @@ configs['preservim/nerdcommenter'] = function()
             right = '*/'
         }
     }
-    g.NERDCommentEmptyLines = 1
+    g.NERDCommentEmptyLines = 0
     g.NERDTrimTrailingWhitespace = 1
     g.NERDToggleCheckAllLines = 1
 end
@@ -1083,6 +1081,7 @@ configs['olimorris/onedarkpro.nvim'] = function()
         }
     })
     require("onedarkpro").load()
+    vim.cmd[[colorscheme onedark]] -- onedark onedark_dark onedark_vivid
     if transparentbg then
         api.nvim_create_autocmd("VimEnter", {
             pattern = "*",
