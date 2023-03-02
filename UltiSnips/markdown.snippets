@@ -13,7 +13,7 @@ snippet "(# )?H1" "First heading" rbA
 # ${1:`!v expand('%:t:r')`}
 endsnippet
 
-snippet ll "A simple line" bw
+snippet hl "horizontal line" bw
 ----------------------------------------------------------------
 
 endsnippet
@@ -100,29 +100,37 @@ endsnippet
 
 ############# Hugo Shortcodes #############
 snippet tag "primary tag" i
-{{% ${1:tag} ${2:${VISUAL} }%}}
+{{< ${1:tag} ${2:${VISUAL} }>}}
 endsnippet
 
 snippet tags "primary tag" i
-{{% ${1:tag} %}}${2:${VISUAL}}{{% /$1 %}}
+{{< ${1:tag} >}}${2:${VISUAL}}{{< /$1 >}}
 endsnippet
 
-snippet ref "hugo ref shortcode" i
-[${1:${VISUAL}}]({{< ref "${2:$1}" >}})
-endsnippet
-
-snippet rrf "hugo relref shortcode" i
+snippet ll "hugo hyperlink" iwA
 [${1:${VISUAL}}]({{< relref "${2:$1}" >}})
 endsnippet
 
+snippet lk "raw markdown hyperlink" iw
+[${1:${VISUAL}}]($2)
+endsnippet
+
+snippet ref "hugo ref shortcode" i
+{{< ref "${2:$1}" >}}
+endsnippet
+
+snippet rrf "hugo relref shortcode" i
+{{< relref "${2:$1}" >}}
+endsnippet
+
 snippet fig "hugo figure shortcode" i
-{{< figure src="${1}.${2:png}" title="${3:$1}" caption="${4}" attribution="$5" alt="$3" class="${6}"`!p snip.rv = (' id="fig_' + anchor_format(t[1]) + '"') if t[1] else ""` >}}
+{{< figure src="${1}.${2:png}" title="${3:$1}" caption="${4}" attr="$5" alt="$3" class="${6}"`!p snip.rv = (' id="fig_' + anchor_format(t[1]) + '"') if t[1] else ""` >}}
 endsnippet
 
 snippet tab "tab" i
-{{% tab type="${1:default}" summary="${2}" details=${3:true}`!p snip.rv = ' open=true' if t[3] == 'true' else ''``!p snip.rv = (' id="tab_' + anchor_format(t[2]) + '"') if t[2] else ""` %}}
+{{< tab type="${1:default}" summary="${2}" details=${3:true}`!p snip.rv = ' open=true' if t[3] == 'true' else ''``!p snip.rv = (' id="tab_' + anchor_format(t[2]) + '"') if t[2] else ""` >}}
 ${0:${VISUAL}}
-{{% /tab %}}
+{{< /tab >}}
 endsnippet
 
 snippet card "card" i
@@ -130,51 +138,57 @@ snippet card "card" i
 endsnippet
 
 snippet hzl "horizontal list" i
-{{% hzl %}}${1:${VISUAL}}{{% /hzl %}}
+{{< hzl >}}${1:${VISUAL}}{{< /hzl >}}
 endsnippet
 
 snippet hdt "hidden text" i
-{{% hdt "${1:${VISUAL}}" %}}
+{{< hdt "${1:${VISUAL}}" >}}
 endsnippet
 
 snippet sg "sense group" i
-{{% sg %}}${1:${VISUAL}}{{% /sg %}}
+{{< sg >}}${1:${VISUAL}}{{< /sg >}}
 endsnippet
 
 snippet tbl "table with title and caption" bw
-{{% table title="${1}" caption="${2}" left_sticky=${3:false}`!p snip.rv = (' id="tbl_' + anchor_format(t[1]) + '"') if t[1] else ""` %}}
+{{< table title="${1}" caption="${2}" left_sticky=${3:false}`!p snip.rv = (' id="tbl_' + anchor_format(t[1]) + '"') if t[1] else ""` >}}
 ${0:${VISUAL}}
-{{% /table %}}
+{{< /table >}}
 endsnippet
 
 snippet tc "description" i
-{{% tc ${1} %}}${2:${VISUAL}}{{% /tc %}}$0
+{{< tc ${1} >}}${2:${VISUAL}}{{< /tc >}}$0
 endsnippet
 
 snippet tcl "description" i
-{{% tc left %}}${1:${VISUAL}}{{% /tc %}}$0
+{{< tc left >}}${1:${VISUAL}}{{< /tc >}}$0
 endsnippet
 
 snippet tcr "description" i
-{{% tc right %}}${1:${VISUAL}}{{% /tc %}}$0
+{{< tc right >}}${1:${VISUAL}}{{< /tc >}}$0
 endsnippet
 
 snippet sa "see also" i
-{{% sa %}}${1:${VISUAL}}{{% /sa %}}
+{{< sa >}}${1:${VISUAL}}{{< /sa >}}
 endsnippet
 
 snippet nn "note" iA
-{{% note "${2}" %}}${1:${VISUAL}}{{% /note %}}
+{{< note "${2}" >}}${1:${VISUAL}}{{< /note >}}
 endsnippet
 
 snippet bq "blockquote" i
-{{% quote author="${1}" work="${2}" style="${3}" %}}
+{{< quote author="${1}" work="${2}" style="${3}" >}}
 $0
-{{% /quote %}}
+{{< /quote >}}
 endsnippet
 
 snippet sch "section heading" bwA
-{{% section %}}${1:${VISUAL}}{{% /section %}}
+{{< section >}}${1:${VISUAL}}{{< /section >}}
+endsnippet
+
+snippet kk "kroki" bwA
+{{< kroki type="$1" >}}
+$2
+{{< /kroki >}}
 endsnippet
 
 ############## Special Snippets #############
