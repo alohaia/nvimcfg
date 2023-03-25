@@ -8,7 +8,7 @@ configs['lukas-reineke/indent-blankline.nvim'] = function()
         char = '│',
         use_treesitter = true,
         show_first_indent_level = false,
-        show_end_of_line = true,
+        show_end_of_line = false,
         show_current_context = true,
         show_current_context_start = false,
         filetype_exclude = {
@@ -50,6 +50,11 @@ configs['akinsho/bufferline.nvim'] = function()
         normal = { bg=colors.dark_gray },
         selected = { bg=colors.white },
         visible = { bg=colors.gray }
+    }
+    local expand_name = {
+        ["index.md"] = "(i)",
+        ["_index.md"] = "(I)",
+        ["init.lua"] = true,
     }
     require('bufferline').setup {
         highlights = {
@@ -127,6 +132,18 @@ configs['akinsho/bufferline.nvim'] = function()
             right_trunc_marker = '>', -- 
             max_name_length = 18,
             max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
+            name_formatter = function(buf)
+                if expand_name[buf.name] then
+                    local path_slices = vim.split(buf.path, "/")
+                    if type(expand_name[buf.name]) == "string" then
+                        return path_slices[#path_slices-1] .. expand_name[buf.name]
+                    else
+                        return path_slices[#path_slices-1] .. "/" .. buf.name
+                    end
+                else
+                    return buf.name
+                end
+            end,
             tab_size = 18,
             diagnostics = "nvim_lsp", -- false | "nvim_lsp",
             diagnostics_indicator = function(count, level, _, context) -- 
@@ -931,7 +948,8 @@ configs['voldikss/vim-floaterm'] = function()
     g.floaterm_title         = 'floaterm: $1/$2'
     g.floaterm_wintype       = 'popup'
     g.floaterm_position      = 'bottomright'
-    vim.cmd('hi link FloatermBorder Normal')
+    g.floaterm_borderchars   = '─│─│╭╮╯╰'
+    -- vim.cmd('hi link FloatermBorder Normal')
 end
 
 configs['akinsho/toggleterm.nvim'] = function()
