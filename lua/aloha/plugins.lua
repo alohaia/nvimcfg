@@ -144,13 +144,12 @@ return {
     ['alohaia/fcitx.nvim'] = {
         ft = 'rmd,markdown,text,tex',
         config = function ()
-            require 'fcitx' {}
+            require 'fcitx' {
+                enable = {
+                    select = "insert",
+                },
+            }
         end
-    },
-    ['lilydjwg/fcitx.vim'] = {
-        disable=true,
-        ft = 'rmd,markdown,text',
-        config = [[vim.g.fcitx5_remote = '/usr/bin/fcitx5-remote']]
     },
 
     ['tpope/vim-fugitive'] = {},

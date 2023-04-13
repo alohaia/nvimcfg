@@ -320,7 +320,7 @@ configs['neovim/nvim-lspconfig'] = function()
         '.stylua.toml',
         'selene.toml',
     }
-    lspconfig.sumneko_lua.setup {
+    lspconfig.lua_ls.setup {
         capabilities = capabilities,
         on_attach = on_attach,
         cmd = {
@@ -1083,7 +1083,7 @@ configs['olimorris/onedarkpro.nvim'] = function()
         },
         plugins = {
             all = false,
-            native_lsp = true,
+            nvim_lsp = true,
             polygot = false,
             treesitter = true
         },
