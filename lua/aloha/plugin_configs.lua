@@ -204,7 +204,6 @@ configs['kyazdani42/nvim-tree.lua'] = function()
         hijack_cursor = true,
         hijack_netrw = true,
         view = {
-            hide_root_folder = true,
             adaptive_size = true,
             float = {
                 enable = true
@@ -214,6 +213,7 @@ configs['kyazdani42/nvim-tree.lua'] = function()
             dotfiles = true,
         },
         renderer = {
+            root_folder_label = false,
             add_trailing = false,
             group_empty = true,
             indent_markers = {
@@ -249,7 +249,7 @@ configs['kyazdani42/nvim-tree.lua'] = function()
         },
     }
     -- see :h nvim-tree-events
-    setmap('n', '<leader>nt', '<Cmd>NvimTreeToggle<CR>', {noremap = true})
+    setmap('n', '<leader>nt', '<Cmd>NvimTreeFindFileToggle<CR>', {noremap = true})
     vim.cmd[[autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]]
 end
 
@@ -1099,7 +1099,7 @@ configs['olimorris/onedarkpro.nvim'] = function()
         }
     })
     require("onedarkpro").load()
-    vim.cmd[[colorscheme onedark]] -- onedark onedark_dark onedark_vivid
+    vim.cmd.colorscheme('onedark') -- onedark onedark_dark onedark_vivid
     if transparentbg then
         api.nvim_create_autocmd("VimEnter", {
             pattern = "*",

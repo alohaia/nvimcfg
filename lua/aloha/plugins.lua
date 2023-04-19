@@ -25,7 +25,6 @@ return {
 
     -- ui
     ['mhinz/vim-startify'] = { dependency = {'kyazdani42/nvim-web-devicons'} },
-    ['alohaia/onedark.vim'] = { disable = true },
     ['olimorris/onedarkpro.nvim'] = {},
     ['nvim-lualine/lualine.nvim'] = {},
     ['SmiteshP/nvim-gps'] = { disable = true },
