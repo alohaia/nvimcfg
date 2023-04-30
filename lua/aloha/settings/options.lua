@@ -77,6 +77,9 @@ return {
         spellfile    = vim.fn.expand('~/.config/nvim/spell/en.utf-8.add'),
         -- spelloptions = 'camel',
         inccommand   = 'split',
+
+        splitbelow   = true,
+        splitright   = true,
     },
     filetype_options = {
         ['markdown,rmd,tex'] = {

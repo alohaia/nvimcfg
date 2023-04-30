@@ -26,6 +26,10 @@ return {
     -- ui
     ['mhinz/vim-startify'] = { dependency = {'kyazdani42/nvim-web-devicons'} },
     ['olimorris/onedarkpro.nvim'] = {},
+    ['nyngwang/nvimgelion'] = {
+        disable = true,
+        config = ":colorscheme nvimgelion"
+    },
     ['nvim-lualine/lualine.nvim'] = {},
     ['SmiteshP/nvim-gps'] = { disable = true },
     ['fgheng/winbar.nvim'] = {
@@ -78,7 +82,7 @@ return {
     ['liuchengxu/vista.vim'] = {},
     ['mbbill/undotree'] = {},
     ['voldikss/vim-floaterm'] = {},
-    ['akinsho/toggleterm.nvim'] = { disable=true },
+    ['akinsho/toggleterm.nvim'] = {},
     ['glepnir/zephyr-nvim'] = { disable = true, config = [[:colorscheme zephyr]] },
     ['glepnir/dashboard-nvim'] = { disable = true },
     ['glepnir/galaxyline.nvim'] = { disable = true, branch = 'main' },

@@ -275,7 +275,7 @@ configs['neovim/nvim-lspconfig'] = function()
         -- keymaps
         local opts = { noremap = true, silent = true, buffer = 0 }
         -- lspsaga
-        setmap({'n','x'}, '<C-k>',    '<Cmd>Lspsaga hover_doc<CR>',               opts)
+        setmap({'n','x'}, '<M-d>',      '<Cmd>Lspsaga hover_doc<CR>',               opts)
         setmap('n',       'g?',         '<Cmd>Lspsaga show_line_diagnostics<CR>',   opts)
         setmap('n',       '<leader>rn', '<Cmd>Lspsaga rename<CR>',                  opts)
         setmap({'n','v'}, '<leader>ca', '<Cmd>Lspsaga code_action<CR>',             opts)
@@ -637,7 +637,7 @@ configs['nvim-treesitter/nvim-treesitter'] = function()
         },
         highlight = {
             enable = true,
-            disable = {'markdwon'},
+            disable = {'markdown'},
             custom_captures = {
                 -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
                 -- ['foo.bar'] = 'Identifier',
@@ -954,12 +954,25 @@ end
 
 configs['akinsho/toggleterm.nvim'] = function()
     require("toggleterm").setup{
+        size = function()
+            return math.floor(vim.o.lines * 0.3 + 0.5)
+        end,
         open_mapping = [[<c-\>]],
-        direction = "float",
-        float_opts = {
-            border = "curved",
-        }
+        direction = 'horizontal',
+          winbar = {
+            enabled = true,
+            name_formatter = function(term)
+                return term.name
+            end
+        },
     }
+    -- function _G.set_terminal_keymaps()
+    --     local opts = { buffer = 0 }
+    --     ...
+    -- end
+
+    -- -- if you only want these mappings for toggle term use term://*toggleterm#* instead
+    -- vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 end
 
 configs['jiangmiao/auto-pairs'] = function()
@@ -1129,7 +1142,7 @@ configs['nvim-lualine/lualine.nvim'] = function()
             theme = 'onedark',
             component_separators = { left = '┆', right = '┆'}, -- 
             section_separators = { left = '┆', right = '┆'},
-            disabled_filetypes = {},
+            disabled_filetypes = { 'toggleterm' },
             always_divide_middle = true,
             globalstatus = false,
         },
