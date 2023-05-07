@@ -78,7 +78,7 @@ snippet sup "subscript" i
 <sup>${1:${VISUAL}}</sup>
 endsnippet
 
-snippet hl "highlight" i
+snippet == "highlight" i
 <mark>${1:${VISUAL}}</mark>
 endsnippet
 
@@ -173,6 +173,10 @@ endsnippet
 
 snippet nn "note" iA
 {{< note "${2:note}" "${3:class}" >}}${1:${VISUAL}}{{< /note >}}
+endsnippet
+
+snippet nn "note" iA
+{{< note "${2:year}NO${3}${4:type}" "exam" >}}${1:${VISUAL}}{{< /note >}}
 endsnippet
 
 snippet bq "blockquote" i

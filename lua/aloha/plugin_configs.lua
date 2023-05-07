@@ -52,8 +52,8 @@ configs['akinsho/bufferline.nvim'] = function()
         visible = { bg=colors.gray }
     }
     local expand_name = {
-        ["index.md"] = "(i)",
-        ["_index.md"] = "(I)",
+        ["index.md"] = {prefix = "(i)"},
+        ["_index.md"] = {prefix = "(I)"},
         ["init.lua"] = true,
     }
     require('bufferline').setup {
@@ -135,10 +135,20 @@ configs['akinsho/bufferline.nvim'] = function()
             name_formatter = function(buf)
                 if expand_name[buf.name] then
                     local path_slices = vim.split(buf.path, "/")
+                    local basename = path_slices[#path_slices-1]
                     if type(expand_name[buf.name]) == "string" then
-                        return path_slices[#path_slices-1] .. expand_name[buf.name]
+                        return basename .. expand_name[buf.name]
+                    elseif type(expand_name[buf.name]) == "table" then
+                        local bufname
+                        if expand_name[buf.name].prefix then
+                            bufname = expand_name[buf.name].prefix .. basename
+                        end
+                        if expand_name[buf.name].suffix then
+                            bufname = basename .. expand_name[buf.name].suffix
+                        end
+                        return bufname
                     else
-                        return path_slices[#path_slices-1] .. "/" .. buf.name
+                        return basename .. "/" .. buf.name
                     end
                 else
                     return buf.name
@@ -1126,7 +1136,7 @@ end
 
 configs['nvim-lualine/lualine.nvim'] = function()
     local function spelllang()
-        return '﯑ ' .. string.upper(table.concat(vim.opt.spelllang:get(), ','))
+        return string.upper(table.concat(vim.opt.spelllang:get(), ','))
     end
     local function saga()
         local wb = require('lspsaga.symbolwinbar'):get_winbar()
