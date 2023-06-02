@@ -34,7 +34,7 @@ return {
     ['SmiteshP/nvim-gps'] = { disable = true },
     ['fgheng/winbar.nvim'] = {
         disable = true,
-        config = function()
+        config = function ()
             require'winbar'.setup({
                 enabled = true,
 
@@ -82,6 +82,15 @@ return {
     ['liuchengxu/vista.vim'] = {},
     ['mbbill/undotree'] = {},
     ['voldikss/vim-floaterm'] = {},
+    ['MunifTanjim/nui.nvim'] = {},
+    ['google/executor.nvim'] = {
+        config = function(utils)
+            require("executor").setup {}
+            utils.set_map("i", "jk", "<ESC>", {})
+            utils.set_map("n", "<leader>er", ":ExecutorRun<CR>", {})
+            utils.set_map("n", "<leader>ev", ":ExecutorToggleDetail<CR>", {})
+        end
+    },
     ['akinsho/toggleterm.nvim'] = {},
     ['glepnir/zephyr-nvim'] = { disable = true, config = [[:colorscheme zephyr]] },
     ['glepnir/dashboard-nvim'] = { disable = true },

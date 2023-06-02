@@ -150,7 +150,7 @@ snippet sg "sense group" i
 endsnippet
 
 snippet tbl "table with title and caption" bw
-{{< table title="${1}" caption="${2}" left_sticky=${3:false}`!p snip.rv = (' id="tbl_' + anchor_format(t[1]) + '"') if t[1] else ""` >}}
+{{< table title="${1}" caption="${2}" snip.rv = (' id="tbl_' + anchor_format(t[1]) + '"') if t[1] else ""` >}}
 ${0:${VISUAL}}
 {{< /table >}}
 endsnippet
@@ -175,7 +175,7 @@ snippet nn "note" iA
 {{< note "${2:note}" "${3:class}" >}}${1:${VISUAL}}{{< /note >}}
 endsnippet
 
-snippet nn "note" iA
+snippet nex "note" iA
 {{< note "${2:year}NO${3}${4:type}" "exam" >}}${1:${VISUAL}}{{< /note >}}
 endsnippet
 

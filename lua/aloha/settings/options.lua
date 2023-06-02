@@ -84,10 +84,13 @@ return {
     filetype_options = {
         ['markdown,rmd,tex'] = {
             wrap = true,
-            spell = true
+            spell = true,
         },
         ['c,cpp'] = {
-            path = {'append', "./include"}
+            path = {
+                behavior = 'append',
+                content = {"./include"}
+            }
         },
         python = {
             shiftwidth = 2,

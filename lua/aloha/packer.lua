@@ -1,6 +1,20 @@
 local packer = {}
 
+local aloha = _G.aloha
 local utils = aloha.utils
+
+local putils = {
+    set_map = function(...)
+        table.insert(aloha.map.list, {...})
+    end,
+    set_option = function(option, value, ft)
+        if ft then
+            aloha.options.filetype_options[ft][option] = value
+        else
+            aloha.options.global_options[option] = value
+        end
+    end
+}
 
 local api = vim.api
 local fn = vim.fn
@@ -21,7 +35,7 @@ local function exec(cmd, cwd, cmd_type)
     if not cmd_type then goto check end
 
     if cmd_type == 'function' then
-        cmd()
+        cmd(putils)
     elseif cmd_type == 'vim' then
         vim.cmd(cmd)
     elseif cmd_type == 'cmd' then
@@ -43,7 +57,7 @@ local function exec(cmd, cwd, cmd_type)
 
     ::check::
     if type(cmd) == 'function' then
-        cmd()
+        cmd(putils)
     elseif type(cmd) == 'string' then
         local first = cmd:sub(1, 1)
         if first == ':' then
@@ -465,7 +479,7 @@ function packer:loadConfig(plugin_name)
         if load_dependencies(plugin_name) or not self.config.strict_deps then
             local config = self.plugins[plugin_name].config
             if self.plugin_configs[plugin_name] then
-                self.plugin_configs[plugin_name]()
+                self.plugin_configs[plugin_name](putils)
             end
             if config then
                 exec(config)
@@ -486,7 +500,7 @@ function packer:loadConfig(plugin_name)
                     exec(settings.config)
                 end
                 if self.plugin_configs[name] then
-                    self.plugin_configs[name]()
+                    self.plugin_configs[name](putils)
                 end
             end
         end

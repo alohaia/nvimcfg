@@ -12,7 +12,7 @@ endsnippet
 # Basic grammar
 ###############
 
-snippet #inc "include" bAw
+snippet "^#?inc" "include" rbw
 #include 
 endsnippet
 
@@ -68,7 +68,7 @@ endsnippet
 ##################
 
 # main function.
-snippet "(int\ )?main(\(\))?" "main() function" bwr
+snippet main "main() function" bw
 int main(int ${1:argc}, char** ${2:argv}) {
     ${3://Do something here.}
 }$0

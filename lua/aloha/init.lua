@@ -1,6 +1,26 @@
+local utils = require('aloha.utils')
+
+local set_option = function(option, value)
+    if type(value) == 'table' and value.behavior then
+        if value.behavior == 'append' then
+            vim.opt[option]:append(value.content)
+        elseif value.behavior == 'remove' then
+            vim.opt[option]:remove(value.content)
+        elseif value.behavior == 'set' then
+            vim.opt[option] = value.content
+        else
+            utils.err('[aloha set_option] unknow behavior "%s"', value.behavior)
+        end
+    else
+        vim.opt[option] = value
+    end
+end
+
+
 -- use _configs and ... to fill up _G.aloha
 return function(_configs)
-    _G.aloha = { utils = require('aloha.utils') }
+    _G.aloha = { utils = utils }
+    local aloha = _G.aloha
 
     local configs = vim.tbl_deep_extend('keep', _configs, {
         transparency = true,
@@ -31,12 +51,26 @@ return function(_configs)
         leader = configs.mapleader or ' ',
         default_args = setmetatable(
             { silent = true, noremap = true },
-            { __add = aloha.utils.meta_tbl_add }
+            { __add = function(tbl_o, tbl_n)
+                local new_table = vim.deepcopy(tbl_o)
+                if tbl_n ~= nil then
+                    vim.validate{
+                        tbl_n = {tbl_n, 't'}
+                    }
+                    for k,v in pairs(tbl_n) do
+                        new_table[k] = v
+                    end
+                end
+                return new_table
+            end }
         ),
     }
     aloha.options = settings.options or {}
     aloha.commands = settings.commands or {}
     aloha.autocmds = settings.autocmds or {}
+
+    -- packer
+    aloha.packer = require('aloha.packer'):init(configs.packer)
 
     -- set up mappings
     vim.g.mapleader = aloha.map.leader
@@ -47,7 +81,7 @@ return function(_configs)
     -- set up options
     if aloha.options.global_options then
         for o,v in pairs(aloha.options.global_options) do
-            vim.opt[o] = v
+            set_option(o, v)
         end
     end
     if aloha.options.filetype_options then
@@ -58,15 +92,12 @@ return function(_configs)
                 pattern = filetypes,
                 callback = function ()
                     for o,v in pairs(options) do
-                        vim.opt_local[o] = v
+                        set_option(o, v)
                     end
                 end
             })
         end
     end
-
-    -- packer
-    aloha.packer = require('aloha.packer'):init(configs.packer)
 
     -- define user commands
     for cmd_name,cmd in pairs(aloha.commands) do
