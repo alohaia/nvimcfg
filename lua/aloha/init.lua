@@ -69,9 +69,6 @@ return function(_configs)
     aloha.commands = settings.commands or {}
     aloha.autocmds = settings.autocmds or {}
 
-    -- packer
-    aloha.packer = require('aloha.packer'):init(configs.packer)
-
     -- set up mappings
     vim.g.mapleader = aloha.map.leader
     for _,map in pairs(aloha.map.list) do
@@ -98,6 +95,9 @@ return function(_configs)
             })
         end
     end
+
+    -- packer
+    aloha.packer = require('aloha.packer'):init(configs.packer)
 
     -- define user commands
     for cmd_name,cmd in pairs(aloha.commands) do
