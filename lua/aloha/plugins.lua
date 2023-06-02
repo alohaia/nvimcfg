@@ -82,13 +82,12 @@ return {
     ['liuchengxu/vista.vim'] = {},
     ['mbbill/undotree'] = {},
     ['voldikss/vim-floaterm'] = {},
-    ['MunifTanjim/nui.nvim'] = {},
+        ['MunifTanjim/nui.nvim'] = {},
     ['google/executor.nvim'] = {
-        config = function(utils)
+        config = function()
             require("executor").setup {}
-            utils.set_map("i", "jk", "<ESC>", {})
-            utils.set_map("n", "<leader>er", ":ExecutorRun<CR>", {})
-            utils.set_map("n", "<leader>ev", ":ExecutorToggleDetail<CR>", {})
+            vim.api.nvim_set_keymap("n", "<leader>er", "<Cmd>ExecutorRun<CR>", {})
+            vim.api.nvim_set_keymap("n", "<leader>ev", "<Cmd>ExecutorToggleDetail<CR>", {})
         end
     },
     ['akinsho/toggleterm.nvim'] = {},

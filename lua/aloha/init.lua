@@ -1,26 +1,26 @@
 local utils = require('aloha.utils')
 
-local set_option = function(option, value)
+local set_option = function(option, value, scope)
+    local opt = (scope == 'local') and vim.opt_local
+        or (scope == 'global' and vim.opt_global or vim.opt)
     if type(value) == 'table' and value.behavior then
         if value.behavior == 'append' then
-            vim.opt[option]:append(value.content)
+            opt[option]:append(value.content)
         elseif value.behavior == 'remove' then
-            vim.opt[option]:remove(value.content)
+            opt[option]:remove(value.content)
         elseif value.behavior == 'set' then
-            vim.opt[option] = value.content
+            opt[option] = value.content
         else
             utils.err('[aloha set_option] unknow behavior "%s"', value.behavior)
         end
     else
-        vim.opt[option] = value
+        opt[option] = value
     end
 end
-
 
 -- use _configs and ... to fill up _G.aloha
 return function(_configs)
     _G.aloha = { utils = utils }
-    local aloha = _G.aloha
 
     local configs = vim.tbl_deep_extend('keep', _configs, {
         transparency = true,
@@ -92,7 +92,7 @@ return function(_configs)
                 pattern = filetypes,
                 callback = function ()
                     for o,v in pairs(options) do
-                        set_option(o, v)
+                        set_option(o, v, 'local')
                     end
                 end
             })

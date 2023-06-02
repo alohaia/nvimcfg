@@ -73,9 +73,7 @@ return {
         -- cinkeys  = '0{,0},0),0],:,0#,!^F,o,O,e', -- cindent & !indentexpr
         -- indentkeys        = ':,0#,!^F,o,O,e', -- indentexpr
         -- set indentexpr = Get{Vim|Lua|Cpp}Indent -- Xcindent Xsmartindent !lisp
-        spelllang    = 'en_us,cjk',
-        spellfile    = vim.fn.expand('~/.config/nvim/spell/en.utf-8.add'),
-        -- spelloptions = 'camel',
+
         inccommand   = 'split',
 
         splitbelow   = true,
@@ -85,6 +83,9 @@ return {
         ['markdown,rmd,tex'] = {
             wrap = true,
             spell = true,
+            spelllang    = 'en_us,cjk',
+            spellfile    = vim.fn.expand('~/.config/nvim/spell/en.utf-8.add'),
+            -- spelloptions = 'camel',
         },
         ['c,cpp'] = {
             path = {
