@@ -22,21 +22,7 @@ return {
     ['onsails/lspkind-nvim'] = { opt=true },
     ['glepnir/lspsaga.nvim'] = { opt=true, event='BufRead', branch = 'main' },
     -- snippets
-    ['dcampos/nvim-snippy'] = {
-        config = function ()
-            require('snippy').setup({
-                mappings = {
-                    is = {
-                        ['<Tab>'] = 'expand_or_advance',
-                        ['<S-Tab>'] = 'previous',
-                    },
-                    nx = {
-                        ['<leader>x'] = 'cut_text',
-                    },
-                },
-            })
-        end
-    },
+    ['dcampos/nvim-snippy'] = {},
     ['dcampos/cmp-snippy'] = { opt=true },
     -- ['SirVer/ultisnips'] = {},
     -- ['quangnguyen30192/cmp-nvim-ultisnips'] = { opt=true },
@@ -129,6 +115,7 @@ return {
     },
     ['nvim-treesitter/nvim-treesitter-textobjects'] = { opt=true },
     ['fladson/vim-kitty'] = { ft='kitty' },
+    ['fatih/vim-go'] = { ft='go,gohtmltmpl' },
 
     -- test
     ['dstein64/vim-startuptime'] = { disable = true },

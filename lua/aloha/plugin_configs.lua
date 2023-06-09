@@ -333,8 +333,8 @@ configs['hrsh7th/nvim-cmp'] = function()
             expand = function(args)
                 -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
                 -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-                vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-                -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+                -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+                require'snippy'.expand_snippet(args.body) -- For `snippy` users.
             end,
         },
         sources = cmp.config.sources({ -- group 1
@@ -713,20 +713,38 @@ configs['mbbill/undotree'] = function()
     g.undotree_HelpLine           = 0
 end
 
-configs['nvim-lua/completion-nvim'] = function()
-    setmap('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], {noremap=true, expr=true})
-    setmap('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], {noremap=true, expr=true})
-    g.completion_enable_auto_popup = 1
-    g.completion_enable_snippet = 'UltiSnips'
-    g.completion_confirm_key = '<CR>'
-end
-
 configs['SirVer/ultisnips'] = function()
     g.UltiSnipsEditSplit = "vertical"
     g.UltiSnipsRemoveSelectModeMappings = 0
     g.UltiSnipsExpandTrigger = "<C-Space>"
     g.UltiSnipsJumpForwardTrigger = "<M-j>"
     g.UltiSnipsJumpBackwardTrigger = "<M-k>"
+end
+
+
+configs['dcampos/nvim-snippy'] = function()
+    require('snippy').setup({
+        snippet_dirs = '~/.config/nvim/snippy',
+        local_snippet_dir = '.snippy',
+        enable_auto = true,
+        mappings = {
+            is = {
+                ['<Tab>'] = 'expand_or_advance',
+                ['<S-Tab>'] = 'previous',
+            },
+            nx = {
+                ['<leader>x'] = 'cut_text',
+            },
+        },
+        expand_options = {
+            m = function()
+                return vim.fn["vimtex#syntax#in_mathzone"] and vim.fn["vimtex#syntax#in_mathzone"]() == 1
+            end,
+            c = function()
+                return vim.fn["vimtex#syntax#in_comment"] and vim.fn["vimtex#syntax#in_comment"]() == 1
+            end,
+        }
+    })
 end
 
 configs['luochen1990/rainbow'] = function()

@@ -1,0 +1,25 @@
+snippet --- "Comment with description." b
+	--[[ ${1}
+		${VISUAL}
+	]]$0
+
+snippet func "function" b
+	function ${1}(${2})
+		${3:${VISUAL}}
+	end$0
+
+snippet fori "for loop" b
+	for ${1:i},${2:v} in ipairs(${3:list}) do
+		${4}
+	end$0
+
+snippet form "for loop" b
+	for ${1:k},${2:v} in pairs(${3:map}) do
+		${4}
+	end$0
+
+snippet if "if" bA
+	if ${1:condition} then
+		${2}
+	end$0
+
