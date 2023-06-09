@@ -1,7 +1,7 @@
 local configs = {}
 local g = vim.g
 local api = vim.api
-local setmap = vim.api.nvim_set_keymap
+local setmap = vim.keymap.set
 
 configs['lukas-reineke/indent-blankline.nvim'] = function()
     require'indent_blankline'.setup {
@@ -120,9 +120,6 @@ configs['akinsho/bufferline.nvim'] = function()
             right_mouse_command = "bdelete! %d",
             left_mouse_command = "buffer %d",
             middle_mouse_command = nil,
-            --- NOTE: this plugin is designed with this icon in mind,
-            --- and so changing this is NOT recommended, this is intended
-            --- as an escape hatch for people who cannot bear it for whatever reason
             show_buffer_icons = true,
             show_buffer_close_icons = false,
             show_tab_indicators = true,
@@ -156,7 +153,7 @@ configs['akinsho/bufferline.nvim'] = function()
                 end
             end,
             tab_size = 18,
-            diagnostics = "nvim_lsp", -- false | "nvim_lsp",
+            diagnostics = "nvim_lsp",
             diagnostics_indicator = function(count, level, _, context) -- 
                 local sym = level == "error" and "E"
                     or (level == "warning" and "W" or (level == "hint" and "H" or "I"))
@@ -170,39 +167,11 @@ configs['akinsho/bufferline.nvim'] = function()
                     text_align = "left",
                 }
             },
-            persist_buffer_sort = true, -- whether or not custom sorted buffers should persist
-            --- can also be a table containing 2 custom separators
-            --- [focused and unfocused]. eg: { '|', '|' }
-            separator_style = { "", "" }, -- "slant" | "thick" | "thin" | { 'any', 'any' },
+            persist_buffer_sort = true,
+            separator_style = { "", "" },
             enforce_regular_tabs = false,
             always_show_bufferline = true,
             sort_by = "id",
-            -- custom_areas = {
-            --   right = function()
-            --     local result = {}
-            --     local error   = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.ERROR }))
-            --     local warning = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.WARN  }))
-            --     local info    = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.INFO  }))
-            --     local hint    = vim.tbl_count(vim.diagnostic.get(0, {severity = vim.diagnostic.severity.HINT  }))
-            --
-            --     if error ~= 0 then
-            --         table.insert(result, {text = "  " .. error, guifg = "#E06C75"})
-            --     end
-            --
-            --     if warning ~= 0 then
-            --         table.insert(result, {text = "  " .. warning, guifg = "#E5C07B"})
-            --     end
-            --
-            --     if hint ~= 0 then
-            --         table.insert(result, {text = "  " .. hint, guifg = "#56B6C2"})
-            --     end
-            --
-            --     if info ~= 0 then
-            --         table.insert(result, {text = "  " .. info, guifg = "#61AFEF"})
-            --     end
-            --     return result
-            --   end,
-            -- },
         }
     }
     setmap("n", "gb", "<Cmd>BufferLinePick<CR>", {noremap = true, silent = true})
@@ -279,94 +248,48 @@ configs['lewis6991/gitsigns.nvim'] = function()
 end
 
 configs['neovim/nvim-lspconfig'] = function()
-    local lspconfig = require 'lspconfig'
+    local lspconfig = require('lspconfig')
     local util = require 'lspconfig.util'
 
-    local on_attach = function(client, bufnr)
-        -- keymaps
-        local opts = { noremap = true, silent = true, buffer = 0 }
-        -- lspsaga
-        setmap({'n','x'}, '<M-d>',      '<Cmd>Lspsaga hover_doc<CR>',               opts)
-        setmap('n',       'g?',         '<Cmd>Lspsaga show_line_diagnostics<CR>',   opts)
-        setmap('n',       '<leader>rn', '<Cmd>Lspsaga rename<CR>',                  opts)
-        setmap({'n','v'}, '<leader>ca', '<Cmd>Lspsaga code_action<CR>',             opts)
-        setmap('n',       '[d',         '<Cmd>Lspsaga diagnostic_jump_prev<CR>',    opts)
-        setmap('n',       ']d',         '<Cmd>Lspsaga diagnostic_jump_next<CR>',    opts)
-        setmap("n", "[e", function()
-            require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR })
-        end, opts)
-        setmap("n", "]e", function()
-            require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR })
-        end, opts)
+    vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+        callback = function(ev)
+            vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-        -- Enable completion triggered by <c-x><c-o>
-        api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-    end
+            local opts = { buffer = ev.buf }
+            setmap('n', 'gd', '<Cmd>Lspsaga peek_definition<CR>', opts)
+            setmap('n', 'g?', '<Cmd>Lspsaga hover_doc<CR>', opts)
+            setmap('n', '<leader>dd', '<Cmd>Lspsaga show_cursor_diagnostics<CR>', opts)
+            setmap('n', '<leader>db', '<Cmd>Lspsaga show_buf_diagnostics<CR>', opts)
+            setmap('n', '<leader>dw', '<Cmd>Lspsaga show_workspace_diagnostics<CR>', opts)
+            setmap('n', '<leader>dq', vim.diagnostic.setloclist)
+            setmap('n', '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', opts)
+            setmap('n', ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', opts)
+            setmap('n', '<leader>rn', '<Cmd>Lspsaga rename<CR>', opts)
+            setmap({ 'n', 'v' }, '<space>ca', '<Cmd>Lspsaga code_action<CR>', opts)
+            setmap('n', '<space>f', function()
+                vim.lsp.buf.format { async = true }
+            end, opts)
+        end,
+    })
 
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.completion.completionItem = {
-        documentationFormat = { "markdown", "plaintext" },
-        snippetSupport = true,
-        preselectSupport = true,
-        insertReplaceSupport = true,
-        labelDetailsSupport = true,
-        deprecatedSupport = true,
-        commitCharactersSupport = true,
-        tagSupport = { valueSet = { 1 } },
-        resolveSupport = {
-            properties = {
-                "documentation",
-                "detail",
-                "additionalTextEdits",
-            },
-        },
-    }
-
-    local runtime_path = vim.split(package.path, ';')
-    table.insert(runtime_path, "lua/?.lua")
-    table.insert(runtime_path, "lua/?/init.lua")
-    local root_files = {
-        '.luarc.json',
-        '.luacheckrc',
-        '.stylua.toml',
-        'selene.toml',
+    local lua_root_files = {
+        '.luarc.json', '.luacheckrc','.stylua.toml', 'selene.toml',
     }
     lspconfig.lua_ls.setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        cmd = {
-            "lua-language-server",
-            "-E", "/usr/share/lua-language-server/main.lua"
-        },
         single_file_support = true,
         root_dir = function(fname)
-            return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
+            return util.root_pattern(unpack(lua_root_files))(fname) or util.find_git_ancestor(fname)
         end,
         settings = {
             Lua = {
-                diagnostics = {
-                    globals = {"vim"}
-                },
-                runtime = {
-                    version = "LuaJIT",
-                    path = runtime_path,
-                },
-                workspace = {
-                    library = {
-                        [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-                        [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
-                    },
-                    maxPreload = 100000,
-                    preloadFileSize = 10000,
-                },
+                diagnostics = { globals = {"vim"} },
             },
         }
     }
     lspconfig.clangd.setup {
-        capabilities = capabilities,
-        on_attach = function (client, bufnr)
+        on_attach = function (_, bufnr)
             api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<Cmd>ClangdSwitchSourceHeader<cr>', {noremap=true})
-            on_attach(client, bufnr)
         end,
         cmd = {
             "clangd",
@@ -377,29 +300,19 @@ configs['neovim/nvim-lspconfig'] = function()
         },
         filetypes = { "c", "cpp", "objc", "objcpp" }
     }
-    local servers = {
-        'bashls', 'pyright', 'r_language_server'
-    }
-    for _,server in ipairs(servers) do
-        lspconfig[server].setup {
-            capabilities = capabilities,
-            on_attach = on_attach,
-        }
-    end
 
-    lspconfig.tsserver.setup {
-        capabilities = capabilities,
-    }
+    lspconfig.bashls.setup {}
+    lspconfig.pyright.setup {}
+    lspconfig.r_language_server.setup {}
+
+    lspconfig.tsserver.setup {}
     lspconfig.cssls.setup {
-        capabilities = capabilities,
         cmd = { "/usr/bin/vscode-css-language-server", "--stdio" },
     }
     lspconfig.jsonls.setup {
-        capabilities = capabilities,
         cmd = { "/usr/bin/vscode-json-language-server", "--stdio"  }
     }
     lspconfig.html.setup {
-        capabilities = capabilities,
         cmd = { "/usr/bin/vscode-html-language-server", "--stdio"  }
     }
 end
@@ -417,7 +330,6 @@ configs['hrsh7th/nvim-cmp'] = function()
     local cmp = require("cmp")
     cmp.setup{
         snippet = {
-            -- REQUIRED - you must specify a snippet engine
             expand = function(args)
                 -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
                 -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.

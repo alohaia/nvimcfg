@@ -33,8 +33,8 @@ return {
 
     {'t', '<ESC>', [[<C-\><C-n>]]},
 
-    { {'n', 'x'}, '-', '<Cmd>bp<CR>' },
-    { {'n', 'x'}, '=', '<Cmd>bn<CR>' },
+    { {'n', 'x'}, '(', '<Cmd>bp<CR>' },
+    { {'n', 'x'}, ')', '<Cmd>bn<CR>' },
     { {'n', 'x'}, '_', '<Cmd>tabprevious<CR>' },
     { {'n', 'x'}, '+', '<Cmd>tabnext<CR>' },
 

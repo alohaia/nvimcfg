@@ -93,7 +93,7 @@ return {
                 content = {"./include"}
             }
         },
-        python = {
+        ['python,toml'] = {
             shiftwidth = 2,
             tabstop    = 2,
         },

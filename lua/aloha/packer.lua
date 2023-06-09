@@ -537,14 +537,14 @@ function packer:uninstall(name)
         cate,plugin_name = path:match('([^/]*)/([^/]*)$')
         if name ~= nil and name ~= '' then  -- `name` is specified
             if plugin_name == name then
-                if exec('!' .. self.config.rm .. ' ' .. path, nil, 'cmd') then
+                if exec(self.config.rm .. ' ' .. path, nil, 'cmd') then
                     info('%s deleted', path)
                 else
                     err('failed to delete %s', plugin_name)
                 end
             end
         elseif (not plugins[plugin_name]) or plugins[plugin_name].cate ~= cate then
-            if exec('!' .. self.config.rm .. ' ' .. path, nil, 'cmd') then
+            if exec(self.config.rm .. ' ' .. path, nil, 'cmd') then
                 info('%s deleted', path)
             else
                 err('failed to delete %s', plugin_name)
