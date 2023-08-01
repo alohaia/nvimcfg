@@ -37,6 +37,23 @@ M.bufdelete = function ()
     end
 
     vim.cmd('bd ' .. tostring(buf))
+    -- vim.api.nvim_buf_delete(buf, {unload = true})
 end
+
+-- TODO
+M.bufonly = function ()
+    local bufs = M.getlistedbufs()
+    local buf = vim.fn.bufnr()
+
+    for _,buf_id in ipairs(bufs) do
+        if buf_id ~= buf and vim.fn.getbufvar(buf_id, "&buftype", "normal") ~= "normal" then
+            vim.api.nvim_buf_delete(buf_id)
+        end
+    end
+end
+
+
+
+
 
 return M

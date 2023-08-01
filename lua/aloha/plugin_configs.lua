@@ -274,7 +274,7 @@ configs['neovim/nvim-lspconfig'] = function()
     })
 
     local lua_root_files = {
-        '.luarc.json', '.luacheckrc','.stylua.toml', 'selene.toml',
+        ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", "selene.toml", "selene.yml", ".git"
     }
     lspconfig.lua_ls.setup {
         single_file_support = true,
@@ -283,7 +283,12 @@ configs['neovim/nvim-lspconfig'] = function()
         end,
         settings = {
             Lua = {
-                diagnostics = { globals = {"vim"} },
+                runtime = {
+                    version = 'LuaJIT',
+                },
+                diagnostics = {
+                    globals = {"vim"}
+                },
             },
         }
     }
@@ -532,6 +537,27 @@ configs['rhysd/clever-f.vim'] = function()
     g.clever_f_repeat_last_char_inputs = { [[\<CR>]], [[\<Tab>]] }
     g.clever_f_mark_direct             = 1
     g.clever_f_mark_direct_color       = "CleverFDefaultLabel"
+end
+
+configs['ggandor/leap.nvim'] = function ()
+    local leap = require('leap')
+    leap.add_default_mappings()
+    leap.opt.special_keys = {
+        next_target = '<Tab>',
+        prev_target = '<S-Tab>',
+        next_group = '<Space>',
+        prev_group = '<S-Tab>',
+        multi_accept = '<enter>',
+        multi_revert = '<backspace>',
+    }
+end
+
+configs['folke/flash.nvim'] = function ()
+    setmap({'n', 'x', 'o'}, '<C-s>', function()
+        require("flash").jump({
+            prompt = { enabled = false }
+        })
+    end)
 end
 
 configs['rainbowhxch/accelerated-jk.nvim'] = function ()

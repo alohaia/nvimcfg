@@ -1,39 +1,5 @@
-global !p
-linelen = 88
-
-def floor(i):
-    if int(i) == i:
-        return int(i)
-    elif i > 0:
-        return int(i)
-    elif i < 0:
-        return int(i) - 1
-
-def ceil(i):
-    if int(i) == i:
-        return int(i)
-    elif i > 0:
-        return int(i) + 1
-    elif i < 0:
-        return int(i)
-
-endglobal
-
 snippet func "function" bA
-function! ${1:funcname}(${2:paramters})
-    ${3}
-endfunction
-$0
-endsnippet
-
-snippet line "Comment Using Line" bw
-"`!p snip.rv = '-' * floor((linelen - 4 - len(t[1])) / 2)`\ ${1} /`!p snip.rv = '-' * ceil((linelen - 6 - len(t[1])) / 2)`
-$0
-endsnippet
-
-snippet box "Comment Using Big Box" bw
-"+`!p snip.rv = '-' * (linelen-3)`+
-"|`!p snip.rv = ' ' * floor((linelen - 7 - len(t[1])) / 2)`\ ${1} /`!p snip.rv = ' ' * ceil((linelen - 7 - len(t[1])) / 2)`|
-"+`!p snip.rv = '-' * (linelen-3)`+
-$0
-endsnippet
+	function! ${1:funcname}(${2:paramters})
+		${3}
+	endfunction
+	$0

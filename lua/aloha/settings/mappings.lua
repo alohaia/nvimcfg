@@ -85,10 +85,11 @@ return {
 
     {'n', '<leader>e', ':e $HOME/.config/nvim/lua/aloha/<C-z>', {silent = false}},
 
-    {'c', '<M-e>', [[getcmdtype()==':' ? substitute(expand('%:p:h'), '\s', '\\\0', "g").'/' : '']], {silent = false, expr = true}},
+    {'c', '<M-e>', [[e <C-r>=fnameescape(expand("%:h"))<CR>/<C-z>]], {silent = false}},
+    {'n', '<M-e>', [[:e <C-r>=fnameescape(expand("%:h"))<CR>/<C-z>]], {silent = false}},
     {'i', '<C-s>', "<c-g>u<Esc>[s1z=ea<c-g>u"},
 
-    {'n', '<C-c>', [["+yW""yW]]},
+    {'n', '<C-c>', [["+yiw""yiw]]},
     {'v', '<C-c>', [["+ygv""y]]},
 
     {'i', '<M-a>', '<ESC>^i'},

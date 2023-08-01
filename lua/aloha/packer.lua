@@ -166,13 +166,13 @@ end
 
 local function onread(error, data)
     if error then
-        print('ERROR: ' .. error)
+        print(error)
     end
     if data then
         local vals = vim.split(data, '\n')
         for _, d in pairs(vals) do
             if d == '' then goto continue end
-            print('INFO: ' .. d)
+            print(d)
             ::continue::
         end
     end

@@ -62,14 +62,14 @@ snippet sub "subscript" i
 snippet sup "subscript" i
 	<sup>${1:${VISUAL}}</sup>$0
 
-snippet === "highlight" i
+snippet === "highlight" iA
 	<mark>${1:${VISUAL}}</mark>$0
 
 snippet kbd "kbd tag" i
 	<kbd>${1:${VISUAL}}</kbd>$0
 
 snippet anc "anchor" i
-	[${1:${VISUAL}}](#${2:$1})$0
+	[${1:${VISUAL}}](#${2:${1/\s\+/-/g}})$0
 
 snippet ln "link" i
 	[${1:${VISUAL}}](${2})$0
@@ -94,24 +94,24 @@ snippet rrf "hugo relref shortcode" i
 	{{< relref "${2:$1}" >}}$0
 
 snippet fig "hugo figure shortcode" b
-	{{< figure src="${1}.${2|png,svg,jpg|}" title="${3:$1}" style="${4|right,left,float-left,float-right|}" >}}$0
+	{{< figure src="${1}.${2|png,svg,jpg|}" title="${3:$1}" ${4:style="${5|normal,right,left,float-left,float-right|}" }>}}$0
 
 snippet tab "tab" b
-	{{< tab type="${1|default,success,primary,info,warning,danger,error|}" summary="${2}" details=${3|true,false|} >}}
+	{{< tab style="${1|default,success,primary,info,warning,danger,error|}" summary="${2}" details=${3|true,false|} >}}
 	${0:${VISUAL}}
 	{{< /tab >}}
 
 snippet card "card" b
-	{{< card type="${1|default,success,primary,info,warning,danger,error|}" src="${2}" details=${3|true,false|} >}}$0
+	{{< card style="${1|default,success,primary,info,warning,danger,error|}" src="${2}" details=${3|true,false|} >}}$0
 
-snippet hzl "horizontal list" b
+snippet hzl "horizontal list" i
 	{{< hzl >}}${1:${VISUAL}}{{< /hzl >}}$0
 
 snippet hdt "hidden text" i
 	{{< hdt "${1:${VISUAL}}" >}}$0
 
 snippet tbl "table with title and caption" b
-	{{< table title="${1}" id="tbl_$1" >}}
+	{{< table title="${1}" id="tbl_${1/\s\+/-/g}" >}}
 	${0:${VISUAL}}
 	{{< /table >}}
 
@@ -134,7 +134,7 @@ snippet nex "exam note" iA
 	{{< note "${2:year}NO${3}${4:type}" "exam" >}}${1:${VISUAL}}{{< /note >}}$0
 
 snippet bq "blockquote" b
-	{{< quote author="${1}" work="${2}" style="${3}" >}}
+	{{< quote author="${1}" work="${2}" style="${3|align-left,align-center,align-right|}" >}}
 	$0
 	{{< /quote >}}
 
@@ -147,9 +147,9 @@ snippet kk "kroki" bA
 	{{< /kroki >}}
 
 snippet kcb "kroki code block" 
-	```kroki {type="${1|actdiag,blockdiag,bpmn,bytefield,ditaa,erd,graphviz,mermaid,nomnoml,nwdiag,packetdiag,pikchr,plantuml,rackdiag,seqdiag,svgbob,umlet,vega,vegalite,wavedrom,excalidraw|}" title="${2:title}" }
+	\`\`\`kroki {type="${1|actdiag,blockdiag,bpmn,bytefield,ditaa,erd,graphviz,mermaid,nomnoml,nwdiag,packetdiag,pikchr,plantuml,rackdiag,seqdiag,svgbob,umlet,vega,vegalite,wavedrom,excalidraw|}" title="${2:title}" }
 	${0:$VISUAL}
-	```
+	\`\`\`
 
 ############## Special Snippets #############
 snippet more "more" b

@@ -48,7 +48,6 @@ return {
     ['liuchengxu/vista.vim'] = {},
     ['mbbill/undotree'] = {},
     ['voldikss/vim-floaterm'] = {},
-    ['akinsho/toggleterm.nvim'] = {},
     ['nvim-telescope/telescope.nvim'] = {
         cmd = 'Telescope',
         map = {
@@ -70,7 +69,9 @@ return {
     ['luochen1990/rainbow'] = {},
     ['alohaia/hugowiki.nvim'] = {},
     ['lervag/vimtex'] = {},
-    ['rhysd/clever-f.vim'] = {},
+    ['rhysd/clever-f.vim'] = { disable=true },
+    ['ggandor/leap.nvim'] = { disable=true },
+    ['folke/flash.nvim'] = {},
     ['brooth/far.vim'] = {},
     ['rainbowhxch/accelerated-jk.nvim'] = {},
     ['preservim/nerdcommenter'] = {},
