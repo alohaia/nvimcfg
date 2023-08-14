@@ -44,8 +44,11 @@ snippet bb "Bold text" iA
 snippet  "italic text" iA
 	*${1:${VISUAL}}*$0
 
-snippet ii "italic text" iA
+snippet ii "emphasised text" iA
 	*${1:${VISUAL}}*$0
+
+snippet II "italic text" iA
+	<i>${1:${VISUAL}}</i>$0
 
 snippet ib "italic bold text" i
 	***${1:${VISUAL}}***$0
@@ -82,7 +85,7 @@ snippet tags "primary tag" i
 	{{< ${1:tag} >}}${2:${VISUAL}}{{< /$1 >}}$0
 
 snippet lk "hugo hyperlink" iA
-	[${1:${VISUAL}}]({{< relref "${2:$1}" >}})$0
+	[${1:${VISUAL}}]({{< relref "${2:${VISUAL}}" >}})$0
 
 snippet link "raw markdown hyperlink" i
 	[${1:${VISUAL}}]($2)$0

@@ -802,6 +802,7 @@ configs['alohaia/hugowiki.nvim'] = function()
         r_script = vim.fn.expand(g.hugowiki_home) .. 'utils/R/build_one.R',
     }
     g.hugowiki_spellcheck_ignore_upcase = 1
+    g.hugowiki_snippy_integration = 1
 end
 
 configs['lervag/vimtex'] = function()
