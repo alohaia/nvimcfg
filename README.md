@@ -13,7 +13,6 @@
 - Built-in packer
 - Useful plugins with detailed configuration
 - Written in Lua
-- Snippets for [UltiSnips](https://github.com/SirVer/ultisnips)
 
 ## Requirements
 

@@ -11,7 +11,6 @@
 - 内置的 packer
 - 许多有用的插件，详尽的配置
 - 使用 Lua 编写
-- [UltiSnips](https://github.com/SirVer/ultisnips) 代码片段
 
 ## 需求
 
