@@ -2,4 +2,5 @@
 **/*.so
 **/*.back
 **/*.old
+snippy/
 tasks.ini
