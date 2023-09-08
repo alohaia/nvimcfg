@@ -13,6 +13,12 @@ return {
             vim.fn.setreg('/', save_query)
         end
     }},
+    { 'CursorMoved', {
+        pattern = {
+            '*.md', '*.markdown', '*.Rmd', '*.Rmarkdown'
+        },
+        command = "normal zz"
+    }},
     { 'TextYankPost', {
         pattern = '*',
         callback = function ()
