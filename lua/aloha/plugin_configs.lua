@@ -346,8 +346,8 @@ configs['hrsh7th/nvim-cmp'] = function()
             { name = 'nvim_lsp' },
             -- { name = 'vsnip' }, -- For vsnip users.
             -- { name = 'luasnip' }, -- For luasnip users.
-            { name = 'ultisnips' }, -- For ultisnips users.
-            -- { name = 'snippy' }, -- For snippy users.
+            -- { name = 'ultisnips' }, -- For ultisnips users.
+            { name = 'snippy' }, -- For snippy users.
             { name = 'omni' },
         }, {                           -- group 2
             { name = 'buffer' },
@@ -390,7 +390,7 @@ configs['hrsh7th/nvim-cmp'] = function()
             ['<M-s>'] = cmp.mapping.complete({
                 config = {
                     sources = {
-                        { name = 'ultisnips' }
+                        { name = 'snippy' }
                     }
                 }
             })

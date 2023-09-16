@@ -13,12 +13,13 @@ return {
             vim.fn.setreg('/', save_query)
         end
     }},
-    { 'CursorMoved', {
-        pattern = {
-            '*.md', '*.markdown', '*.Rmd', '*.Rmarkdown'
-        },
-        command = "normal zz"
-    }},
+    -- 与 snippy 存在冲突
+    -- { 'CursorMoved', {
+    --     pattern = {
+    --         '*.md', '*.markdown', '*.Rmd', '*.Rmarkdown'
+    --     },
+    --     command = "normal zz"
+    -- }},
     { 'TextYankPost', {
         pattern = '*',
         callback = function ()
