@@ -74,7 +74,7 @@ return {
         -- indentkeys        = ':,0#,!^F,o,O,e', -- indentexpr
         -- set indentexpr = Get{Vim|Lua|Cpp}Indent -- Xcindent Xsmartindent !lisp
 
-        inccommand   = 'split',
+        inccommand   = 'nosplit',
 
         splitbelow   = true,
         splitright   = true,

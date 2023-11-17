@@ -89,9 +89,9 @@ configs['akinsho/bufferline.nvim'] = function()
             indicator_selected = { fg=colors.dark_gray, bg=colors.white },
             indicator_visible = { bg=colors.gray },
 
-            numbers = { bg=colors.dark_gray },
-            numbers_selected = { fg=colors.dark_gray, bg=colors.white },
-            numbers_visible = { bg=colors.gray },
+            numbers = { bg=colors.dark_gray, italic=hls_style.normal.italic },
+            numbers_selected = { fg=colors.dark_gray, bg=colors.white, italic=hls_style.selected.italic },
+            numbers_visible = { bg=colors.gray, italic=hls_style.visible.italic },
 
             tab = { bg=colors.dark_gray },
             tab_selected = { fg=colors.dark_gray, bg=colors.white },

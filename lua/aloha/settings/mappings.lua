@@ -96,5 +96,7 @@ return {
     {'i', '<M-e>', '<END>'},
 
     {'n', '<Leader>ws', [[i<Space><Esc>ea<Space><Esc>]]},
-    {'x', 'as', [[<ESC>`<lt>i<Space><Esc>`>la<Space><Esc>]]}
+    {'x', 'as', [[<ESC>`<lt>i<Space><Esc>`>la<Space><Esc>]]},
+
+    {'i', '<C-v><C-v>', [[<C-r>"]]}
 }
