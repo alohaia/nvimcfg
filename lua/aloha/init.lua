@@ -68,6 +68,19 @@ return function(_configs)
     aloha.options = settings.options or {}
     aloha.commands = settings.commands or {}
     aloha.autocmds = settings.autocmds or {}
+    aloha.highlights = settings.highlights or {}
+
+    -- highlights
+    local au_hl_id = vim.api.nvim_create_augroup('aloha_hl_autocmds', {clear=true})
+    vim.api.nvim_create_autocmd('ColorScheme', {
+        group = au_hl_id,
+        pattern = "*",
+        callback = function ()
+            for n,h in pairs(aloha.highlights) do
+                vim.api.nvim_set_hl(0, n, h)
+            end
+        end
+    })
 
     -- set up mappings
     vim.g.mapleader = aloha.map.leader
