@@ -4,23 +4,16 @@ local api = vim.api
 local setmap = vim.keymap.set
 
 configs['lukas-reineke/indent-blankline.nvim'] = function()
-    require'indent_blankline'.setup {
-        char = '│',
-        use_treesitter = true,
-        show_first_indent_level = false,
-        show_end_of_line = false,
-        show_current_context = true,
-        show_current_context_start = false,
-        filetype_exclude = {
-            "startify", "dashboard", "dotooagenda", "log", "fugitive", "gitcommit",
-            "packer", "vimwiki", "markdown", "json", "txt", "vista", "help", "todoist",
-            "NvimTree", "peekaboo", "git", "TelescopePrompt", "undotree", "flutterToolsOutline",
-            "" -- for all buffers without a file type
-        },
-        buftype_exclude = {"terminal", "nofile"},
-        context_patterns = {
-            "class", "function", "method", "block", "list_literal",
-            "selector", "^if", "^table", "if_statement", "while", "for"
+    require'ibl'.setup {
+        exclude = {
+            filetypes = {
+                "startify", "dashboard", "dotooagenda", "log", "fugitive", "gitcommit",
+                "packer", "vimwiki", "markdown", "json", "txt", "vista", "help", "todoist",
+                "NvimTree", "peekaboo", "git", "TelescopePrompt", "undotree", "flutterToolsOutline",
+                "lspinfo", "checkhealth",  "man",
+                "" -- for all buffers without a file type
+            },
+            buftypes = {"terminal", "nofile", "quickfix", "prompt"},
         },
     }
 end
