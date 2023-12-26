@@ -47,7 +47,9 @@ configs['akinsho/bufferline.nvim'] = function()
     }
     local expand_name = {
         ["index.md"] = {prefix = "(i)"},
+        ["index.Rmd"] = {prefix = "(i.r)"},
         ["_index.md"] = {prefix = "(I)"},
+        ["_index.Rmd"] = {prefix = "(I.r)"},
         ["init.lua"] = true,
     }
     require('bufferline').setup {
