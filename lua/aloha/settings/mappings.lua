@@ -1,3 +1,4 @@
+-- default: silent = true, noremap = true
 return {
     -- mode keys content extra
     { {'n', 'x'}, ';', ':', {silent=false, nowait=true} },
@@ -98,5 +99,7 @@ return {
     {'n', '<Leader>ws', [[i<Space><Esc>ea<Space><Esc>]]},
     {'x', 'as', [[<ESC>`<lt>i<Space><Esc>`>la<Space><Esc>]]},
 
-    {'i', '<C-v><C-v>', [[<C-r>"]]}
+    {'i', '<C-v><C-v>', [[<C-r>"]]},
+
+    {'i', '<C-CR>', [[<ESC>o]]}
 }

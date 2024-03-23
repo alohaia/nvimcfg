@@ -793,8 +793,8 @@ configs['alohaia/hugowiki.nvim'] = function()
     g.hugowiki_lastmod_under_date = 1
     g.hugowiki_rmd_auto_knit = {
         enable = true,
-        cwd = vim.fn.expand(g.hugowiki_home),
-        r_script = vim.fn.expand(g.hugowiki_home) .. 'utils/R/build_one.R',
+        cwd = g.hugowiki_home,
+        r_script = g.hugowiki_home .. 'utils/R/build_one.R',
     }
     g.hugowiki_spellcheck_ignore_upcase = 1
     g.hugowiki_snippy_integration = 1
@@ -860,6 +860,29 @@ configs['dhruvasagar/vim-table-mode'] = function()
     g.table_mode_delimiter = ','
 end
 
+configs['bullets-vim/bullets.vim'] = function ()
+    vim.g.bullets_enabled_file_types = {'rmd', 'markdown', 'text'}
+    vim.g.bullets_set_mappings = 0
+    vim.g.bullets_custom_mappings = {
+        {'imap',  '<cr>',       '<Plug>(bullets-newline)'},
+        {'nmap',  'o',          '<Plug>(bullets-newline)'},
+        {'vmap',  'gN',         '<Plug>(bullets-renumber)'},
+        {'nmap',  'gN',         '<Plug>(bullets-renumber)'},
+        {'nmap',  '<leader>x',  '<Plug>(bullets-toggle-checkbox)'},
+        {'imap',  '<C-t>',      '<Plug>(bullets-demote)'},
+        {'nmap',  '>>',         '<Plug>(bullets-demote)'},
+        {'vmap',  '>',          '<Plug>(bullets-demote)'},
+        {'imap',  '<C-d>',      '<Plug>(bullets-promote)'},
+        {'nmap',  '<<',         '<Plug>(bullets-promote)'},
+        {'vmap',  '<',          '<Plug>(bullets-promote)'}
+    }
+    vim.g.bullets_pad_right = 0
+    vim.g.bullets_auto_indent_after_colon = 1
+    vim.g.bullets_outline_levels = {'std-', 'std*', 'std+'}
+    vim.g.bullets_renumber_on_change = 1
+    vim.g.bullets_nested_checkboxes = 1
+    vim.g.bullets_checkbox_markers = ' X'
+end
 
 configs['svermeulen/vim-subversive'] = function()
     g.subversiveCurrentTextRegister = 1

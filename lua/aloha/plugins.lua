@@ -2,7 +2,7 @@ return {
     -- lsp, completion and snippets
     ['neovim/nvim-lspconfig'] = {
         dependency = {
-            'glepnir/lspsaga.nvim'
+            'nvimdev/lspsaga.nvim'
         }
     },
     ['hrsh7th/nvim-cmp'] = {
@@ -20,7 +20,7 @@ return {
     ['hrsh7th/cmp-path']     = { opt=true },
     ['hrsh7th/cmp-omni']     = { opt=true },
     ['onsails/lspkind-nvim'] = { opt=true },
-    ['glepnir/lspsaga.nvim'] = { opt=true, event='BufRead', branch = 'main' },
+    ['nvimdev/lspsaga.nvim'] = { opt=true, event='BufRead', branch = 'main' },
     -- snippets
     ['dcampos/nvim-snippy'] = {},
     ['dcampos/cmp-snippy'] = { opt=true },
@@ -78,6 +78,31 @@ return {
     ['tpope/vim-surround'] = {},
     ['tpope/vim-repeat'] = {},
     ['dhruvasagar/vim-table-mode'] = { ft='rmd,markdown,text' },
+    ['bullets-vim/bullets.vim'] = {
+        config = function ()
+            vim.g.bullets_enabled_file_types = {'rmd', 'markdown', 'text'}
+            vim.g.bullets_set_mappings = 0
+            vim.g.bullets_custom_mappings = {
+                {'imap', '<cr>', '<Plug>(bullets-newline)'},
+                {'nmap', 'o', '<Plug>(bullets-newline)'},
+                {'vmap', 'gN', '<Plug>(bullets-renumber)'},
+                {'nmap', 'gN', '<Plug>(bullets-renumber)'},
+                {'nmap', '<leader>x', '<Plug>(bullets-toggle-checkbox)'},
+                {'imap', '<C-t>', '<Plug>(bullets-demote)'},
+                {'nmap', '>>', '<Plug>(bullets-demote)'},
+                {'vmap', '>', '<Plug>(bullets-demote)'},
+                {'imap', '<C-d>', '<Plug>(bullets-promote)'},
+                {'nmap', '<<', '<Plug>(bullets-promote)'},
+                {'vmap', '<', '<Plug>(bullets-promote)'}
+            }
+            vim.g.bullets_pad_right = 0 -- no extra space between bullet and text
+            vim.g.bullets_auto_indent_after_colon = 1
+            vim.g.bullets_outline_levels = {'std-', 'std*', 'std+'}
+            vim.g.bullets_renumber_on_change = 1
+            vim.g.bullets_nested_checkboxes = 1
+            vim.g.bullets_checkbox_markers = ' X'
+        end
+    },
     ['svermeulen/vim-subversive'] = {},
     ['svermeulen/vim-yoink'] = {},
     ['mg979/vim-visual-multi'] = {},
