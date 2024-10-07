@@ -1,12 +1,12 @@
 return {
     -- lsp, completion and snippets
     ['neovim/nvim-lspconfig'] = {
-        dependency = {
+        dependencies = {
             'nvimdev/lspsaga.nvim'
         }
     },
     ['hrsh7th/nvim-cmp'] = {
-        dependency = {
+        dependencies = {
             'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
             'hrsh7th/cmp-omni',
             'dcampos/cmp-snippy',
@@ -30,44 +30,48 @@ return {
     -- ['saadparwaiz1/cmp_luasnip'] = {opt=true},
 
     -- ui and appearance
-    ['mhinz/vim-startify'] = { dependency = {'kyazdani42/nvim-web-devicons'} },
+    ['mhinz/vim-startify'] = { dependencies = {'kyazdani42/nvim-web-devicons'} },
     ['olimorris/onedarkpro.nvim'] = {},
     ['nvim-lualine/lualine.nvim'] = {},
-    ['kyazdani42/nvim-web-devicons'] = { opt = true },
     ['lukas-reineke/indent-blankline.nvim'] = {},
     ['akinsho/bufferline.nvim'] = {},
-    ['kyazdani42/nvim-tree.lua'] = {
-        cmd = 'NvimTreeToggle',
-        map = {
-            {mode = 'n', lhs = '<leader>nt'},
+    ['nvim-neo-tree/neo-tree.nvim'] = {
+        branch = 'v3.x',
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+            'kyazdani42/nvim-web-devicons',
+            'MunifTanjim/nui.nvim',
         }
     },
     ['lewis6991/gitsigns.nvim'] = {
-        dependency = 'nvim-lua/plenary.nvim'
+        dependencies = 'nvim-lua/plenary.nvim'
     },
     ['liuchengxu/vista.vim'] = {},
     ['mbbill/undotree'] = {},
     ['voldikss/vim-floaterm'] = {},
     ['nvim-telescope/telescope.nvim'] = {
-        cmd = 'Telescope',
         map = {
-            { mode = 'n', lhs = ',f' },
-            { mode = 'n', lhs = ',b' },
-            { mode = 'n', lhs = ',F' },
-            { mode = 'n', lhs = ',g' },
+            {mode = 'n', lhs = ',g'},
+            {mode = 'n', lhs = ',f'}
         },
-        dependency = {
+        dependencies = {
             'nvim-lua/plenary.nvim',
         }
     },
     ['RRethy/vim-illuminate'] = {},
     ['norcalli/nvim-colorizer.lua'] = {},
     -- dependencies
-    ['nvim-lua/plenary.nvim'] = { opt=true },
+    ['nvim-lua/plenary.nvim'] = { opt = true },
+    ['kyazdani42/nvim-web-devicons'] = { opt = true },
+    ['MunifTanjim/nui.nvim'] = { opt = true },
 
     -- text editing
     ['luochen1990/rainbow'] = {},
-    ['alohaia/hugowiki.nvim'] = {},
+    ['alohaia/hugowiki.nvim'] = {
+        dependencies = {
+            'nvim-telescope/telescope.nvim'
+        }
+    },
     ['lervag/vimtex'] = {},
     ['rhysd/clever-f.vim'] = { disable=true },
     ['ggandor/leap.nvim'] = { disable=true },
@@ -78,31 +82,7 @@ return {
     ['tpope/vim-surround'] = {},
     ['tpope/vim-repeat'] = {},
     ['dhruvasagar/vim-table-mode'] = { ft='rmd,markdown,text' },
-    ['bullets-vim/bullets.vim'] = {
-        config = function ()
-            vim.g.bullets_enabled_file_types = {'rmd', 'markdown', 'text'}
-            vim.g.bullets_set_mappings = 0
-            vim.g.bullets_custom_mappings = {
-                {'imap', '<cr>', '<Plug>(bullets-newline)'},
-                {'nmap', 'o', '<Plug>(bullets-newline)'},
-                {'vmap', 'gN', '<Plug>(bullets-renumber)'},
-                {'nmap', 'gN', '<Plug>(bullets-renumber)'},
-                {'nmap', '<leader>x', '<Plug>(bullets-toggle-checkbox)'},
-                {'imap', '<C-t>', '<Plug>(bullets-demote)'},
-                {'nmap', '>>', '<Plug>(bullets-demote)'},
-                {'vmap', '>', '<Plug>(bullets-demote)'},
-                {'imap', '<C-d>', '<Plug>(bullets-promote)'},
-                {'nmap', '<<', '<Plug>(bullets-promote)'},
-                {'vmap', '<', '<Plug>(bullets-promote)'}
-            }
-            vim.g.bullets_pad_right = 0 -- no extra space between bullet and text
-            vim.g.bullets_auto_indent_after_colon = 1
-            vim.g.bullets_outline_levels = {'std-', 'std*', 'std+'}
-            vim.g.bullets_renumber_on_change = 1
-            vim.g.bullets_nested_checkboxes = 1
-            vim.g.bullets_checkbox_markers = ' X'
-        end
-    },
+    ['alohaia/bullets.nvim'] = {},
     ['svermeulen/vim-subversive'] = {},
     ['svermeulen/vim-yoink'] = {},
     ['mg979/vim-visual-multi'] = {},
@@ -137,11 +117,19 @@ return {
 
     -- syntax highlight
     ['nvim-treesitter/nvim-treesitter'] = {
-        dependency = 'nvim-treesitter/nvim-treesitter-textobjects'
+        dependencies = 'nvim-treesitter/nvim-treesitter-textobjects'
     },
     ['nvim-treesitter/nvim-treesitter-textobjects'] = { opt=true },
     ['fladson/vim-kitty'] = { ft='kitty' },
     ['fatih/vim-go'] = { ft='go,gohtmltmpl' },
+
+    -- R
+    ['R-nvim/r.nvim'] = {},
+    ['R-nvim/cmp-r'] = {
+        config = function()
+            require("cmp_r").setup({})
+        end,
+    },
 
     -- test
     ['dstein64/vim-startuptime'] = { disable = true },

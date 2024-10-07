@@ -44,7 +44,7 @@ return {
         showbreak      = "↳",
         list           = true,
         number         = true,
-        relativenumber = true,
+        relativenumber = false,
         cursorline     = true,
         colorcolumn    = '80',
         signcolumn     = 'yes',
@@ -86,6 +86,7 @@ return {
             spelllang    = 'en_us,cjk',
             spellfile    = vim.fn.expand('~/.config/nvim/spell/en.utf-8.add'),
             -- spelloptions = 'camel',
+            colorcolumn = '100',
         },
         ['c,cpp'] = {
             path = {

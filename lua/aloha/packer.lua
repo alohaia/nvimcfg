@@ -85,7 +85,7 @@ local function exec(cmd, cwd, cmd_type)
 end
 
 local function is_opt(settings)
-    if settings.opt or settings.ft or settings.cmd or settings.enable ~= nil then
+    if settings.opt or settings.ft or settings.cmd or settings.map or settings.enable ~= nil then
         return true
     else
         return false
@@ -454,16 +454,16 @@ local function load_dependencies(name)
         warn('cant not find %s in configs', name)
         is_success = false
     else
-        local deps = packer.plugins[name].dependency
+        local deps = packer.plugins[name].dependencies
         if type(deps) == 'string' then
-            if not packer:add(split(deps, '/')[2], deps) then
-                warn('failed to load dependency %s for %s', deps, name)
+            if is_opt(packer.plugins[deps]) and not packer:add(split(deps, '/')[2], deps) then
+                warn('failed to load dependencies %s for %s', deps, name)
                 is_success = false
             end
         elseif type(deps) == 'table' then
             for _,dep in ipairs(deps) do
-                if not packer:add(split(dep, '/')[2], dep) then
-                    warn('failed to load dependency %s for %s', dep, name)
+                if is_opt(packer.plugins[dep]) and not packer:add(split(dep, '/')[2], dep) then
+                    warn('failed to load dependencies %s for %s', dep, name)
                     is_success = false
                 end
             end
@@ -628,11 +628,15 @@ function packer:prepareOptPlugins()
         -- map opt plugins
         if settings.map then
             for _,mapping in ipairs(settings.map) do
-                api.nvim_set_keymap(mapping.mode, mapping.lhs,
-                    string.format([[<Cmd>lua aloha.packer.load_map('%s', '%s', '%s')<CR>]],
-                        mapping.mode, mapping.lhs:gsub('<', '<lt>'), name),
-                    {noremap = true, silent = true}
-                )
+                if not vim.fn.hasmapto(mapping.lhs, mapping.mode) then
+                    api.nvim_set_keymap(mapping.mode, mapping.lhs,
+                        string.format([[<Cmd>lua aloha.packer.load_map('%s', '%s', '%s')<CR>]],
+                            mapping.mode, mapping.lhs:gsub('<', '<lt>'), name),
+                        {noremap = true, silent = true}
+                    )
+                -- else
+                --     warn('mapping to %s already exists', mapping.lhs)
+                end
             end
         end
 

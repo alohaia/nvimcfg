@@ -172,71 +172,34 @@ configs['akinsho/bufferline.nvim'] = function()
     setmap("n", "gb", "<Cmd>BufferLinePick<CR>", {noremap = true, silent = true})
 end
 
-configs['kyazdani42/nvim-tree.lua'] = function()
-    require("nvim-tree").setup {
-        auto_reload_on_write = true,
-        disable_netrw = true,
-        hijack_cursor = true,
-        hijack_netrw = true,
-        view = {
-            adaptive_size = true,
-            float = {
-                enable = true
-            },
+configs['nvim-neo-tree/neo-tree.nvim'] = function ()
+    vim.fn.sign_define("DiagnosticSignError", {text = "E", texthl = "DiagnosticSignError"})
+    vim.fn.sign_define("DiagnosticSignWarn", {text = "W", texthl = "DiagnosticSignWarn"})
+    vim.fn.sign_define("DiagnosticSignInfo", {text = "I", texthl = "DiagnosticSignInfo"})
+    vim.fn.sign_define("DiagnosticSignHint", {text = "H", texthl = "DiagnosticSignHint"})
+
+    require("neo-tree").setup({
+        close_if_last_window = true,
+        source_selector = {
+            winbar = true,
         },
-        filters = {
-            dotfiles = true,
-        },
-        renderer = {
-            root_folder_label = false,
-            add_trailing = false,
-            group_empty = true,
-            indent_markers = {
-                enable = true,
-                icons = {
-                    corner = "└",
-                    edge = "│",
-                    none = " ",
-                },
-            },
-        },
-        actions = {
-            change_dir = {
-                enable = true,
-                global = false,
-            },
-            open_file = {
-                quit_on_open = false,
-                resize_window = false,
-                window_picker = {
-                    enable = true,
-                    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-                    exclude = {
-                        filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
-                        buftype = { "nofile", 'quickfix', "terminal", "prompt", "help" },
-                    },
-                },
-            },
-        },
-        trash = {
-            cmd = "trash",
-            require_confirm = true,
-        },
-    }
-    -- see :h nvim-tree-events
-    setmap('n', '<leader>nt', '<Cmd>NvimTreeFindFileToggle<CR>', {noremap = true})
-    vim.cmd[[autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]]
+        window = {
+            mappings = {
+                ["P"] = { 'toggle_preview', config = { use_float = false, use_image_nvim = false } },
+                ['s'] = 'open_split',
+                ['v'] = 'open_vsplit',
+            }
+        }
+    })
+
+    api.nvim_set_hl(0, 'NeoTreeIndentMarker', {
+        fg = api.nvim_get_hl(0, {name="Comment"}).fg
+    })
+    setmap('n', [[<C-CR>]], '<Cmd>Neotree toggle reveal<CR>', {noremap = true})
 end
 
 configs['lewis6991/gitsigns.nvim'] = function()
     require('gitsigns').setup {
-        signs = {
-            add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-            change       = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-            delete       = {hl = 'GitSignsDelete', text = '-', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-            topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-            changedelete = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-        },
         numhl              = true,
         current_line_blame = false
     }
@@ -271,6 +234,7 @@ configs['neovim/nvim-lspconfig'] = function()
     local lua_root_files = {
         ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", "selene.toml", "selene.yml", ".git"
     }
+    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
     lspconfig.lua_ls.setup {
         single_file_support = true,
         root_dir = function(fname)
@@ -287,6 +251,7 @@ configs['neovim/nvim-lspconfig'] = function()
             },
         }
     }
+    lspconfig.vimls.setup {}
     lspconfig.clangd.setup {
         on_attach = function (_, bufnr)
             api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<Cmd>ClangdSwitchSourceHeader<cr>', {noremap=true})
@@ -305,7 +270,7 @@ configs['neovim/nvim-lspconfig'] = function()
     lspconfig.pyright.setup {}
     lspconfig.r_language_server.setup {}
 
-    lspconfig.tsserver.setup {}
+    lspconfig.ts_ls.setup {}
     lspconfig.cssls.setup {
         cmd = { "/usr/bin/vscode-css-language-server", "--stdio" },
     }
@@ -339,6 +304,7 @@ configs['hrsh7th/nvim-cmp'] = function()
         },
         sources = cmp.config.sources({ -- group 1
             { name = 'nvim_lsp' },
+            { name = 'cmp_r' },
             -- { name = 'vsnip' }, -- For vsnip users.
             -- { name = 'luasnip' }, -- For luasnip users.
             -- { name = 'ultisnips' }, -- For ultisnips users.
@@ -572,6 +538,9 @@ end
 configs['nvim-treesitter/nvim-treesitter'] = function()
     api.nvim_command('set foldmethod=expr')
     api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
+    -- require("nvim-treesitter.install").command_extra_args = {
+    --     curl = { "--proxy", "<proxy url>" },
+    -- }
     require'nvim-treesitter.configs'.setup {
         ensure_installed = {
             'c', 'cpp', 'python', 'css', 'bash', 'cmake', 'glsl', 'go', 'html', 'javascript',
@@ -839,18 +808,6 @@ configs['lervag/vimtex'] = function()
     }
 end
 
-configs['dkarter/bullets.vim'] = function()
-    g.bullets_enabled_file_types = { "markdown", "text" }
-    g.bullets_enable_in_empty_buffers = 1
-    g.bullets_checkbox_markers = " X"
-    g.bullets_mapping_leader = ""
-    g.bullets_delete_last_bullet_if_empty = 1
-    g.bullets_outline_levels = {'ROM'}
-    setmap("i", "<C-a>", "<Cmd>ToggleCheckbox<CR>", {noremap = true})
-    setmap("n", "<leader>sn", "<Cmd>RenumberList<CR>", {noremap = true})
-    setmap("x", "<leader>sn", "<Cmd>RenumberSelection<CR>", {noremap = true})
-end
-
 configs['dhruvasagar/vim-table-mode'] = function()
     setmap("n", "<leader>tm", "<cmd>TableModeToggle<cr>", {noremap = true})
     g.table_mode_corner = '|'
@@ -858,30 +815,6 @@ configs['dhruvasagar/vim-table-mode'] = function()
     g.table_mode_align_char=":"
     g.table_mode_header_fillchar="-"
     g.table_mode_delimiter = ','
-end
-
-configs['bullets-vim/bullets.vim'] = function ()
-    vim.g.bullets_enabled_file_types = {'rmd', 'markdown', 'text'}
-    vim.g.bullets_set_mappings = 0
-    vim.g.bullets_custom_mappings = {
-        {'imap',  '<cr>',       '<Plug>(bullets-newline)'},
-        {'nmap',  'o',          '<Plug>(bullets-newline)'},
-        {'vmap',  'gN',         '<Plug>(bullets-renumber)'},
-        {'nmap',  'gN',         '<Plug>(bullets-renumber)'},
-        {'nmap',  '<leader>x',  '<Plug>(bullets-toggle-checkbox)'},
-        {'imap',  '<C-t>',      '<Plug>(bullets-demote)'},
-        {'nmap',  '>>',         '<Plug>(bullets-demote)'},
-        {'vmap',  '>',          '<Plug>(bullets-demote)'},
-        {'imap',  '<C-d>',      '<Plug>(bullets-promote)'},
-        {'nmap',  '<<',         '<Plug>(bullets-promote)'},
-        {'vmap',  '<',          '<Plug>(bullets-promote)'}
-    }
-    vim.g.bullets_pad_right = 0
-    vim.g.bullets_auto_indent_after_colon = 1
-    vim.g.bullets_outline_levels = {'std-', 'std*', 'std+'}
-    vim.g.bullets_renumber_on_change = 1
-    vim.g.bullets_nested_checkboxes = 1
-    vim.g.bullets_checkbox_markers = ' X'
 end
 
 configs['svermeulen/vim-subversive'] = function()
@@ -1022,71 +955,17 @@ configs['jiangmiao/auto-pairs'] = function()
     })
 end
 
-configs['windwp/nvim-autopairs'] = function()
-    local npairs = require("nvim-autopairs")
-    local Rule = require('nvim-autopairs.rule')
-    -- local conds = require('nvim-autopairs.conds')
-    npairs.setup{
-        disable_filetype = { "TelescopePrompt" },
-        disable_in_macro = false,                 -- disable when recording or executing a macro
-        disable_in_visualblock = true,            -- disable when insert after visual block mode
-        ignored_next_char = [=[[%w%%%'%[%"%.]]=],
-        enable_moveright = true,
-        enable_afterquote = true,                 -- add bracket pairs after quote
-        enable_check_bracket_line = true,         -- - check bracket in same line
-        enable_bracket_in_quote = true,
-        check_ts = true,
-        map_cr = true,
-        map_bs = true,                            -- map the <BS> key
-        map_c_h = false,                          -- Map the <C-h> key to delete a pair
-        map_c_w = false,                          -- map <c-w> to delete a pair if possible
-        fast_wrap = {
-            map = '<M-w>',
-            chars = { '{', '[', '(', '"', "'" },
-            pattern = [=[[%'%"%)%>%]%)%}%,]]=],
-            end_key = '$',
-            keys = 'qwertyuiopzxcvbnmasdfghjkl',
-            check_comma = true,
-            highlight = 'Search',
-            highlight_grey='Comment'
-        },
-    }
-    Rule('“', '”', {'markdown', 'rmd', 'text'})
-    Rule('‘', '’', {'markdown', 'rmd', 'text'})
-    Rule('``', '``', {'markdown', 'rmd', 'text'})
-    Rule('h', 'a', {'markdown', 'rmd', 'text'})
-    -- Rule('%s```.*', '```', {'markdown', 'rmd'})
-
-        :use_regex(true)
-        -- :end_wise(conds.done())
-        -- :only_cr(conds.done())
-    -- Treesitter rules
-    -- local ts_conds = require('nvim-autopairs.ts-conds')
-    -- npairs.setup({
-    --     check_ts = true,
-    --     ts_config = {
-    --         lua = {'string'},-- it will not add a pair on that treesitter node
-    --         javascript = {'template_string'},
-    --         java = false,-- don't check treesitter on java
-    --     }
-    -- })
-    -- -- press % => %% only while inside a comment or string
-    -- npairs.add_rules({
-    --   Rule("%", "%", "lua")
-    --     :with_pair(ts_conds.is_ts_node({'string','comment'})),
-    --   Rule("$", "$", "lua")
-    --     :with_pair(ts_conds.is_not_ts_node({'function'}))
-    -- })
-end
-
 configs['olimorris/onedarkpro.nvim'] = function()
     vim.opt.background = "dark"
     local transparentbg = _G.aloha.configs.transparency == nil and true or _G.aloha.configs.transparency
     require("onedarkpro").setup({
+        colors = {},
         highlights = {
             Conceal = { link = "Normal" },
             -- Keyword = { gui = "italic" }
         },
+        styles = {},
+        filetypes = {},
         plugins = {
             all = false,
             nvim_lsp = true,
@@ -1094,27 +973,15 @@ configs['olimorris/onedarkpro.nvim'] = function()
             treesitter = true
         },
         options = {
-            bold = true,
-            italic = true,
-            undercurl = true,
             underline = true,
             cursorline = true,
             transparency = transparentbg,
+            lualine_transparency = transparentbg,
             terminal_colors = true,
             window_unfocussed_color = false,
         }
     })
-    require("onedarkpro").load()
-    vim.cmd.colorscheme('onedark') -- onedark onedark_dark onedark_vivid
-    if transparentbg then
-        api.nvim_create_autocmd("VimEnter", {
-            pattern = "*",
-            callback = function ()
-                api.nvim_set_hl(0, 'lualine_c_normal', {bg="NONE"})
-                api.nvim_set_hl(0, 'lualine_c_inactive',{bg="NONE"})
-            end
-        })
-    end
+    vim.cmd.colorscheme("onedark")
 end
 
 configs['nvim-lualine/lualine.nvim'] = function()
@@ -1167,27 +1034,6 @@ configs['nvim-lualine/lualine.nvim'] = function()
         },
         tabline = {},
         extensions = {"nvim-tree", "fzf", "fugitive", "quickfix", "symbols-outline"}
-    }
-end
-
-configs['vim-airline/vim-airline'] = function()
-    g['airline#extensions#tabline#enabled'] = 0
-    -- ﯑韛 
-    g['airline_left_sep']                   = '┆'
-    g['airline_left_alt_sep']               = '┆'
-    g['airline_right_sep']                  = '┆'
-    g['airline_right_alt_sep']              = '┆'
-    g.airline_symbols = {
-        colnr      = ' ㏇:',
-        notexists  = 'Ɇ',
-        readonly   = '',    -- 🔒
-        linenr     = ' ㏑:', -- ☰
-        maxlinenr  = '',     -- ¶
-        branch     = '',    -- 
-        dirty      = '[+]',  -- ⚡
-        paste      = 'Þ',
-        spell      = '﯑',    -- Ꞩ
-        whitespace = 'Ξ'
     }
 end
 

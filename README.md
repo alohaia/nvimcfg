@@ -88,7 +88,7 @@ require 'aloha' {
             - `clone_depth`: `--depth` option for `clone`
             - `shallow_submodules`: whether to add `--shallow-submodules` in `clone` command and add `--depth=1` in `submodule update` command
             - `base_url`: base URL of GitHub, you can replace this to use a mirror site
-        - `strict_deps`: when set to `true`, a plugin's config won't be executed if any dependency of this plugin is not successfully loaded
+        - `strict_deps`: when set to `true`, a plugin's config won't be executed if any dependencies of this plugin is not successfully loaded
 - `transparency`: transparent background and related config
 - `mapleader`：`<Leader>` key
 
@@ -120,7 +120,7 @@ require 'aloha' {
 >         }
 >     },
 >     ['lewis6991/gitsigns.nvim'] = {
->         dependency = 'nvim-lua/plenary.nvim'
+>         dependencies = 'nvim-lua/plenary.nvim'
 >     },
 >     ['nvim-telescope/telescope.nvim'] = {
 >         cmd = 'Telescope',
@@ -130,7 +130,7 @@ require 'aloha' {
 >             {mode = 'n', lhs = ',F'},
 >             {mode = 'n', lhs = ',g'},
 >         },
->         dependency = {
+>         dependencies = {
 >             'nvim-lua/plenary.nvim',
 >             'nvim-lua/popup.nvim',
 >             'nvim-telescope/telescope-fzy-native.nvim'
@@ -153,7 +153,7 @@ A key-value table of plugins. The key is a plugin's name like `alohaia/vim-hexow
 - `map`(`table`): On which mapping(s) should the plugin be loaded.
 - `enable`(`bool`, `function`): Whether to load this plugin.
 - `branch`(`string`): Branch of the plugin. This is effective only at initial installation.
-- `dependency`(`string`, `table`): Plugin's dependencies. A dependency should be in plugin list additionally and set `opt=true`.
+- `dependencies`(`string`, `table`): Plugin's dependencies. A `dependencies` should be in the plugin list additionally.
 - `disabled`(`bool`): Whether the plugin is disabled. Disabled plugins won't be installed or updated and will be removed while cleaning. The difference between disabled plugins and plugins that are not in the plugin list is that the former appears in completion list of packer [commands](#commands).
 - `config`(`function`, `string`): Configuration for the plugin, Can be a function:
     - Function: well be directly called in due course.

@@ -82,19 +82,36 @@ return function(_configs)
         end
     })
 
-    -- set up mappings
+    -- set mapleader
     vim.g.mapleader = aloha.map.leader
-    for _,map in pairs(aloha.map.list) do
-        vim.keymap.set(map[1], map[2], map[3], aloha.map.default_args + map[4])
+    -- set up mappings
+    if type(aloha.map.list.global_mappings) == "table" then
+        for _,map in pairs(aloha.map.list.global_mappings) do
+            vim.keymap.set(map[1], map[2], map[3], aloha.map.default_args + map[4])
+        end
+    end
+    if type(aloha.map.list.filetype_options) == "table" then
+        local ft_mappings_id = vim.api.nvim_create_augroup("aloha_ft_mappings", {clear=true})
+        for filetypes, mappings in pairs(aloha.map.list.filetype_options) do
+            vim.api.nvim_create_autocmd("FileType", {
+                group = ft_mappings_id,
+                pattern = filetypes,
+                callback = function ()
+                    for _,map in ipairs(mappings) do
+                        vim.keymap.set(map[1], map[2], map[3], aloha.map.default_args + map[4])
+                    end
+                end
+            })
+        end
     end
 
     -- set up options
-    if aloha.options.global_options then
+    if type(aloha.options.global_options) == "table" then
         for o,v in pairs(aloha.options.global_options) do
             set_option(o, v)
         end
     end
-    if aloha.options.filetype_options then
+    if type(aloha.options.filetype_options) == "table" then
         local ft_options_id = vim.api.nvim_create_augroup("aloha_ft_options", {clear=true})
         for filetypes,options in pairs(aloha.options.filetype_options) do
             vim.api.nvim_create_autocmd("FileType", {

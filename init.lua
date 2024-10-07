@@ -17,6 +17,6 @@ require 'aloha' {
            strict_deps = true,
        },
     },
-    transparency = true,
+    transparency = true, -- may conflict with terminal styles
     mapleader = ' ',
 }
