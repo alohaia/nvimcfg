@@ -3,6 +3,25 @@ local g = vim.g
 local api = vim.api
 local setmap = vim.keymap.set
 
+configs['R-nvim/r.nvim'] = function()
+    require("r").setup({
+        R_args = {"--quiet", "--no-save"},
+        -- auto_start = true,
+        -- objbr_auto_start = true,
+        close_term = true,
+        pipe_keymap = "<M-.>",
+        pipe_version = "native",
+        rmdchunk = "``",
+        hook = {
+            after_R_start = function()
+                vim.api.nvim_buf_set_keymap(0, "n", "<Enter>", "<Plug>RDSendLine", {noremap = true})
+                vim.api.nvim_buf_set_keymap(0, "v", "<Enter>", "<Plug>RSendSelection", {noremap = true})
+            end
+        },
+        register_treesitter = false
+    })
+end
+
 configs['lukas-reineke/indent-blankline.nvim'] = function()
     require'ibl'.setup {
         exclude = {
@@ -180,19 +199,32 @@ configs['nvim-neo-tree/neo-tree.nvim'] = function ()
 
     require("neo-tree").setup({
         close_if_last_window = true,
+        filesystem = {
+            bind_to_cwd = true
+        },
         source_selector = {
             winbar = true,
         },
         window = {
+            position = "left",
+            width = 40,
             mappings = {
                 ["P"] = { 'toggle_preview', config = { use_float = false, use_image_nvim = false } },
                 ['s'] = 'open_split',
                 ['v'] = 'open_vsplit',
             }
-        }
+        },
+        filtered_items = {
+            visible = false,
+            show_hidden_count = true
+        },
+        popup_border_style = "rounded"
     })
 
     api.nvim_set_hl(0, 'NeoTreeIndentMarker', {
+        fg = api.nvim_get_hl(0, {name="Comment"}).fg
+    })
+    api.nvim_set_hl(0, 'NeoTreeMessage', {
         fg = api.nvim_get_hl(0, {name="Comment"}).fg
     })
     setmap('n', [[<C-CR>]], '<Cmd>Neotree toggle reveal<CR>', {noremap = true})
@@ -268,7 +300,9 @@ configs['neovim/nvim-lspconfig'] = function()
 
     lspconfig.bashls.setup {}
     lspconfig.pyright.setup {}
-    lspconfig.r_language_server.setup {}
+    lspconfig.r_language_server.setup {
+        cmd = { "R", "--slave", "--no-echo", "-e", "languageserver::run()" }
+    }
 
     lspconfig.ts_ls.setup {}
     lspconfig.cssls.setup {
@@ -304,7 +338,7 @@ configs['hrsh7th/nvim-cmp'] = function()
         },
         sources = cmp.config.sources({ -- group 1
             { name = 'nvim_lsp' },
-            { name = 'cmp_r' },
+            { name = 'cmp_r' },   -- for R.nvim
             -- { name = 'vsnip' }, -- For vsnip users.
             -- { name = 'luasnip' }, -- For luasnip users.
             -- { name = 'ultisnips' }, -- For ultisnips users.
@@ -544,7 +578,7 @@ configs['nvim-treesitter/nvim-treesitter'] = function()
     require'nvim-treesitter.configs'.setup {
         ensure_installed = {
             'c', 'cpp', 'python', 'css', 'bash', 'cmake', 'glsl', 'go', 'html', 'javascript',
-            'lua', 'r', 'ruby', 'rust', 'toml', 'vim', 'vue', 'yaml'
+            'lua', 'r', 'ruby', 'rust', 'toml', 'vim', 'vue', 'yaml', 'markdown'
         },
         incremental_selection = {
             enable = true,
@@ -1012,7 +1046,8 @@ configs['nvim-lualine/lualine.nvim'] = function()
             lualine_c = {
                 { 'filetype', color = { bg='#2c323c' } },
                 { 'filename' },
-                { saga }
+                { saga },
+                { require("r.utils").get_lang }
             },
             lualine_x = {
                 'encoding',

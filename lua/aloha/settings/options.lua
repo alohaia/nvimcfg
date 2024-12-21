@@ -88,6 +88,9 @@ return {
             -- spelloptions = 'camel',
             colorcolumn = '100',
         },
+        ['r,rmd'] = {
+            colorcolumn = "120"
+        },
         ['c,cpp'] = {
             path = {
                 behavior = 'append',

@@ -102,11 +102,12 @@ return {
 
         {'i', '<C-v><C-v>', [[<C-r>"]]},
 
-        {'i', '<C-CR>', [[<ESC>o]]}
+        {'i', '<C-CR>', [[<ESC>o]]},
+        {'s', '<Backspace>', [[a<Backspace>]]}
     },
     filetype_options = {
         rmd = {
-            {'i', '<C-S-m>', [[(getline('.')[col('.')-2] != ' ' ? ' ' : '') .. '|>' .. (getline('.')[col('.')-1] != ' ' ? ' ' : '')]], {expr = true}}
+            -- {'i', '<M-.>', [[(getline('.')[col('.')-2] != ' ' ? ' ' : '') .. '|>' .. (getline('.')[col('.')-1] != ' ' ? ' ' : '')]], {expr = true}}
         }
     }
 }

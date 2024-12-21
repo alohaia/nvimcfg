@@ -46,7 +46,7 @@ return {
     ['lewis6991/gitsigns.nvim'] = {
         dependencies = 'nvim-lua/plenary.nvim'
     },
-    ['liuchengxu/vista.vim'] = {},
+    ['liuchengxu/vista.vim'] = { disable = true },
     ['mbbill/undotree'] = {},
     ['voldikss/vim-floaterm'] = {},
     ['nvim-telescope/telescope.nvim'] = {
@@ -72,6 +72,25 @@ return {
             'nvim-telescope/telescope.nvim'
         }
     },
+    ['stevearc/aerial.nvim'] = {
+        config = function ()
+            require("aerial").setup({
+                backends = {
+                    ['_']  = { "treesitter", "lsp", "markdown", "asciidoc", "man" },
+                    -- rmd = { "treesitter", "lsp", "markdown", "asciidoc", "man" }
+                },
+                -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+                on_attach = function(bufnr)
+                    -- Jump forwards/backwards with '{' and '}'
+                    vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+                    vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+                end,
+                placement = "edge",
+            })
+            vim.keymap.set("n", "<leader>ae", "<cmd>AerialToggle!<CR>")
+            vim.keymap.set("n", "<leader>an", "<cmd>AerialNavToggle<CR>")
+        end
+    },
     ['lervag/vimtex'] = {},
     ['rhysd/clever-f.vim'] = { disable=true },
     ['ggandor/leap.nvim'] = { disable=true },
@@ -82,7 +101,22 @@ return {
     ['tpope/vim-surround'] = {},
     ['tpope/vim-repeat'] = {},
     ['dhruvasagar/vim-table-mode'] = { ft='rmd,markdown,text' },
-    ['alohaia/bullets.nvim'] = {},
+    ['bullets-vim/bullets.vim'] = {
+        config = function ()
+            vim.g.bullets_enabled_file_types = { 'markdown', 'text', 'gitcommit', 'scratch' }
+            vim.g.bullets_pad_right = 0
+            vim.g.bullets_outline_levels = { 'num', 'abc', 'std-' }
+            vim.g.bullets_renumber_on_change = 1
+            vim.g.bullets_nested_checkboxes = 1
+            vim.g.bullets_checkbox_markers = ' X'
+        end
+    },
+    ['alohaia/bullets.nvim'] = {
+        disable = true,
+        config = function ()
+            vim.g["bullets#renumber_on_change"] = true
+        end
+    },
     ['svermeulen/vim-subversive'] = {},
     ['svermeulen/vim-yoink'] = {},
     ['mg979/vim-visual-multi'] = {},
