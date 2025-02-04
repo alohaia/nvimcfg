@@ -239,81 +239,136 @@ end
 
 configs['neovim/nvim-lspconfig'] = function()
     local lspconfig = require('lspconfig')
-    local util = require 'lspconfig.util'
 
     vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-        callback = function(ev)
-            vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+        group = vim.api.nvim_create_augroup('user-lsp-config', { clear = true }),
+        callback = function(event)
+            -- https://github.com/hendrikmi/neovim-kickstart-config/blob/main/lua/plugins/lsp.lua
+            local map = function(keys, func, desc, mode)
+                mode = mode or 'n'
+                vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+            end
 
-            local opts = { buffer = ev.buf }
-            setmap('n', 'gd', '<Cmd>Lspsaga peek_definition<CR>', opts)
-            setmap('n', 'g?', '<Cmd>Lspsaga hover_doc<CR>', opts)
-            setmap('n', '<leader>dd', '<Cmd>Lspsaga show_cursor_diagnostics<CR>', opts)
-            setmap('n', '<leader>db', '<Cmd>Lspsaga show_buf_diagnostics<CR>', opts)
-            setmap('n', '<leader>dw', '<Cmd>Lspsaga show_workspace_diagnostics<CR>', opts)
-            setmap('n', '<leader>dq', vim.diagnostic.setloclist)
-            setmap('n', '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', opts)
-            setmap('n', ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', opts)
-            setmap('n', '<leader>rn', '<Cmd>Lspsaga rename<CR>', opts)
-            setmap({ 'n', 'v' }, '<space>ca', '<Cmd>Lspsaga code_action<CR>', opts)
-            setmap('n', '<space>f', function()
-                vim.lsp.buf.format { async = true }
-            end, opts)
+            map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+            map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+            map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+            map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+            map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+            map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+            map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+            map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
+            map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+
+            -- The following two autocommands are used to highlight references of the
+            -- word under your cursor when your cursor rests there for a little while.
+            --    See `:help CursorHold` for information about when this is executed
+            --
+            -- When you move your cursor, the highlights will be cleared (the second autocommand).
+            local client = vim.lsp.get_client_by_id(event.data.client_id)
+            if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+                local highlight_augroup = vim.api.nvim_create_augroup('user-lsp-highlight', { clear = false })
+                vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+                    buffer = event.buf,
+                    group = highlight_augroup,
+                    callback = function ()
+                        -- vim.lsp.buf.hover()
+                        vim.lsp.buf.document_highlight()
+                    end,
+                })
+
+                vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+                    buffer = event.buf,
+                    group = highlight_augroup,
+                    callback = vim.lsp.buf.clear_references,
+                })
+
+                vim.api.nvim_create_autocmd('LspDetach', {
+                    group = vim.api.nvim_create_augroup('user-lsp-detach', { clear = true }),
+                    callback = function(event2)
+                        vim.lsp.buf.clear_references()
+                        vim.api.nvim_clear_autocmds { group = 'user-lsp-highlight', buffer = event2.buf }
+                    end,
+                })
+            end
+
+            -- The following code creates a keymap to toggle inlay hints in your
+            -- code, if the language server you are using supports them
+            --
+            -- This may be unwanted, since they displace some of your code
+            if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+              map('<leader>th', function()
+                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+              end, '[T]oggle Inlay [H]ints')
+            end
         end,
     })
 
-    local lua_root_files = {
-        ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", "selene.toml", "selene.yml", ".git"
-    }
-    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
-    lspconfig.lua_ls.setup {
-        single_file_support = true,
-        root_dir = function(fname)
-            return util.root_pattern(unpack(lua_root_files))(fname) or util.find_git_ancestor(fname)
-        end,
-        settings = {
-            Lua = {
-                runtime = {
-                    version = 'LuaJIT',
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
+    local servers = {
+        lua_ls = {
+            single_file_support = true,
+            -- root_dir = function(fname)
+            --     return util.root_pattern(unpack(lua_root_files))(fname) or util.find_git_ancestor(fname)
+            -- end,
+            settings = {
+                Lua = {
+                    completion = {
+                        callSnippet = 'Replace',
+                    },
+                    runtime = { version = 'LuaJIT' },
+                    workspace = {
+                        checkThirdParty = false,
+                        library = {
+                            '${3rd}/luv/library',
+                            unpack(vim.api.nvim_get_runtime_file('', true)),
+                        },
+                    },
+                    diagnostics = { disable = { 'missing-fields' } },
+                    format = {
+                        enable = false,
+                    },
                 },
-                diagnostics = {
-                    globals = {"vim"}
-                },
-            },
-        }
-    }
-    lspconfig.vimls.setup {}
-    lspconfig.clangd.setup {
-        on_attach = function (_, bufnr)
-            api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<Cmd>ClangdSwitchSourceHeader<cr>', {noremap=true})
-        end,
-        cmd = {
-            "clangd",
-            "--background-index",
-            "--suggest-missing-includes",
-            "--clang-tidy",
-            "--header-insertion=iwyu",
+            }
         },
-        filetypes = { "c", "cpp", "objc", "objcpp" }
+        rust_analyzer = {
+            settings = {
+                ['rust-analyzer'] = {
+                    diagnostics = {
+                        enable = false;
+                    }
+                }
+            }
+        },
+        vimls = {},
+        clangd = {
+            on_attach = function (_, bufnr)
+                api.nvim_buf_set_keymap(bufnr, 'n', '<M-s>', '<Cmd>ClangdSwitchSourceHeader<cr>', {noremap=true})
+            end,
+            cmd = {
+                "clangd",
+                "--background-index",
+                "--suggest-missing-includes",
+                "--clang-tidy",
+                "--header-insertion=iwyu",
+            },
+            filetypes = { "c", "cpp", "objc", "objcpp" }
+        },
+        pyright = {},
+        r_language_server = {
+            cmd = { "R", "--slave", "--no-echo", "-e", "languageserver::run()" }
+        },
+        ts_ls = {}, -- https://github.com/pmizio/typescript-tools.nvim
+        cssls = {},
+        jsonls = {},
+        html = {},
     }
 
-    lspconfig.bashls.setup {}
-    lspconfig.pyright.setup {}
-    lspconfig.r_language_server.setup {
-        cmd = { "R", "--slave", "--no-echo", "-e", "languageserver::run()" }
-    }
-
-    lspconfig.ts_ls.setup {}
-    lspconfig.cssls.setup {
-        cmd = { "/usr/bin/vscode-css-language-server", "--stdio" },
-    }
-    lspconfig.jsonls.setup {
-        cmd = { "/usr/bin/vscode-json-language-server", "--stdio"  }
-    }
-    lspconfig.html.setup {
-        cmd = { "/usr/bin/vscode-html-language-server", "--stdio"  }
-    }
+    for lang, cfg in pairs(servers) do
+        cfg.capabilities = vim.tbl_deep_extend('force', {}, capabilities, cfg.capabilities or {})
+        lspconfig[lang].setup(cfg)
+    end
 end
 
 configs['L3MON4D3/LuaSnip'] = function()
@@ -327,61 +382,84 @@ end
 
 configs['hrsh7th/nvim-cmp'] = function()
     local cmp = require("cmp")
+    local snippy = require("snippy")
+
+    local kind_icons = {
+        Text = '󰉿', Method = 'm', Function = '󰊕', Constructor = '',
+        Field = '', Variable = '󰆧', Class = '󰌗', Interface = '', Module = '',
+        Property = '', Unit = '', Value = '󰎠', Enum = '', Keyword = '󰌋',
+        Snippet = '', Color = '󰏘', File = '󰈙', Reference = '', Folder = '󰉋',
+        EnumMember = '', Constant = '󰇽', Struct = '', Event = '',
+        Operator = '󰆕', TypeParameter = '󰊄',
+    }
+
     cmp.setup{
         snippet = {
             expand = function(args)
-                -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-                -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-                -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-                require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+                require'snippy'.expand_snippet(args.body) -- For snippy users.
             end,
         },
         sources = cmp.config.sources({ -- group 1
             { name = 'nvim_lsp' },
             { name = 'cmp_r' },   -- for R.nvim
-            -- { name = 'vsnip' }, -- For vsnip users.
-            -- { name = 'luasnip' }, -- For luasnip users.
-            -- { name = 'ultisnips' }, -- For ultisnips users.
             { name = 'snippy' }, -- For snippy users.
             { name = 'omni' },
         }, {                           -- group 2
             { name = 'buffer' },
             { name = 'path', option = {
                 trailing_slash = true,
-                -- get_cwd = fucntion
             }},
         }),
         mapping = {
             ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
             ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-            ['<Tab>'] = function(fallback)
+            ['<Tab>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_next_item()
+                elseif snippy.can_expand_or_advance() then
+                    snippy.expand_or_advance()
                 else
                     fallback()
                 end
-            end,
-            ['<S-Tab>'] = function(fallback)
+            end, { 'i', 's' }),
+            ['<S-Tab>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_prev_item()
+                elseif snippy.can_jump(1) then
+                    snippy.previous()
                 else
                     fallback()
                 end
-            end,
-            ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-            ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+            end, { 'i', 's' }),
+
             ['<C-d>'] = cmp.mapping.scroll_docs(-4),
             ['<C-f>'] = cmp.mapping.scroll_docs(4),
+
             -- ['<C-Space>'] = cmp.mapping.complete(),
             ['<C-Space>'] = cmp.config.disable,
+
+            ['<C-y>'] = cmp.mapping.confirm { select = true },
             ['<C-e>'] = cmp.mapping({
                 i = cmp.mapping.abort(),
                 c = cmp.mapping.close(),
             }),
+
             ['<CR>'] = cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Replace,
+                behavior = cmp.ConfirmBehavior.Insert,
                 select = true,
             }),
+
+            -- snippy
+            ['<C-l>'] = cmp.mapping(function()
+                if snippy.can_expand_or_advance() then
+                    snippy.expand_or_advance()
+                end
+            end, { 'i', 's' }),
+            ['<C-h>'] = cmp.mapping(function()
+                if snippy.can_jump(1) then
+                    snippy.next()
+                end
+            end, { 'i', 's' }),
             ['<M-s>'] = cmp.mapping.complete({
                 config = {
                     sources = {
@@ -392,22 +470,23 @@ configs['hrsh7th/nvim-cmp'] = function()
         },
         preselect = cmp.PreselectMode.Item,
         completion = {
-            -- autocomplete = types.cmp.TriggerEvent.TextChanged,
-            -- keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
-            -- keyword_length = 1, -- minimum length of a word to complete on
-            -- get_trigger_characters = function(trigger_characters) return trigger_characters end,
-            -- completeopt = 'menu,menuone,noselect'
-        },
-        confirmation = {
-            -- default_behavior = cmp.ConfirmBehavior.Insert,
-            -- get_commit_characters = function() ... end
+            completeopt = 'menu,menuone,noinsert'
         },
         experimental = {
             -- native_menu = true
         },
-        -- onsails/lspkind-nvim
         formatting = {
-            format = require('lspkind').cmp_format({with_text = true, maxwidth = 50})
+            fields = { 'kind', 'abbr', 'menu' },
+            format = function(entry, vim_item)
+              vim_item.kind = string.format('%s', kind_icons[vim_item.kind])
+              vim_item.menu = ({
+                nvim_lsp = '[LSP]',
+                luasnip = '[Snippet]',
+                buffer = '[Buffer]',
+                path = '[Path]',
+              })[entry.source.name]
+              return vim_item
+            end,
         }
     }
     -- For markdown filetype
@@ -415,19 +494,6 @@ configs['hrsh7th/nvim-cmp'] = function()
     -- For nvim-autopairs
     -- cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex = '' } }))
     -- cmp_autopairs.lisp[#cmp_autopairs.lisp+1] = "racket"
-end
-
-configs['glepnir/lspsaga.nvim'] = function ()
-    require("lspsaga").setup {
-        symbol_in_winbar = {
-            enable = false,
-            separator = ' ▸ ',
-            hide_keyword = true,
-            show_file = false,
-            folder_level = 2,
-            respect_root = false,
-        },
-    }
 end
 
 configs['nvim-telescope/telescope.nvim'] = function()
@@ -896,8 +962,8 @@ end
 
 configs['voldikss/vim-floaterm'] = function()
     g.floaterm_keymap_toggle = '<C-\\>'
-    g.floaterm_keymap_prev   = '<F1>'
-    g.floaterm_keymap_next   = '<F2>'
+    g.floaterm_keymap_prev   = '<F5>'
+    g.floaterm_keymap_next   = '<F6>'
     g.floaterm_keymap_new    = '<F3>'
     g.floaterm_keymap_kill   = '<F4>'
     g.floaterm_gitcommit     = 'floaterm'

@@ -23,7 +23,7 @@ return function(_configs)
     _G.aloha = { utils = utils }
 
     local configs = vim.tbl_deep_extend('keep', _configs, {
-        transparency = true,
+        transparency = false,
         mapleader = ' ',
         packer = {
             plugins = require('aloha.plugins'),

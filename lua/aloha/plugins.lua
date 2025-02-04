@@ -1,9 +1,7 @@
 return {
     -- lsp, completion and snippets
     ['neovim/nvim-lspconfig'] = {
-        dependencies = {
-            'nvimdev/lspsaga.nvim'
-        }
+        dependencies = { 'hrsh7th/cmp-nvim-lsp' }
     },
     ['hrsh7th/nvim-cmp'] = {
         dependencies = {
@@ -12,15 +10,29 @@ return {
             'dcampos/cmp-snippy',
             -- 'quangnguyen30192/cmp-nvim-ultisnips',
             -- 'saadparwaiz1/cmp_luasnip',
-            'onsails/lspkind-nvim',
+            -- 'onsails/lspkind-nvim',
         }
     },
     ['hrsh7th/cmp-nvim-lsp'] = { opt=true },
     ['hrsh7th/cmp-buffer']   = { opt=true },
     ['hrsh7th/cmp-path']     = { opt=true },
     ['hrsh7th/cmp-omni']     = { opt=true },
-    ['onsails/lspkind-nvim'] = { opt=true },
-    ['nvimdev/lspsaga.nvim'] = { opt=true, event='BufRead', branch = 'main' },
+    ['onsails/lspkind-nvim'] = { disable=true, opt=true },
+    ['nvimdev/lspsaga.nvim'] = { disable=true, opt=true, event='BufRead', branch = 'main' },
+    ['j-hui/fidget.nvim'] = {
+        config = function ()
+            require("fidget").setup {}
+        end
+    },
+    ['rachartier/tiny-inline-diagnostic.nvim'] = {
+        config = function ()
+            vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
+            require('tiny-inline-diagnostic').setup {
+                preset = "modern",
+                show_all_diags_on_cursorline = false
+            }
+        end
+    },
     -- snippets
     ['dcampos/nvim-snippy'] = {},
     ['dcampos/cmp-snippy'] = { opt=true },
@@ -36,12 +48,42 @@ return {
     ['lukas-reineke/indent-blankline.nvim'] = {},
     ['akinsho/bufferline.nvim'] = {},
     ['nvim-neo-tree/neo-tree.nvim'] = {
+        disable = true,
         branch = 'v3.x',
         dependencies = {
             'nvim-lua/plenary.nvim',
             'kyazdani42/nvim-web-devicons',
             'MunifTanjim/nui.nvim',
         }
+    },
+    ['mikavilpas/yazi.nvim'] = {
+        config = function ()
+            vim.keymap.set("n", "<C-Enter>", "<Cmd>Yazi toggle<CR>")
+            require'yazi'.setup {
+                opts = {
+                    keymaps = {
+                        show_help = "<f1>",
+                        -- open_file_in_vertical_split = "<c-v>",
+                        -- open_file_in_horizontal_split = "<c-x>",
+                        -- open_file_in_tab = "<c-t>",
+                        -- grep_in_directory = "<c-s>",
+                        -- replace_in_directory = "<c-g>",
+                        -- cycle_open_buffers = "<tab>",
+                        -- copy_relative_path_to_selected_files = "<c-y>",
+                        -- send_to_quickfix_list = "<c-q>",
+                        -- change_working_directory = "<c-\\>",
+                    },
+                }
+            }
+        end,
+        dependencies = {
+            'nvim-lua/plenary.nvim'
+        }
+    },
+    ['MagicDuck/grug-far.nvim'] = {
+        config = function ()
+            require('grug-far').setup({})
+        end
     },
     ['lewis6991/gitsigns.nvim'] = {
         dependencies = 'nvim-lua/plenary.nvim'
@@ -102,6 +144,7 @@ return {
     ['tpope/vim-repeat'] = {},
     ['dhruvasagar/vim-table-mode'] = { ft='rmd,markdown,text' },
     ['bullets-vim/bullets.vim'] = {
+        disable = true,
         config = function ()
             vim.g.bullets_enabled_file_types = { 'markdown', 'text', 'gitcommit', 'scratch' }
             vim.g.bullets_pad_right = 0
@@ -112,7 +155,7 @@ return {
         end
     },
     ['alohaia/bullets.nvim'] = {
-        disable = true,
+        disable = false,
         config = function ()
             vim.g["bullets#renumber_on_change"] = true
         end
@@ -144,11 +187,6 @@ return {
     -- git
     ['tpope/vim-fugitive'] = {},
 
-    -- task
-    ['skywind3000/asyncrun.vim'] = { disable = true },
-    ['skywind3000/asyncrun.extra'] = { disable = true },
-    ['skywind3000/asynctasks.vim'] = { disable = true },
-
     -- syntax highlight
     ['nvim-treesitter/nvim-treesitter'] = {
         dependencies = 'nvim-treesitter/nvim-treesitter-textobjects'
@@ -156,6 +194,14 @@ return {
     ['nvim-treesitter/nvim-treesitter-textobjects'] = { opt=true },
     ['fladson/vim-kitty'] = { ft='kitty' },
     ['fatih/vim-go'] = { ft='go,gohtmltmpl' },
+
+    ['folke/which-key.nvim'] = {
+        config = function ()
+            vim.keymap.set("n", "<leader>?", function()
+                require("which-key").show({ global = false })
+            end, { desc = "Buffer Local Keymaps (which-key)" })
+        end
+    },
 
     -- R
     ['R-nvim/r.nvim'] = {},
