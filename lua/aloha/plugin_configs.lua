@@ -343,6 +343,13 @@ configs['neovim/nvim-lspconfig'] = function()
         },
         vimls = {},
         clangd = {
+            -- https://clangd.llvm.org/config#files
+            -- specific standard in ~/.config/clangd/config.yaml
+            -- or project-specific <project-root>/.clangd
+            --
+            -- CompileFlags:
+            --   Add: [-std=c++23]
+            --
             on_attach = function (_, bufnr)
                 api.nvim_buf_set_keymap(bufnr, 'n', '<M-s>', '<Cmd>ClangdSwitchSourceHeader<cr>', {noremap=true})
             end,
