@@ -3,7 +3,7 @@ return {
         termguicolors  = true;
         formatoptions  = "1jcroql";
         cpoptions      = 'aABceFsI';
-        lazyredraw     = true,
+        lazyredraw     = false,
         timeout        = true,
         timeoutlen     = 500,
         autochdir      = false,
@@ -90,6 +90,10 @@ return {
         },
         ['r,rmd'] = {
             colorcolumn = "120"
+        },
+        ['r'] = {
+            foldmethod = "marker",
+            foldmarker = "{{{,}}}"
         },
         ['c,cpp'] = {
             path = {

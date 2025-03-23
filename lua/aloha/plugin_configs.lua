@@ -258,6 +258,7 @@ configs['neovim/nvim-lspconfig'] = function()
             map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
             map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
             map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+            map('<M-i>', vim.lsp.buf.hover, 'Show Hover [I]nformation')
 
             -- The following two autocommands are used to highlight references of the
             -- word under your cursor when your cursor rests there for a little while.
