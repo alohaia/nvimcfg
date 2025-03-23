@@ -584,7 +584,7 @@ end
 configs['RRethy/vim-illuminate'] = function()
     require('illuminate').configure({
         providers = {'lsp', 'treesitter', 'regex'},
-        filetypes_denylist = {'dashboard', 'NvimTree', 'markdown', 'rmd', 'tex'},
+        filetypes_denylist = {'dashboard', 'NvimTree', 'markdown', 'rmd', 'tex', ''},
         under_cursor = true,
         modes_denylist = {},
         large_file_overrides = 1000,
