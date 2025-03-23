@@ -1,0 +1,42 @@
+snippet html:5 "Basic html content" bA
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=${1:divice-width}, initial-scale=1.0">
+		<title>${2:Document}</title>
+	</head>
+	<body>
+		$0
+	</body>
+	</html>
+
+# Tags
+snippet tag "html tags" w
+	<${1}>${2:${VISUAL}}</$1>$0
+
+snippet input "input tag" w
+	<input type="${1:text}"$2>
+
+snippet input:text "input tag(text)" w
+	<input type="text" name="$1"$2>
+
+snippet input:button "input tag(button)" w
+	<input type="button" value="$1"$2>
+
+snippet style "style tag" w
+	<style>$1</style>
+
+snippet style:src "style tag(with src)" w
+	<style src="$1">$2</style>
+
+snippet script "script tag" w
+	<script>$1</script>
+
+snippet script:src "script tag(with src)" w
+	<script src="$1">$2</script>
+
+snippet a "anchor tag" w
+	<a href="$1">$2</a>
+

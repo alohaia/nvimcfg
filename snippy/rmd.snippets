@@ -1,0 +1,15 @@
+extends markdown
+
+snippet ric "R inline code" wA
+	\`r ${1:${VISUAL}}\`$0
+
+snippet rmc "R multiline code" wA
+	\`\`\`{r${1:, "${2:chunk name}"${3:, fig.cap="${4:${2/-/ /g}}"}}}
+	${5:${VISUAL}}
+	\`\`\`
+	$0
+
+snippet rmd_options "set Rmarkdown knitting options through knitr:opts_chunk$set()" bA
+	```{r Rmarkdown options, include=FALSE}
+	knitr::opts_chunk$set(echo = ${1|TURE,FALSE|})
+	```
