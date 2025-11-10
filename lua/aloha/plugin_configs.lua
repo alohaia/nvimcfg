@@ -5,20 +5,23 @@ local setmap = vim.keymap.set
 
 configs['R-nvim/r.nvim'] = function()
     require("r").setup({
-        R_args = {"--quiet", "--no-save"},
-        -- auto_start = true,
-        -- objbr_auto_start = true,
-        close_term = true,
-        pipe_keymap = "<M-.>",
         pipe_version = "native",
-        rmdchunk = "``",
         hook = {
+            on_filetype = function()
+               vim.api.nvim_buf_set_keymap(0, "i", "<M-->", "<Plug>RInsertAssign", { noremap = true })
+               vim.api.nvim_buf_set_keymap(0, "i", "<M-.>", "<Plug>RInsertPipe", { noremap = true })
+               if vim.bo.filetype == "rnoweb" then
+                   vim.api.nvim_buf_set_keymap(0, "i", "<", "<Plug>RnwInsertChunk", { noremap = true })
+               elseif vim.bo.filetype == "rmd" or vim.bo.filetype == "quarto" then
+                   vim.api.nvim_buf_set_keymap(0, "i", "`", "<Plug>RmdInsertChunk", { noremap = true })
+               end
+            end,
             after_R_start = function()
-                vim.api.nvim_buf_set_keymap(0, "n", "<Enter>", "<Plug>RDSendLine", {noremap = true})
-                vim.api.nvim_buf_set_keymap(0, "v", "<Enter>", "<Plug>RSendSelection", {noremap = true})
+                vim.api.nvim_buf_set_keymap(0, "n", "<M-Enter>", "<Plug>RDSendLine", {noremap = true})
+                vim.api.nvim_buf_set_keymap(0, "v", "<M-Enter>", "<Plug>RSendSelection", {noremap = true})
             end
         },
-        register_treesitter = false
+        -- register_treesitter = false
     })
 end
 
@@ -238,8 +241,6 @@ configs['lewis6991/gitsigns.nvim'] = function()
 end
 
 configs['neovim/nvim-lspconfig'] = function()
-    local lspconfig = require('lspconfig')
-
     vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('user-lsp-config', { clear = true }),
         callback = function(event)
@@ -371,21 +372,14 @@ configs['neovim/nvim-lspconfig'] = function()
         cssls = {},
         jsonls = {},
         html = {},
+        jedi_language_server = {}
     }
 
     for lang, cfg in pairs(servers) do
         cfg.capabilities = vim.tbl_deep_extend('force', {}, capabilities, cfg.capabilities or {})
-        lspconfig[lang].setup(cfg)
+        vim.lsp.config(lang, cfg)
+        vim.lsp.enable(lang)
     end
-end
-
-configs['L3MON4D3/LuaSnip'] = function()
-    require("luasnip.loaders.from_lua").lazy_load()
-
-    setmap("i", "<C-n>", "<Plug>luasnip-next-choice", {})
-    setmap("s", "<C-n>", "<Plug>luasnip-next-choice", {})
-    setmap("i", "<C-p>", "<Plug>luasnip-previous-choice", {})
-    setmap("s", "<C-p>", "<Plug>luasnip-previous-choice", {})
 end
 
 configs['hrsh7th/nvim-cmp'] = function()
@@ -401,7 +395,7 @@ configs['hrsh7th/nvim-cmp'] = function()
         Operator = '󰆕', TypeParameter = '󰊄',
     }
 
-    cmp.setup{
+    cmp.setup({
         snippet = {
             expand = function(args)
                 require'snippy'.expand_snippet(args.body) -- For snippy users.
@@ -496,7 +490,7 @@ configs['hrsh7th/nvim-cmp'] = function()
               return vim_item
             end,
         }
-    }
+    })
     -- For markdown filetype
     -- au FileType markdown lua cmp.setup.buffer({})
     -- For nvim-autopairs
@@ -651,8 +645,9 @@ configs['nvim-treesitter/nvim-treesitter'] = function()
     -- }
     require'nvim-treesitter.configs'.setup {
         ensure_installed = {
-            'c', 'cpp', 'python', 'css', 'bash', 'cmake', 'glsl', 'go', 'html', 'javascript',
-            'lua', 'r', 'ruby', 'rust', 'toml', 'vim', 'vue', 'yaml', 'markdown'
+            'c', 'cpp', 'python', 'css', 'bash', 'cmake', 'glsl', 'go', 'html',
+            'javascript', 'lua', 'r', 'ruby', 'rust', 'toml', 'vim', 'vue',
+            'yaml', 'markdown', 'rnoweb', 'latex'
         },
         incremental_selection = {
             enable = true,

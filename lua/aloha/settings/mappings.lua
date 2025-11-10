@@ -82,8 +82,8 @@ return {
         -- {'c', '<C-l>', '<Right>', {silent = false}},
         -- {'c', '<C-n>', '<Down>', {silent = false}},
 
-        {'n', '<leader>o', 'mzo<esc>`z'},
-        {'n', '<leader>O', 'mzO<esc>`z'},
+        -- {'n', '<leader>o', 'mzo<esc>`z'},
+        -- {'n', '<leader>O', 'mzO<esc>`z'},
 
         {'n', '<leader>e', ':e $HOME/.config/nvim/lua/aloha/<C-z>', {silent = false}},
 
@@ -103,7 +103,10 @@ return {
         {'i', '<C-v><C-v>', [[<C-r>"]]},
 
         {'i', '<C-CR>', [[<ESC>o]]},
-        {'s', '<Backspace>', [[a<Backspace>]]}
+        {'s', '<Backspace>', [[a<Backspace>]]},
+
+        -- {{'n', 'v'}, '<C-/>', [[mode() == '\22']], {expr = true}}
+        {{'n', 'v'}, '<C-/>', [[mode() == "\x16" ? "gbc" : "gcc"]], { expr = true }}
     },
     filetype_options = {
         rmd = {

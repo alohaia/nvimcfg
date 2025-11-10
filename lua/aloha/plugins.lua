@@ -22,7 +22,9 @@ return {
     ['j-hui/fidget.nvim'] = {
         config = function ()
             require("fidget").setup {}
-        end
+            require("telescope").load_extension("fidget")
+        end,
+        dependencies = { 'nvim-telescope/telescope.nvim' }
     },
     ['rachartier/tiny-inline-diagnostic.nvim'] = {
         config = function ()
@@ -109,7 +111,7 @@ return {
     ['MunifTanjim/nui.nvim'] = { opt = true },
     ['rcarriga/nvim-notify'] = { opt = true },
     ['folke/noice.nvim'] = {
-        disable = true,
+        -- disable = true,
         config = function ()
             require("notify").setup({
                 background_colour = "#000000",
@@ -130,15 +132,47 @@ return {
                     command_palette = true, -- position the cmdline and popupmenu together
                     long_message_to_split = true, -- long messages will be sent to a split
                     inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                    lsp_doc_border = true, -- add a border to hover docs and signature help
+                    lsp_doc_border = false, -- add a border to hover docs and signature help
                 },
-                background_colour = "#000000"
+                documentation = {
+                    view = "hover",
+                    ---@type NoiceViewOptions
+                    opts = {
+                        lang = "markdown",
+                        replace = true,
+                        render = "plain",
+                        format = { "{message}" },
+                        win_options = {
+                            concealcursor = "n",
+                            conceallevel = 3,
+                            winhighlight = {
+                                Normal = "Normal",
+                                FloatBorder = "Normal",
+                            }
+                        },
+                    },
+                },
             })
         end,
         dependencies = {
             "MunifTanjim/nui.nvim",
             "rcarriga/nvim-notify"
         }
+    },
+    ["Isrothy/neominimap.nvim"] = {
+        config = function ()
+            vim.g.neominimap = {
+                auto_enable = false
+            }
+        end
+    },
+    ["hedyhli/outline.nvim"] = {
+        config = function()
+            vim.keymap.set("n", "<leader>o", "<cmd>Outline<CR>", { desc = "Toggle Outline" })
+            require("outline").setup {
+                auto_close = true
+            }
+        end
     },
 
     -- text editing
@@ -173,7 +207,26 @@ return {
     ['folke/flash.nvim'] = {},
     ['brooth/far.vim'] = {},
     ['rainbowhxch/accelerated-jk.nvim'] = {},
-    ['preservim/nerdcommenter'] = {},
+    ['preservim/nerdcommenter'] = { disable=true },
+    ['numToStr/Comment.nvim'] = {
+        config = function ()
+            require('Comment').setup()
+
+            local cmt = require('Comment.api')
+            local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
+            vim.keymap.set({'n', 'x'}, '<C-/>', function()
+                if vim.fn.mode() == "\22" then
+                    vim.api.nvim_feedkeys(esc, 'nx', false)
+                    cmt.toggle.blockwise("v")
+                elseif vim.fn.mode() == "V" or vim.fn.mode() == "v" then
+                    vim.api.nvim_feedkeys(esc, 'nx', false)
+                    cmt.toggle.linewise("V")
+                else
+                    cmt.toggle.linewise()
+                end
+            end, { noremap = true })
+        end
+    },
     ['tpope/vim-surround'] = {},
     ['tpope/vim-repeat'] = {},
     ['dhruvasagar/vim-table-mode'] = { ft='rmd,markdown,text' },
@@ -229,12 +282,14 @@ return {
     ['fladson/vim-kitty'] = { ft='kitty' },
     ['fatih/vim-go'] = { ft='go,gohtmltmpl' },
 
+    ['nvim-mini/mini.icons'] = { opt=true },
     ['folke/which-key.nvim'] = {
         config = function ()
             vim.keymap.set("n", "<leader>?", function()
                 require("which-key").show({ global = false })
             end, { desc = "Buffer Local Keymaps (which-key)" })
-        end
+        end,
+        dependencies = 'nvim-mini/mini.icons'
     },
 
     -- R

@@ -54,9 +54,7 @@ return function(_configs)
             { __add = function(tbl_o, tbl_n)
                 local new_table = vim.deepcopy(tbl_o)
                 if tbl_n ~= nil then
-                    vim.validate{
-                        tbl_n = {tbl_n, 't'}
-                    }
+                    vim.validate('tbl_n', tbl_n, 'table')
                     for k,v in pairs(tbl_n) do
                         new_table[k] = v
                     end
@@ -143,3 +141,4 @@ return function(_configs)
         vim.api.nvim_create_autocmd(autocmd[1], autocmd[2])
     end
 end
+
