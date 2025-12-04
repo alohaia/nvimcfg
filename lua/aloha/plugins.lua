@@ -8,9 +8,6 @@ return {
             'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
             'hrsh7th/cmp-omni',
             'dcampos/cmp-snippy',
-            -- 'quangnguyen30192/cmp-nvim-ultisnips',
-            -- 'saadparwaiz1/cmp_luasnip',
-            -- 'onsails/lspkind-nvim',
         }
     },
     ['hrsh7th/cmp-nvim-lsp'] = { opt=true },
@@ -38,10 +35,6 @@ return {
     -- snippets
     ['dcampos/nvim-snippy'] = {},
     ['dcampos/cmp-snippy'] = { opt=true },
-    -- ['SirVer/ultisnips'] = {},
-    -- ['quangnguyen30192/cmp-nvim-ultisnips'] = { opt=true },
-    -- ['L3MON4D3/LuaSnip'] = {},
-    -- ['saadparwaiz1/cmp_luasnip'] = {opt=true},
 
     -- ui and appearance
     ['mhinz/vim-startify'] = { dependencies = {'kyazdani42/nvim-web-devicons'} },
@@ -50,39 +43,15 @@ return {
     ['lukas-reineke/indent-blankline.nvim'] = {},
     ['akinsho/bufferline.nvim'] = {},
     ['nvim-neo-tree/neo-tree.nvim'] = {
-        disable = true,
         branch = 'v3.x',
         dependencies = {
             'nvim-lua/plenary.nvim',
             'kyazdani42/nvim-web-devicons',
             'MunifTanjim/nui.nvim',
+            'folke/snacks.nvim'
         }
     },
-    ['mikavilpas/yazi.nvim'] = {
-        config = function ()
-            vim.keymap.set("n", "<C-Enter>", "<Cmd>Yazi toggle<CR>")
-            require'yazi'.setup {
-                opts = {
-                    keymaps = {
-                        show_help = "<f1>",
-                        -- open_file_in_vertical_split = "<c-v>",
-                        -- open_file_in_horizontal_split = "<c-x>",
-                        -- open_file_in_tab = "<c-t>",
-                        -- grep_in_directory = "<c-s>",
-                        -- replace_in_directory = "<c-g>",
-                        -- cycle_open_buffers = "<tab>",
-                        -- copy_relative_path_to_selected_files = "<c-y>",
-                        -- send_to_quickfix_list = "<c-q>",
-                        -- change_working_directory = "<c-\\>",
-                    },
-                    log_level = vim.log.levels.DEBUG
-                }
-            }
-        end,
-        dependencies = {
-            'nvim-lua/plenary.nvim'
-        }
-    },
+    ['folke/snacks.nvim'] = {},
     ['MagicDuck/grug-far.nvim'] = {
         config = function ()
             require('grug-far').setup({})
@@ -294,12 +263,16 @@ return {
 
     -- R
     ['R-nvim/r.nvim'] = {},
-    ['R-nvim/cmp-r'] = {
-        config = function()
-            require("cmp_r").setup({})
-        end,
-    },
+    -- ['R-nvim/cmp-r'] = {
+    --     config = function()
+    --         require("cmp_r").setup({})
+    --     end,
+    -- },
 
     -- test
     ['dstein64/vim-startuptime'] = { disable = true },
+
+
+    -- debug
+    ["mfussenegger/nvim-dap"] = {},
 }

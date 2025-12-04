@@ -43,7 +43,7 @@ end
 configs['norcalli/nvim-colorizer.lua'] = function()
     vim.opt.termguicolors = true
     require 'colorizer'.setup({
-        'markdown', 'html', 'gohtmltmpl',
+        'markdown', 'html', 'gohtmltmpl', 'rmarkdown',
         ['css'] = { css = true },
     }, {
         name = false,
@@ -236,7 +236,15 @@ end
 configs['lewis6991/gitsigns.nvim'] = function()
     require('gitsigns').setup {
         numhl              = true,
-        current_line_blame = false
+        current_line_blame = true,
+        current_line_blame_opts = {
+            virt_text = true,
+            virt_text_pos = 'eol',
+            delay = 200,
+            ignore_whitespace = false,
+            virt_text_priority = 100,
+            use_focus = true,
+        }
     }
 end
 
@@ -372,7 +380,7 @@ configs['neovim/nvim-lspconfig'] = function()
         cssls = {},
         jsonls = {},
         html = {},
-        jedi_language_server = {}
+        -- jedi_language_server = {},
     }
 
     for lang, cfg in pairs(servers) do
@@ -408,9 +416,7 @@ configs['hrsh7th/nvim-cmp'] = function()
             { name = 'omni' },
         }, {                           -- group 2
             { name = 'buffer' },
-            { name = 'path', option = {
-                trailing_slash = true,
-            }},
+            { name = 'path', option = { trailing_slash = true }},
         }),
         mapping = {
             ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
@@ -817,8 +823,8 @@ end
 
 configs['dcampos/nvim-snippy'] = function()
     require('snippy').setup({
-        snippet_dirs = '~/.config/nvim/snippy',
-        local_snippet_dir = '.snippy',
+        snippet_dirs = '~/.config/nvim/snippets',
+        local_snippet_dir = '.snippets',
         enable_auto = true,
         mappings = {
             is = {
@@ -974,11 +980,12 @@ configs['voldikss/vim-floaterm'] = function()
     g.floaterm_width         = 0.5
     g.floaterm_height        = 0.5
     g.floaterm_autoclose     = 1
-    g.floaterm_title         = 'floaterm: $1/$2'
+    g.floaterm_title         = '   floaterm: $1/$2 '
     g.floaterm_wintype       = 'popup'
     g.floaterm_position      = 'bottomright'
     g.floaterm_borderchars   = '─│─│╭╮╯╰'
-    -- vim.cmd('hi link FloatermBorder Normal')
+
+    vim.api.nvim_set_hl(0, "FloatermBorder", { link = "Normal" })
 end
 
 configs['akinsho/toggleterm.nvim'] = function()
@@ -1153,6 +1160,15 @@ end
 configs['skywind3000/asynctasks.vim'] = function()
     setmap('n', '<F5>', '<cmd>AsyncTask run<cr>', {})
     setmap('n', '<F6>', '<cmd>AsyncTask build<cr>', {})
+end
+
+configs['mfussenegger/nvim-dap'] = function()
+    local dap = require('dap')
+    dap.adapters.debugpy = {
+        type = 'executable';
+        command = os.getenv('HOME') .. '/.virtualenvs/tools/bin/python';
+        args = { '-m', 'debugpy.adapter' };
+    }
 end
 
 return configs

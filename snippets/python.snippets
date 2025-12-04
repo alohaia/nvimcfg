@@ -1,0 +1,12 @@
+snippet deff "Create function with document (Google style)" wA
+	def ${1:func}(${2:arg1}: ${3:arg1_type}${4}) -> ${5:ret}:
+	  """${6:Description}
+
+	  Args:
+	  	$2 ($3): ${7:arg1_desc}${8}
+
+	  Returns:
+	  	$3: ${9:ret_desc}
+	  """
+
+	  $0

@@ -27,8 +27,11 @@ return {
         scrolloff      = 3,
         linebreak      = false,
         breakindent    = false,
-        listchars      = "tab:»·,nbsp:+,trail:˽,eol:↴,extends:→,precedes:←"; -- trail:˽,tab:«·»,eol:↴
+        -- tab:«·» ⏎ ␤ ␍ ↵  ↩
+        -- nbsp: <C-k><Space><Space>
+        listchars      = "tab:»·,nbsp:~,trail:˽,eol:↩,extends:›,precedes:‹",
         fillchars      = 'vert:┆', -- ┆ ▏
+        showbreak      = "↪",
         fileencodings  = 'utf-8,ucs-bom,gb18030,gbk,gb2312,cp936',
         emoji          = true,
         equalalways    = false,
@@ -41,7 +44,6 @@ return {
         foldlevel      = 999,
         conceallevel   = 2,
         wrap           = false,
-        showbreak      = "↳",
         list           = true,
         number         = true,
         relativenumber = false,
@@ -92,8 +94,22 @@ return {
             colorcolumn = "120"
         },
         ['r'] = {
-            foldmethod = "marker",
-            foldmarker = "{{{,}}}"
+            -- foldmethod = "marker",
+            -- foldmarker = "{{{,}}}"
+            foldmethod = "expr",
+            foldmarker = function (lnum)
+                local line = vim.fn.getline(lnum)
+
+                -- 匹配 RStudio 风格标题: # Section ----
+                if string.match(line, "^#+%s+.*(----|####)%s*$") then
+                    -- 统计 # 的数量作为折叠层级
+                    local hashes = string.match(line, "^(#+)")
+                    return #hashes   -- 返回 1, 2, 3...
+                end
+
+                -- 其它行：继承上一行折叠
+                return "="
+            end
         },
         ['c,cpp'] = {
             path = {
