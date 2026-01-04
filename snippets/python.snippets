@@ -1,12 +1,28 @@
-snippet deff "Create function with document (Google style)" wA
-	def ${1:func}(${2:arg1}: ${3:arg1_type}${4}) -> ${5:ret}:
-	  """${6:Description}
+# https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings
+snippet deff "Create function with document (Google style)" b
+	def ${1:func}(${2:arg1}: ${3:arg1_type}${4}) -> ${5:None}:
+		"""${6:Short description here, following details below}
 
-	  Args:
-	  	$2 ($3): ${7:arg1_desc}${8}
+		Args:
+			$2:${7:arg1_desc}${8}
 
-	  Returns:
-	  	$3: ${9:ret_desc}
-	  """
+		Returns:
+			${9}
 
-	  $0
+		Raises:
+			${10}
+		"""
+		$0
+
+snippet fdoc "Function document (Google style)" b
+	"""${1:Short description here, following details below}
+
+	Args:
+		${2:arg1}:${3:arg1_desc}${4}
+
+	Returns:
+		${5}
+
+	Raises:
+		${6}
+	"""$0

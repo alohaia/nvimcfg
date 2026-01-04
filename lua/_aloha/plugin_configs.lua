@@ -26,6 +26,10 @@ configs['R-nvim/r.nvim'] = function()
 end
 
 configs['lukas-reineke/indent-blankline.nvim'] = function()
+    local ibl_hls = {
+        "CursorColumn",
+        "Whitespace",
+    }
     require'ibl'.setup {
         exclude = {
             filetypes = {
@@ -130,6 +134,86 @@ configs['akinsho/bufferline.nvim'] = function()
 
             offset_separator = { bg=colors.dark_gray },
         },
+    -- -- TODO
+    -- local colors = {
+    --     white = "#3D4350",  -- #ABB2BF #5C6370
+    --     gray = "#3E4452",
+    --     dark_gray = "#2C323C",
+    --     green = "#98C379",
+    -- }
+    -- -- local hls_style = {
+    -- --     normal = { bg=colors.dark_gray, italic=true, bold=false },
+    -- --     selected = { bg=colors.white, italic=false, bold=true },
+    -- --     visible = { bg=colors.gray, italic=false, bold=true }
+    -- -- }
+    -- local hls = {
+    --     normal = { bg=colors.dark_gray, italic=false, bold=false },
+    --     normal_i = { bg=colors.dark_gray, italic=true, bold=false },
+    --     normal_b = { bg=colors.dark_gray, italic=false, bold=true },
+    --     normal_ib = { bg=colors.dark_gray, italic=true, bold=true },
+    --     selected = { bg=colors.white, italic=false, bold=false  },
+    --     selected_i = { bg=colors.white, italic=true, bold=false },
+    --     selected_b = { bg=colors.white, italic=false, bold=true },
+    --     selected_ib = { bg=colors.white, italic=true, bold=true },
+    --     visible = { bg=colors.gray, italic=false, bold=false },
+    --     visible_i = { bg=colors.gray, italic=true, bold=false },
+    --     visible_b = { bg=colors.gray, italic=false, bold=true },
+    --     visible_ib = { bg=colors.gray, italic=true, bold=true },
+    -- }
+    -- local expand_name = {
+    --     ["index.md"] = {prefix = "(i)"},
+    --     ["index.Rmd"] = {prefix = "(i.r)"},
+    --     ["_index.md"] = {prefix = "(I)"},
+    --     ["_index.Rmd"] = {prefix = "(I.r)"},
+    --     ["init.lua"] = true,
+    -- }
+    -- require('bufferline').setup {
+    --     highlights = {
+    --         fill = { bg="NONE" },
+    --
+    --         background = hls.normal_i,
+    --         buffer_selected = hls.selected_b,
+    --         buffer_visible = hls.visible_b,
+    --
+    --         hint = hls.normal_i    , hint_selected = hls.selected_b    , hint_visible = hls.visible_b    ,
+    --         info = hls.normal_i    , info_selected = hls.selected_b    , info_visible = hls.visible_b    ,
+    --         warning = hls.normal_i , warning_selected = hls.selected_b , warning_visible = hls.visible_b ,
+    --         error = hls.normal_i   , error_selected = hls.selected_b   , error_visible = hls.visible_b   ,
+    --
+    --         hint_diagnostic = hls.normal    , hint_diagnostic_selected = hls.selected_b    , hint_diagnostic_visible = hls.visible    ,
+    --         info_diagnostic = hls.normal    , info_diagnostic_selected = hls.selected_b    , info_diagnostic_visible = hls.visible    ,
+    --         warning_diagnostic = hls.normal , warning_diagnostic_selected = hls.selected_b , warning_diagnostic_visible = hls.visible ,
+    --         error_diagnostic = hls.normal   , error_diagnostic_selected = hls.selected_b   , error_diagnostic_visible = hls.visible   ,
+    --
+    --         duplicate = hls.normal, duplicate_selected = hls.selected, duplicate_visible = hls.visible,
+    --         separator = hls.normal, separator_selected = hls.selected, separator_visible = hls.visible,
+    --         indicator_selected = hls.selected, indicator_visible = hls.visible,
+    --
+    --         numbers = hls.normal_i,
+    --         numbers_selected = hls.selected_b,
+    --         numbers_visible = hls.visible_b,
+    --
+    --         tab = hls.normal,
+    --         tab_selected = hls.selected_b,
+    --
+    --         tab_separator = hls.normal,
+    --         tab_separator_selected = hls.selected,
+    --
+    --         -- Others
+    --         modified = { fg=colors.green, bg=colors.dark_gray },
+    --         modified_selected = { fg=colors.dark_gray, bg=colors.white },
+    --         modified_visible = { fg=colors.green, bg=colors.gray },
+    --
+    --         pick = { fg=colors.green, bg=colors.dark_gray },
+    --         pick_visible = { fg=colors.dark_gray, bg=colors.white },
+    --         pick_selected = { fg=colors.green, bg=colors.gray },
+    --
+    --         diagnostic = { bg=colors.dark_gray },
+    --         diagnostic_visible = { fg=colors.dark_gray, bg=colors.white },
+    --         diagnostic_selected = { bg=colors.gray },
+    --
+    --         offset_separator = { bg=colors.dark_gray },
+    --     },
         options = {
             mode = "buffers",
             numbers = "buffer_id",
@@ -174,7 +258,7 @@ configs['akinsho/bufferline.nvim'] = function()
             diagnostics_indicator = function(count, level, _, context) -- 
                 local sym = level == "error" and "E"
                     or (level == "warning" and "W" or (level == "hint" and "H" or "I"))
-                return sym.."("..count..")"
+                return sym.." Σ"..count
             end,
             offsets = {
                 {
@@ -210,7 +294,7 @@ configs['nvim-neo-tree/neo-tree.nvim'] = function ()
         },
         window = {
             position = "left",
-            width = 40,
+            width = 30,
             mappings = {
                 ["P"] = { 'toggle_preview', config = { use_float = false, use_image_nvim = false } },
                 ['s'] = 'open_split',
@@ -269,6 +353,15 @@ configs['neovim/nvim-lspconfig'] = function()
             map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
             map('<M-i>', vim.lsp.buf.hover, 'Show Hover [I]nformation')
 
+            map("]d", function () vim.diagnostic.jump({count = 1}) end, "Next Diagnostic")
+            map("[d", function () vim.diagnostic.jump({count = -1}) end, "Next Diagnostic")
+            map("]e", function ()
+                    vim.diagnostic.jump({count = 1, severity = vim.diagnostic.severity.ERROR})
+                end, "Next Error")
+            map("[e", function ()
+                    vim.diagnostic.jump({count = -1, severity = vim.diagnostic.severity.ERROR})
+                end, "Next Error")
+
             -- The following two autocommands are used to highlight references of the
             -- word under your cursor when your cursor rests there for a little while.
             --    See `:help CursorHold` for information about when this is executed
@@ -306,15 +399,12 @@ configs['neovim/nvim-lspconfig'] = function()
             --
             -- This may be unwanted, since they displace some of your code
             if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-              map('<leader>th', function()
-                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-              end, '[T]oggle Inlay [H]ints')
+                map('<leader>th', function()
+                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+                end, '[T]oggle Inlay [H]ints')
             end
         end,
     })
-
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
     local servers = {
         lua_ls = {
@@ -384,7 +474,6 @@ configs['neovim/nvim-lspconfig'] = function()
     }
 
     for lang, cfg in pairs(servers) do
-        cfg.capabilities = vim.tbl_deep_extend('force', {}, capabilities, cfg.capabilities or {})
         vim.lsp.config(lang, cfg)
         vim.lsp.enable(lang)
     end
@@ -573,12 +662,36 @@ configs['nvim-telescope/telescope.nvim'] = function()
     }
 
     -- keybindings
-    setmap('n', ',t', '<Cmd>Telescope resume<CR>', {noremap = true})
-    setmap('n', ',f', '<Cmd>Telescope find_files<CR>', {noremap = true})
-    setmap('n', ',F', '<Cmd>Telescope file_browser<CR>', {noremap = true})
-    setmap('n', ',b', '<Cmd>Telescope buffers<CR>', {noremap = true})
-    setmap('n', ',g', '<Cmd>Telescope live_grep<CR>', {noremap = true})
-    setmap('n', ',h', '<Cmd>Telescope help_tags<CR>', {noremap = true})
+    setmap('n', ',r', '<Cmd>Telescope resume<CR>', {
+        noremap = true, desc = "Telescope: [R]esume last searching"
+    })
+    setmap('n', ',f', '<Cmd>Telescope find_files<CR>', {
+        noremap = true, desc = "Telescope: search [F]iles"
+    })
+    setmap('n', ',b', '<Cmd>Telescope buffers<CR>', {
+        noremap = true, desc = "Telescope: search [B]uffers"
+    })
+    setmap('n', ',j', '<Cmd>Telescope current_buffer_fuzzy_find<CR>', {
+        noremap = true, desc = "Telescope: fuzzy find and [J]ump in current buffer"
+    })
+    setmap('n', ',g', '<Cmd>Telescope live_grep<CR>', {
+        noremap = true, desc = "Telescope: live [G]rep for contents of files"
+    })
+    setmap('n', ',h', '<Cmd>Telescope command_history<CR>', {
+        noremap = true, desc = "Telescope: search Vim command [H]istory"
+    })
+    setmap('n', ',H', '<Cmd>Telescope help_tags<CR>', {
+        noremap = true, desc = "Telescope: search Vim [H]elp tags"
+    })
+    setmap('n', ',d', '<Cmd>Telescope diagnostics<CR>', {
+        noremap = true, desc = "Telescope: search LSP [D]iagnostics"
+    })
+    setmap('n', ',sb', '<Cmd>Telescope lsp_document_symbols<CR>', {
+        noremap = true, desc = "Telescope: search document [S]ymbols in current [B]uffer"
+    })
+    setmap('n', ',sp', '<Cmd>Telescope lsp_workspace_symbols<CR>', {
+        noremap = true, desc = "Telescope: search workspace [S]ymbols in current [P]roject"
+    })
 end
 
 configs['RRethy/vim-illuminate'] = function()
@@ -622,11 +735,69 @@ configs['ggandor/leap.nvim'] = function ()
 end
 
 configs['folke/flash.nvim'] = function ()
-    setmap({'n', 'x', 'o'}, '<C-s>', function()
+    require('flash').setup {
+        modes = {
+            search = { enabled = true },
+            char = {
+                enabled = true,
+                keys = { "f", "F", "t", "T" },
+                char_actions = function(motion)
+                    return {
+                        ["<M-n>"] = "next",
+                        ["<M-p>"] = "prev",
+                    }
+                end,
+            }
+        },
+        prompt = {
+            enabled = true,
+            prefix = { { "Flash.nvim: ", "FlashPromptIcon" } }
+        }
+    }
+
+    setmap({'n', 'x', 'o'}, 's', function()
+        require("flash").jump()
+    end, {desc = "Flash: jump"})
+
+    setmap({'n', 'x', 'o'}, 'S', function()
+        require("flash").treesitter {
+        label = {
+            rainbow = {
+                enabled = true,
+                shade = 5,
+            },
+        }
+    }
+    end, {desc = "Flash: treesitter"})
+
+    setmap({'n', 'x', 'o'}, '<M-s>', function()
+        require("flash").remote()
+    end, {desc = "Flash: remote"})
+
+    setmap({'n', 'x', 'o'}, '<C-s>c', function()
+        require("flash").jump({continue = true})
+    end, {desc = "Flash: continue last searching"})
+
+    setmap({'n', 'x', 'o'}, '<C-s>d', function()
         require("flash").jump({
-            prompt = { enabled = false }
+            matcher = function(win)
+                ---@param diag Diagnostic
+                return vim.tbl_map(function(diag)
+                    return {
+                        pos = { diag.lnum + 1, diag.col },
+                        end_pos = { diag.end_lnum + 1, diag.end_col - 1 },
+                    }
+                end, vim.diagnostic.get(vim.api.nvim_win_get_buf(win)))
+            end,
+            action = function(match, state)
+                vim.api.nvim_win_call(match.win, function()
+                vim.api.nvim_win_set_cursor(match.win, match.pos)
+                vim.diagnostic.open_float()
+                end)
+                state:restore()
+            end,
         })
-    end)
+    end, {desc = "Flash: jump to LSP diagnostics"})
 end
 
 configs['rainbowhxch/accelerated-jk.nvim'] = function ()
@@ -644,49 +815,23 @@ configs['rainbowhxch/accelerated-jk.nvim'] = function ()
 end
 
 configs['nvim-treesitter/nvim-treesitter'] = function()
-    api.nvim_command('set foldmethod=expr')
-    api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
-    -- require("nvim-treesitter.install").command_extra_args = {
-    --     curl = { "--proxy", "<proxy url>" },
-    -- }
-    require'nvim-treesitter.configs'.setup {
-        ensure_installed = {
-            'c', 'cpp', 'python', 'css', 'bash', 'cmake', 'glsl', 'go', 'html',
-            'javascript', 'lua', 'r', 'ruby', 'rust', 'toml', 'vim', 'vue',
-            'yaml', 'markdown', 'rnoweb', 'latex'
-        },
-        incremental_selection = {
-            enable = true,
-            keymaps = {
-                init_selection = '<leader>ti',
-                node_incremental = '<leader>ta',
-                scope_incremental = '<leader>ts',
-                node_decremental = '<leader>td',
-            },
-        },
-        highlight = {
-            enable = true,
-            disable = {'markdown'},
-            custom_captures = {
-                -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
-                -- ['foo.bar'] = 'Identifier',
-            },
-        },
-        indent = {
-            enable = true,
-        },
-        textobjects = {
-            select = {
-                enable = true,
-                keymaps = {
-                    ['af'] = '@function.outer',
-                    ['if'] = '@function.inner',
-                    ['ac'] = '@class.outer',
-                    ['ic'] = '@class.inner',
-                },
-            },
-        },
+    local ts_langs = {
+        'vim', 'lua', 'c', 'cpp', 'cmake', 'bash', 'rust',
+        'python', 'r', 'rnoweb',
+        'yaml', 'toml', 'json', 'markdown', 'latex',
+        'html', 'javascript', 'css',
     }
+    require'nvim-treesitter'.install(ts_langs)
+    vim.api.nvim_create_autocmd('FileType', {
+        pattern = ts_langs,
+        callback = function ()
+            vim.treesitter.start()
+            vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+            vim.wo[0][0].foldmethod = 'expr'
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
+
+    })
 end
 
 configs['brooth/far.vim'] = function()
@@ -926,24 +1071,24 @@ configs['dhruvasagar/vim-table-mode'] = function()
     g.table_mode_delimiter = ','
 end
 
-configs['svermeulen/vim-subversive'] = function()
-    g.subversiveCurrentTextRegister = 1
-    setmap('n', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
-    setmap('x', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
-    setmap('x', 'p',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
-    setmap('x', 'P',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
-    setmap('n', 'ss',                 '<plug>(SubversiveSubstituteLine)',             { noremap = false })
-    setmap('n', 'S',                  '<plug>(SubversiveSubstituteToEndOfLine)',      { noremap = false })
-    setmap('n', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
-    setmap('x', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
-    setmap('n', '<leader>ss',         '<plug>(SubversiveSubstituteWordRange)',        { noremap = false })
-    setmap('n', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
-    setmap('x', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
-    setmap('n', '<leader>crr',        '<plug>(SubversiveSubstituteWordRangeConfirm)', { noremap = false })
-    setmap('n', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
-    setmap('x', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
-    setmap('n', '<leader><leader>ss', '<plug>(SubversiveSubvertWordRange)',           { noremap = false })
-end
+-- configs['svermeulen/vim-subversive'] = function()
+--     g.subversiveCurrentTextRegister = 1
+--     setmap('n', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+--     setmap('x', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+--     setmap('x', 'p',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+--     setmap('x', 'P',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+--     setmap('n', 'ss',                 '<plug>(SubversiveSubstituteLine)',             { noremap = false })
+--     setmap('n', 'S',                  '<plug>(SubversiveSubstituteToEndOfLine)',      { noremap = false })
+--     setmap('n', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
+--     setmap('x', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
+--     setmap('n', '<leader>ss',         '<plug>(SubversiveSubstituteWordRange)',        { noremap = false })
+--     setmap('n', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
+--     setmap('x', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
+--     setmap('n', '<leader>crr',        '<plug>(SubversiveSubstituteWordRangeConfirm)', { noremap = false })
+--     setmap('n', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
+--     setmap('x', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
+--     setmap('n', '<leader><leader>ss', '<plug>(SubversiveSubvertWordRange)',           { noremap = false })
+-- end
 
 configs['svermeulen/vim-yoink'] = function()
     setmap('n', 'p', '<plug>(YoinkPaste_p)', {noremap=false})
@@ -958,15 +1103,106 @@ configs['svermeulen/vim-yoink'] = function()
     setmap('x', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
 end
 
-configs['mg979/vim-visual-multi'] = function()
-    g.VM_leader = { default = ',', visual = ',', buffer = ',' }
-    g.VM_default_mappings = 1
-    g.VM_theme = 'spacegray'
-    -- g.VM_maps = {[vim.type_idx] = vim.types.dictionary}
-    -- g.VM_maps['Undo'] = 'u'
-    -- g.VM_maps['Redo'] = '<C-r>'
-    -- g.VM_maps['Find Under'] = '<M-n>'
-    -- g.VM_maps['Find Subword Under'] = '<M-n>'
+-- configs['mg979/vim-visual-multi'] = function()
+--     g.VM_leader = { default = ',', visual = ',', buffer = ',' }
+--     g.VM_default_mappings = 1
+--     g.VM_theme = 'spacegray'
+--     -- g.VM_maps = {[vim.type_idx] = vim.types.dictionary}
+--     -- g.VM_maps['Undo'] = 'u'
+--     -- g.VM_maps['Redo'] = '<C-r>'
+--     -- g.VM_maps['Find Under'] = '<M-n>'
+--     -- g.VM_maps['Find Subword Under'] = '<M-n>'
+-- end
+
+configs['jake-stewart/multicursor.nvim'] = function ()
+    local mc = require("multicursor-nvim")
+    mc.setup()
+
+    local set = vim.keymap.set
+
+    -- Add or skip cursor above/below the main cursor.
+    set({"n", "x"}, "<S-Up>", function() mc.lineAddCursor(-1) end, {
+        desc = "multicursor.nvim: previous line",
+    })
+    set({"n", "x"}, "<S-Down>", function() mc.lineAddCursor(1) end, {
+        desc = "multicursor.nvim: next line",
+    })
+    set({"n", "x"}, "<M-Up>", function() mc.lineSkipCursor(-1) end, {
+        desc = "multicursor.nvim: skip previous line",
+    })
+    set({"n", "x"}, "<M-Down>", function() mc.lineSkipCursor(1) end, {
+        desc = "multicursor.nvim: skip next line",
+    })
+
+    -- Add or skip adding a new cursor by matching word/selection
+    set({"n", "x"}, "<C-n>", function() mc.matchAddCursor(1) end, {
+        desc = "multicursor.nvim: next match",
+    })
+    set({"n", "x"}, "<C-p>", function() mc.matchAddCursor(-1) end, {
+        desc = "multicursor.nvim: previous match",
+    })
+    set({"n", "x"}, "<C-M-n>", function() mc.matchSkipCursor(1) end, {
+        desc = "multicursor.nvim: skip next match",
+    })
+    set({"n", "x"}, "<C-M-p>", function() mc.matchSkipCursor(-1) end, {
+        desc = "multicursor.nvim: skip previous match",
+    })
+
+    -- Add and remove cursors with control + left click.
+    set("n", "<C-LeftMouse>", mc.handleMouse, {
+        desc = "multicursor.nvim: handleMouse"
+    })
+    set("n", "<C-LeftDrag>", mc.handleMouseDrag, {
+        desc = "multicursor.nvim: handleMouseDrag"
+    })
+    set("n", "<C-LeftRelease>", mc.handleMouseRelease, {
+        desc = "multicursor.nvim: handleMouseRelease"
+    })
+
+    -- Disable and enable cursors.
+    set({"n", "x"}, "<C-q>", mc.toggleCursor, {
+        desc = "multicursor.nvim: toggle cursors"
+    })
+
+    -- Mappings defined in a keymap layer only apply when there are
+    -- multiple cursors. This lets you have overlapping mappings.
+    mc.addKeymapLayer(function(layerSet)
+
+        -- Select a different cursor as the main one.
+        layerSet({"n", "x"}, "<Left>", mc.prevCursor, {
+        desc = "multicursor.nvim: goto previous cursor"
+    })
+        layerSet({"n", "x"}, "<Right>", mc.nextCursor, {
+        desc = "multicursor.nvim: goto next cursor"
+    })
+
+        -- Delete the main cursor.
+        layerSet({"n", "x"}, "<C-x>", mc.deleteCursor, {
+        desc = "multicursor.nvim: delete current main cursor_row"
+    })
+
+        -- Enable and clear cursors using escape.
+        layerSet("n", "<Esc>",
+            function()
+                if not mc.cursorsEnabled() then
+                    mc.enableCursors()
+                else
+                    mc.clearCursors()
+                end
+            end,
+            { desc = "multicursor.nvim: enable/clear cursors" }
+        )
+    end)
+
+    -- Customize how cursors look.
+    local hl = vim.api.nvim_set_hl
+    hl(0, "MultiCursorCursor", { reverse = true })
+    hl(0, "MultiCursorVisual", { link = "Visual" })
+    hl(0, "MultiCursorSign", { link = "SignColumn"})
+    hl(0, "MultiCursorMatchPreview", { link = "Search" })
+    hl(0, "MultiCursorDisabledCursor", { reverse = true })
+    hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
+    hl(0, "MultiCursorDisabledSign", { link = "SignColumn"})
 end
 
 configs['voldikss/vim-floaterm'] = function()
@@ -1165,9 +1401,9 @@ end
 configs['mfussenegger/nvim-dap'] = function()
     local dap = require('dap')
     dap.adapters.debugpy = {
-        type = 'executable';
-        command = os.getenv('HOME') .. '/.virtualenvs/tools/bin/python';
-        args = { '-m', 'debugpy.adapter' };
+        type = 'executable',
+        command = 'python',
+        args = { '-m', 'debugpy.adapter' },
     }
 end
 

@@ -1,25 +1,70 @@
 return {
     -- lsp, completion and snippets
-    ['neovim/nvim-lspconfig'] = {
-        dependencies = { 'hrsh7th/cmp-nvim-lsp' }
+    ['neovim/nvim-lspconfig'] = {},
+    ['mfussenegger/nvim-lint'] = {
+        config = function ()
+            require('lint').linters_by_ft = {
+                markdown = {'vale'},
+                bash = {'bash'},
+                zsh = {'zsh'},
+                cpp = {'clang-tidy'},
+                lua = {'luacheck'},
+                python = {'ruff'}
+            }
+            vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+                callback = function()
+                    require("lint").try_lint()
+                end,
+            })
+        end
     },
-    ['hrsh7th/nvim-cmp'] = {
-        dependencies = {
-            'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
-            'hrsh7th/cmp-omni',
-            'dcampos/cmp-snippy',
-        }
+    -- ['hrsh7th/nvim-cmp'] = {
+    --     dependencies = {
+    --         'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
+    --         'hrsh7th/cmp-omni',
+    --         'dcampos/cmp-snippy',
+    --     }
+    -- },
+    -- ['hrsh7th/cmp-nvim-lsp'] = { opt=true },
+    -- ['hrsh7th/cmp-buffer']   = { opt=true },
+    -- ['hrsh7th/cmp-path']     = { opt=true },
+    -- ['hrsh7th/cmp-omni']     = { opt=true },
+    -- ['onsails/lspkind-nvim'] = { disable=true, opt=true },
+    -- ['nvimdev/lspsaga.nvim'] = { disable=true, opt=true, event='BufRead', branch = 'main' },
+    ['saghen/blink.cmp'] = {
+        config = function ()
+            require('blink.cmp').setup({
+                keymap = { preset = 'default' },
+                appearance = {
+                    use_nvim_cmp_as_default = true,
+                    nerd_font_variant = 'mono'
+                },
+                sources = {
+                    default = { 'lsp', 'path', 'snippets', 'buffer' },
+                },
+            })
+        end,
+        run = '!cargo build --release'
     },
-    ['hrsh7th/cmp-nvim-lsp'] = { opt=true },
-    ['hrsh7th/cmp-buffer']   = { opt=true },
-    ['hrsh7th/cmp-path']     = { opt=true },
-    ['hrsh7th/cmp-omni']     = { opt=true },
-    ['onsails/lspkind-nvim'] = { disable=true, opt=true },
-    ['nvimdev/lspsaga.nvim'] = { disable=true, opt=true, event='BufRead', branch = 'main' },
     ['j-hui/fidget.nvim'] = {
         config = function ()
-            require("fidget").setup {}
+            require("fidget").setup {
+                notification = {
+                    override_vim_notify = true,
+                    view = {
+                        reflow = true
+                    },
+                    window = {
+                        normal_hl = "Comment",
+                        winblend = 0,
+                        avoid = { "NvimTree", "Outline", "aerial-nav", "aerial" },
+                    }
+                },
+            }
             require("telescope").load_extension("fidget")
+            vim.keymap.set('n', ',n', '<Cmd>Telescope fidget<CR>', {
+                noremap = true, desc = "Telescope: Fidget notifications"
+            })
         end,
         dependencies = { 'nvim-telescope/telescope.nvim' }
     },
@@ -28,7 +73,12 @@ return {
             vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
             require('tiny-inline-diagnostic').setup {
                 preset = "modern",
-                show_all_diags_on_cursorline = false
+                show_all_diags_on_cursorline = false,
+                use_icons_from_diagnostic = true,
+                set_arrow_to_diag_color = true,
+                multilines = {
+                    enabled = false
+                }
             }
         end
     },
@@ -48,10 +98,36 @@ return {
             'nvim-lua/plenary.nvim',
             'kyazdani42/nvim-web-devicons',
             'MunifTanjim/nui.nvim',
-            'folke/snacks.nvim'
+            's1n7ax/nvim-window-picker'
         }
     },
-    ['folke/snacks.nvim'] = {},
+    ['s1n7ax/nvim-window-picker'] = {
+        config = function ()
+            require('window-picker').setup {
+                hint = 'floating-big-letter',
+                show_prompt = false,
+                picker_config = {
+                    autoselect_one = true,
+                    filter_rules = {
+                        include_current_win = false,
+                        handle_mouse_click = true,
+                        filter_func = nil,
+                        include_unfocusable_windows = false,
+                        bo = {
+                            filetype = { 'NvimTree', 'neo-tree', 'notify', 'snacks_notif' },
+                            buftype = { 'terminal' },
+                        },
+                        wo = {}
+                    }
+                }
+            }
+
+            vim.keymap.set("n", "<C-w><C-w>", function ()
+                local winid = require('window-picker').pick_window()
+                vim.api.nvim_set_current_win(winid)
+            end, { desc = "Pick a window" })
+        end
+    },
     ['MagicDuck/grug-far.nvim'] = {
         config = function ()
             require('grug-far').setup({})
@@ -62,7 +138,29 @@ return {
     },
     ['liuchengxu/vista.vim'] = { disable = true },
     ['mbbill/undotree'] = {},
-    ['voldikss/vim-floaterm'] = {},
+    -- ['voldikss/vim-floaterm'] = {},
+    ['akinsho/toggleterm.nvim'] = {
+        config = function ()
+            require("toggleterm").setup {
+                size = 20,
+                open_mapping = [[<C-\>]],
+                -- clear_env = true,
+                autochdir = true,
+                on_create = function (term)
+                    local conda_env = vim.env.CONDA_DEFAULT_ENV
+                    if conda_env and conda_env ~= "" then
+                        term:send(string.format("mamba activate %s", conda_env))
+                    end
+                end,
+                winbar = {
+                    enabled = true,
+                    name_formatter = function(term)
+                        return term.name
+                    end
+                },
+            }
+        end
+    },
     ['nvim-telescope/telescope.nvim'] = {
         map = {
             {mode = 'n', lhs = ',g'},
@@ -78,63 +176,6 @@ return {
     ['nvim-lua/plenary.nvim'] = { opt = true },
     ['kyazdani42/nvim-web-devicons'] = { opt = true },
     ['MunifTanjim/nui.nvim'] = { opt = true },
-    ['rcarriga/nvim-notify'] = { opt = true },
-    ['folke/noice.nvim'] = {
-        -- disable = true,
-        config = function ()
-            require("notify").setup({
-                background_colour = "#000000",
-            })
-
-            require("noice").setup({
-                lsp = {
-                    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-                    override = {
-                        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-                        ["vim.lsp.util.stylize_markdown"] = true,
-                        ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
-                    },
-                },
-                -- you can enable a preset for easier configuration
-                presets = {
-                    bottom_search = true, -- use a classic bottom cmdline for search
-                    command_palette = true, -- position the cmdline and popupmenu together
-                    long_message_to_split = true, -- long messages will be sent to a split
-                    inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                    lsp_doc_border = false, -- add a border to hover docs and signature help
-                },
-                documentation = {
-                    view = "hover",
-                    ---@type NoiceViewOptions
-                    opts = {
-                        lang = "markdown",
-                        replace = true,
-                        render = "plain",
-                        format = { "{message}" },
-                        win_options = {
-                            concealcursor = "n",
-                            conceallevel = 3,
-                            winhighlight = {
-                                Normal = "Normal",
-                                FloatBorder = "Normal",
-                            }
-                        },
-                    },
-                },
-            })
-        end,
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "rcarriga/nvim-notify"
-        }
-    },
-    ["Isrothy/neominimap.nvim"] = {
-        config = function ()
-            vim.g.neominimap = {
-                auto_enable = false
-            }
-        end
-    },
     ["hedyhli/outline.nvim"] = {
         config = function()
             vim.keymap.set("n", "<leader>o", "<cmd>Outline<CR>", { desc = "Toggle Outline" })
@@ -150,25 +191,6 @@ return {
         dependencies = {
             'nvim-telescope/telescope.nvim'
         }
-    },
-    ['stevearc/aerial.nvim'] = {
-        config = function ()
-            require("aerial").setup({
-                backends = {
-                    ['_']  = { "treesitter", "lsp", "markdown", "asciidoc", "man" },
-                    -- rmd = { "treesitter", "lsp", "markdown", "asciidoc", "man" }
-                },
-                -- optionally use on_attach to set keymaps when aerial has attached to a buffer
-                on_attach = function(bufnr)
-                    -- Jump forwards/backwards with '{' and '}'
-                    vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
-                    vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
-                end,
-                placement = "edge",
-            })
-            vim.keymap.set("n", "<leader>ae", "<cmd>AerialToggle!<CR>")
-            vim.keymap.set("n", "<leader>an", "<cmd>AerialNavToggle<CR>")
-        end
     },
     ['lervag/vimtex'] = {},
     ['rhysd/clever-f.vim'] = { disable=true },
@@ -216,15 +238,8 @@ return {
             vim.g["bullets#renumber_on_change"] = true
         end
     },
-    ['svermeulen/vim-subversive'] = {},
-    ['svermeulen/vim-yoink'] = {},
-    ['mg979/vim-visual-multi'] = {},
-    ['jiangmiao/auto-pairs'] = {},
-    ['RRethy/nvim-treesitter-endwise'] = {
-        config = function ()
-            require('nvim-treesitter.configs').setup { endwise = { enable = true } }
-        end
-    },
+    ['jake-stewart/multicursor.nvim'] = {},
+    ['cohama/lexima.vim'] = {}, -- auto-pairs plugin works well with multicursor.nvim
     ['mattn/emmet-vim'] = {},
     ['godlygeek/tabular'] = {
         config = [[:cnorea Tbu Tabularize]]
@@ -245,9 +260,24 @@ return {
 
     -- syntax highlight
     ['nvim-treesitter/nvim-treesitter'] = {
-        dependencies = 'nvim-treesitter/nvim-treesitter-textobjects'
+        branch = "main",
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter-textobjects',
+            'nvim-treesitter/nvim-treesitter-context'
+        },
     },
-    ['nvim-treesitter/nvim-treesitter-textobjects'] = { opt=true },
+    ['nvim-treesitter/nvim-treesitter-textobjects'] = { branch = "main" },
+    ['nvim-treesitter/nvim-treesitter-context'] = {
+        config = function ()
+            require'treesitter-context'.setup {
+                enable = false,
+                multiwindow = true
+            }
+            vim.keymap.set("n", "<Leader>tc", function()
+                require"treesitter-context".toggle()
+            end, { desc = "Toggle treesitter-context" })
+        end
+    },
     ['fladson/vim-kitty'] = { ft='kitty' },
     ['fatih/vim-go'] = { ft='go,gohtmltmpl' },
 
