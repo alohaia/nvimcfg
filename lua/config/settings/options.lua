@@ -100,20 +100,20 @@ local filetype_options = {
     ['r'] = {
         -- foldmethod = 'marker',
         -- foldmarker = '{{{,}}}'
-        foldmethod = 'expr',
-        foldmarker = function (lnum)
-            local line = vim.fn.getline(lnum)
-
-            -- 匹配 RStudio 风格标题: # Section ----
-            if string.match(line, '^#+%s+.*(----|####)%s*$') then
-                -- 统计 # 的数量作为折叠层级
-                local hashes = string.match(line, '^(#+)')
-                return #hashes   -- 返回 1, 2, 3...
-            end
-
-            -- 其它行：继承上一行折叠
-            return '='
-        end
+        -- foldmethod = 'expr',
+        -- foldmarker = function (lnum)
+        --     local line = vim.fn.getline(lnum)
+        --
+        --     -- 匹配 RStudio 风格标题: # Section ----
+        --     if string.match(line, '^#+%s+.*(----|####)%s*$') then
+        --         -- 统计 # 的数量作为折叠层级
+        --         local hashes = string.match(line, '^(#+)')
+        --         return #hashes   -- 返回 1, 2, 3...
+        --     end
+        --
+        --     -- 其它行：继承上一行折叠
+        --     return '='
+        -- end
     },
     ['c,cpp'] = {
         path = {

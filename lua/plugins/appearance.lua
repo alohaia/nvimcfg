@@ -139,8 +139,9 @@ local alpha_dashboard = function()
     local init_path = vim.fn.stdpath('config')
     dashboard.section.buttons.val = {
         dashboard.button('e', '  New file', '<Cmd>ene <BAR> startinsert<CR>'),
-        dashboard.button('r', '󰄉  Recent files', '<Cmd>Telescope recent_files<CR>'),
-        dashboard.button('c', '󰈞  Find files',
+        dashboard.button('r', '󰄉  Recent files', '<Cmd>Telescope oldfiles<CR>'),
+        dashboard.button(
+            'f', '󰈞  Find files',
             '<Cmd>silent Telescope find_files hidden=true no_ignore=true <CR>'
         ),
         dashboard.button(
@@ -163,6 +164,13 @@ local alpha_startify = function()
     require'alpha'.setup(require'alpha.themes.startify'.opts)
 end
 
+local _cfg_alpha = {
+    'goolord/alpha-nvim',
+    dependencies = {
+        'nvim-tree/nvim-web-devicons',
+    },
+    config = alpha_dashboard,
+}
 
 local function spelllang()
     return string.upper(table.concat(vim.opt.spelllang:get(), ','))
@@ -199,14 +207,6 @@ local _cfg_onedarkpro = {
         })
         vim.cmd.colorscheme('onedark')
     end
-}
-
-local _cfg_alpha = {
-    'goolord/alpha-nvim',
-    dependencies = {
-        'nvim-tree/nvim-web-devicons',
-    },
-    config = alpha_dashboard,
 }
 
 local _cfg_lualine = {
@@ -279,28 +279,28 @@ local _cfg_bufferline = {
             visible = { bg=colors.gray }
         }
         local expand_name = {
-            ["index.md"] = {prefix = "(i)"},
-            ["index.Rmd"] = {prefix = "(i.r)"},
-            ["_index.md"] = {prefix = "(I)"},
-            ["_index.Rmd"] = {prefix = "(I.r)"},
-            ["init.lua"] = true,
+            ['index.md'] = {prefix = '(i)'},
+            ['index.Rmd'] = {prefix = '(i.r)'},
+            ['_index.md'] = {prefix = '(I)'},
+            ['_index.Rmd'] = {prefix = '(I.r)'},
+            ['init.lua'] = true,
         }
         require('bufferline').setup {
             highlights = {
-                fill = { bg="NONE" },
+                fill = { bg='NONE' },
 
                 background = hls_style.normal,
-                buffer_selected = vim.tbl_extend("force", hls_style.selected, { fg=colors.dark_gray }),
+                buffer_selected = vim.tbl_extend('force', hls_style.selected, { fg=colors.dark_gray }),
                 buffer_visible = hls_style.visible,
 
                 hint = hls_style.normal,
-                hint_selected = vim.tbl_extend("force", hls_style.selected, { fg=colors.dark_gray }),
+                hint_selected = vim.tbl_extend('force', hls_style.selected, { fg=colors.dark_gray }),
                 hint_visible = hls_style.visible,
                 info = hls_style.normal, info_selected = hls_style.selected, info_visible = hls_style.visible,
                 warning = hls_style.normal, warning_selected = hls_style.selected, warning_visible = hls_style.visible,
                 error = hls_style.normal, error_selected = hls_style.selected, error_visible = hls_style.visible,
                 hint_diagnostic = hls.normal,
-                hint_diagnostic_selected = vim.tbl_extend("force", hls_style.selected, { fg=colors.dark_gray }),
+                hint_diagnostic_selected = vim.tbl_extend('force', hls_style.selected, { fg=colors.dark_gray }),
                 hint_diagnostic_visible = hls.visible,
                 info_diagnostic = hls.normal, info_diagnostic_selected = hls.selected, info_diagnostic_visible = hls.visible,
                 warning_diagnostic = hls.normal, warning_diagnostic_selected = hls.selected, warning_diagnostic_visible = hls.visible,
@@ -342,11 +342,11 @@ local _cfg_bufferline = {
                 offset_separator = { bg=colors.dark_gray },
             },
             options = {
-                mode = "buffers",
-                numbers = "buffer_id",
-                close_command = "bdelete! %d",
-                right_mouse_command = "bdelete! %d",
-                left_mouse_command = "buffer %d",
+                mode = 'buffers',
+                numbers = 'buffer_id',
+                close_command = 'bdelete! %d',
+                right_mouse_command = 'bdelete! %d',
+                left_mouse_command = 'buffer %d',
                 middle_mouse_command = nil,
                 show_buffer_icons = true,
                 show_buffer_close_icons = false,
@@ -360,11 +360,11 @@ local _cfg_bufferline = {
                 max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
                 name_formatter = function(buf)
                     if expand_name[buf.name] then
-                        local path_slices = vim.split(buf.path, "/")
+                        local path_slices = vim.split(buf.path, '/')
                         local basename = path_slices[#path_slices-1]
-                        if type(expand_name[buf.name]) == "string" then
+                        if type(expand_name[buf.name]) == 'string' then
                             return basename .. expand_name[buf.name]
-                        elseif type(expand_name[buf.name]) == "table" then
+                        elseif type(expand_name[buf.name]) == 'table' then
                             local bufname
                             if expand_name[buf.name].prefix then
                                 bufname = expand_name[buf.name].prefix .. basename
@@ -374,35 +374,35 @@ local _cfg_bufferline = {
                             end
                             return bufname
                         else
-                            return basename .. "/" .. buf.name
+                            return basename .. '/' .. buf.name
                         end
                     else
                         return buf.name
                     end
                 end,
                 tab_size = 18,
-                diagnostics = "nvim_lsp",
+                diagnostics = 'nvim_lsp',
                 diagnostics_indicator = function(count, level, _, context)
-                    local sym = level == "error" and "E"
-                        or (level == "warning" and "W" or (level == "hint" and "H" or "I"))
-                    return sym.." Σ"..count
+                    local sym = level == 'error' and 'E'
+                        or (level == 'warning' and 'W' or (level == 'hint' and 'H' or 'I'))
+                    return sym..' ('..count..')'
                 end,
                 offsets = {
                     {
-                        filetype = "vista_markdown",
-                        text = "Vista Tags",
-                        highlight = "Title",
-                        text_align = "left",
+                        filetype = 'vista_markdown',
+                        text = 'Vista Tags',
+                        highlight = 'Title',
+                        text_align = 'left',
                     }
                 },
                 persist_buffer_sort = true,
-                separator_style = { "", "" },
+                separator_style = { '', '' },
                 enforce_regular_tabs = false,
                 always_show_bufferline = true,
-                sort_by = "id",
+                sort_by = 'id',
             }
         }
-        vim.keymap.set("n", "gb", "<Cmd>BufferLinePick<CR>", {
+        vim.keymap.set('n', 'gb', '<Cmd>BufferLinePick<CR>', {
             noremap = true, silent = true
         })
     end
@@ -455,34 +455,17 @@ local _cfg_fidget = {
     end,
 }
 
-local _cfg_gitsigns = {
-    'lewis6991/gitsigns.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function()
-        require('gitsigns').setup {
-            numhl              = true,
-            current_line_blame = true,
-            current_line_blame_opts = {
-                virt_text = true,
-                virt_text_pos = 'eol',
-                delay = 200,
-                ignore_whitespace = false,
-                virt_text_priority = 100,
-                use_focus = true,
-            }
-        }
-    end
-}
-
 local _cfg_illuminate = {
     'RRethy/vim-illuminate',
     config = function()
         require('illuminate').configure({
             providers = {'lsp', 'treesitter', 'regex'},
+            delay = 100,
             filetypes_denylist = {'dashboard', 'NvimTree', 'markdown', 'rmd', 'tex', ''},
             under_cursor = true,
             modes_denylist = {},
-            large_file_overrides = 1000,
+            large_file_cutoff = 5000,
+            large_file_overrides = nil, -- disabled for large files.
             large_file_config = {},
         })
         setmap('n', '<M-n>', '<Cmd>lua require"illuminate".next_reference{wrap=true}<CR>', {noremap=true})
@@ -535,16 +518,58 @@ local _cfg_rainbow_delimiters = {
     end
 }
 
+local _cfg_ufo = {
+    'kevinhwang91/nvim-ufo',
+    dependencies = 'kevinhwang91/promise-async',
+    config = function()
+        -- vim.o.foldcolumn = '1' -- '0' is not bad
+        -- vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+        -- vim.o.foldlevelstart = 99
+        -- vim.o.foldenable = true
 
-local _cfg_which_key = {
-    'folke/which-key.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function ()
-        vim.keymap.set("n", "<leader>?", function()
-            require("which-key").show({ global = false })
-        end, { desc = "Buffer Local Keymaps (which-key)" })
-    end,
+        -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
+        vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+        vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+
+        local handler = function(virtText, lnum, endLnum, width, truncate)
+            local newVirtText = {}
+            local suffix = (' 󰁂 %d Lines ...'):format(endLnum - lnum)
+            local sufWidth = vim.fn.strdisplaywidth(suffix)
+            local targetWidth = width - sufWidth
+            local curWidth = 0
+            for _, chunk in ipairs(virtText) do
+                local chunkText = chunk[1]
+                local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+                if targetWidth > curWidth + chunkWidth then
+                    table.insert(newVirtText, chunk)
+                else
+                    chunkText = truncate(chunkText, targetWidth - curWidth)
+                    local hlGroup = chunk[2]
+                    table.insert(newVirtText, {chunkText, hlGroup})
+                    chunkWidth = vim.fn.strdisplaywidth(chunkText)
+                    -- str width returned from truncate() may less than 2nd argument, need padding
+                    if curWidth + chunkWidth < targetWidth then
+                        suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+                    end
+                    break
+                end
+                curWidth = curWidth + chunkWidth
+            end
+            table.insert(newVirtText, {suffix, 'UfoFoldedEllipsis'}) -- highlight group
+            return newVirtText
+        end
+
+        require('ufo').setup({
+            provider_selector = function(bufnr, filetype, buftype)
+                return {'treesitter', 'indent'}
+            end,
+            fold_virt_text_handler = handler,
+        })
+
+        vim.api.nvim_set_hl(0, "Folded", { bg = "#2C4038" })
+    end
 }
+
 
 return {
     _cfg_onedarkpro,
@@ -553,9 +578,8 @@ return {
     _cfg_bufferline,
     _cfg_indent_blankline,
     _cfg_fidget,
-    _cfg_gitsigns,
     _cfg_illuminate,
     _cfg_colorizer,
     _cfg_rainbow_delimiters,
-    _cfg_which_key,
+    _cfg_ufo,
 }

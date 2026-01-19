@@ -15,6 +15,9 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+vim.cmd[[
+set packpath+=~/.local/share/nvim/site
+]]
 
 require("lazy").setup("plugins", {
     -- Configure any other settings here. See the documentation for more details.

@@ -1071,24 +1071,24 @@ configs['dhruvasagar/vim-table-mode'] = function()
     g.table_mode_delimiter = ','
 end
 
--- configs['svermeulen/vim-subversive'] = function()
---     g.subversiveCurrentTextRegister = 1
---     setmap('n', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
---     setmap('x', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
---     setmap('x', 'p',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
---     setmap('x', 'P',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
---     setmap('n', 'ss',                 '<plug>(SubversiveSubstituteLine)',             { noremap = false })
---     setmap('n', 'S',                  '<plug>(SubversiveSubstituteToEndOfLine)',      { noremap = false })
---     setmap('n', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
---     setmap('x', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
---     setmap('n', '<leader>ss',         '<plug>(SubversiveSubstituteWordRange)',        { noremap = false })
---     setmap('n', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
---     setmap('x', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
---     setmap('n', '<leader>crr',        '<plug>(SubversiveSubstituteWordRangeConfirm)', { noremap = false })
---     setmap('n', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
---     setmap('x', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
---     setmap('n', '<leader><leader>ss', '<plug>(SubversiveSubvertWordRange)',           { noremap = false })
--- end
+configs['svermeulen/vim-subversive'] = function()
+    g.subversiveCurrentTextRegister = 1
+    setmap('n', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+    setmap('x', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+    setmap('x', 'p',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+    setmap('x', 'P',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+    setmap('n', 'ss',                 '<plug>(SubversiveSubstituteLine)',             { noremap = false })
+    setmap('n', 'S',                  '<plug>(SubversiveSubstituteToEndOfLine)',      { noremap = false })
+    setmap('n', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
+    setmap('x', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
+    setmap('n', '<leader>ss',         '<plug>(SubversiveSubstituteWordRange)',        { noremap = false })
+    setmap('n', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
+    setmap('x', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
+    setmap('n', '<leader>crr',        '<plug>(SubversiveSubstituteWordRangeConfirm)', { noremap = false })
+    setmap('n', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
+    setmap('x', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
+    setmap('n', '<leader><leader>ss', '<plug>(SubversiveSubvertWordRange)',           { noremap = false })
+end
 
 configs['svermeulen/vim-yoink'] = function()
     setmap('n', 'p', '<plug>(YoinkPaste_p)', {noremap=false})

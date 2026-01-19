@@ -35,7 +35,43 @@ local _cfg_dap = {
     end
 }
 
+local _cfg_auto_session = {
+    "rmagatti/auto-session",
+    ---enables autocomplete for opts
+    ---@module "auto-session"
+    ---@type AutoSession.Config
+    opts = {
+        suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+        -- log_level = 'debug',
+    }
+}
+
+local _cfg_which_key = {
+    'folke/which-key.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function ()
+        vim.keymap.set("n", "<leader>?", function()
+            require("which-key").show({ global = false })
+        end, { desc = "Buffer Local Keymaps (which-key)" })
+    end,
+}
+
+local _cfg_outline = {
+    'hedyhli/outline.nvim',
+    config = function()
+        vim.keymap.set("n", "<leader>o", "<cmd>Outline<CR>", { desc = "Toggle Outline" })
+        require("outline").setup {
+            auto_close = true,
+        }
+    end
+}
+
+
 return {
     _cfg_r,
     _cfg_dap,
+    { 'fladson/vim-kitty', ft='kitty' },
+    _cfg_auto_session,
+    _cfg_which_key,
+    _cfg_outline,
 }

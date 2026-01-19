@@ -3,3 +3,4 @@
 **/*.back
 **/*.old
 tasks.ini
+lazy-lock.json

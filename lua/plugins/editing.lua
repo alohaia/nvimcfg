@@ -6,30 +6,27 @@ local _cfg_flash =  {
     config = function ()
         require('flash').setup {
             modes = {
-                search = { enabled = true },
+                search = { enabled = false },
                 char = {
                     enabled = true,
-                    keys = { "f", "F", "t", "T" },
-                    char_actions = function(motion)
-                        return {
-                            ["<M-n>"] = "next",
-                            ["<M-p>"] = "prev",
-                        }
-                    end,
+                    keys = { 'f', 'F', 't', 'T' },
                 }
             },
             prompt = {
                 enabled = true,
-                prefix = { { "Flash.nvim: ", "FlashPromptIcon" } }
+                prefix = { { 'Flash.nvim: ', 'FlashPromptIcon' } }
             }
         }
 
-        setmap({'n', 'x', 'o'}, 's', function()
-            require("flash").jump()
-        end, {desc = "Flash: jump"})
+        setmap({'n', 'x', 'o'}, '<M-s>', function()
+            require('flash').jump()
+        end, {desc = 'Flash: jump'})
+        setmap({'n', 'x', 'o'}, '<C-s>j', function()
+            require('flash').jump()
+        end, {desc = 'Flash: jump'})
 
-        setmap({'n', 'x', 'o'}, 'S', function()
-            require("flash").treesitter {
+        setmap({'n', 'x', 'o'}, '<C-s>t', function()
+            require('flash').treesitter {
             label = {
                 rainbow = {
                     enabled = true,
@@ -37,18 +34,18 @@ local _cfg_flash =  {
                 },
             }
         }
-        end, {desc = "Flash: treesitter"})
+        end, {desc = 'Flash: treesitter'})
 
-        setmap({'n', 'x', 'o'}, '<M-s>', function()
-            require("flash").remote()
-        end, {desc = "Flash: remote"})
+        setmap({'n', 'x', 'o'}, '<C-f>', function()
+            require('flash').remote()
+        end, {desc = 'Flash: remote'})
 
-        setmap({'n', 'x', 'o'}, '<C-s>c', function()
-            require("flash").jump({continue = true})
-        end, {desc = "Flash: continue last searching"})
+        setmap({'n', 'x', 'o'}, '<C-b>', function()
+            require('flash').jump({continue = true})
+        end, {desc = 'Flash: continue last searching'})
 
         setmap({'n', 'x', 'o'}, '<C-s>d', function()
-            require("flash").jump({
+            require('flash').jump({
                 matcher = function(win)
                     ---@param diag Diagnostic
                     return vim.tbl_map(function(diag)
@@ -66,7 +63,7 @@ local _cfg_flash =  {
                     state:restore()
                 end,
             })
-        end, {desc = "Flash: jump to LSP diagnostics"})
+        end, {desc = 'Flash: jump to LSP diagnostics'})
     end
 }
 
@@ -231,6 +228,44 @@ local _cfg_fcitx = {
     end
 }
 
+local _cfg_yoink = {
+    'svermeulen/vim-yoink',
+    config = function()
+        setmap('n', 'p', '<plug>(YoinkPaste_p)', {noremap=false})
+        setmap('n', 'P', '<plug>(YoinkPaste_P)', {noremap=false})
+        setmap('n', 'gp', '<plug>(YoinkPaste_gp)', {noremap=false})
+        setmap('n', 'gP', '<plug>(YoinkPaste_gP)', {noremap=false})
+        setmap('n', '[s', '<plug>(YoinkPostPasteSwapBack)', {noremap=false})
+        setmap('n', ']s', '<plug>(YoinkPostPasteSwapForward)', {noremap=false})
+        setmap('n', '[y', '<plug>(YoinkRotateBack)', {noremap=false})
+        setmap('n', ']y', '<plug>(YoinkRotateForward)', {noremap=false})
+        setmap('n', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
+        setmap('x', 'y', '<plug>(YoinkYankPreserveCursorPosition)', {noremap=false})
+    end
+}
+
+local _cfg_subversive = {
+    'svermeulen/vim-subversive',
+    config = function()
+        g.subversiveCurrentTextRegister = 1
+        setmap('n', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+        setmap('x', 's',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+        setmap('x', 'p',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+        setmap('x', 'P',                  '<plug>(SubversiveSubstitute)',                 { noremap = false })
+        setmap('n', 'ss',                 '<plug>(SubversiveSubstituteLine)',             { noremap = false })
+        setmap('n', 'S',                  '<plug>(SubversiveSubstituteToEndOfLine)',      { noremap = false })
+        setmap('n', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
+        setmap('x', '<leader>s',          '<plug>(SubversiveSubstituteRange)',            { noremap = false })
+        setmap('n', '<leader>ss',         '<plug>(SubversiveSubstituteWordRange)',        { noremap = false })
+        setmap('n', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
+        setmap('x', '<leader>cr',         '<plug>(SubversiveSubstituteRangeConfirm)',     { noremap = false })
+        setmap('n', '<leader>crr',        '<plug>(SubversiveSubstituteWordRangeConfirm)', { noremap = false })
+        setmap('n', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
+        setmap('x', '<leader><leader>s',  '<plug>(SubversiveSubvertRange)',               { noremap = false })
+        setmap('n', '<leader><leader>ss', '<plug>(SubversiveSubvertWordRange)',           { noremap = false })
+    end
+}
+
 return {
     _cfg_flash,
     _cfg_hugowiki,
@@ -239,6 +274,8 @@ return {
     'tpope/vim-surround',
     'tpope/vim-repeat',
     'cohama/lexima.vim', -- auto pairs
+    _cfg_multicursor,
     _cfg_fcitx,
-    { 'fladson/vim-kitty', ft='kitty' },
+    _cfg_yoink,
+    _cfg_subversive,
 }

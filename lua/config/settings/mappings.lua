@@ -4,10 +4,10 @@ vim.g.mapleader = ' '
 -- default mapping options
 local default_map_opts = {silent = true, noremap = true}
 
-global_mappings = {
+local global_mappings = {
     -- mode keys content extra
-    { {'n', 'x'}, ';', ':', {silent=false, nowait=true, noremap=false} },
-    { {'n', 'x'}, ':', ';', {noremap=false} },
+    { {'n', 'x'}, ';', ':', {silent=false, nowait=true, noremap=true} },
+    { {'n', 'x'}, ':', ';', {noremap=true} },
 
     {'n', '<leader>n', 'nzz'},
     {'n', '<leader>N', 'Nzz'},
@@ -35,7 +35,7 @@ global_mappings = {
 
     -- {'n', '<leader>bd', '<Cmd>let _bd_nr = bufnr() | b# | sp | exec "bd "._bd_nr<CR>'},
     -- {'n', '<leader>bd', '<Cmd>bp|sp|bn|bd<CR>'},
-    {'n', '<leader>bd', '<Cmd>lua aloha.utils.bufdelete()<CR>'},
+    -- {'n', '<leader>bd', '<Cmd>lua aloha.utils.bufdelete()<CR>'},
     {'n', '<leader>ba', '<Cmd>bufdo bd<CR>'},
     {'n', '<leader>bo', '<Cmd>%bd|e#|bd#<CR>'},
 
@@ -104,7 +104,7 @@ global_mappings = {
     {{'n', 'v'}, '<C-/>', [[mode() == "\x16" ? "gbc" : "gcc"]], { expr = true }}
 }
 
-filetype_mappings = {}
+local filetype_mappings = {}
 
 
 --------------------------
@@ -123,7 +123,7 @@ end
 -- set filetype mappings ---
 ----------------------------
 local aug_ft_mappings = vim.api.nvim_create_augroup('init_ft_mappings', { clear = true })
-if type(filetype_options) == 'table' then
+if type(filetype_mappings) == 'table' then
     for filetypes, mappings in pairs(filetype_mappings) do
         vim.api.nvim_create_autocmd('FileType', {
             group = aug_ft_mappings,

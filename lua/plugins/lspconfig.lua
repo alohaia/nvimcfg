@@ -1,38 +1,45 @@
-local setmap = vim.keymap.set
+local setmap = _G.vim.keymap.set
+local api = _G.vim.api
 
 local _cfg_lspconfig = {
     'neovim/nvim-lspconfig',
     config = function()
+        -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
         local servers = {
             lua_ls = {
-                single_file_support = true,
-                settings = {
-                    Lua = {
-                        completion = {
-                            callSnippet = 'Replace',
+                on_init = function(client)
+                    if client.workspace_folders then
+                        local path = client.workspace_folders[1].name
+                        if
+                            path ~= vim.fn.stdpath('config')
+                                and (vim.uv.fs_stat(path .. '/.luarc.json')
+                                or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+                        then
+                            return
+                        end
+                    end
+
+                    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                        runtime = {
+                            version = 'LuaJIT',
+                            -- Tell the language server how to find Lua modules same way as Neovim
+                            -- (see `:h lua-module-load`)
+                            path = {
+                                'lua/?.lua',
+                                'lua/?/init.lua',
+                            },
                         },
-                        runtime = { version = 'LuaJIT' },
+                        -- Make the server aware of Neovim runtime files
                         workspace = {
                             checkThirdParty = false,
                             library = {
-                                '${3rd}/luv/library',
-                                unpack(vim.api.nvim_get_runtime_file('', true)),
-                            },
-                        },
-                        diagnostics = { disable = { 'missing-fields' } },
-                        format = {
-                            enable = false,
-                        },
-                    },
-                }
-            },
-            rust_analyzer = {
-                settings = {
-                    ['rust-analyzer'] = {
-                        diagnostics = {
-                            enable = false;
+                                vim.env.VIMRUNTIME
+                            }
                         }
-                    }
+                    })
+                end,
+                settings = {
+                    Lua = {}
                 }
             },
             vimls = {},
@@ -44,9 +51,17 @@ local _cfg_lspconfig = {
                 -- CompileFlags:
                 --   Add: [-std=c++23]
                 --
+                capabilities = {
+                    offsetEncoding = { "utf-8", "utf-16" },
+                    textDocument = {
+                        completion = {
+                            editsNearCursor = true
+                        }
+                    }
+                },
                 on_attach = function (_, bufnr)
                     api.nvim_buf_set_keymap(
-                        bufnr, 'n', '<M-s>',
+                        bufnr, 'n', '<C-s><C-h>',
                         '<Cmd>ClangdSwitchSourceHeader<cr>', {noremap=true}
                     )
                 end,
@@ -59,31 +74,36 @@ local _cfg_lspconfig = {
                 },
                 filetypes = { "c", "cpp", "objc", "objcpp" }
             },
-            pyright = {},
-            r_language_server = {
-                cmd = { "R", "--slave", "--no-echo", "-e", "languageserver::run()" }
+            pyright = {
+                settings = {
+                    python = {
+                        analysis = {
+                            autoSearchPaths = true,
+                            diagnosticMode = "openFilesOnly",
+                            useLibraryCodeForTypes = true
+                        }
+                    }
+                }
             },
             ts_ls = {}, -- https://github.com/pmizio/typescript-tools.nvim
             cssls = {},
             jsonls = {},
             html = {},
-            -- jedi_language_server = {},
         }
 
         for lang, cfg in pairs(servers) do
-            vim.lsp.config[lang] = cfg
+            vim.lsp.config(lang, cfg)
             vim.lsp.enable(lang)
-            _G.lsp_servers_enabled = true
         end
 
         vim.api.nvim_create_autocmd('LspAttach', {
-            group = vim.api.nvim_create_augroup('user-lsp-config', { clear = true }),
+            group = api.nvim_create_augroup('user-lsp-config', { clear = true }),
             callback = function(event)
                 -- https://github.com/hendrikmi/neovim-kickstart-config/blob/main
                 -- /lua/plugins/lsp.lua
                 local map = function(keys, func, desc, mode)
                     mode = mode or 'n'
-                    vim.keymap.set(
+                    setmap(
                         mode, keys, func,
                         { buffer = event.buf, desc = 'LSP: ' .. desc }
                     )

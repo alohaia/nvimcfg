@@ -25,11 +25,11 @@ return {
                 local r = string.sub(right, i, -1)
 
                 if
-                    type(tonumber(string.sub(l, 1, 1))) == "number"
-                    and type(tonumber(string.sub(r, 1, 1))) == "number"
+                    type(tonumber(string.sub(l, 1, 1))) == 'number'
+                    and type(tonumber(string.sub(r, 1, 1))) == 'number'
                 then
-                    local l_number = tonumber(string.match(l, "^[0-9]+"))
-                    local r_number = tonumber(string.match(r, "^[0-9]+"))
+                    local l_number = tonumber(string.match(l, '^[0-9]+'))
+                    local r_number = tonumber(string.match(r, '^[0-9]+'))
 
                     if l_number ~= r_number then
                         return l_number < r_number
@@ -42,7 +42,7 @@ return {
 
         -- https://github.com/nvim-tree/nvim-tree.lua/wiki/Auto-Close
         local function tab_win_closed(winnr)
-            local api = require"nvim-tree.api"
+            local api = require'nvim-tree.api'
             local tabnr = vim.api.nvim_win_get_tabpage(winnr)
             local bufnr = vim.api.nvim_win_get_buf(winnr)
             local buf_info = vim.fn.getbufinfo(bufnr)[1]
@@ -53,7 +53,7 @@ return {
                 vim.api.nvim_tabpage_list_wins(tabnr)
             )
             local tab_bufs = vim.tbl_map(vim.api.nvim_win_get_buf, tab_wins)
-            if buf_info.name:match(".*NvimTree_%d*$") then
+            if buf_info.name:match('.*NvimTree_%d*$') then
                 -- Close all nvim tree on :q
                 if not vim.tbl_isempty(tab_bufs) then
                     api.tree.close()
@@ -61,10 +61,10 @@ return {
             else
                 if #tab_bufs == 1 then
                     local last_buf_info = vim.fn.getbufinfo(tab_bufs[1])[1]
-                    if last_buf_info.name:match(".*NvimTree_%d*$") then
+                    if last_buf_info.name:match('.*NvimTree_%d*$') then
                         vim.schedule(function ()
                             if #vim.api.nvim_list_wins() == 1 then
-                                vim.cmd "quit"
+                                vim.cmd 'quit'
                             else
                                 vim.api.nvim_win_close(tab_wins[1], true)
                             end
@@ -73,18 +73,38 @@ return {
                 end
             end
         end
-        vim.api.nvim_create_autocmd("WinClosed", {
+        vim.api.nvim_create_autocmd('WinClosed', {
             callback = function ()
-                local winnr = tonumber(vim.fn.expand("<amatch>"))
+                local winnr = tonumber(vim.fn.expand('<amatch>'))
                 vim.schedule_wrap(tab_win_closed(winnr))
             end,
             nested = true
         })
 
-        vim.g.loaded_netrw = 1
-        vim.g.loaded_netrwPlugin = 1
+        -- vim.g.loaded_netrw = 1
+        -- vim.g.loaded_netrwPlugin = 1
 
-        require("nvim-tree").setup {
+        require('nvim-tree').setup {
+            renderer = {
+                group_empty = true,
+                full_name = true,
+                hidden_display = 'all',
+                highlight_git = 'icon',
+                highlight_diagnostics = 'name',
+                indent_markers = {
+                    enable = true,
+                    inline_arrows = false,
+                },
+                icons = {
+                    glyphs = {
+                        git = {
+                            unstaged  = '󰄱',
+                            staged    = '󰱒',
+                            untracked = '?',
+                        },
+                    },
+                },
+            },
             sort = {
                 sorter = function(nodes)
                     table.sort(nodes, natural_cmp)
@@ -102,30 +122,32 @@ return {
             diagnostics = {
                 enable = true,
                 icons = {
-                    hint = "H",
-                    info = "I",
-                    warning = "W",
-                    error = "E"
+                    hint = 'H',
+                    info = 'I',
+                    warning = 'W',
+                    error = 'E'
                 },
             },
             git = { enable = true },
             modified = { enable = true },
-            renderer = {
-                icons = {
-                    glyphs = {
-                        git = {
-                            unstaged  = "󰄱",
-                            staged    = "󰱒",
-                            untracked = "",
-                        },
-                    },
-                },
-            },
         }
 
         vim.api.nvim_set_keymap(
-            "n", "<C-CR>", ":NvimTreeToggle<cr>",
+            'n', '<C-CR>', '<Cmd>NvimTreeToggle<CR>',
             {silent = true, noremap = true}
         )
+
+        -- https://github.com/nvim-tree/nvim-tree.lua/wiki/Recipes
+        -- #workaround-when-using-rmagattiauto-session
+        vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+            pattern = 'NvimTree*',
+            callback = function()
+                local api = require('nvim-tree.api')
+
+                if not api.tree.is_visible() then
+                api.tree.open()
+                end
+            end,
+        })
     end
 }
