@@ -139,13 +139,14 @@ local alpha_dashboard = function()
     local init_path = vim.fn.stdpath('config')
     dashboard.section.buttons.val = {
         dashboard.button('e', '  New file', '<Cmd>ene <BAR> startinsert<CR>'),
-        dashboard.button('r', '󰄉  Recent files', '<Cmd>Telescope oldfiles<CR>'),
+        dashboard.button('r', '󱋡  Recent files', '<Cmd>Telescope oldfiles<CR>'),
+        dashboard.button('s', '󰁯  Restore session', '<Cmd>SessionRestore<CR>'),
         dashboard.button(
             'f', '󰈞  Find files',
             '<Cmd>silent Telescope find_files hidden=true no_ignore=true <CR>'
         ),
         dashboard.button(
-            's', '  Settings', '<Cmd>cd ' .. init_path .. '<CR><Cmd>e init.lua<CR>'
+            'c', '  Config', '<Cmd>cd ' .. init_path .. '<CR><Cmd>e init.lua<CR>'
         ),
         dashboard.button('q', '󰿅  Quit', '<Cmd>q<CR>'),
     }
@@ -566,7 +567,7 @@ local _cfg_ufo = {
             fold_virt_text_handler = handler,
         })
 
-        vim.api.nvim_set_hl(0, "Folded", { bg = "#2C4038" })
+        vim.api.nvim_set_hl(0, "Folded", { bg = "#006040" })
     end
 }
 

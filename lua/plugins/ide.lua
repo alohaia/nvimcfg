@@ -41,6 +41,7 @@ local _cfg_auto_session = {
     ---@module "auto-session"
     ---@type AutoSession.Config
     opts = {
+        auto_restore = false,
         suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
         -- log_level = 'debug',
     }

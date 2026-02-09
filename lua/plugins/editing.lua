@@ -67,32 +67,6 @@ local _cfg_flash =  {
     end
 }
 
-local _cfg_hugowiki = {
-    'alohaia/hugowiki.nvim',
-    config = function()
-        g.hugowiki_home = '~/Documents/blog/'
-        g.hugowiki_try_init_file = 1
-        g.hugowiki_follow_after_create = 0
-        g.hugowiki_use_imaps = 1
-        g.hugowiki_disable_fold = 0
-        g.markdown_fenced_languages = {
-            'lua',  'c', 'cpp', 'r', 'javascript', 'python',
-            'sh', 'bash', 'zsh', 'yaml', 'tex'
-        }
-        g.hugowiki_wrap = 0
-        g.hugowiki_auto_save = 0
-        g.hugowiki_auto_update_lastmod = 1
-        g.hugowiki_lastmod_under_date = 1
-        g.hugowiki_rmd_auto_knit = {
-            enable = true,
-            cwd = g.hugowiki_home,
-            r_script = g.hugowiki_home .. 'utils/R/build_one.R',
-        }
-        g.hugowiki_spellcheck_ignore_upcase = 1
-        g.hugowiki_snippy_integration = 1
-    end
-}
-
 local _cfg_accelerated_jk = {
     'rainbowhxch/accelerated-jk.nvim',
     config = function()

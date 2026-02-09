@@ -85,6 +85,7 @@ return {
         -- vim.g.loaded_netrwPlugin = 1
 
         require('nvim-tree').setup {
+            sync_root_with_cwd = true,
             renderer = {
                 group_empty = true,
                 full_name = true,
@@ -113,7 +114,7 @@ return {
             update_focused_file = {
                 enable = true,
                 update_root = {
-                    enable = true,
+                    enable = false,
                 },
                 ignore_list = {
                     'help'
