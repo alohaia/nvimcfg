@@ -1,7 +1,7 @@
 local global_options = {
     termguicolors  = true,
     -- use two spaces after . where a sentence ends.
-    formatoptions  = 'tcro/qj1p',
+    formatoptions  = 'ro/qm1j',
     cpoptions      = 'aABceFsI',
     lazyredraw     = false,
     timeout        = true,
@@ -85,19 +85,21 @@ local global_options = {
 
 local filetype_options = {
     ['markdown,rmd,tex'] = {
-        wrap = true,
         spell = true,
+        shiftwidth = 2,
+        tabstop    = 2,
         spelllang    = 'en_us,cjk',
         spellfile    = vim.fn.expand('~/.config/nvim/spell/en.utf-8.add'),
         -- spelloptions = 'camel',
         colorcolumn = '100',
         textwidth = 100,
-        formatoptions = 'twan2mBp',
-    },
-    ['r,rmd'] = {
-        colorcolumn = '120'
+        wrap = true,
+        linebreak = true,
+        formatoptions = 'qwn21jp',
     },
     ['r'] = {
+        colorcolumn = '80',
+        textwidth = 80,
         -- foldmethod = 'marker',
         -- foldmarker = '{{{,}}}'
         -- foldmethod = 'expr',
@@ -151,7 +153,7 @@ if type(filetype_options) == 'table' then
         pattern = filetypes,
         callback = function ()
             for o,v in pairs(options) do
-                vim.opt[o] = v
+                vim.opt_local[o] = v
             end
         end
         })

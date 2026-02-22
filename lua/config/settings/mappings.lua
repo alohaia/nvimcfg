@@ -101,7 +101,7 @@ local global_mappings = {
     {'s', '<Backspace>', [[a<Backspace>]]},
 
     -- {{'n', 'v'}, '<C-/>', [[mode() == '\22']], {expr = true}}
-    {{'n', 'v'}, '<C-/>', [[mode() == "\x16" ? "gbc" : "gcc"]], { expr = true }}
+    -- {{'n', 'v'}, '<C-/>', [[mode() == "\x16" ? "gbc" : "gcc"]], { expr = true }}
 }
 
 local filetype_mappings = {}

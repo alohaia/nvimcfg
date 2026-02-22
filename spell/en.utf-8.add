@@ -777,3 +777,8 @@ tibble
 #¼l
 hostname
 fmtlib
+GhostScript
+PostScript
+ImageMagick
+beamer
+lualatex

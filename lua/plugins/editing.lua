@@ -78,11 +78,9 @@ local _cfg_accelerated_jk = {
 local _cfg_comment = {
     'numToStr/Comment.nvim',
     config = function()
-        require('Comment').setup()
-
         local cmt = require('Comment.api')
         local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
-        vim.keymap.set({'n', 'x'}, '<C-/>', function()
+        setmap({'n', 'x'}, '<C-/>', function()
             if vim.fn.mode() == "\22" then
                 vim.api.nvim_feedkeys(esc, 'nx', false)
                 cmt.toggle.blockwise("v")
@@ -102,49 +100,47 @@ local _cfg_multicursor = {
         local mc = require("multicursor-nvim")
         mc.setup()
 
-        local set = vim.keymap.set
-
         -- Add or skip cursor above/below the main cursor.
-        set({"n", "x"}, "<S-Up>", function() mc.lineAddCursor(-1) end, {
+        setmap({"n", "x"}, "<S-Up>", function() mc.lineAddCursor(-1) end, {
             desc = "multicursor.nvim: previous line",
         })
-        set({"n", "x"}, "<S-Down>", function() mc.lineAddCursor(1) end, {
+        setmap({"n", "x"}, "<S-Down>", function() mc.lineAddCursor(1) end, {
             desc = "multicursor.nvim: next line",
         })
-        set({"n", "x"}, "<M-Up>", function() mc.lineSkipCursor(-1) end, {
+        setmap({"n", "x"}, "<M-Up>", function() mc.lineSkipCursor(-1) end, {
             desc = "multicursor.nvim: skip previous line",
         })
-        set({"n", "x"}, "<M-Down>", function() mc.lineSkipCursor(1) end, {
+        setmap({"n", "x"}, "<M-Down>", function() mc.lineSkipCursor(1) end, {
             desc = "multicursor.nvim: skip next line",
         })
 
         -- Add or skip adding a new cursor by matching word/selection
-        set({"n", "x"}, "<C-n>", function() mc.matchAddCursor(1) end, {
+        setmap({"n", "x"}, "<C-n>", function() mc.matchAddCursor(1) end, {
             desc = "multicursor.nvim: next match",
         })
-        set({"n", "x"}, "<C-p>", function() mc.matchAddCursor(-1) end, {
+        setmap({"n", "x"}, "<C-p>", function() mc.matchAddCursor(-1) end, {
             desc = "multicursor.nvim: previous match",
         })
-        set({"n", "x"}, "<C-M-n>", function() mc.matchSkipCursor(1) end, {
+        setmap({"n", "x"}, "<C-M-n>", function() mc.matchSkipCursor(1) end, {
             desc = "multicursor.nvim: skip next match",
         })
-        set({"n", "x"}, "<C-M-p>", function() mc.matchSkipCursor(-1) end, {
+        setmap({"n", "x"}, "<C-M-p>", function() mc.matchSkipCursor(-1) end, {
             desc = "multicursor.nvim: skip previous match",
         })
 
         -- Add and remove cursors with control + left click.
-        set("n", "<C-LeftMouse>", mc.handleMouse, {
+        setmap("n", "<C-LeftMouse>", mc.handleMouse, {
             desc = "multicursor.nvim: handleMouse"
         })
-        set("n", "<C-LeftDrag>", mc.handleMouseDrag, {
+        setmap("n", "<C-LeftDrag>", mc.handleMouseDrag, {
             desc = "multicursor.nvim: handleMouseDrag"
         })
-        set("n", "<C-LeftRelease>", mc.handleMouseRelease, {
+        setmap("n", "<C-LeftRelease>", mc.handleMouseRelease, {
             desc = "multicursor.nvim: handleMouseRelease"
         })
 
         -- Disable and enable cursors.
-        set({"n", "x"}, "<C-q>", mc.toggleCursor, {
+        setmap({"n", "x"}, "<C-q>", mc.toggleCursor, {
             desc = "multicursor.nvim: toggle cursors"
         })
 
@@ -242,7 +238,6 @@ local _cfg_subversive = {
 
 return {
     _cfg_flash,
-    _cfg_hugowiki,
     _cfg_accelerated_jk,
     _cfg_comment,
     'tpope/vim-surround',
@@ -252,4 +247,5 @@ return {
     _cfg_fcitx,
     _cfg_yoink,
     _cfg_subversive,
+    'rafamadriz/friendly-snippets',
 }

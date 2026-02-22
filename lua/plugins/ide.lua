@@ -57,15 +57,39 @@ local _cfg_which_key = {
     end,
 }
 
-local _cfg_outline = {
-    'hedyhli/outline.nvim',
-    config = function()
-        vim.keymap.set("n", "<leader>o", "<cmd>Outline<CR>", { desc = "Toggle Outline" })
-        require("outline").setup {
-            auto_close = true,
-        }
-    end
+-- local _cfg_outline = {
+--     'hedyhli/outline.nvim',
+--     config = function()
+--         vim.keymap.set("n", "<leader>o", "<cmd>Outline<CR>", { desc = "Toggle Outline" })
+--         require("outline").setup {
+--             auto_close = true,
+--         }
+--     end
+-- }
+
+local _cfg_aerial = {
+    "stevearc/aerial.nvim",
+    dependencies = {
+        "nvim-treesitter/nvim-treesitter",
+        "nvim-tree/nvim-web-devicons"
+    },
+    opts = {
+        backends = { "lsp", "treesitter", "markdown", "asciidoc", "man" },
+        filter_kind = false,
+        filter_kind = {
+            "Class",
+            "Constructor",
+            "Enum",
+            "Function",
+            "Interface",
+            "Module",
+            "Method",
+            "Struct",
+        },
+    }
 }
+
+
 
 
 return {
@@ -74,5 +98,6 @@ return {
     { 'fladson/vim-kitty', ft='kitty' },
     _cfg_auto_session,
     _cfg_which_key,
-    _cfg_outline,
+    -- _cfg_outline,
+    _cfg_aerial,
 }

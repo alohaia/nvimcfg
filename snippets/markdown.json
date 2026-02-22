@@ -1,0 +1,11 @@
+{
+    "File name": {
+        "prefix": "file",
+        "body": ["$TM_FILENAME"],
+        "description": "Current file name with suffix"
+    },
+    "Anchor": {
+        "prefix": "anc",
+        "body": ["[${1:${VISUAL}}](#${2:$1/\\s+/-/g})$0"]
+    }
+}

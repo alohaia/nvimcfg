@@ -32,9 +32,10 @@ local _cfg_lspconfig = {
                         -- Make the server aware of Neovim runtime files
                         workspace = {
                             checkThirdParty = false,
-                            library = {
-                                vim.env.VIMRUNTIME
-                            }
+                            -- library = {
+                            --     vim.env.VIMRUNTIME
+                            -- }
+                            library = vim.api.nvim_get_runtime_file('', true)
                         }
                     })
                 end,
@@ -207,6 +208,26 @@ local _cfg_lspconfig = {
 local _cfg_blink_cmp = {
     'saghen/blink.cmp',
     version = '1.*',
+    opts = {
+        sources = {
+            providers = {
+                snippets = {
+                    opts = {
+                        friendly_snippets = true, -- default
+                        -- see the list of frameworks in: https://github.com/rafamadriz/friendly-snippets/tree/main/snippets/frameworks
+                        -- and search for possible languages in: https://github.com/rafamadriz/friendly-snippets/blob/main/package.json
+                        -- the following is just an example, you should only enable the frameworks that you use
+                        extended_filetypes = {
+                            markdown = { 'jekyll' },
+                            sh = { 'shelldoc' },
+                            php = { 'phpdoc' },
+                            cpp = { 'unreal' }
+                        }
+                    }
+                }
+            }
+        }
+    },
     config = function ()
         require('blink.cmp').setup({
             keymap = {
@@ -228,7 +249,7 @@ local _cfg_blink_cmp = {
                 nerd_font_variant = 'mono'
             },
             sources = {
-                default = { 'lsp', 'path', 'snippets', 'buffer' },
+                default = { 'lsp', 'path', 'snippets', 'buffer', 'omni' },
             },
             signature = { enabled = true }
         })
