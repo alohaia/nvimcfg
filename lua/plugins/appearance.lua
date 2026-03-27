@@ -139,11 +139,11 @@ local alpha_dashboard = function()
     local init_path = vim.fn.stdpath('config')
     dashboard.section.buttons.val = {
         dashboard.button('e', '  New file', '<Cmd>ene <BAR> startinsert<CR>'),
-        dashboard.button('r', '󱋡  Recent files', '<Cmd>Telescope oldfiles<CR>'),
+        dashboard.button('r', '󱋡  Recent files', '<Cmd>FzfLua oldfiles<CR>'),
         dashboard.button('s', '󰁯  Restore session', '<Cmd>SessionRestore<CR>'),
         dashboard.button(
             'f', '󰈞  Find files',
-            '<Cmd>silent Telescope find_files hidden=true no_ignore=true <CR>'
+            '<Cmd>silent FzfLua find_files hidden=true no_ignore=true <CR>'
         ),
         dashboard.button(
             'c', '  Config', '<Cmd>cd ' .. init_path .. '<CR><Cmd>e init.lua<CR>'
@@ -434,7 +434,6 @@ local _cfg_indent_blankline = {
 
 local _cfg_fidget = {
     'j-hui/fidget.nvim',
-    dependencies = { 'nvim-telescope/telescope.nvim' },
     config = function ()
         require("fidget").setup {
             notification = {
@@ -449,10 +448,6 @@ local _cfg_fidget = {
                 }
             },
         }
-        require("telescope").load_extension("fidget")
-        vim.keymap.set('n', ',n', '<Cmd>Telescope fidget<CR>', {
-            noremap = true, desc = "Telescope: Fidget notifications"
-        })
     end,
 }
 

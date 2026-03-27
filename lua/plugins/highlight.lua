@@ -11,8 +11,10 @@ local _cfg_treesitter = {
         local ts_langs = {
             'vim', 'lua', 'c', 'cpp', 'cmake', 'bash', 'rust',
             'python', 'r', 'rnoweb', 'csv',
-            'yaml', 'toml', 'json', 'markdown', 'markdown_inline', 'latex',
+            'yaml', 'toml', 'json',
+            'markdown', 'markdown_inline', 'latex', 'mermaid',
             'html', 'javascript', 'css',
+            'scheme', 'racket',
         }
         require'nvim-treesitter'.install(ts_langs)
         vim.api.nvim_create_autocmd('FileType', {

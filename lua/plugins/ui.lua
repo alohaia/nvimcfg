@@ -1,4 +1,73 @@
-return {
+
+local _cfg_auto_session = {
+    "rmagatti/auto-session",
+    ---enables autocomplete for opts
+    ---@module "auto-session"
+    ---@type AutoSession.Config
+    opts = {
+        auto_restore = false,
+        suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+        -- log_level = 'debug',
+    }
+}
+
+local _cfg_which_key = {
+    'folke/which-key.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function ()
+        vim.keymap.set("n", "<leader>?", function()
+            require("which-key").show({ global = false })
+        end, { desc = "Buffer Local Keymaps (which-key)" })
+    end,
+}
+
+local _cfg_aerial = {
+    "stevearc/aerial.nvim",
+    dependencies = {
+        "nvim-treesitter/nvim-treesitter",
+        "nvim-tree/nvim-web-devicons"
+    },
+    opts = {
+        backends = { "lsp", "treesitter", "markdown", "asciidoc", "man" },
+        filter_kind = false,
+        filter_kind = {
+            "Class",
+            "Constructor",
+            "Enum",
+            "Function",
+            "Interface",
+            "Module",
+            "Method",
+            "Struct",
+        },
+    }
+}
+
+local _cfg_toggleterm = {
+    'akinsho/toggleterm.nvim',
+    config = function ()
+        require("toggleterm").setup {
+            size = 20,
+            open_mapping = [[<C-\>]],
+            -- clear_env = true,
+            autochdir = true,
+            on_create = function (term)
+                local conda_env = vim.env.CONDA_DEFAULT_ENV
+                if conda_env and conda_env ~= "" then
+                    term:send(string.format("mamba activate %s", conda_env))
+                end
+            end,
+            winbar = {
+                enabled = true,
+                name_formatter = function(term)
+                    return term.name
+                end
+            },
+        }
+    end
+}
+
+local _cfg_tree = {
     'nvim-tree/nvim-tree.lua',
     lazy = false,
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -151,4 +220,14 @@ return {
             end,
         })
     end
+}
+
+
+return {
+    { 'fladson/vim-kitty', ft='kitty' },
+    _cfg_auto_session,
+    _cfg_which_key,
+    _cfg_aerial,
+    _cfg_toggleterm,
+    _cfg_tree,
 }
