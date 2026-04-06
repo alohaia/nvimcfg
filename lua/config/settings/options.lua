@@ -1,4 +1,5 @@
 local global_options = {
+    background     = 'dark',
     termguicolors  = true,
     -- use two spaces after . where a sentence ends.
     formatoptions  = 'ro/qm1j',

@@ -1,6 +1,5 @@
 .*
 **/*.so
-**/*.back
-**/*.old
 tasks.ini
 lazy-lock.json
+nvim-pack-lock.json
