@@ -82,6 +82,9 @@ local global_options = {
 
     splitbelow   = true,
     splitright   = true,
+
+    -- for auto-session.nvim
+    sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions',
 }
 
 local filetype_options = {
