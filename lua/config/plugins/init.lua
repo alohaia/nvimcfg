@@ -726,7 +726,7 @@ local spc_aerial = { src = gh 'stevearc/aerial.nvim', data = {
     end
 }}
 
-local spc_toggletrem = { src = gh 'akinsho/toggleterm.nvim', data = {
+local spc_toggleterm = { src = gh 'akinsho/toggleterm.nvim', data = {
     config = function()
         require("toggleterm").setup {
             size = 20,
@@ -746,6 +746,31 @@ local spc_toggletrem = { src = gh 'akinsho/toggleterm.nvim', data = {
                 end
             },
         }
+
+        local Terminal  = require('toggleterm.terminal').Terminal
+        local lazygit = nil
+        vim.api.nvim_create_user_command('Lazygit', function(args)
+            if lazygit == nil or args.bang then
+                lazygit = Terminal:new({
+                    cmd = table.concat({ 'lazygit', args.args ~= '' and args.args or nil }),
+                    hidden = true,
+                    display_name = "Lazygit",
+                    direction = 'float',
+                    float_opts = {
+                        border = 'none'
+                    },
+                })
+            end
+
+            lazygit:toggle()
+        end, {
+            desc = "Open lazygit with toggleterm.nvim",
+            nargs = "*",
+            bang = true, -- add ! to restart lazygit
+        })
+        vim.api.nvim_set_keymap("n", "<leader>g", "<Cmd>Lazygit<CR>", {
+            noremap = true, silent = true, desc = "Open lazygit with toggleterm.nvim"
+        })
     end
 }}
 
@@ -832,7 +857,7 @@ local plugin_spcs = {
     -- widgets
     spc_which_key,
     spc_aerial,
-    spc_toggletrem,
+    spc_toggleterm,
     spc_tree,
 
     -- LaTeX
