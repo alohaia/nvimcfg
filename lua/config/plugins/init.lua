@@ -889,3 +889,8 @@ local selective_load = function(plug_data)
 end
 
 vim.pack.add(plugin_spcs, { load = selective_load })
+
+-- builtin plugins
+vim.cmd.packadd("nvim.difftool")
+vim.cmd.packadd("nvim.undotree")
+-- vim.g.editorconfig = false
