@@ -648,6 +648,13 @@ local spc_fzf_lua = { src = gh('ibhagwan/fzf-lua'), data = {
     end
 }}
 
+local spc_outline = { src = gh('hedyhli/outline.nvim'), data = {
+    config = function()
+        setmap("n", "<leader>o", "<cmd>Outline<CR>", { desc = "Toggle Outline" })
+        require("outline").setup {}
+    end
+}}
+
 local spc_vimtex = { src = gh 'lervag/vimtex', data = {
     config = function()
         vim.g.vimtex_view_method = "zathura"
@@ -853,6 +860,7 @@ local plugin_spcs = {
 
     -- navigation
     spc_fzf_lua,
+    spc_outline,
 
     -- widgets
     spc_which_key,
