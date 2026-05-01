@@ -1,6 +1,48 @@
 local setmap = vim.keymap.set
 
 local servers = {
+    pyright = {
+        settings = {
+            python = {
+                analysis = {
+                    autoSearchPaths = true,
+                    diagnosticMode = "openFilesOnly",
+                    useLibraryCodeForTypes = true
+                }
+            }
+        }
+    },
+    clangd = {
+        -- https://clangd.llvm.org/config#files
+        -- specific standard in ~/.config/clangd/config.yaml
+        -- or project-specific <project-root>/.clangd
+        --
+        -- CompileFlags:
+        --   Add: [-std=c++23]
+        --
+        capabilities = {
+            offsetEncoding = { "utf-8", "utf-16" },
+            textDocument = {
+                completion = {
+                    editsNearCursor = true
+                }
+            }
+        },
+        on_attach = function (_, bufnr)
+            vim.api.nvim_buf_set_keymap(
+                bufnr, 'n', '<C-s><C-h>',
+                '<Cmd>ClangdSwitchSourceHeader<cr>', {noremap=true}
+            )
+        end,
+        cmd = {
+            "clangd",
+            "--background-index",
+            "--suggest-missing-includes",
+            "--clang-tidy",
+            "--header-insertion=iwyu",
+        },
+        filetypes = { "c", "cpp", "objc", "objcpp" }
+    },
     lua_ls = {
         on_init = function(client)
             if client.workspace_folders then
@@ -39,49 +81,8 @@ local servers = {
         }
     },
     vimls = {},
-    clangd = {
-        -- https://clangd.llvm.org/config#files
-        -- specific standard in ~/.config/clangd/config.yaml
-        -- or project-specific <project-root>/.clangd
-        --
-        -- CompileFlags:
-        --   Add: [-std=c++23]
-        --
-        capabilities = {
-            offsetEncoding = { "utf-8", "utf-16" },
-            textDocument = {
-                completion = {
-                    editsNearCursor = true
-                }
-            }
-        },
-        on_attach = function (_, bufnr)
-            vim.api.nvim_buf_set_keymap(
-                bufnr, 'n', '<C-s><C-h>',
-                '<Cmd>ClangdSwitchSourceHeader<cr>', {noremap=true}
-            )
-        end,
-        cmd = {
-            "clangd",
-            "--background-index",
-            "--suggest-missing-includes",
-            "--clang-tidy",
-            "--header-insertion=iwyu",
-        },
-        filetypes = { "c", "cpp", "objc", "objcpp" }
-    },
-    pyright = {
-        settings = {
-            python = {
-                analysis = {
-                    autoSearchPaths = true,
-                    diagnosticMode = "openFilesOnly",
-                    useLibraryCodeForTypes = true
-                }
-            }
-        }
-    },
     racket_langserver = {}, -- For SICP
+    foam_ls = {},
     -- JavaScript / Typescript & HTML & CSS
     -- paru -S extra/vscode-css-languageserver extra/vscode-html-languageserver extra/typescript-language-server
     ts_ls = {},
@@ -237,9 +238,14 @@ local trouble_setup = function()
     )
 end
 
+local mason_setup = function()
+    require("mason").setup()
+end
+
 return {
     lspconfig = lspconfig_setup,
     blink_cmp = blink_cmp_setup,
     tiny_inline_diagnostic = tiny_inline_diagnostic_setup,
     trouble = trouble_setup,
+    mason = mason_setup,
 }

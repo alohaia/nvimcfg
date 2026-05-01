@@ -190,7 +190,7 @@ local spc_ufo = { src = gh('kevinhwang91/nvim-ufo'), data = {
         end
 
         require('ufo').setup({
-            provider_selector = function(bufnr, filetype, buftype)
+            provider_selector = function() -- bufnr, filetype, buftype
                 return {'treesitter', 'indent'}
             end,
             fold_virt_text_handler = ufo_vt_handler,
@@ -211,6 +211,9 @@ local spc_tiny_inline_diagnostic = { src = gh('rachartier/tiny-inline-diagnostic
 }}
 local spc_trouble = { src = gh('folke/trouble.nvim'), data = {
     config = require('config.plugins.setup_lsp').trouble
+}}
+local spc_mason = { src = gh('mason-org/mason.nvim'), data = {
+    config = require('config.plugins.setup_lsp').mason
 }}
 
 local spc_r = { src = gh('R-nvim/r.nvim'), data = {
@@ -555,6 +558,7 @@ local spc_treesitter = { src = gh('nvim-treesitter/nvim-treesitter'), version = 
             'markdown', 'markdown_inline', 'latex', 'mermaid',
             'html', 'javascript', 'css',
             'scheme', 'racket',
+            'foam',
         }
         require'nvim-treesitter'.install(ts_langs)
         vim.api.nvim_create_autocmd('FileType', {
@@ -805,13 +809,14 @@ local plugin_spcs = {
     spc_colorizer,
     spc_illuminate,
     spc_rainbow_delimiters,
-    spc_ufo,
+    -- spc_ufo,                                                    -- !
 
     -- devtools
     spc_blink_cmp,
     spc_lspconfig,
     spc_tiny_inline_diagnostic,
     spc_trouble,
+    spc_mason,
     spc_r,
     spc_lint,
     spc_dap,
@@ -842,7 +847,7 @@ local plugin_spcs = {
     gh('tpope/vim-fugitive'),
 
     -- highlight
-    spc_treesitter,
+    spc_treesitter,                                         -- !
     spc_log_highlight,
     { src = gh('nvim-treesitter/nvim-treesitter-textobjects'), version = 'main'},
     { src = gh('nvim-treesitter/nvim-treesitter-context'), data = {
@@ -904,6 +909,7 @@ vim.pack.add(plugin_spcs, { load = selective_load })
 vim.cmd.packadd("nvim.difftool")
 vim.cmd.packadd("nvim.undotree")
 -- vim.g.editorconfig = false
+-- vim.g.loaded_matchparen = 1  -- disable matchparen
 
 -- UI2 (experimental): no more press Enter, see `:h ui2`
 -- See also `:h g<`
