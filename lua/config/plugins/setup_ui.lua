@@ -135,7 +135,7 @@ local alpha_setup = function()
     dashboard.section.buttons.val = {
         dashboard.button('e', '  New file', '<Cmd>ene <BAR> startinsert<CR>'),
         dashboard.button('r', '󱋡  Recent files', '<Cmd>FzfLua oldfiles<CR>'),
-        dashboard.button('s', '󰁯  Restore session', '<Cmd>SessionRestore<CR>'),
+        dashboard.button('s', '󰁯  Restore session', '<Cmd>AutoSession restore<CR>'),
         dashboard.button(
             'f', '󰈞  Find files',
             '<Cmd>silent FzfLua files<CR>'
@@ -333,9 +333,9 @@ local bufferline_setup = function()
             end,
             offsets = {
                 {
-                    filetype = 'vista_markdown',
-                    text = 'Vista Tags',
-                    highlight = 'Title',
+                    filetype = 'NvimTree',
+                    text = 'NvimTree',
+                    -- highlight = 'Title',
                     text_align = 'left',
                 }
             },

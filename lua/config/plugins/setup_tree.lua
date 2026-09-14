@@ -81,6 +81,8 @@ return function()
     -- vim.g.loaded_netrwPlugin = 1
 
     require('nvim-tree').setup {
+        hijack_cursor = true,
+        hijack_unnamed_buffer_when_opening = true,
         sync_root_with_cwd = true,
         renderer = {
             group_empty = true,
@@ -90,7 +92,7 @@ return function()
             highlight_diagnostics = 'name',
             indent_markers = {
                 enable = true,
-                inline_arrows = false,
+                inline_arrows = true,
             },
             icons = {
                 glyphs = {
@@ -100,6 +102,8 @@ return function()
                         untracked = '?',
                     },
                 },
+                modified_placement = "right_align",
+                git_placement = "signcolumn",
             },
         },
         sort = {
@@ -127,6 +131,9 @@ return function()
         },
         git = { enable = true },
         modified = { enable = true },
+        experimental = {
+            session_restore_nvim = true
+        },
     }
 
     vim.api.nvim_set_keymap(

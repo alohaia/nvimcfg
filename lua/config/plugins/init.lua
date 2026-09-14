@@ -16,7 +16,9 @@ local spc_onedarkpro = { src = gh('olimorris/onedarkpro.nvim'), data = {
         require('onedarkpro').setup({
             colors = {},
             highlights = {
-                Conceal = { link = 'Normal' },
+                -- Conceal = { link = 'Normal' },
+                RCodeBlock = { bg = '${cursorline}' },
+                RenderMarkdownInlineHighlight = { bg = '${highlight}', fg='${bg}' }
                 -- Keyword = { gui = 'italic' }
             },
             styles = {},
@@ -30,10 +32,9 @@ local spc_onedarkpro = { src = gh('olimorris/onedarkpro.nvim'), data = {
             options = {
                 underline = true,
                 cursorline = true,
-                transparency = true,
-                lualine_transparency = true,
+                transparency = false,
+                lualine_transparency = false,
                 terminal_colors = true,
-                window_unfocussed_color = false,
             }
         })
         vim.cmd.colorscheme('onedark')
@@ -150,56 +151,6 @@ local spc_rainbow_delimiters = { src = gh('HiPhish/rainbow-delimiters.nvim'), da
     end
 }}
 
-local spc_ufo = { src = gh('kevinhwang91/nvim-ufo'), data = {
-    config = function()
-        -- vim.o.foldcolumn = '1' -- '0' is not bad
-        -- vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-        -- vim.o.foldlevelstart = 99
-        -- vim.o.foldenable = true
-
-        -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
-        vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-        vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
-
-        local ufo_vt_handler = function(virtText, lnum, endLnum, width, truncate)
-            local newVirtText = {}
-            local suffix = (' 󰁂 %d Lines ...'):format(endLnum - lnum)
-            local sufWidth = vim.fn.strdisplaywidth(suffix)
-            local targetWidth = width - sufWidth
-            local curWidth = 0
-            for _, chunk in ipairs(virtText) do
-                local chunkText = chunk[1]
-                local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-                if targetWidth > curWidth + chunkWidth then
-                    table.insert(newVirtText, chunk)
-                else
-                    chunkText = truncate(chunkText, targetWidth - curWidth)
-                    local hlGroup = chunk[2]
-                    table.insert(newVirtText, {chunkText, hlGroup})
-                    chunkWidth = vim.fn.strdisplaywidth(chunkText)
-                    -- str width returned from truncate() may less than 2nd argument, need padding
-                    if curWidth + chunkWidth < targetWidth then
-                        suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
-                    end
-                    break
-                end
-                curWidth = curWidth + chunkWidth
-            end
-            table.insert(newVirtText, {suffix, 'UfoFoldedEllipsis'}) -- highlight group
-            return newVirtText
-        end
-
-        require('ufo').setup({
-            provider_selector = function() -- bufnr, filetype, buftype
-                return {'treesitter', 'indent'}
-            end,
-            fold_virt_text_handler = ufo_vt_handler,
-        })
-
-        vim.api.nvim_set_hl(0, "Folded", { bg = "#006040" })
-    end
-}}
-
 local spc_lspconfig = { src = gh('neovim/nvim-lspconfig'), data = {
     config = require('config.plugins.setup_lsp').lspconfig
 }}
@@ -218,23 +169,35 @@ local spc_mason = { src = gh('mason-org/mason.nvim'), data = {
 
 local spc_r = { src = gh('R-nvim/r.nvim'), data = {
     config = function()
+        local color = require('onedarkpro.helpers')
+        local colors = color.get_colors()
         require("r").setup({
+            close_term = true,
+            -- rconsole_pos = "below,left",
+            -- rconsole_width = 0, -- force horizontally splitting
+            -- rconsole_height = 20,
+            -- nvimpager = "split_v",
             pipe_version = "native",
             hook = {
                 on_filetype = function()
-                vim.api.nvim_buf_set_keymap(0, "i", "<M-->", "<Plug>RInsertAssign", { noremap = true })
-                vim.api.nvim_buf_set_keymap(0, "i", "<M-.>", "<Plug>RInsertPipe", { noremap = true })
-                if vim.bo.filetype == "rnoweb" then
-                    vim.api.nvim_buf_set_keymap(0, "i", "<", "<Plug>RnwInsertChunk", { noremap = true })
-                elseif vim.bo.filetype == "rmd" or vim.bo.filetype == "quarto" then
-                    vim.api.nvim_buf_set_keymap(0, "i", "`", "<Plug>RmdInsertChunk", { noremap = true })
-                end
+                    vim.api.nvim_buf_set_keymap(0, "i", "<M-->", "<Plug>RInsertAssign", { noremap = true })
+                    vim.api.nvim_buf_set_keymap(0, "i", "<C-S-m>", "<Plug>RInsertPipe", { noremap = true })
+                    if vim.bo.filetype == "rnoweb" then
+                        vim.api.nvim_buf_set_keymap(0, "i", "<", "<Plug>RnwInsertChunk", { noremap = true })
+                    elseif vim.bo.filetype == "rmd" or vim.bo.filetype == "quarto" then
+                        vim.api.nvim_buf_set_keymap(0, "i", "``", "<Plug>RmdInsertChunk", { noremap = true })
+                    end
                 end,
                 after_R_start = function()
                     vim.api.nvim_buf_set_keymap(0, "n", "<M-Enter>", "<Plug>RDSendLine", {noremap = true})
                     vim.api.nvim_buf_set_keymap(0, "v", "<M-Enter>", "<Plug>RSendSelection", {noremap = true})
                 end
             },
+            chunk_hl = {
+                bg = colors.cursorline
+            },
+            clear_line = true,
+            -- editing_mode = 'vi',  -- ~/.inputrc
             -- register_treesitter = false
         })
     end
@@ -247,7 +210,7 @@ local spc_lint = { src = gh('mfussenegger/nvim-lint'), data = {
             bash = {'bash'},
             zsh = {'zsh'},
             cpp = {'clang-tidy'},
-            lua = {'luacheck'},
+            -- lua = {'luacheck'},
             python = {'ruff'}
         }
         vim.api.nvim_create_autocmd({ "BufWritePost" }, {
@@ -494,6 +457,102 @@ local spc_subversive = { src = gh('svermeulen/vim-subversive'), data = {
     end
 }}
 
+local spc_paste_image = { src = gh('alohaia/paste-image.nvim'), data = {
+    config = function()
+        local get_img_name = function()
+            local img_name = vim.fn.input("Image name: ")
+
+            if img_name == "" then
+                img_name = os.date("%Y-%m-%d_%H-%M-%S") .. "_" .. tostring(vim.loop.hrtime() % 1e6)
+            end
+
+            return img_name
+        end
+
+        local function is_hugowiki()
+            if vim.fn.exists("*hugowiki#at_home") then
+                return vim.fn["hugowiki#at_home"]() == 1
+            else
+                return false
+            end
+        end
+
+        local function get_img_dir()
+            local file = vim.api.nvim_buf_get_name(0)
+
+            local dir = vim.fn.fnamemodify(file, ":h")
+            local name = vim.fn.fnamemodify(file, ":t")
+
+            -- not hugowiki file
+            if not is_hugowiki() then
+                return {dir, name .. ".assets"}
+            end
+
+            -- _index.md / index.md / _index.Rmd / index.Rmd
+            if name:match("^_?index%.R?md$") then
+                return dir
+            end
+
+            -- foo.md -> foo/
+            local stem = vim.fn.fnamemodify(file, ":t:r")
+            return {dir, stem}
+        end
+
+        local function get_rel_dir()
+            local file = vim.api.nvim_buf_get_name(0)
+
+            local dir = vim.fn.fnamemodify(file, ":h")
+            local name = vim.fn.fnamemodify(file, ":t")
+
+            -- foo.md -> foo/
+            if is_hugowiki() and not name:match("^_?index%.R?md$") then
+                local stem = vim.fn.fnamemodify(file, ":t:r")
+                return {dir, stem}
+            end
+
+            return dir
+        end
+
+        local md_img_tmpl = function()
+            if is_hugowiki() then
+                return '{{< figure src="{relpath}" title="{name}" >}}'
+            else
+                return "![{name}]({relpath})"
+            end
+        end
+
+        require("paste-image").setup({
+            default = {
+                img_name = get_img_name
+            },
+            markdown = {
+                img_dir = get_img_dir,        -- dir to create and put image in
+                rel_dir = get_rel_dir,    -- dir that {relpath} is relative to
+                affix = md_img_tmpl,
+                -- img_handler = function (args)
+                --     vim.notify(args.name .. " is pasted to " .. args.path)
+                --     -- 2026-06-06-16-11-04 is pasted to /home/qihuan/homepage/content/diary/2026/05/30/2026-06-06-16-11-04.png
+                -- end
+            },
+            rmd = {
+                img_dir = get_img_dir,
+                img_dir_txt = get_rel_dir,
+                affix = md_img_tmpl,
+            },
+        })
+        setmap({"n", "i"}, "<C-M-v>", function()
+            require("paste-image.paste").paste_img({}, function()
+                vim.api.nvim_feedkeys(
+                    vim.api.nvim_replace_termcodes("<C-M-v>", true, false, true),
+                    "n",
+                    false
+                )
+            end)
+        end)
+    end
+}}
+
+
 
 local spc_kitty_scrollback = { src = gh('mikesmithgh/kitty-scrollback.nvim'), data = {
     -- TODO
@@ -559,6 +618,7 @@ local spc_treesitter = { src = gh('nvim-treesitter/nvim-treesitter'), version = 
             'html', 'javascript', 'css',
             'scheme', 'racket',
             'foam',
+            'kitty', 'ssh_config'
         }
         require'nvim-treesitter'.install(ts_langs)
         vim.api.nvim_create_autocmd('FileType', {
@@ -569,8 +629,12 @@ local spc_treesitter = { src = gh('nvim-treesitter/nvim-treesitter'), version = 
                 vim.wo[0][0].foldmethod = 'expr'
                 vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
             end
-
         })
+
+        -- fold
+        vim.opt.foldmethod = 'expr'
+        vim.opt.foldexpr   = 'nvim_treesitter#foldexpr()'
+        vim.opt.foldcolumn = 'auto:1'
     end
 }}
 
@@ -621,6 +685,9 @@ local spc_fzf_lua = { src = gh('ibhagwan/fzf-lua'), data = {
         })
         setmap('n', ',f', '<Cmd>FzfLua files<CR>', {
             noremap = true, desc = "FzfLua: search [F]iles"
+        })
+        setmap('n', ',o', '<Cmd>FzfLua oldfiles<CR>', {
+            noremap = true, desc = "FzfLua: search [F]ld files"
         })
         setmap('n', ',b', '<Cmd>FzfLua buffers<CR>', {
             noremap = true, desc = "FzfLua: search [B]uffers"
@@ -741,7 +808,7 @@ local spc_toggleterm = { src = gh 'akinsho/toggleterm.nvim', data = {
     config = function()
         require("toggleterm").setup {
             size = 20,
-            open_mapping = [[<C-\>]],
+            open_mapping = [[<C-t><C-t>]],
             -- clear_env = true,
             autochdir = true,
             on_create = function (term)
@@ -809,7 +876,6 @@ local plugin_spcs = {
     spc_colorizer,
     spc_illuminate,
     spc_rainbow_delimiters,
-    -- spc_ufo,                                                    -- !
 
     -- devtools
     spc_blink_cmp,
@@ -833,14 +899,28 @@ local plugin_spcs = {
     spc_fcitx,
     spc_yoink,
     spc_subversive,
+    spc_paste_image,
     gh('tpope/vim-surround'),
     gh('tpope/vim-repeat'),
     gh('cohama/lexima.vim'), -- auto pairs
     gh('rafamadriz/friendly-snippets'),
+    { src = gh("bkad/CamelCaseMotion"), data = {
+        config = function()
+            -- default mappings
+            vim.cmd[[call camelcasemotion#CreateMotionMappings('<leader>')]]
+        end
+    }},
 
     -- external
     spc_kitty_scrollback,
     spc_hugowiki,
+    { src = gh('MeanderingProgrammer/render-markdown.nvim'), data = {
+        config = function()
+            require('render-markdown').setup {
+                completions = { lsp = { enabled = true } }
+            }
+        end
+    }},
 
     -- git
     spc_gitsigns,
@@ -848,7 +928,6 @@ local plugin_spcs = {
 
     -- highlight
     spc_treesitter,                                         -- !
-    spc_log_highlight,
     { src = gh('nvim-treesitter/nvim-treesitter-textobjects'), version = 'main'},
     { src = gh('nvim-treesitter/nvim-treesitter-context'), data = {
         config = function()
@@ -861,6 +940,7 @@ local plugin_spcs = {
             end, { desc = "Toggle treesitter-context" })
         end
     }},
+    spc_log_highlight,
     { src = gh 'fladson/vim-kitty', data = { ft='kitty' } },
 
     -- navigation
@@ -876,7 +956,6 @@ local plugin_spcs = {
     -- LaTeX
     spc_vimtex,
 }
-
 
 --------------------
 --- Load plugins ---

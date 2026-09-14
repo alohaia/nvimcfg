@@ -102,9 +102,16 @@ local global_mappings = {
 
     -- {{'n', 'v'}, '<C-/>', [[mode() == '\22']], {expr = true}}
     -- {{'n', 'v'}, '<C-/>', [[mode() == "\x16" ? "gbc" : "gcc"]], { expr = true }}
+
+    -- Block <C-\>, which sends SIGQUIT in Linux terminal.
+    {'t', [[<C-\>]], [[<Cmd>lua vim.notify("<C-\\> is not recommended, use <lt>ESC> instead.", vim.log.levels.WARN)<CR>]]},
 }
 
-local filetype_mappings = {}
+local filetype_mappings = {
+    ['markdown,rmd'] = {
+        {'v', [[<C-h>]], [[c====<Left><Esc>P]]}
+    }
+}
 
 
 --------------------------

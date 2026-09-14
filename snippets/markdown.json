@@ -17,8 +17,23 @@
             "\\end{equation}\\$\\$$0"
         ]
     },
-    "Equation Reference": {
+    "Equation reference": {
         "prefix": "eqr",
         "body": ["\\$\\eqref{eq:${1:label}}$0\\$"]
+    },
+
+    "Mermaid flowchart": {
+        "prefix": "mer",
+        "body": [
+            "```mermaid",
+            "flowchart ${1|TD,LR|}",
+            "    ${0}",
+            "```"
+        ]
+    },
+
+    "[Hugo]Horizontal list": {
+        "prefix": "hzl",
+        "body": "{{< hzl >}}${1:${VISUAL}}{{< /hzl >}}"
     }
 }

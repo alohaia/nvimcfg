@@ -4,7 +4,7 @@ local global_options = {
     -- use two spaces after . where a sentence ends.
     formatoptions  = 'ro/qm1j',
     cpoptions      = 'aABceFsI',
-    lazyredraw     = false,
+    lazyredraw     = true,
     timeout        = true,
     timeoutlen     = 500,
     autochdir      = false,
@@ -51,17 +51,6 @@ local global_options = {
     cursorline     = true,
     colorcolumn    = '88,100,120',
     signcolumn     = 'yes',
-    -- backup swap undo
-    backup         = true,
-    swapfile       = true,
-    undofile       = true,
-    undodir        = vim.fn.stdpath('data')..'/undo',
-    backupdir      = vim.fn.stdpath('data')..'/backup',
-    directory      = vim.fn.stdpath('data')..'/swap',
-    -- fold
-    foldmethod = 'expr',
-    foldexpr   = 'nvim_treesitter#foldexpr()',
-    foldcolumn = 'auto:1',
     -- tab, see :h tabstop
     shiftwidth = 4,
     tabstop    = 4,
@@ -94,12 +83,14 @@ local filetype_options = {
         -- tabstop    = 2,
         spelllang    = 'en_us,cjk',
         spellfile    = vim.fn.expand('~/.config/nvim/spell/en.utf-8.add'),
+        formatoptions = 'qwn21jp',
         -- spelloptions = 'camel',
         colorcolumn = '100',
         textwidth = 100,
         wrap = true,
         linebreak = true,
-        formatoptions = 'qwn21jp',
+        breakindent = true,
+        breakindentopt = 'list:-1,sbr',
     },
     ['r'] = {
         colorcolumn = '80',
