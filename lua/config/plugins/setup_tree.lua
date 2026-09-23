@@ -130,10 +130,7 @@ return function()
             },
         },
         git = { enable = true },
-        modified = { enable = true },
-        experimental = {
-            session_restore_nvim = true
-        },
+        modified = { enable = true }
     }
 
     vim.api.nvim_set_keymap(

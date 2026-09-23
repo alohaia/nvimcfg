@@ -194,6 +194,8 @@ local spc_r = { src = gh('R-nvim/r.nvim'), data = {
                 end
             },
             chunk_hl = {
+                highlight = true,
+                virtual_title = true,
                 bg = colors.cursorline
             },
             clear_line = true,
@@ -808,7 +810,7 @@ local spc_toggleterm = { src = gh 'akinsho/toggleterm.nvim', data = {
     config = function()
         require("toggleterm").setup {
             size = 20,
-            open_mapping = [[<C-t><C-t>]],
+            open_mapping = [[<C-\>]],
             -- clear_env = true,
             autochdir = true,
             on_create = function (term)
@@ -846,8 +848,14 @@ local spc_toggleterm = { src = gh 'akinsho/toggleterm.nvim', data = {
             nargs = "*",
             bang = true, -- add ! to restart lazygit
         })
-        vim.api.nvim_set_keymap("n", "<leader>g", "<Cmd>Lazygit<CR>", {
+        vim.api.nvim_set_keymap("n", "<C-t>g", "<Cmd>Lazygit<CR>", {
             noremap = true, silent = true, desc = "Open lazygit with toggleterm.nvim"
+        })
+        vim.api.nvim_set_keymap("t", "<C-t>s", "<Cmd>TermSelect<CR>", {
+            noremap = true, silent = false, desc = "Select (or focus) a terminal"
+        })
+        vim.api.nvim_set_keymap("t", "<C-t>n", "<Cmd>TermNew<CR>", {
+            noremap = true, silent = true, desc = "Select (or focus) a terminal"
         })
     end
 }}
@@ -904,12 +912,6 @@ local plugin_spcs = {
     gh('tpope/vim-repeat'),
     gh('cohama/lexima.vim'), -- auto pairs
     gh('rafamadriz/friendly-snippets'),
-    { src = gh("bkad/CamelCaseMotion"), data = {
-        config = function()
-            -- default mappings
-            vim.cmd[[call camelcasemotion#CreateMotionMappings('<leader>')]]
-        end
-    }},
 
     -- external
     spc_kitty_scrollback,
@@ -917,7 +919,14 @@ local plugin_spcs = {
     { src = gh('MeanderingProgrammer/render-markdown.nvim'), data = {
         config = function()
             require('render-markdown').setup {
-                completions = { lsp = { enabled = true } }
+                file_types = { 'markdown', 'rmd' },
+                completions = { lsp = { enabled = true } },
+                anti_conceal = { enable = false },
+                code = {
+                    enable = true,
+                    conceal_delimiters = true,
+                    border = 'thin'
+                }
             }
         end
     }},

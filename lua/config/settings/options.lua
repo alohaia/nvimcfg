@@ -43,7 +43,7 @@ local global_options = {
     mouse          = 'a',
     grepprg        = 'rg -n',
     foldlevel      = 999,
-    conceallevel   = 2,
+    conceallevel   = 0,
     wrap           = false,
     list           = true,
     number         = true,
@@ -51,6 +51,13 @@ local global_options = {
     cursorline     = true,
     colorcolumn    = '88,100,120',
     signcolumn     = 'yes',
+    -- backup swap undo
+    backup         = true,
+    swapfile       = true,
+    undofile       = true,
+    undodir        = vim.fn.stdpath('data')..'/undo',
+    backupdir      = vim.fn.stdpath('data')..'/backup',
+    directory      = vim.fn.stdpath('data')..'/swap',
     -- tab, see :h tabstop
     shiftwidth = 4,
     tabstop    = 4,
