@@ -176,7 +176,18 @@ local spc_r = { src = gh('R-nvim/r.nvim'), data = {
             -- rconsole_pos = "below,left",
             -- rconsole_width = 0, -- force horizontally splitting
             -- rconsole_height = 20,
-            -- nvimpager = "split_v",
+            nvimpager = "float",
+            objbr_place = "console,above",
+            objbr_mappings = {
+                c = 'class',
+                l = 'length',
+                L = 'sum(is.na({object}))',
+                n = 'names',
+                s = 'summary',
+                t = 'table',
+                g = 'dplyr::glimpse',
+                h = 'head({object}, 30)',
+            },
             pipe_version = "native",
             hook = {
                 on_filetype = function()
@@ -703,6 +714,9 @@ local spc_fzf_lua = { src = gh('ibhagwan/fzf-lua'), data = {
         setmap('n', ',h', '<Cmd>FzfLua command_history<CR>', {
             noremap = true, desc = "FzfLua: search Vim command [H]istory"
         })
+        setmap('n', ',?', '<Cmd>FzfLua help_tags<CR>', {
+            noremap = true, desc = "FzfLua: search Vim help tags"
+        })
         setmap('n', '<F1>', '<Cmd>FzfLua help_tags<CR>', {
             noremap = true, desc = "FzfLua: search Vim Help tags"
         })
@@ -718,13 +732,6 @@ local spc_fzf_lua = { src = gh('ibhagwan/fzf-lua'), data = {
         setmap('n', ',dp', '<Cmd>FzfLua lsp_workspace_diagnostics<CR>', {
             noremap = true, desc = "FzfLua: search LSP workspace [D]iagnostics in current [P]roject"
         })
-    end
-}}
-
-local spc_outline = { src = gh('hedyhli/outline.nvim'), data = {
-    config = function()
-        setmap("n", "<leader>o", "<cmd>Outline<CR>", { desc = "Toggle Outline" })
-        require("outline").setup {}
     end
 }}
 
@@ -790,19 +797,18 @@ local spc_which_key = { src = gh 'folke/which-key.nvim', data = {
 
 local spc_aerial = { src = gh 'stevearc/aerial.nvim', data = {
     config = function()
-        require('aerial').setup {
-            backends = { "lsp", "treesitter", "markdown", "asciidoc", "man" },
-            filter_kind = {
-                "Class",
-                "Constructor",
-                "Enum",
-                "Function",
-                "Interface",
-                "Module",
-                "Method",
-                "Struct",
-            },
-        }
+        require("aerial").setup({
+            on_attach = function(bufnr)
+                -- Jump forwards/backwards with '{' and '}'
+                vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+                vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+            end,
+            -- post_add_all_symbols = function(bufnr, items, ctx)
+            --     print(vim.inspect(items))
+            --     return items
+            -- end,
+        })
+        vim.keymap.set("n", "<leader>o", "<cmd>AerialToggle!<CR>")
     end
 }}
 
@@ -954,11 +960,10 @@ local plugin_spcs = {
 
     -- navigation
     spc_fzf_lua,
-    spc_outline,
+    spc_aerial,
 
     -- widgets
     spc_which_key,
-    spc_aerial,
     spc_toggleterm,
     spc_tree,
 
