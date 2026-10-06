@@ -1,5 +1,45 @@
 local setmap = vim.keymap.set
 
+local function is_subpath(path, parent)
+    path = vim.fs.normalize(path)
+    parent = vim.fs.normalize(parent)
+
+    return path == parent
+        or vim.startswith(path, parent .. '/')
+end
+
+local function get_nvim_libraries(workspace)
+    local libraries = {}
+
+    local function add(path)
+        path = vim.fs.normalize(path)
+
+        if not vim.tbl_contains(libraries, path) then
+            table.insert(libraries, path)
+        end
+    end
+
+    -- Neovim's own runtime
+    add(vim.env.VIMRUNTIME)
+
+    -- Neovim configuration
+    local config = vim.fn.stdpath('config')
+    if is_subpath(workspace, config) then
+        add(config)
+    end
+
+    -- Runtimepath that workspace belongs to
+    for _, runtime in ipairs(vim.split(vim.o.runtimepath, ',', {
+        trimempty = true,
+    })) do
+        if is_subpath(workspace, runtime) then
+            add(runtime)
+        end
+    end
+
+    return libraries
+end
+
 local servers = {
     pyright = {
         settings = {
@@ -45,36 +85,39 @@ local servers = {
     },
     lua_ls = {
         on_init = function(client)
-            if client.workspace_folders then
-                local path = client.workspace_folders[1].name
-                if
-                    path ~= vim.fn.stdpath('config')
-                        and (vim.uv.fs_stat(path .. '/.luarc.json')
-                        or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
-                then
-                    return
-                end
+            local path = vim.fs.normalize(client.workspace_folders[1].name)
+
+            if vim.uv.fs_stat(path .. '/.luarc.json')
+                or vim.uv.fs_stat(path .. '/.luarc.jsonc')
+            then
+                vim.notify('[lua_ls] .luarc.json(c) detected')
+                return
             end
 
-            client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-                runtime = {
-                    version = 'LuaJIT',
-                    -- Tell the language server how to find Lua modules same way as Neovim
-                    -- (see `:h lua-module-load`)
-                    path = {
-                        'lua/?.lua',
-                        'lua/?/init.lua',
+            local libraries = get_nvim_libraries(path)
+
+            if #libraries == 1 and libraries[1] == vim.fs.normalize(vim.env.VIMRUNTIME) then
+                return -- normal Lua project
+            end
+
+            vim.notify('[lua_ls] Neovim environment detected.')
+            client.config.settings.Lua = vim.tbl_deep_extend(
+                'force',
+                client.config.settings.Lua,
+                {
+                    runtime = {
+                        version = 'LuaJIT',
+                        path = {
+                            'lua/?.lua',
+                            'lua/?/init.lua',
+                        },
                     },
-                },
-                -- Make the server aware of Neovim runtime files
-                workspace = {
-                    checkThirdParty = false,
-                    library = {
-                        vim.env.VIMRUNTIME
-                    }
-                    -- library = vim.api.nvim_get_runtime_file('', true)
+                    workspace = {
+                        checkThirdParty = false,
+                        library = libraries,
+                    },
                 }
-            })
+            )
         end,
         settings = {
             Lua = {}
