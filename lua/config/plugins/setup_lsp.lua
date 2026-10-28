@@ -41,13 +41,26 @@ local function get_nvim_libraries(workspace)
 end
 
 local servers = {
-    pyright = {
+    -- pyright = {
+    --     settings = {
+    --         python = {
+    --             -- disableTaggedHints = false,
+    --             analysis = {
+    --                 autoSearchPaths = true,
+    --                 diagnosticMode = "openFilesOnly",
+    --                 useLibraryCodeForTypes = true
+    --             }
+    --         }
+    --     }
+    -- },
+    pylsp = {
         settings = {
-            python = {
-                analysis = {
-                    autoSearchPaths = true,
-                    diagnosticMode = "openFilesOnly",
-                    useLibraryCodeForTypes = true
+            pylsp = {
+                plugins = {
+                    pycodestyle = {
+                        ignore = { 'I001' }, -- 'W391'
+                        maxLineLength = 100
+                    }
                 }
             }
         }
@@ -164,7 +177,9 @@ local lspconfig_setup =  function()
             map('<leader>ca', vim.lsp.buf.code_action,
                 '[C]ode [A]ction', { 'n', 'x' })
             map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-            map('<M-i>', vim.lsp.buf.hover, 'Show Hover [I]nformation')
+            map('<M-i>', function ()
+                    vim.lsp.buf.hover { border = 'rounded', max_width = 100, max_height = 30 } -- 'winborder'
+            end, 'Show Hover [I]nformation')
 
             map("]d", function () vim.diagnostic.jump({count = 1}) end,
                 "Next Diagnostic")

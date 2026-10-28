@@ -112,7 +112,7 @@ return function()
             end,
         },
         update_focused_file = {
-            enable = true,
+            enable = false,
             update_root = {
                 enable = false,
             },
@@ -134,7 +134,7 @@ return function()
     }
 
     vim.api.nvim_set_keymap(
-        'n', '<C-CR>', '<Cmd>NvimTreeToggle<CR>',
+        'n', '<M-CR>', '<Cmd>NvimTreeToggle<CR>',
         {silent = true, noremap = true}
     )
 
@@ -149,5 +149,9 @@ return function()
             api.tree.open()
             end
         end,
+    })
+
+    vim.api.nvim_set_hl(0, "NvimTreeExecFile", {
+        link = "OkMsg",
     })
 end

@@ -59,8 +59,8 @@ local global_options = {
     backupdir      = vim.fn.stdpath('data')..'/backup',
     directory      = vim.fn.stdpath('data')..'/swap',
     -- tab, see :h tabstop
-    shiftwidth = 4,
-    tabstop    = 4,
+    shiftwidth = 8,
+    tabstop    = 8,
     shiftround = true,
     expandtab  = true,
     smarttab   = true,  -- softtabstop = 4,
@@ -84,10 +84,8 @@ local global_options = {
 }
 
 local filetype_options = {
-    ['markdown,rmd,tex'] = {
+    ['markdown,tex'] = {
         spell = true,
-        -- shiftwidth = 2,
-        -- tabstop    = 2,
         spelllang    = 'en_us,cjk',
         spellfile    = vim.fn.expand('~/.config/nvim/spell/en.utf-8.add'),
         formatoptions = 'qwn21jp',
@@ -98,26 +96,24 @@ local filetype_options = {
         linebreak = true,
         breakindent = true,
         breakindentopt = 'list:-1,sbr',
+        syntax = "markdown",
+    },
+    ['rmd'] = {
+        spell = true,
+        spelllang    = 'en_us,cjk',
+        spellfile    = vim.fn.expand('~/.config/nvim/spell/en.utf-8.add'),
+        formatoptions = 'qwn21jp',
+        colorcolumn = '100',
+        textwidth = 100,
+        wrap = true,
+        linebreak = true,
+        breakindent = true,
+        breakindentopt = 'list:-1,sbr',
+        syntax = "rmd",
     },
     ['r'] = {
         colorcolumn = '80',
         textwidth = 80,
-        -- foldmethod = 'marker',
-        -- foldmarker = '{{{,}}}'
-        -- foldmethod = 'expr',
-        -- foldmarker = function (lnum)
-        --     local line = vim.fn.getline(lnum)
-        --
-        --     -- 匹配 RStudio 风格标题: # Section ----
-        --     if string.match(line, '^#+%s+.*(----|####)%s*$') then
-        --         -- 统计 # 的数量作为折叠层级
-        --         local hashes = string.match(line, '^(#+)')
-        --         return #hashes   -- 返回 1, 2, 3...
-        --     end
-        --
-        --     -- 其它行：继承上一行折叠
-        --     return '='
-        -- end
     },
     ['c,cpp'] = {
         path = {
@@ -133,6 +129,10 @@ local filetype_options = {
         textwidth  = 88,
         formatoptions = 'c1jroqp',
     },
+    ['lua'] = {
+        shiftwidth = 4,
+        tabstop    = 4,
+    }
 }
 
 -------------------------

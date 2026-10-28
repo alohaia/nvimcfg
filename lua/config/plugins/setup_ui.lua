@@ -152,6 +152,10 @@ local alpha_setup = function()
     dashboard.section.footer.val = require'alpha.fortune'()
 
     dashboard.opts.opts.noautocmd = true
+    dashboard.opts.opts.keymap = {
+        press = "<CR>",
+        queue_press = "<C-Space>"
+    }
 
     alpha.setup(dashboard.opts)
 end
@@ -207,7 +211,7 @@ end
 
 local bufferline_setup = function()
     local colors = {
-        white = "#ABB2BF",
+        white = "#A0A2AF",
         gray = "#3E4452",
         dark_gray = "#2C323C",
         green = "#98C379",

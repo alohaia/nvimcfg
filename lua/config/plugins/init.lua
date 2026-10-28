@@ -200,8 +200,8 @@ local spc_r = { src = gh('R-nvim/r.nvim'), data = {
                     end
                 end,
                 after_R_start = function()
-                    vim.api.nvim_buf_set_keymap(0, "n", "<M-Enter>", "<Plug>RDSendLine", {noremap = true})
-                    vim.api.nvim_buf_set_keymap(0, "v", "<M-Enter>", "<Plug>RSendSelection", {noremap = true})
+                    vim.api.nvim_buf_set_keymap(0, "n", "<C-Enter>", "<Plug>RDSendLine", {noremap = true})
+                    vim.api.nvim_buf_set_keymap(0, "v", "<C-Enter>", "<Plug>RSendSelection", {noremap = true})
                 end
             },
             chunk_hl = {
