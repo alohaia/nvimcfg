@@ -134,7 +134,7 @@ return function()
     }
 
     vim.api.nvim_set_keymap(
-        'n', '<M-CR>', '<Cmd>NvimTreeToggle<CR>',
+        'n', '<leader>f', '<Cmd>NvimTreeToggle<CR>',
         {silent = true, noremap = true}
     )
 

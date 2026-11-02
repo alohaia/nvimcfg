@@ -41,30 +41,30 @@ local function get_nvim_libraries(workspace)
 end
 
 local servers = {
-    -- pyright = {
-    --     settings = {
-    --         python = {
-    --             -- disableTaggedHints = false,
-    --             analysis = {
-    --                 autoSearchPaths = true,
-    --                 diagnosticMode = "openFilesOnly",
-    --                 useLibraryCodeForTypes = true
-    --             }
-    --         }
-    --     }
-    -- },
-    pylsp = {
+    pyright = {
         settings = {
-            pylsp = {
-                plugins = {
-                    pycodestyle = {
-                        ignore = { 'I001' }, -- 'W391'
-                        maxLineLength = 100
-                    }
+            python = {
+                -- disableTaggedHints = false,
+                analysis = {
+                    autoSearchPaths = true,
+                    diagnosticMode = "openFilesOnly",
+                    useLibraryCodeForTypes = true
                 }
             }
         }
     },
+    -- pylsp = {
+    --     settings = {
+    --         pylsp = {
+    --             plugins = {
+    --                 pycodestyle = {
+    --                     ignore = { 'I001' }, -- 'W391'
+    --                     maxLineLength = 100
+    --                 }
+    --             }
+    --         }
+    --     }
+    -- },
     clangd = {
         -- https://clangd.llvm.org/config#files
         -- specific standard in ~/.config/clangd/config.yaml
@@ -178,7 +178,7 @@ local lspconfig_setup =  function()
                 '[C]ode [A]ction', { 'n', 'x' })
             map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
             map('<M-i>', function ()
-                    vim.lsp.buf.hover { border = 'rounded', max_width = 100, max_height = 30 } -- 'winborder'
+                    vim.lsp.buf.hover { border = 'none', max_width = 100, max_height = 30 } -- 'winborder'
             end, 'Show Hover [I]nformation')
 
             map("]d", function () vim.diagnostic.jump({count = 1}) end,
@@ -226,7 +226,7 @@ local blink_cmp_setup = function()
             ['<S-Tab>'] = { 'select_prev', 'fallback' },
             ['<CR>'] = { 'accept', 'fallback' },
         },
-        cmdline = { enabled = false },
+        cmdline = { enabled = true },
         completion = {
             accept = { auto_brackets = { enabled = true }, },
             documentation = { auto_show = true, auto_show_delay_ms = 500 },

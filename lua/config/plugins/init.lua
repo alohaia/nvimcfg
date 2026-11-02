@@ -154,8 +154,11 @@ local spc_rainbow_delimiters = { src = gh('HiPhish/rainbow-delimiters.nvim'), da
 local spc_lspconfig = { src = gh('neovim/nvim-lspconfig'), data = {
     config = require('config.plugins.setup_lsp').lspconfig
 }}
-local spc_blink_cmp = { src = gh('saghen/blink.cmp'), version = 'v1', data = {
+local spc_blink_cmp = { src = gh('saghen/blink.cmp'), data = {
     config = require('config.plugins.setup_lsp').blink_cmp
+    -- build = function ()
+    --     require('blink.cmp').build():pwait()
+    -- end
 }}
 local spc_tiny_inline_diagnostic = { src = gh('rachartier/tiny-inline-diagnostic.nvim'), data = {
     config = require('config.plugins.setup_lsp').tiny_inline_diagnostic
@@ -192,7 +195,7 @@ local spc_r = { src = gh('R-nvim/r.nvim'), data = {
             hook = {
                 on_filetype = function()
                     vim.api.nvim_buf_set_keymap(0, "i", "<M-->", "<Plug>RInsertAssign", { noremap = true })
-                    vim.api.nvim_buf_set_keymap(0, "i", "<C-S-m>", "<Plug>RInsertPipe", { noremap = true })
+                    vim.api.nvim_buf_set_keymap(0, "i", "<M-.>", "<Plug>RInsertPipe", { noremap = true })
                     if vim.bo.filetype == "rnoweb" then
                         vim.api.nvim_buf_set_keymap(0, "i", "<", "<Plug>RnwInsertChunk", { noremap = true })
                     elseif vim.bo.filetype == "rmd" or vim.bo.filetype == "quarto" then
@@ -200,8 +203,8 @@ local spc_r = { src = gh('R-nvim/r.nvim'), data = {
                     end
                 end,
                 after_R_start = function()
-                    vim.api.nvim_buf_set_keymap(0, "n", "<C-Enter>", "<Plug>RDSendLine", {noremap = true})
-                    vim.api.nvim_buf_set_keymap(0, "v", "<C-Enter>", "<Plug>RSendSelection", {noremap = true})
+                    vim.api.nvim_buf_set_keymap(0, "n", "<M-CR>", "<Plug>RDSendLine", {noremap = true})
+                    vim.api.nvim_buf_set_keymap(0, "v", "<M-CR>", "<Plug>RSendSelection", {noremap = true})
                 end
             },
             chunk_hl = {
@@ -318,7 +321,7 @@ local spc_comment = { src = gh('numToStr/Comment.nvim'), data = {
     config = function()
         local cmt = require('Comment.api')
         local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
-        setmap({'n', 'x'}, '<C-/>', function()
+        setmap({'n', 'x'}, '<C-c>', function()
             if vim.fn.mode() == "\22" then
                 vim.api.nvim_feedkeys(esc, 'nx', false)
                 cmt.toggle.blockwise("v")
@@ -800,8 +803,8 @@ local spc_aerial = { src = gh 'stevearc/aerial.nvim', data = {
         require("aerial").setup({
             on_attach = function(bufnr)
                 -- Jump forwards/backwards with '{' and '}'
-                vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
-                vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+                vim.keymap.set("n", "]o", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+                vim.keymap.set("n", "[o", "<cmd>AerialNext<CR>", { buffer = bufnr })
             end,
             -- post_add_all_symbols = function(bufnr, items, ctx)
             --     print(vim.inspect(items))
@@ -892,6 +895,7 @@ local plugin_spcs = {
     spc_rainbow_delimiters,
 
     -- devtools
+    gh('saghen/blink.lib'),
     spc_blink_cmp,
     spc_lspconfig,
     spc_tiny_inline_diagnostic,
@@ -980,6 +984,8 @@ local _load_plugin = function(plug_data)
         plug_data.spec.data.config()
     end
 end
+
+-- only `ft` is supported now
 local selective_load = function(plug_data)
     if (plug_data.spec.data or {}).ft then
         vim.api.nvim_create_autocmd('FileType', {
