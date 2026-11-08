@@ -975,7 +975,13 @@ local plugin_spcs = {
     spc_vimtex,
 
     -- AI assistant
-    { src = gh 'ravitemer/mcphub.nvim'},
+    { src = gh 'ravitemer/mcphub.nvim', data = {
+        config = function()
+            require("mcphub").setup({
+                port = 37373
+            })
+        end
+    }},
     { src = gh 'olimorris/codecompanion.nvim', data = {
         config = function()
             require('codecompanion').setup({
@@ -998,27 +1004,36 @@ local plugin_spcs = {
                         adapter = 'deepseek',
                         tools = {
                             opts = {
+                                completion_provider = "blink",
                                 approval_mode = 'ask',
+                                default_tools = {
+                                    'files', 'agent', -- tools groups
+                                    'fetch_webpage', 'web_search', 'memory', 'search_help',
+                                    -- 'mcp:filesystem' -- do not add here
+                                }
                             },
-                            default_tools = {
-                                'grep_search', 'files', 'read_file', 'file_search', 'edit_file',
-                                'get_diagnostics', 'get_changed_files', 'mcp', 'fetch_webpage',
-                                'mcp'
-                            }
                         }
                     },
                     inline = { adapter = 'deepseek' },
                 },
-                extensions = {
-                    mcphub = {
-                        callback = "mcphub.extensions.codecompanion",
-                        opts = {
-                            make_vars = true,
-                            make_slash_commands = true,
-                            show_result_in_chat = true
-                        }
-                    }
-                }
+                mcp = {
+                    servers = {
+                        filesystem = {
+                            cmd = { "npx", "-y", "@modelcontextprotocol/server-filesystem", "/home/qihuan/Documents" }
+                        },
+                    },
+                    opts = { default_servers = { "filesystem" } }, -- chat
+                },
+                -- extensions = {
+                --     mcphub = {
+                --         callback = "mcphub.extensions.codecompanion",
+                --         opts = {
+                --             make_vars = true,
+                --             make_slash_commands = true,
+                --             show_result_in_chat = true
+                --         }
+                --     }
+                -- }
             })
 
             vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", {
