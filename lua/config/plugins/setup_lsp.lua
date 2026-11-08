@@ -240,6 +240,12 @@ local blink_cmp_setup = function()
             default = { 'lsp', 'path', 'snippets', 'buffer', 'omni' },
             -- for friendly-snippets
             providers = {
+                omni = {
+                    enabled = function()
+                        local fn = vim.bo.omnifunc
+                        return fn ~= '' and fn ~= 'v:lua.vim.lsp.omnifunc'
+                    end,
+                },
                 snippets = {
                     opts = {
                         friendly_snippets = true, -- default

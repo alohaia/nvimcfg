@@ -155,10 +155,10 @@ local spc_lspconfig = { src = gh('neovim/nvim-lspconfig'), data = {
     config = require('config.plugins.setup_lsp').lspconfig
 }}
 local spc_blink_cmp = { src = gh('saghen/blink.cmp'), data = {
-    config = require('config.plugins.setup_lsp').blink_cmp
-    -- build = function ()
-    --     require('blink.cmp').build():pwait()
-    -- end
+    config = require('config.plugins.setup_lsp').blink_cmp,
+    build = function ()
+        require('blink.cmp').build():pwait()
+    end
 }}
 local spc_tiny_inline_diagnostic = { src = gh('rachartier/tiny-inline-diagnostic.nvim'), data = {
     config = require('config.plugins.setup_lsp').tiny_inline_diagnostic
@@ -427,7 +427,7 @@ local spc_multicursor = { src = gh('jake-stewart/multicursor.nvim'), data = {
 }}
 
 local spc_fcitx = { src = gh('alohaia/fcitx.nvim'), data = {
-    ft = 'rmd,markdown,tex,latex',
+    ft = 'rmd,markdown,tex,latex,codecompanion',
     config = function()
         require 'fcitx' {
             enable = {
@@ -973,6 +973,68 @@ local plugin_spcs = {
 
     -- LaTeX
     spc_vimtex,
+
+    -- AI assistant
+    { src = gh 'ravitemer/mcphub.nvim'},
+    { src = gh 'olimorris/codecompanion.nvim', data = {
+        config = function()
+            require('codecompanion').setup({
+                adapters = {
+                    http = {
+                        deepseek = function()
+                            return require('codecompanion.adapters').extend('deepseek', {
+                                env = { api_key = 'DEEPSEEK_API_KEY' },
+                                schema = {
+                                    model = { default = 'deepseek-flash' }, -- or deepseek-v4-pro
+                                    ['thinking.type'] = { default = 'disabled' },  -- enabled
+                                    reasoning_effort = { default = 'high' },  -- high | max
+                                },
+                            })
+                        end,
+                    },
+                },
+                interactions = {
+                    chat = {
+                        adapter = 'deepseek',
+                        tools = {
+                            opts = {
+                                approval_mode = 'ask',
+                            },
+                            default_tools = {
+                                'grep_search', 'files', 'read_file', 'file_search', 'edit_file',
+                                'get_diagnostics', 'get_changed_files', 'mcp', 'fetch_webpage',
+                                'mcp'
+                            }
+                        }
+                    },
+                    inline = { adapter = 'deepseek' },
+                },
+                extensions = {
+                    mcphub = {
+                        callback = "mcphub.extensions.codecompanion",
+                        opts = {
+                            make_vars = true,
+                            make_slash_commands = true,
+                            show_result_in_chat = true
+                        }
+                    }
+                }
+            })
+
+            vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", {
+                noremap = true, silent = true, desc = "CodeCompanion code action"
+            })
+            vim.keymap.set({ "n", "v" }, "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", {
+                noremap = true, silent = true, desc = "Toggle CodeCompanion chat"
+            })
+            vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", {
+                noremap = true, silent = true, desc = "Send selection to CodeCompanion chat"
+            })
+
+            -- Expand 'cc' into 'CodeCompanion' in the command line
+            vim.cmd([[cab cc CodeCompanion]])
+        end
+    }}
 }
 
 --------------------
