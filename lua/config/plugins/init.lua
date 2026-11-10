@@ -1133,3 +1133,27 @@ end, {
     force = true,
     bang = true,
 })
+
+vim.api.nvim_create_user_command("PackDelete", function(args)
+    local pkgs = nil
+    if args.args ~= nil and args.args ~= "" then
+        pkgs = vim.split(args.args, "%s+", { trimempty = true })
+        vim.pack.del(pkgs, { force = args.bang })
+    else
+        vim.notify("Give at least one plugin name", vim.log.levels.ERROR)
+    end
+end, {
+    desc = "Delete packages",
+    nargs = "*",
+    complete = function(arg_lead)
+        local names = {}
+        for _, p in ipairs(vim.pack.get()) do
+            if vim.startswith(p.spec.name, arg_lead) then
+                table.insert(names, p.spec.name)
+            end
+        end
+        return names
+    end,
+    force = true,
+    bang = true,
+})
