@@ -817,26 +817,66 @@ local spc_aerial = { src = gh 'stevearc/aerial.nvim', data = {
 
 local spc_toggleterm = { src = gh 'akinsho/toggleterm.nvim', data = {
     config = function()
+        local helpers = require("onedarkpro.helpers")
+
+        local no_term = 0
+        local count_term = 0
+
         require("toggleterm").setup {
-            size = 20,
+            size = function(term)
+                if term.direction == "horizontal" then
+                    return 20
+                elseif term.direction == "vertical" then
+                    return vim.o.columns * 0.4
+                end
+            end,
+            direction = "float",
+            float_opts = {
+                border = { "", "-", "", "", "", "", "", "" },
+                width = 9999,
+                height = math.floor(vim.o.lines * 0.4),
+                row = 9999,
+                col = 0,
+                title_pos = "left"
+            },
+            highlights = {
+                NormalFloat = {
+                    guibg = helpers.darken("bg", 7)
+                },
+                FloatBorder = {
+                    link = "FloatBorder"
+                }
+            },
+            shade_terminals = true,
             open_mapping = [[<C-\>]],
             -- clear_env = true,
             autochdir = true,
-            on_create = function (term)
+            on_create = function(term)
                 local conda_env = vim.env.CONDA_DEFAULT_ENV
                 if conda_env and conda_env ~= "" then
                     term:send(string.format("mamba activate %s", conda_env))
                 end
+
+                no_term = no_term + 1
+                term._no = no_term
+                count_term = count_term + 1
+            end,
+            on_open = function(term)
+                local title_text = string.format("  Terminal %d/%d: %s ", term._no, count_term, term.name)
+                vim.api.nvim_win_set_config(term.window, { title = { { title_text, "FloatTitle" } } })
+            end,
+            on_exit = function(_)
+                count_term = count_term - 1
             end,
             winbar = {
                 enabled = true,
-                name_formatter = function(term)
-                    return term.name
-                end
+                -- name_formatter = function(term)
+                --     return term.name
+                -- end
             },
         }
 
-        local Terminal  = require('toggleterm.terminal').Terminal
+        local Terminal = require('toggleterm.terminal').Terminal
         local lazygit = nil
         vim.api.nvim_create_user_command('Lazygit', function(args)
             if lazygit == nil or args.bang then
@@ -846,7 +886,11 @@ local spc_toggleterm = { src = gh 'akinsho/toggleterm.nvim', data = {
                     display_name = "Lazygit",
                     direction = 'float',
                     float_opts = {
-                        border = 'none'
+                        border = 'none',
+                        width = 9999,
+                        height = 9999,
+                        row = 0,
+                        col = 0,
                     },
                 })
             end
@@ -857,13 +901,13 @@ local spc_toggleterm = { src = gh 'akinsho/toggleterm.nvim', data = {
             nargs = "*",
             bang = true, -- add ! to restart lazygit
         })
-        vim.api.nvim_set_keymap("n", "<C-t>g", "<Cmd>Lazygit<CR>", {
+        setmap("n", "<C-t>g", "<Cmd>Lazygit<CR>", {
             noremap = true, silent = true, desc = "Open lazygit with toggleterm.nvim"
         })
-        vim.api.nvim_set_keymap("t", "<C-t>s", "<Cmd>TermSelect<CR>", {
+        setmap({ "n", "t" }, "<C-t>s", "<Cmd>TermSelect<CR>", {
             noremap = true, silent = false, desc = "Select (or focus) a terminal"
         })
-        vim.api.nvim_set_keymap("t", "<C-t>n", "<Cmd>TermNew<CR>", {
+        setmap({ "n", "t" }, "<C-t>n", "<Cmd>TermNew<CR>", {
             noremap = true, silent = true, desc = "Select (or focus) a terminal"
         })
     end
@@ -1130,30 +1174,6 @@ vim.api.nvim_create_user_command("PackUpdate", function(args)
     vim.pack.update(nil, { force = args.bang })
 end, {
     desc = "Update packages",
-    force = true,
-    bang = true,
-})
-
-vim.api.nvim_create_user_command("PackDelete", function(args)
-    local pkgs = nil
-    if args.args ~= nil and args.args ~= "" then
-        pkgs = vim.split(args.args, "%s+", { trimempty = true })
-        vim.pack.del(pkgs, { force = args.bang })
-    else
-        vim.notify("Give at least one plugin name", vim.log.levels.ERROR)
-    end
-end, {
-    desc = "Delete packages",
-    nargs = "*",
-    complete = function(arg_lead)
-        local names = {}
-        for _, p in ipairs(vim.pack.get()) do
-            if vim.startswith(p.spec.name, arg_lead) then
-                table.insert(names, p.spec.name)
-            end
-        end
-        return names
-    end,
     force = true,
     bang = true,
 })
