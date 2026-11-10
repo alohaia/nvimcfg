@@ -11,6 +11,13 @@ local aus =  {
         pattern = '*',
         desc = 'Restore last position after reopened a file',
         callback = function(ev)
+            if vim.api.nvim_get_current_buf() ~= ev.buf then return end
+
+            -- exclude special buffer: terminal, quickfix ...
+            if vim.bo[ev.buf].buftype ~= '' then return end
+            -- cannot execute :normal in terminal mode
+            if vim.api.nvim_get_mode().mode:sub(1, 1) == 't' then return end
+
             if
                 vim.wo.diff              -- exclude diff
                 or ({                    -- exclude filetypes below

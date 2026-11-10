@@ -951,7 +951,7 @@ local plugin_spcs = {
     { src = gh('nvim-treesitter/nvim-treesitter-context'), data = {
         config = function()
             require'treesitter-context'.setup {
-                enable = false,
+                enable = true,
                 multiwindow = true
             }
             vim.keymap.set("n", "<Leader>tc", function()
@@ -1005,12 +1005,21 @@ local plugin_spcs = {
                         tools = {
                             opts = {
                                 completion_provider = "blink",
-                                approval_mode = 'ask',
+                                approval_mode = "auto", -- "ask" | "auto" | "yolo"
                                 default_tools = {
                                     'files', 'agent', -- tools groups
-                                    'fetch_webpage', 'web_search', 'memory', 'search_help',
+                                    'fetch_webpage', 'web_search', 'memory', -- 'search_help',
                                     -- 'mcp:filesystem' -- do not add here
-                                }
+                                },
+                            },
+                            ["run_command"] = {
+                                opts = {
+                                    safe_commands = {
+                                        "git status", "git diff", "git log",
+                                        "ls", "make test", "cd",
+                                        "head", "tail"
+                                    },
+                                },
                             },
                         }
                     },
