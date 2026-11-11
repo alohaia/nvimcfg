@@ -321,7 +321,7 @@ local spc_comment = { src = gh('numToStr/Comment.nvim'), data = {
     config = function()
         local cmt = require('Comment.api')
         local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
-        setmap({'n', 'x'}, '<C-c>', function()
+        local function _comment()
             if vim.fn.mode() == "\22" then
                 vim.api.nvim_feedkeys(esc, 'nx', false)
                 cmt.toggle.blockwise("v")
@@ -331,7 +331,9 @@ local spc_comment = { src = gh('numToStr/Comment.nvim'), data = {
             else
                 cmt.toggle.linewise()
             end
-        end, { noremap = true })
+        end
+        setmap({'n', 'x'}, '<C-/>', _comment, { noremap = true })
+        setmap({'n', 'x'}, '<C-_>', _comment, { noremap = true })  -- equals to <C-/> in tmux
     end
 }}
 
@@ -1004,17 +1006,17 @@ local spc_codecompanion = { src = gh 'olimorris/codecompanion.nvim', data = {
             -- }
         })
 
-        vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", {
-            noremap = true, silent = true, desc = "CodeCompanion code action"
-        })
-        vim.keymap.set({ "n", "v" }, "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", {
+        -- setmap({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", {
+        --     noremap = true, silent = true, desc = "CodeCompanion code action"
+        -- })
+        setmap({ "n", "v" }, [[\a]], "<Cmd>CodeCompanionChat Toggle<CR>", {
             noremap = true, silent = true, desc = "Toggle CodeCompanion chat"
         })
-        vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", {
+        setmap("v", "ga", "<Cmd>CodeCompanionChat Add<CR>", {
             noremap = true, silent = true, desc = "Send selection to CodeCompanion chat"
         })
-        vim.keymap.set({ "n", "v" }, "<C-h>", ":'<,'>CodeCompanion<CR>", {
-            noremap = true, silent = false, desc = "Show inline prompt"
+        setmap({ "n", "v" }, "<F2>", ":'<,'>CodeCompanion<CR>", {
+            noremap = true, silent = false, desc = "Show CodeCompanion inline prompt"
         })
 
         -- Expand 'cc' into 'CodeCompanion' in the command line
