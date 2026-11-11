@@ -108,9 +108,7 @@ local global_mappings = {
 }
 
 local filetype_mappings = {
-    ['markdown,rmd'] = {
-        {'v', [[<C-h>]], [[c====<Left><Esc>P]]}
-    }
+    ['markdown,rmd'] = {}
 }
 
 

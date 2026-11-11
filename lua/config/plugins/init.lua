@@ -917,6 +917,130 @@ local spc_tree = { src = gh 'nvim-tree/nvim-tree.lua', data = {
     config = require('config.plugins.setup_tree')
 }}
 
+local spc_codecompanion = { src = gh 'olimorris/codecompanion.nvim', data = {
+    config = function()
+        require('codecompanion').setup({
+            adapters = {
+                http = {
+                    qwen = function()
+                        return require("codecompanion.adapters").extend("openai_compatible", {
+                            formatted_name = "QWEN",
+                            env = {
+                                url = "https://maas.qianwenaiapi.com/compatible-mode/v1",
+                                chat_url = "/chat/completions",
+                                models_endpoint = "/models",
+                                api_key = "QWEN_API_KEY",
+                            },
+                            schema = {
+                                model = {
+                                    -- default = "deepseek-v4-pro-0813",
+                                    default = "deepseek-v4.1-flash",
+                                    -- choices = { "qwen3.7-plus", "deepseek-v4.1-flash-1017" }
+                                },
+                            },
+                        })
+                    end,
+                },
+            },
+            -- adapters = {
+            --     http = {
+            --         deepseek = function()
+            --             return require('codecompanion.adapters').extend('deepseek', {
+            --                 env = { api_key = 'DEEPSEEK_API_KEY' },
+            --                 schema = {
+            --                     model = { default = 'deepseek-flash' }, -- or deepseek-v4-pro
+            --                     ['thinking.type'] = { default = 'disabled' },  -- enabled
+            --                     reasoning_effort = { default = 'high' },  -- high | max
+            --                 },
+            --             })
+            --         end,
+            --     },
+            -- },
+            interactions = {
+                chat = {
+                    -- adapter = 'deepseek',
+                    adapter = 'qwen',
+                    tools = {
+                        opts = {
+                            completion_provider = "blink",
+                            approval_mode = "yolo", -- "ask" | "auto" | "yolo"
+                            default_tools = {
+                                'files', 'agent', -- tools groups
+                                'fetch_webpage', 'web_search', 'memory', -- 'search_help',
+                                -- 'mcp:filesystem' -- do not add here
+                            },
+                        },
+                        ["run_command"] = {
+                            opts = {
+                                safe_commands = {
+                                    "git status", "git diff", "git log",
+                                    "ls", "make test", "cd",
+                                    "head", "tail"
+                                },
+                            },
+                        },
+                    }
+                },
+                -- inline = { adapter = 'deepseek' },
+                inline = { adapter = 'qwen' },
+            },
+            mcp = {
+                servers = {
+                    filesystem = {
+                        cmd = { "npx", "-y", "@modelcontextprotocol/server-filesystem", "/home/qihuan/Documents" }
+                    },
+                },
+                opts = { default_servers = { "filesystem" } }, -- chat
+            },
+            -- extensions = {
+            --     mcphub = {
+            --         callback = "mcphub.extensions.codecompanion",
+            --         opts = {
+            --             make_vars = true,
+            --             make_slash_commands = true,
+            --             show_result_in_chat = true
+            --         }
+            --     }
+            -- }
+        })
+
+        vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", {
+            noremap = true, silent = true, desc = "CodeCompanion code action"
+        })
+        vim.keymap.set({ "n", "v" }, "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", {
+            noremap = true, silent = true, desc = "Toggle CodeCompanion chat"
+        })
+        vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", {
+            noremap = true, silent = true, desc = "Send selection to CodeCompanion chat"
+        })
+        vim.keymap.set({ "n", "v" }, "<C-h>", ":'<,'>CodeCompanion<CR>", {
+            noremap = true, silent = false, desc = "Show inline prompt"
+        })
+
+        -- Expand 'cc' into 'CodeCompanion' in the command line
+        vim.cmd([[cab cc CodeCompanion]])
+
+        -- `interactions.inline` has no `approval_mode` of its own: inline reads
+        -- the shared approvals cache, keyed by the buffer it edits, and falls
+        -- back to `interactions.chat.tools.opts.approval_mode`. So a chat mode
+        -- of `auto`/`yolo` also makes inline skip its diff. Give the inline
+        -- buffer its own mode, the value below, leaving chat untouched.
+        -- `always accept` in the inline diff still wins for that buffer.
+        local inline_approval_mode = 'ask'
+        local approvals = require('codecompanion.interactions.chat.tools.approvals')
+        vim.api.nvim_create_autocmd('User', {
+            pattern = 'CodeCompanionInlineStarted',
+            desc = "CodeCompanion: set the approval mode for the inline interaction",
+            callback = function(args)
+                local bufnr = args.data and args.data.bufnr
+                if bufnr then
+                    approvals:set_mode(bufnr, { mode = inline_approval_mode })
+                end
+            end,
+        })
+    end
+}}
+
 ------------------------------
 --- Plugins specifications ---
 ------------------------------
@@ -1026,83 +1150,7 @@ local plugin_spcs = {
             })
         end
     }},
-    { src = gh 'olimorris/codecompanion.nvim', data = {
-        config = function()
-            require('codecompanion').setup({
-                adapters = {
-                    http = {
-                        deepseek = function()
-                            return require('codecompanion.adapters').extend('deepseek', {
-                                env = { api_key = 'DEEPSEEK_API_KEY' },
-                                schema = {
-                                    model = { default = 'deepseek-flash' }, -- or deepseek-v4-pro
-                                    ['thinking.type'] = { default = 'disabled' },  -- enabled
-                                    reasoning_effort = { default = 'high' },  -- high | max
-                                },
-                            })
-                        end,
-                    },
-                },
-                interactions = {
-                    chat = {
-                        adapter = 'deepseek',
-                        tools = {
-                            opts = {
-                                completion_provider = "blink",
-                                approval_mode = "auto", -- "ask" | "auto" | "yolo"
-                                default_tools = {
-                                    'files', 'agent', -- tools groups
-                                    'fetch_webpage', 'web_search', 'memory', -- 'search_help',
-                                    -- 'mcp:filesystem' -- do not add here
-                                },
-                            },
-                            ["run_command"] = {
-                                opts = {
-                                    safe_commands = {
-                                        "git status", "git diff", "git log",
-                                        "ls", "make test", "cd",
-                                        "head", "tail"
-                                    },
-                                },
-                            },
-                        }
-                    },
-                    inline = { adapter = 'deepseek' },
-                },
-                mcp = {
-                    servers = {
-                        filesystem = {
-                            cmd = { "npx", "-y", "@modelcontextprotocol/server-filesystem", "/home/qihuan/Documents" }
-                        },
-                    },
-                    opts = { default_servers = { "filesystem" } }, -- chat
-                },
-                -- extensions = {
-                --     mcphub = {
-                --         callback = "mcphub.extensions.codecompanion",
-                --         opts = {
-                --             make_vars = true,
-                --             make_slash_commands = true,
-                --             show_result_in_chat = true
-                --         }
-                --     }
-                -- }
-            })
-
-            vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", {
-                noremap = true, silent = true, desc = "CodeCompanion code action"
-            })
-            vim.keymap.set({ "n", "v" }, "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", {
-                noremap = true, silent = true, desc = "Toggle CodeCompanion chat"
-            })
-            vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", {
-                noremap = true, silent = true, desc = "Send selection to CodeCompanion chat"
-            })
-
-            -- Expand 'cc' into 'CodeCompanion' in the command line
-            vim.cmd([[cab cc CodeCompanion]])
-        end
-    }}
+    spc_codecompanion,
 }
 
 --------------------
