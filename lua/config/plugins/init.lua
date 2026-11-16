@@ -910,7 +910,7 @@ local spc_toggleterm = { src = gh 'akinsho/toggleterm.nvim', data = {
             noremap = true, silent = false, desc = "Select (or focus) a terminal"
         })
         setmap({ "n", "t" }, "<C-t>n", "<Cmd>TermNew<CR>", {
-            noremap = true, silent = true, desc = "Select (or focus) a terminal"
+            noremap = true, silent = true, desc = "Create a new terminal"
         })
     end
 }}
@@ -922,6 +922,12 @@ local spc_tree = { src = gh 'nvim-tree/nvim-tree.lua', data = {
 local spc_codecompanion = { src = gh 'olimorris/codecompanion.nvim', data = {
     config = function()
         require('codecompanion').setup({
+            -- Global language for LLM responses. This is what the inline
+            -- system prompt is built with, too (there is no separate inline
+            -- language setting).
+            opts = {
+                language = "Chinese",
+            },
             adapters = {
                 http = {
                     qwen = function()
