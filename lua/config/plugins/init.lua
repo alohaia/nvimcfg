@@ -921,10 +921,9 @@ local spc_tree = { src = gh 'nvim-tree/nvim-tree.lua', data = {
 
 local spc_codecompanion = { src = gh 'olimorris/codecompanion.nvim', data = {
     config = function()
+        local cc_mcp = require('config.cc_mcp')
+
         require('codecompanion').setup({
-            -- Global language for LLM responses. This is what the inline
-            -- system prompt is built with, too (there is no separate inline
-            -- language setting).
             opts = {
                 language = "Chinese",
             },
@@ -933,6 +932,15 @@ local spc_codecompanion = { src = gh 'olimorris/codecompanion.nvim', data = {
                     qwen = function()
                         return require("codecompanion.adapters").extend("openai_compatible", {
                             formatted_name = "QWEN",
+                            opts = { can_form_structured_outputs = true },
+                            handlers = {
+                                form_structured_output = function(self, schema)
+                                    if not schema or not (self.opts and self.opts.can_form_structured_outputs) then
+                                        return nil
+                                    end
+                                    return require("codecompanion.adapters.utils.structured_outputs").to_openai(schema)
+                                end,
+                            },
                             env = {
                                 url = "https://maas.qianwenaiapi.com/compatible-mode/v1",
                                 chat_url = "/chat/completions",
@@ -971,34 +979,56 @@ local spc_codecompanion = { src = gh 'olimorris/codecompanion.nvim', data = {
                     tools = {
                         opts = {
                             completion_provider = "blink",
-                            approval_mode = "yolo", -- "ask" | "auto" | "yolo"
+                            approval_mode = "auto", -- "ask" | "auto" | "yolo"
                             default_tools = {
                                 'files', 'agent', -- tools groups
                                 'fetch_webpage', 'web_search', 'memory', -- 'search_help',
-                                -- 'mcp:filesystem' -- do not add here
+                                'add_mcp_root',  -- auto add protect root
                             },
                         },
                         ["run_command"] = {
                             opts = {
                                 safe_commands = {
-                                    "git status", "git diff", "git log",
-                                    "ls", "make test", "cd",
-                                    "head", "tail"
+                                    "git status", "git log", "git show", "git rev-parse", "git diff",
+                                    "ls", "pwd", "cd", "cat", "head", "tail", "wc", "file",
+                                    "stat", "du", "which", "type", "tree",
+                                    "make test",
                                 },
+                                -- judges if the command is unsafe before asking
+                                judge = true,
                             },
                         },
                     }
                 },
                 -- inline = { adapter = 'deepseek' },
                 inline = { adapter = 'qwen' },
+                background = {
+                    adapter = "qwen",  -- default is copilot
+                    gates = {
+                        judge = {
+                            adapter = { name = "qwen", model = "deepseek-v4.1-flash" },
+                        },
+                    },
+                },
             },
             mcp = {
                 servers = {
-                    filesystem = {
-                        cmd = { "npx", "-y", "@modelcontextprotocol/server-filesystem", "/home/qihuan/Documents" }
+                    -- Auto-served: whichever directory the first chat opens in.
+                    project = cc_mcp.project_server,
+                    -- other pre-defined servers
+                    fs_workbench = {
+                        cmd = { "npx", "-y", "@modelcontextprotocol/server-filesystem", "/data/Workbench/" },
+                        tool_defaults = { require_approval_before = true },
+                    },
+                    fs_document = {
+                        cmd = { "npx", "-y", "@modelcontextprotocol/server-filesystem", "/home/qihuan/Documents/" },
+                        tool_defaults = { require_approval_before = true },
                     },
                 },
-                opts = { default_servers = { "filesystem" } }, -- chat
+                opts = {
+                    default_servers = { "project" },
+                    timeout = 60000,
+                }, -- chat
             },
             -- extensions = {
             --     mcphub = {
@@ -1010,6 +1040,36 @@ local spc_codecompanion = { src = gh 'olimorris/codecompanion.nvim', data = {
             --         }
             --     }
             -- }
+        })
+
+        --- (DeepSeek) {{
+        cc_mcp.setup()
+
+        -- Manual escape hatch for the same thing `add_mcp_root` does
+        vim.api.nvim_create_user_command('CodeCompanionMCPRoot', function()
+            local chat = require('codecompanion').last_chat()
+            if not chat then
+                return vim.notify('No CodeCompanion chat open', vim.log.levels.WARN, { title = 'CodeCompanion' })
+            end
+            cc_mcp.prompt(chat)
+        end, { desc = 'CodeCompanion: serve a directory with a new MCP server' })
+        --- }}
+
+        -- Desktop notification once a chat finishes a whole turn (i.e. after the
+        -- tool loop settles, not between tool rounds).
+        require('config.cc_notify').setup({
+            -- Set `only_when_unfocused = false` if you want it even while the
+            -- chat buffer is focused.
+            backend = 'auto', -- kitten when in kitty, else notify-send, else vim.notify
+        })
+        vim.api.nvim_create_user_command('CodeCompanionNotify', function(args)
+            require('config.cc_notify').command(args)
+        end, {
+            desc = 'CodeCompanion: toggle/test finish notifications',
+            nargs = '?',
+            complete = function()
+                return { 'toggle', 'test' }
+            end,
         })
 
         -- setmap({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", {
@@ -1028,24 +1088,24 @@ local spc_codecompanion = { src = gh 'olimorris/codecompanion.nvim', data = {
         -- Expand 'cc' into 'CodeCompanion' in the command line
         vim.cmd([[cab cc CodeCompanion]])
 
-        -- `interactions.inline` has no `approval_mode` of its own: inline reads
-        -- the shared approvals cache, keyed by the buffer it edits, and falls
-        -- back to `interactions.chat.tools.opts.approval_mode`. So a chat mode
-        -- of `auto`/`yolo` also makes inline skip its diff. Give the inline
-        -- buffer its own mode, the value below, leaving chat untouched.
-        -- `always accept` in the inline diff still wins for that buffer.
-        local inline_approval_mode = 'ask'
-        local approvals = require('codecompanion.interactions.chat.tools.approvals')
-        vim.api.nvim_create_autocmd('User', {
-            pattern = 'CodeCompanionInlineStarted',
-            desc = "CodeCompanion: set the approval mode for the inline interaction",
-            callback = function(args)
-                local bufnr = args.data and args.data.bufnr
-                if bufnr then
-                    approvals:set_mode(bufnr, { mode = inline_approval_mode })
-                end
-            end,
-        })
+        -- -- `interactions.inline` has no `approval_mode` of its own: inline reads
+        -- -- the shared approvals cache, keyed by the buffer it edits, and falls
+        -- -- back to `interactions.chat.tools.opts.approval_mode`. So a chat mode
+        -- -- of `auto`/`yolo` also makes inline skip its diff. Give the inline
+        -- -- buffer its own mode, the value below, leaving chat untouched.
+        -- -- `always accept` in the inline diff still wins for that buffer.
+        -- local inline_approval_mode = 'ask'
+        -- local approvals = require('codecompanion.interactions.chat.tools.approvals')
+        -- vim.api.nvim_create_autocmd('User', {
+        --     pattern = 'CodeCompanionInlineStarted',
+        --     desc = "CodeCompanion: set the approval mode for the inline interaction",
+        --     callback = function(args)
+        --         local bufnr = args.data and args.data.bufnr
+        --         if bufnr then
+        --             approvals:set_mode(bufnr, { mode = inline_approval_mode })
+        --         end
+        --     end,
+        -- })
     end
 }}
 
