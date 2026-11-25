@@ -1172,6 +1172,12 @@ local plugin_spcs = {
                     enable = true,
                     conceal_delimiters = true,
                     border = 'thin'
+                },
+                html = {
+                    comment = {
+                        -- Turn on / off HTML comment concealing.
+                        conceal = false,
+                    }
                 }
             }
         end
